@@ -70,7 +70,11 @@ const MobileLogin = () => {
 
     try {
       setLoading(true);
-      const response = (await sendOTP(mobileNumber)) as OTPResponse;
+      const response = (await sendOTP(
+        mobileNumber,
+        '',
+        'phone',
+      )) as OTPResponse;
       console.log('OTP API Response:', response);
 
       if (response.data && response.data.success === true) {

@@ -56,10 +56,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   noAccountText: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#000000',
   },
   createOneText: {
+    marginTop: 4,
     color: '#0088B1',
     fontWeight: '600',
     fontSize: 14,

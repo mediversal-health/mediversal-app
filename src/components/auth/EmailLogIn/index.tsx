@@ -5,26 +5,72 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {Eye, EyeOff} from 'lucide-react-native';
 import styles from './index.styles';
 import GoogleLoginButton from '../../ui/GoogleLoginButton';
-const EmailLoginDesign = () => {
+import {sendOTP} from '../../../Services/auth';
+import EmailForgotPasswordModal from '../Modals/EmailForgotPassword';
+const EmailLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showErrors, setShowErrors] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [forgotModalVisible, setForgotModalVisible] = useState(false);
+
+  const isValidEmail = (inputEmail: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(inputEmail);
+  };
+
+  const isValidPassword = (inputPassword: string) => {
+    return inputPassword.length >= 6;
+  };
+
+  const handleLogin = async () => {
+    setShowErrors(true);
+
+    if (!email || !isValidEmail(email)) {
+      return;
+    }
+
+    if (!password || !isValidPassword(password)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await sendOTP(email, password, 'email');
+      setLoading(false);
+
+      if (response.data && response.data.success) {
+        console.log(response.data);
+        Alert.alert('Success', 'Login successful!');
+      } else {
+        Alert.alert(
+          'Error',
+          response.data.message || 'Login failed. Please try again.',
+        );
+      }
+    } catch (error) {
+      setLoading(false);
+      const errorMessage =
+        (error as any)?.response?.data?.message ||
+        'Something went wrong. Please try again.';
+      Alert.alert('Error', errorMessage);
+    }
+  };
 
   return (
     <View>
-      {/* Email Input */}
       <TextInput
         style={[
           styles.input,
           isEmailFocused && styles.focusedInput,
-          showErrors && !email && styles.errorBorder,
+          showErrors && (!email || !isValidEmail(email)) && styles.errorBorder,
         ]}
         placeholder="mediversal@gmail.com"
         value={email}
@@ -38,13 +84,18 @@ const EmailLoginDesign = () => {
       {showErrors && !email && (
         <Text style={styles.errorText}>Email is required</Text>
       )}
+      {showErrors && email && !isValidEmail(email) && (
+        <Text style={styles.errorText}>Please enter a valid email</Text>
+      )}
 
       <View style={styles.passwordContainer}>
         <TextInput
           style={[
             styles.input,
             styles.passwordInput,
-            showErrors && !password && styles.errorBorder,
+            showErrors &&
+              (!password || !isValidPassword(password)) &&
+              styles.errorBorder,
           ]}
           placeholder="********"
           value={password}
@@ -56,23 +107,36 @@ const EmailLoginDesign = () => {
           style={styles.eyeIcon}
           onPress={() => setIsPasswordVisible(prev => !prev)}>
           {isPasswordVisible ? (
-            <EyeOff size={22} color="#0088b1" />
-          ) : (
             <Eye size={22} color="#0088b1" />
+          ) : (
+            <EyeOff size={22} color="#0088b1" />
           )}
         </TouchableOpacity>
       </View>
       {showErrors && !password && (
         <Text style={styles.errorText}>Password is required</Text>
       )}
+      {showErrors && password && !isValidPassword(password) && (
+        <Text style={styles.errorText}>
+          Password should be at least 6 characters
+        </Text>
+      )}
 
       <View style={styles.forgotContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setForgotModalVisible(true)}>
           <Text style={styles.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.loginButton} disabled={loading}>
+      <EmailForgotPasswordModal
+        isVisible={forgotModalVisible}
+        onClose={() => setForgotModalVisible(false)}
+      />
+
+      <TouchableOpacity
+        style={styles.loginButton}
+        disabled={loading}
+        onPress={handleLogin}>
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
@@ -97,4 +161,4 @@ const EmailLoginDesign = () => {
   );
 };
 
-export default EmailLoginDesign;
+export default EmailLogin;

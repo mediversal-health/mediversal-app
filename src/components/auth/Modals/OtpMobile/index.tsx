@@ -105,7 +105,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       setResending(true);
       setError('');
 
-      const response = (await sendOTP(phoneNumber)) as ApiResponse;
+      const response = (await sendOTP(phoneNumber, '', 'phone')) as ApiResponse;
 
       if (response.data?.success) {
         setTimer(60);
@@ -183,7 +183,9 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           {otp.map((digit, index) => (
             <TextInput
               key={index}
-              ref={ref => (inputRefs.current[index] = ref)}
+              ref={(ref: TextInput | null): void => {
+                inputRefs.current[index] = ref;
+              }}
               style={[
                 styles.otpInput,
                 digit ? styles.otpInputFilled : styles.otpInputEmpty,
