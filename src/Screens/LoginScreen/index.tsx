@@ -11,11 +11,13 @@ import {
   Text,
   Image,
 } from 'react-native';
+import {SvgUri} from 'react-native-svg';
 import ToggleButtons from '../../components/ui/ToggleButton';
 import styles from './index.styles';
 import EmailSignup from '../../components/auth/EmailSignUp';
 import MobileLogin from '../../components/auth/MobileLogIn';
 import EmailLogin from '../../components/auth/EmailLogIn';
+import Carosel from '../../assests/svgs/Carosel.svg';
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -69,11 +71,7 @@ const LoginScreen = () => {
         <View style={styles.topSection}>
           {(isMobile || isSignup) && (
             <View style={styles.carouselContainer}>
-              <Image
-                source={require('../assests/svgs/Carosel.svg')}
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{width: 280, height: 280}}
-              />
+              <Carosel width={280} height={280} />
             </View>
           )}
           <View style={styles.headerTextContainer}>
