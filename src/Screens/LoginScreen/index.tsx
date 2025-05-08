@@ -9,9 +9,8 @@ import {
   BackHandler,
   Alert,
   Text,
-  Image,
 } from 'react-native';
-import {SvgUri} from 'react-native-svg';
+
 import ToggleButtons from '../../components/ui/ToggleButton';
 import styles from './index.styles';
 import EmailSignup from '../../components/auth/EmailSignUp';

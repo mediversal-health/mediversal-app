@@ -10,6 +10,8 @@ import {
 import Modal from 'react-native-modal';
 import styles from './index.styles';
 import {verifyOTP, sendOTP} from '../../../../Services/auth';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../../navigation';
 
 interface OTPModalProps {
   isVisible: boolean;
@@ -33,7 +35,6 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   onClose,
   onGoBack,
   phoneNumber,
-  onVerificationSuccess,
 }) => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const [timer, setTimer] = useState(60);
@@ -41,7 +42,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const [resending, setResending] = useState(false);
   const [error, setError] = useState<string>('');
   const inputRefs = useRef<(TextInput | null)[]>(Array(6).fill(null));
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -139,10 +140,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       const response = (await verifyOTP(phoneNumber, otpString)) as ApiResponse;
       console.log(response);
       if (response.data?.success) {
-        if (onVerificationSuccess) {
-          onVerificationSuccess();
-        }
-        onClose();
+        navigation.navigate('Layout');
       } else {
         setError(response.data?.message || 'Invalid OTP');
       }

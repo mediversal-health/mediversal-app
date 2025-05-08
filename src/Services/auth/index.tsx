@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const IP_ADDR = 'https://1qjdu8gryi.execute-api.ap-south-1.amazonaws.com/dev/';
+const IP_ADDR = 'https://3st0jw58p8.execute-api.ap-south-1.amazonaws.com/app';
 
 export const sendOTP = async (
   identifier: string,
