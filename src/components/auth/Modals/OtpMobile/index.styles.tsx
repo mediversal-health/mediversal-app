@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   verifyButtonDisabled: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#0088B1',
     borderWidth: 1,
     borderColor: '#0088B1',
   },
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
   disabledText: {
     color: '#0088B1',
   },
-  // Add these to your existing styles
   errorText: {
     color: '#ff3b30',
     fontSize: 12,

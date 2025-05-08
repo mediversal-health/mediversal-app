@@ -12,6 +12,8 @@ import styles from './index.styles';
 import GoogleLoginButton from '../../ui/GoogleLoginButton';
 import {sendOTP} from '../../../Services/auth';
 import EmailForgotPasswordModal from '../Modals/EmailForgotPassword';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../navigation';
 const EmailLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +22,7 @@ const EmailLogin = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [forgotModalVisible, setForgotModalVisible] = useState(false);
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isValidEmail = (inputEmail: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(inputEmail);
@@ -46,14 +48,10 @@ const EmailLogin = () => {
       const response = await sendOTP(email, password, 'email');
       setLoading(false);
 
-      if (response.data && response.data.success) {
-        console.log(response.data);
-        Alert.alert('Success', 'Login successful!');
+      if (response.data?.success) {
+        navigation.navigate('Layout');
       } else {
-        Alert.alert(
-          'Error',
-          response.data.message || 'Login failed. Please try again.',
-        );
+        Alert.alert(response.data?.message || 'Invalid OTP');
       }
     } catch (error) {
       setLoading(false);
