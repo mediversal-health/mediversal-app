@@ -25,6 +25,7 @@ const layout = () => {
           justifyContent: 'space-between',
           paddingHorizontal: 20,
           paddingBottom: 10,
+          marginTop: '11%',
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
