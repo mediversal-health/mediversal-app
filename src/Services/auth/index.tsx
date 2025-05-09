@@ -14,11 +14,15 @@ export const sendOTP = async (
   });
 };
 
-export const verifyOTP = async (identifier: string, otp: string) => {
+export const verifyOTP = async (
+  identifier: string,
+  otp: string,
+  method: string,
+) => {
   return axios.post(`${IP_ADDR}/api/verify-otp`, {
     identifier: identifier,
     otp,
-    method: 'phone',
+    method: method,
   });
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   SafeAreaView,
@@ -20,6 +21,7 @@ import SVG5 from './assets/svgs/ecp-2 1.svg';
 import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import PriceCard from '../../components/cards/PriceCard';
+import OrderNowCard from '../../components/cards/OrderCard';
 
 const HomeScreen = () => {
   return (
@@ -49,6 +51,14 @@ const HomeScreen = () => {
           <DoctorsCard />
           <DoctorsCard />
         </ScrollView>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingHorizontal: 10,
+            paddingVertical: 20,
+          }}>
+          <OrderNowCard />
+        </View>
 
         <View style={styles.priscriptionContainer}>
           <PriscriptionSVG width={25} height={32} strokeWidth={2} />
