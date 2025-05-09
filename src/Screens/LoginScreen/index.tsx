@@ -37,7 +37,6 @@ const LoginScreen = () => {
     [isSignup],
   );
 
-  // Handle Android Back Button
   useEffect(() => {
     const handleBackPress = () => {
       if (isSignup) {

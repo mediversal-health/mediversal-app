@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {
   Image,
   SafeAreaView,
+  StatusBar,
   Switch,
   Text,
   TouchableOpacity,
@@ -18,7 +19,18 @@ const layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        marginTop: StatusBar.currentHeight,
+        marginBottom: StatusBar.currentHeight,
+      }}>
+      <StatusBar
+        backgroundColor="#0088B1" // Change to your desired color
+        barStyle="light-content" // Options: 'default', 'light-content', 'dark-content'
+        translucent={true}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -49,7 +61,7 @@ const layout = () => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                gap: 90,
+                width: '90%',
               }}>
               <View style={{flexDirection: 'row', gap: 3}}>
                 <Text>Gandhi Maidan 800024</Text>
@@ -71,14 +83,10 @@ const layout = () => {
         }}>
         <View style={{flexDirection: 'column'}}>
           <Text style={{fontSize: 12}}>
-            {' '}
             Get Medicine reminderds and other updates{' '}
           </Text>
           <View style={{flexDirection: 'row', gap: 3}}>
-            {' '}
-            <Text style={{fontSize: 12, marginLeft: 5}}>
-              via notification
-            </Text>{' '}
+            <Text style={{fontSize: 12, marginLeft: 5}}>via notification</Text>
             <TouchableOpacity>
               <Text
                 style={{
@@ -86,7 +94,7 @@ const layout = () => {
                   fontWeight: 'bold',
                   textDecorationLine: 'underline',
                 }}>
-                View More{' '}
+                View More
               </Text>
             </TouchableOpacity>
           </View>
@@ -110,10 +118,7 @@ const layout = () => {
             borderWidth: 1,
             borderColor: '#ccc',
             justifyContent: 'space-between',
-          }}
-          //  onPress={handleNavigate}
-        >
-          {' '}
+          }}>
           <View style={{flexDirection: 'row', gap: 5}}>
             <Search color={'#0088B1'} size={20} />
             <Text style={{color: '#999'}}>

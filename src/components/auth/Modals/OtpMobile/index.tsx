@@ -1,8 +1,9 @@
-import React, {useState, useRef, useEffect} from 'react';
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-catch-shadow */
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Alert,
   ActivityIndicator,
@@ -12,6 +13,7 @@ import styles from './index.styles';
 import {verifyOTP, sendOTP} from '../../../../Services/auth';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../../navigation';
+import CustomOtpInput from '../../../ui/CustomOtpInput';
 
 interface OTPModalProps {
   isVisible: boolean;
@@ -41,8 +43,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const [verifying, setVerifying] = useState(false);
   const [resending, setResending] = useState(false);
   const [error, setError] = useState<string>('');
-  const inputRefs = useRef<(TextInput | null)[]>(Array(6).fill(null));
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -64,43 +66,6 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
     };
   }, [isVisible, timer]);
 
-  const handleOTPChange = (value: string, index: number) => {
-    if (error) {
-      setError('');
-    }
-
-    if (!/^\d*$/.test(value)) {
-      return;
-    }
-
-    const newOtp = [...otp];
-
-    if (value.length > 1 && index === 0) {
-      const pastedOtp = value.substring(0, 6).split('');
-      for (let i = 0; i < pastedOtp.length; i++) {
-        newOtp[i] = pastedOtp[i];
-      }
-      setOtp(newOtp);
-
-      const lastIndex = Math.min(pastedOtp.length - 1, 5);
-      inputRefs.current[lastIndex]?.focus();
-      return;
-    }
-
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    if (value && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyPress = (e: any, index: number) => {
-    if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
   const handleResendOTP = async () => {
     try {
       setResending(true);
@@ -111,13 +76,10 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       if (response.data?.success) {
         setTimer(60);
         setOtp(Array(6).fill(''));
-
-        setTimeout(() => inputRefs.current[0]?.focus(), 100);
         Alert.alert('Success', 'OTP sent successfully');
       } else {
         setError(response.data?.message || 'Failed to resend OTP');
       }
-      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error: any) {
       setError(error?.response?.data?.message || 'Error resending OTP');
       console.error('Resend OTP Error:', error);
@@ -137,14 +99,18 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
         return;
       }
 
-      const response = (await verifyOTP(phoneNumber, otpString)) as ApiResponse;
+      const response = (await verifyOTP(
+        phoneNumber,
+        otpString,
+        'phone',
+      )) as ApiResponse;
       console.log(response);
+
       if (response.data?.success) {
         navigation.navigate('Layout');
       } else {
         setError(response.data?.message || 'Invalid OTP');
       }
-      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error: any) {
       setError(error?.response?.data?.message || 'Error verifying OTP');
       console.error('Verify OTP Error:', error);
@@ -177,27 +143,12 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           </Text>
         </TouchableOpacity>
 
-        <View style={styles.otpRow}>
-          {otp.map((digit, index) => (
-            <TextInput
-              key={index}
-              ref={(ref: TextInput | null): void => {
-                inputRefs.current[index] = ref;
-              }}
-              style={[
-                styles.otpInput,
-                digit ? styles.otpInputFilled : styles.otpInputEmpty,
-                error ? styles.otpInputError : null,
-              ]}
-              keyboardType="numeric"
-              maxLength={1}
-              value={digit}
-              onChangeText={value => handleOTPChange(value, index)}
-              onKeyPress={e => handleKeyPress(e, index)}
-              autoFocus={index === 0 && isVisible}
-            />
-          ))}
-        </View>
+        <CustomOtpInput
+          otp={otp}
+          setOtp={setOtp}
+          error={error}
+          isVisible={isVisible}
+        />
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
@@ -213,7 +164,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
               disabled={resending}
               style={styles.resendButton}>
               {resending ? (
-                <ActivityIndicator size="small" color="#6200ee" />
+                <ActivityIndicator size="small" color="#0088B1" />
               ) : (
                 <Text style={styles.resendLink}>Resend OTP</Text>
               )}
