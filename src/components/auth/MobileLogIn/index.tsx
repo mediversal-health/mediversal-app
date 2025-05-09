@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
@@ -6,6 +7,10 @@ import {
   Text,
   ActivityIndicator,
   Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import CountryPickerComponent from '../../ui/CountryPicker';
 import {Country} from 'react-native-country-picker-modal';
@@ -13,7 +18,6 @@ import styles from './index.styles';
 import OtpMobileModal from '../Modals/OtpMobile';
 import {sendOTP} from '../../../Services/auth';
 
-// Define response type
 interface OTPResponse {
   data?: {
     success: boolean;
@@ -32,9 +36,34 @@ const MobileLogin = () => {
   const [isMobileFocused, setIsMobileFocused] = useState<boolean>(false);
   const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [keyboardVisible, setKeyboardVisible] = useState<boolean>(false);
 
-  // Use proper ref typing
   const inputRef = useRef<TextInput>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollToEnd({animated: true});
+        }
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const handleMobileInputChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
@@ -105,58 +134,67 @@ const MobileLogin = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputRow}>
-        <View style={styles.countryCodeBox}>
-          <CountryPickerComponent onSelectCountry={handleCountrySelect} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={[
+          styles.container,
+          {paddingBottom: keyboardVisible ? 120 : 20},
+        ]}>
+        <View style={styles.inputRow}>
+          <View style={styles.countryCodeBox}>
+            <CountryPickerComponent onSelectCountry={handleCountrySelect} />
+          </View>
+
+          <View
+            style={[
+              styles.mobileInputContainer,
+              isMobileFocused && styles.focusedInput,
+              error ? styles.errorInput : null,
+            ]}>
+            <TextInput
+              ref={inputRef}
+              style={styles.mobileInput}
+              placeholder="98765-43210"
+              keyboardType="numeric"
+              value={mobileNumber}
+              onChangeText={handleMobileInputChange}
+              maxLength={10}
+              placeholderTextColor="#b3b3b3"
+              onFocus={() => setIsMobileFocused(true)}
+              onBlur={() => setIsMobileFocused(false)}
+            />
+          </View>
         </View>
 
-        <View
-          style={[
-            styles.mobileInputContainer,
-            isMobileFocused && styles.focusedInput,
-            error ? styles.errorInput : null,
-          ]}>
-          <TextInput
-            ref={inputRef}
-            style={styles.mobileInput}
-            placeholder="98765-43210"
-            keyboardType="numeric"
-            value={mobileNumber}
-            onChangeText={handleMobileInputChange}
-            maxLength={10}
-            placeholderTextColor="#b3b3b3"
-            onFocus={() => setIsMobileFocused(true)}
-            onBlur={() => setIsMobileFocused(false)}
-          />
-        </View>
-      </View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <TouchableOpacity
+          style={[styles.otpButton, loading ? styles.disabledButton : null]}
+          onPress={handleSendOTP}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.otpButtonText}>Send OTP</Text>
+          )}
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.otpButton, loading ? styles.disabledButton : null]}
-        onPress={handleSendOTP}
-        disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.otpButtonText}>Send OTP</Text>
-        )}
-      </TouchableOpacity>
+        <Text style={styles.termsText}>
+          By logging in, you agree to our{' '}
+          <Text style={styles.termsHighlight}>Terms & Conditions</Text>
+        </Text>
 
-      <Text style={styles.termsText}>
-        By logging in, you agree to our{' '}
-        <Text style={styles.termsHighlight}>Terms & Conditions</Text>
-      </Text>
-
-      <OtpMobileModal
-        isVisible={showOtpModal}
-        onClose={handleCloseModal}
-        onGoBack={() => setShowOtpModal(false)}
-        phoneNumber={mobileNumber}
-      />
-    </View>
+        <OtpMobileModal
+          isVisible={showOtpModal}
+          onClose={handleCloseModal}
+          onGoBack={() => setShowOtpModal(false)}
+          phoneNumber={mobileNumber}
+        />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   SafeAreaView,
@@ -22,6 +23,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import PriceCard from '../../components/cards/PriceCard';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
+import OrderNowCard from '../../components/cards/OrderCard';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -53,6 +55,14 @@ const HomeScreen = () => {
           <DoctorsCard />
           <DoctorsCard />
         </ScrollView>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingHorizontal: 10,
+            paddingVertical: 20,
+          }}>
+          <OrderNowCard />
+        </View>
 
         <View style={styles.priscriptionContainer}>
           <PriscriptionSVG width={25} height={32} strokeWidth={2} />

@@ -90,28 +90,22 @@ const styles = StyleSheet.create({
     color: '#0088B1',
   },
   verifyButton: {
-    padding: 12,
-    borderRadius: 12,
-    marginTop: 20,
+    marginTop: 24,
+    paddingVertical: 14,
     width: '100%',
+    backgroundColor: '#0088B1',
+    borderRadius: 10,
     alignItems: 'center',
   },
-  verifyButtonOutline: {
-    borderWidth: 1,
-    borderColor: '#0088B1',
-    backgroundColor: 'transparent',
-  },
-  verifyButtonFilled: {
-    backgroundColor: '#0088B1',
+  verifyButtonDisabled: {
+    backgroundColor: 'rgba(0, 136, 177, 0.5)',
   },
   verifyButtonText: {
+    color: '#fff',
     fontSize: 16,
   },
-  verifyButtonTextDark: {
-    color: '#0088B1',
-  },
-  verifyButtonTextLight: {
-    color: '#f8f8f8',
+  disabledText: {
+    color: '#fff',
   },
 });
 export default styles;

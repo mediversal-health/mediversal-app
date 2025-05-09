@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {verifyRegisterUser, RegisterUser} from '../../../../Services/auth';
+import {sendOTP, verifyOTP} from '../../../../Services/auth';
 import {RootStackParamList} from '../../../../navigation';
 import styles from './index.styles';
 import CustomOtpInput from '../../../ui/CustomOtpInput';
@@ -23,7 +23,7 @@ interface OTPModalProps {
   password: string;
 }
 
-const OtpSignUpModal: React.FC<OTPModalProps> = ({
+const OtpEmailModal: React.FC<OTPModalProps> = ({
   isVisible,
   onClose,
   email,
@@ -36,7 +36,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
   const [error, setError] = useState<string>('');
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  console.log(email, password);
+
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -76,14 +76,11 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
     setError('');
 
     try {
-      const res = await verifyRegisterUser(email, enteredOTP, password);
+      const res = await verifyOTP(email, enteredOTP, 'email');
       if (res.status === 200 || res.data?.success) {
         Alert.alert('Success', 'OTP verification successful');
         onClose();
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Login'}],
-        });
+        navigation.navigate('Layout');
       } else {
         setError(res.data?.message || 'Invalid OTP');
         Alert.alert('Error', res.data?.message || 'Invalid OTP');
@@ -104,7 +101,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
       setResendLoading(true);
       setError('');
 
-      const response = await RegisterUser(email, password);
+      const response = await sendOTP(email, password, 'email');
       setResendLoading(false);
 
       if (response.status === 200 || response.data?.success) {
@@ -211,4 +208,4 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
   );
 };
 
-export default OtpSignUpModal;
+export default OtpEmailModal;

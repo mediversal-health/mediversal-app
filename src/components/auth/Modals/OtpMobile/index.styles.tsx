@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
   timerText: {
     color: '#0088B1',
   },
+  resendButton: {
+    minHeight: 20,
+    justifyContent: 'center',
+  },
   resendLink: {
     color: '#0088B1',
     fontWeight: '600',
@@ -75,16 +79,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   verifyButtonDisabled: {
-    backgroundColor: '#0088B1',
-    borderWidth: 1,
-    borderColor: '#0088B1',
+    backgroundColor: 'rgba(0, 136, 177, 0.5)',
   },
   verifyButtonText: {
     color: '#fff',
     fontSize: 16,
   },
   disabledText: {
-    color: '#0088B1',
+    color: '#fff',
   },
   errorText: {
     color: '#ff3b30',
@@ -94,10 +96,6 @@ const styles = StyleSheet.create({
   },
   otpInputError: {
     borderColor: '#ff3b30',
-  },
-  resendButton: {
-    minHeight: 20,
-    justifyContent: 'center',
   },
 });
 export default styles;
