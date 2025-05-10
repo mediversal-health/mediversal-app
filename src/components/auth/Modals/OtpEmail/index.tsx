@@ -78,19 +78,19 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
     try {
       const res = await verifyOTP(email, enteredOTP, 'email');
       if (res.status === 200 || res.data?.success) {
-        Alert.alert('Success', 'OTP verification successful');
+        // Alert.alert('Success', 'OTP verification successful');
         onClose();
         navigation.navigate('Layout');
       } else {
         setError(res.data?.message || 'Invalid OTP');
-        Alert.alert('Error', res.data?.message || 'Invalid OTP');
+        // Alert.alert('Error', res.data?.message || 'Invalid OTP');
       }
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Something went wrong',
-      );
       setError(error?.response?.data?.message || 'Error verifying OTP');
+      // Alert.alert(
+      //   'Error',
+      //   error?.response?.data?.message || 'Something went wrong',
+      // );
     } finally {
       setLoading(false);
     }
@@ -164,7 +164,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           error={error}
           isVisible={isVisible}
         />
-
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <View style={styles.timerContainer}>
           {timer > 0 ? (
             <Text style={styles.timerText}>
@@ -187,10 +187,12 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
         <TouchableOpacity
           style={[
             styles.verifyButton,
-            (!isOtpFilled || loading) && styles.verifyButtonDisabled,
+            loading ? styles.verifyButtonLoading : null,
+            !isOtpFilled ? styles.verifyButtonDisabled : null,
           ]}
           onPress={handleVerifyOTP}
-          disabled={!isOtpFilled || loading}>
+          disabled={!isOtpFilled || loading}
+          activeOpacity={0.8}>
           {loading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (

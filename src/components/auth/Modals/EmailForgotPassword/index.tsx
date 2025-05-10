@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
@@ -25,6 +24,7 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
+
   const isValidEmail = (inputEmail: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail);
 
@@ -43,17 +43,14 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
       if (response.data && response.data.success == true) {
         setForgotPasswordVisible(true);
       } else {
-        Alert.alert(
-          'Error',
-          response.data.message || 'Login failed. Please try again.',
-        );
+        setEmailError(response.data?.message || 'Invalid OTP');
       }
     } catch (error) {
       setLoading(false);
       const errorMessage =
         (error as any)?.response?.data?.message ||
         'Something went wrong. Please try again.';
-      Alert.alert('Error', errorMessage);
+      setEmailError(errorMessage);
     }
   };
 
@@ -70,13 +67,11 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
         // eslint-disable-next-line react-native/no-inline-styles
         style={{margin: 0, justifyContent: 'flex-end'}}>
         <View style={styles.container}>
-          {/* Title */}
           <Text style={styles.title}>Reset Your Password</Text>
           <Text style={styles.subtitle}>
             Please enter the registered email below to reset your password
           </Text>
 
-          {/* Email Input */}
           <View
             style={[
               styles.inputWrapper,
@@ -99,12 +94,10 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
             />
           </View>
 
-          {/* Email Error */}
           {emailError ? (
             <Text style={styles.errorText}>{emailError}</Text>
           ) : null}
 
-          {/* Send OTP Button */}
           <TouchableOpacity
             style={[
               styles.button,

@@ -79,23 +79,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   verifyButtonDisabled: {
-    backgroundColor: 'rgba(0, 136, 177, 0.5)',
+    borderWidth: 1,
+    borderColor: '#0088B1',
+    backgroundColor: 'transparent',
+  },
+  verifyButtonLoading: {
+    backgroundColor: '#0088B1',
   },
   verifyButtonText: {
     color: '#fff',
     fontSize: 16,
   },
   disabledText: {
-    color: '#fff',
+    color: '#0088B1',
   },
   errorText: {
     color: '#ff3b30',
     fontSize: 12,
     marginTop: 5,
     textAlign: 'center',
-  },
-  otpInputError: {
-    borderColor: '#ff3b30',
   },
 });
 export default styles;
