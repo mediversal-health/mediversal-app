@@ -109,11 +109,12 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       if (response.data?.success) {
         navigation.navigate('Layout');
       } else {
+        // Alert.alert('Error', response.data?.message || 'Resend failed');
         setError(response.data?.message || 'Invalid OTP');
       }
     } catch (error: any) {
       setError(error?.response?.data?.message || 'Error verifying OTP');
-      console.error('Verify OTP Error:', error);
+      // Alert.alert('Error', error);
     } finally {
       setVerifying(false);
     }
@@ -175,10 +176,12 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
         <TouchableOpacity
           style={[
             styles.verifyButton,
-            (!isOtpFilled || verifying) && styles.verifyButtonDisabled,
+            verifying ? styles.verifyButtonLoading : null,
+            !isOtpFilled ? styles.verifyButtonDisabled : null,
           ]}
           onPress={handleVerifyOTP}
-          disabled={!isOtpFilled || verifying}>
+          disabled={!isOtpFilled || verifying}
+          activeOpacity={0.8}>
           {verifying ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (

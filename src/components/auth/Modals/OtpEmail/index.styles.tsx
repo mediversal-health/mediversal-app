@@ -97,15 +97,26 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
+  verifyButtonLoading: {
+    backgroundColor: '#0088B1',
+  },
   verifyButtonDisabled: {
-    backgroundColor: 'rgba(0, 136, 177, 0.5)',
+    borderWidth: 1,
+    borderColor: '#0088B1',
+    backgroundColor: 'transparent',
   },
   verifyButtonText: {
     color: '#fff',
     fontSize: 16,
   },
   disabledText: {
-    color: '#fff',
+    color: '#0088B1',
+  },
+  errorText: {
+    color: '#ff3b30',
+    fontSize: 12,
+    marginTop: 5,
+    textAlign: 'center',
   },
 });
 

@@ -30,7 +30,7 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
   const [timer, setTimer] = useState<number>(60);
   const [showResetModal, setShowResetModal] = useState(false);
   const [error, setError] = useState<string>('');
-
+  const [resendLoading, setResendLoading] = useState(false);
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -74,26 +74,24 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
         console.log(response.data);
       } else {
         setError(response.data?.message || 'Invalid OTP');
-        Alert.alert(
-          'Error',
-          response.data.message || 'Verification failed. Please try again.',
-        );
       }
     } catch (error: any) {
-      Alert.alert(
-        'Error',
-        error?.response?.data?.message || 'Something went wrong',
-      );
       setError(error?.response?.data?.message || 'Error verifying OTP');
+      // Alert.alert(
+      //   'Error',
+      //   error?.response.data.message ||
+      //     'Verification failed. Please try again.',
+      // );
     }
   };
 
   const handleResendOTP = async () => {
     try {
+      setResendLoading(true);
       setError('');
-      setLoading(true);
+
       const response = await forgotPassword(email, 'email');
-      setLoading(false);
+      setResendLoading(false);
 
       // eslint-disable-next-line eqeqeq
       if (response.data && response.data.success == true) {
@@ -101,6 +99,7 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
         setOtp(Array(6).fill(''));
         setTimer(60);
       } else {
+        setResendLoading(false);
         setError(response.data?.message || 'Failed to resend OTP');
         Alert.alert(
           'Error',
@@ -108,7 +107,6 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
         );
       }
     } catch (error: any) {
-      setLoading(false);
       setError(error?.response?.data?.message || 'Error resending OTP');
       const errorMessage =
         (error as any)?.response?.data?.message ||
@@ -164,7 +162,7 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
             error={error}
             isVisible={isVisible}
           />
-
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
           <View style={styles.timerContainer}>
             {timer > 0 ? (
               <Text style={styles.timerText}>
@@ -172,8 +170,14 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
                 <Text style={styles.blueText}>{timer}s</Text>
               </Text>
             ) : (
-              <TouchableOpacity onPress={handleResendOTP}>
-                <Text style={styles.resendText}>Resend OTP</Text>
+              <TouchableOpacity
+                onPress={handleResendOTP}
+                disabled={resendLoading}>
+                {resendLoading ? (
+                  <ActivityIndicator size="small" color="#0088B1" />
+                ) : (
+                  <Text style={styles.resendText}>Resend OTP</Text>
+                )}
               </TouchableOpacity>
             )}
           </View>
@@ -181,10 +185,12 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
           <TouchableOpacity
             style={[
               styles.verifyButton,
-              (!isOtpFilled || loading) && styles.verifyButtonDisabled,
+              loading ? styles.verifyButtonLoading : null,
+              !isOtpFilled ? styles.verifyButtonDisabled : null,
             ]}
             onPress={handleVerifyOTP}
-            disabled={!isOtpFilled || loading}>
+            disabled={!isOtpFilled || loading}
+            activeOpacity={0.8}>
             {loading ? (
               <ActivityIndicator size="small" color="#fff" />
             ) : (

@@ -6,6 +6,7 @@ import {View} from 'react-native';
 import Menu from './assests/svgs/Menu 3.svg'; // your custom SVG
 import Pharmacy from './assests/svgs/Layer 2.svg';
 import Homecare from './assests/svgs/homecare.svg';
+import PharmacyScreen from '../Screens/PharmacyScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,7 +69,7 @@ export default function BottomTabNavigator() {
         },
       })}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Pharmacy" component={() => null} />
+      <Tab.Screen name="Pharmacy" component={PharmacyScreen} />
       <Tab.Screen name="Menu" component={() => null} />
       <Tab.Screen name="Homecare" component={() => null} />
       <Tab.Screen name="Profile" component={() => null} />
