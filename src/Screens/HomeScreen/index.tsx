@@ -21,9 +21,13 @@ import SVG5 from './assets/svgs/ecp-2 1.svg';
 import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import PriceCard from '../../components/cards/PriceCard';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
 import OrderNowCard from '../../components/cards/OrderCard';
 
 const HomeScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -65,7 +69,9 @@ const HomeScreen = () => {
           <Text style={styles.priscriptionText}>
             Have a Doctor's Prescription?
           </Text>
-          <TouchableOpacity style={styles.uploadButton}>
+          <TouchableOpacity
+            style={styles.uploadButton}
+            onPress={() => navigation.navigate('UploadScreen')}>
             <Text style={styles.uploadButtonText}>Upload Now</Text>
           </TouchableOpacity>
         </View>
