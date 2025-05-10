@@ -74,19 +74,24 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   productCardsContainer: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
   },
   productCard: {
-    width: '100%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    padding: 16,
-    marginBottom: 8,
-    shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    width: 'auto',
+    marginRight: 1,
+    marginBottom: 24,
+  },
+
+  relatedProductsHeading: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+    paddingHorizontal: 16,
+    color: '#000',
+  },
+  relatedProductsContainer: {
+    marginTop: 2,
+    marginBottom: 24,
   },
 });
