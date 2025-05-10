@@ -40,6 +40,8 @@ import CircleCard from '../../components/cards/CircularCards';
 import SunDrop from './assests/svgs/Card 1.svg';
 import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
 interface ProductCardProps {
   product: {
     id: string;
@@ -56,6 +58,7 @@ interface ProductCardProps {
 }
 
 const PharmacyScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const products: ProductCardProps['product'][] = [
     {
       id: '123',
@@ -105,7 +108,9 @@ const PharmacyScreen = () => {
   ];
 
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
-    <ProductCard product={item} />
+    <TouchableOpacity onPress={() => navigation.navigate('UploadScreen')}>
+      <ProductCard product={item} />
+    </TouchableOpacity>
   );
 
   const renderProductForTrending = ({
@@ -113,11 +118,13 @@ const PharmacyScreen = () => {
   }: {
     item: ProductCardProps['product'];
   }) => (
-    <ProductCard
-      product={item}
-      borderColor={'#2D9CDB'}
-      buttonColor={'#2D9CDB'}
-    />
+    <TouchableOpacity onPress={() => navigation.navigate('UploadScreen')}>
+      <ProductCard
+        product={item}
+        borderColor={'#2D9CDB'}
+        buttonColor={'#2D9CDB'}
+      />
+    </TouchableOpacity>
   );
 
   return (
