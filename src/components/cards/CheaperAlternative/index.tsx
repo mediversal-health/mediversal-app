@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Animated} from 'react-native';
 import {ChevronDown, DollarSign} from 'lucide-react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import ArrowPattern from './ArrowPattern';
+import SVGArrow from './assets/SVGArrow.svg';
 import styles from './index.style';
 
 interface CheaperAlternativeProps {
@@ -42,7 +42,7 @@ const CheaperAlternative: React.FC<CheaperAlternativeProps> = ({
     <View style={styles.container}>
       {/* Arrow pattern only in top left - always visible with higher z-index */}
       <View style={styles.arrowPatternContainer}>
-        <ArrowPattern backgroundColor="transparent" />
+        <SVGArrow />
       </View>
 
       {/* Header bar (always blue) */}
