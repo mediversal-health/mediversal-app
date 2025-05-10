@@ -12,6 +12,7 @@ import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
 import {Clock} from 'lucide-react-native';
 import {styles} from './index.style';
+import ProductCard from '../../components/cards/ProductCard';
 
 const medicineImages = [
   {
@@ -25,6 +26,54 @@ const medicineImages = [
   },
   {
     uri: 'https://onemg.gumlet.io/l_watermark_346,w_690,h_700/a_ignore,w_690,h_700,c_pad,q_auto,f_auto/6fe50245c5a64d258f3d6ca7622b3546.jpg',
+  },
+];
+
+const products = [
+  {
+    id: '123',
+    name: 'Lacto Calamine SPF 50',
+    description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
+    quantity: 'Tube · 50 gm',
+    delivery: 'By Sun, 13 Apr',
+    originalPrice: 499,
+    discountedPrice: 349,
+    discountPercentage: 30,
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    onAddToCart: (id: string, quantity: number) => {
+      console.log(`Product ${id} added to cart: ${quantity} items`);
+    },
+  },
+  {
+    id: '124',
+    name: 'Lacto Calamine SPF 50',
+    description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
+    quantity: 'Tube · 50 gm',
+    delivery: 'By Sun, 13 Apr',
+    originalPrice: 499,
+    discountedPrice: 349,
+    discountPercentage: 30,
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    onAddToCart: (id: string, quantity: number) => {
+      console.log(`Product ${id} added to cart: ${quantity} items`);
+    },
+  },
+  {
+    id: '125',
+    name: 'Lacto Calamine SPF 50',
+    description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
+    quantity: 'Tube · 50 gm',
+    delivery: 'By Sun, 13 Apr',
+    originalPrice: 499,
+    discountedPrice: 349,
+    discountPercentage: 30,
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    onAddToCart: (id: string, quantity: number) => {
+      console.log(`Product ${id} added to cart: ${quantity} items`);
+    },
   },
 ];
 
@@ -51,21 +100,51 @@ const UploadScreen = () => {
           <View style={styles.guaranteeSection}>
             <GuaranteeCards />
           </View>
+
           <ProductInfo />
+
           <View style={styles.cheaperAlternativeContainer}>
             <CheaperAlternative discountPercentage={5}>
               <View style={styles.productCardsContainer}>
-                <View style={styles.productCard}>
-                  <RNText>Cheaper alternatives available </RNText>
-                </View>
-                <View style={styles.productCard}>
-                  <RNText>Cheaper alternatives available</RNText>
-                </View>
-                <View style={styles.productCard}>
-                  <RNText>Cheaper alternatives available</RNText>
-                </View>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.productCardsContainer}>
+                  {products.map(product => (
+                    <View key={product.id} style={styles.productCard}>
+                      <ProductCard
+                        product={product}
+                        onAddToCart={product.onAddToCart}
+                        borderColor={'#2D9CDB'}
+                        buttonColor={'#2D9CDB'}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
               </View>
             </CheaperAlternative>
+          </View>
+
+          {/* Related Products Section */}
+          <RNText style={styles.relatedProductsHeading}>
+            Related Products
+          </RNText>
+          <View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.productCardsContainer}>
+              {products.map(product => (
+                <View key={product.id} style={styles.productCard}>
+                  <ProductCard
+                    product={product}
+                    onAddToCart={product.onAddToCart}
+                    borderColor={'#2D9CDB'}
+                    buttonColor={'#2D9CDB'}
+                  />
+                </View>
+              ))}
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
