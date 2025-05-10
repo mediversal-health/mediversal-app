@@ -54,13 +54,10 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   const renderStars = () => {
     const stars = [];
     const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
 
     for (let i = 1; i <= 5; i++) {
       if (i <= fullStars) {
         stars.push('★');
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push('½');
       } else {
         stars.push('☆');
       }
@@ -69,7 +66,9 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
     return (
       <View style={styles.starsContainer}>
         {stars.map((star, index) => (
-          <Text key={index} style={{color: star === '☆' ? '#ccc' : '#FFD700'}}>
+          <Text
+            key={index}
+            style={{color: star === '☆' ? '#B0B6B8' : '#0088B1'}}>
             {star}
           </Text>
         ))}

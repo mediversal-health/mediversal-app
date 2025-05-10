@@ -17,12 +17,11 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
     <View
       style={{
         marginHorizontal: 16,
-        marginTop: 12,
+        marginTop: 10,
         borderWidth: 2,
-        borderColor: 'green',
+        borderColor: '#E8F4F7',
         borderRadius: 10,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
+        backgroundColor: '#FFFFFF',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.25,
       }}>
@@ -33,13 +32,16 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: 16,
-          backgroundColor: '#E8F4F7',
+          backgroundColor: '#ffffff',
+          borderColor: '#E8F4F7',
+          borderBottomWidth: 2,
+          borderRadius: 10,
         }}>
-        <Text style={{fontSize: 16, fontWeight: 'bold'}}>{title}</Text>
+        <Text style={{fontSize: 12, fontWeight: '500'}}>{title}</Text>
         {expanded ? (
-          <ChevronUp size={20} color="#000" />
+          <ChevronUp size={16} color="#000" />
         ) : (
-          <ChevronDown size={20} color="#000" />
+          <ChevronDown size={16} color="#000" />
         )}
       </TouchableOpacity>
       {expanded && <View style={{padding: 16}}>{children}</View>}

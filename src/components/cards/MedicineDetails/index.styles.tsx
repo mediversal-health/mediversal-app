@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     position: 'relative',
   },
   image: {
-    width: '100%',
+    width: Dimensions.get('window').width,
     height: '100%',
     resizeMode: 'contain',
   },
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#899193',
   },
   nameContainer: {
     paddingHorizontal: 16,
@@ -138,17 +138,17 @@ export const styles = StyleSheet.create({
     padding: 16,
     marginTop: 16,
     borderWidth: 1,
-    borderColor: '#4CAF50',
+    borderColor: '#50B57F',
     borderRadius: 8,
     marginHorizontal: 16,
   },
   inStock: {
     fontSize: 14,
-    color: '#4CAF50',
+    color: '#50B57F',
     fontWeight: '600',
   },
   deliveryText: {
     fontSize: 14,
-    color: '#333',
+    color: '#50B57F',
   },
 });
