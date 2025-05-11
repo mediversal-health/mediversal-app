@@ -1,6 +1,7 @@
 import axios from 'axios';
+import {API_URL} from '@env';
 
-const IP_ADDR = 'https://3st0jw58p8.execute-api.ap-south-1.amazonaws.com/app';
+const IP_ADDR = API_URL;
 
 export const sendOTP = async (
   identifier: string,
