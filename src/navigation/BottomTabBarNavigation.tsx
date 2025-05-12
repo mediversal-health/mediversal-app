@@ -7,10 +7,12 @@ import Menu from './assests/svgs/Menu 3.svg'; // your custom SVG
 import Pharmacy from './assests/svgs/Layer 2.svg';
 import Homecare from './assests/svgs/homecare.svg';
 import PharmacyScreen from '../Screens/PharmacyScreen';
+import {useScreenStore} from '../store/screenSelector';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
+  const setcurrentScreen = useScreenStore(state => state.setCurrentScreen);
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -68,8 +70,20 @@ export default function BottomTabNavigator() {
           marginBottom: 5,
         },
       })}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Pharmacy" component={PharmacyScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        listeners={{
+          focus: () => setcurrentScreen('Home'),
+        }}
+      />
+      <Tab.Screen
+        name="Pharmacy"
+        component={PharmacyScreen}
+        listeners={{
+          focus: () => setcurrentScreen('Pharmacy'),
+        }}
+      />
       <Tab.Screen name="Menu" component={() => null} />
       <Tab.Screen name="Homecare" component={() => null} />
       <Tab.Screen name="Profile" component={() => null} />

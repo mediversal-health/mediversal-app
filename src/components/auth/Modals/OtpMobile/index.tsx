@@ -14,6 +14,7 @@ import {verifyOTP, sendOTP} from '../../../../Services/auth';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../../navigation';
 import CustomOtpInput from '../../../ui/CustomOtpInput';
+import {useAuthStore} from '../../../../store/authStore';
 
 interface OTPModalProps {
   isVisible: boolean;
@@ -44,7 +45,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const [resending, setResending] = useState(false);
   const [error, setError] = useState<string>('');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const setAuthentication = useAuthStore(state => state.setAuthentication);
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -107,6 +108,10 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       console.log(response);
 
       if (response.data?.success) {
+        setAuthentication({
+          token: response.data.token as string,
+          phoneNumber: phoneNumber,
+        });
         navigation.navigate('Layout');
       } else {
         // Alert.alert('Error', response.data?.message || 'Resend failed');
