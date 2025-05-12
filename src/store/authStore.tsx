@@ -1,18 +1,5 @@
 import {create} from 'zustand';
-
-type AuthState = {
-  token: string | null;
-  email: string | null;
-  phoneNumber: string | null;
-
-  setAuthentication: (params: {
-    token: string;
-    email?: string;
-    phoneNumber?: string;
-  }) => void;
-
-  clearAuthentication: () => void;
-};
+import {AuthState} from '../types';
 
 export const useAuthStore = create<AuthState>(set => ({
   token: null,
