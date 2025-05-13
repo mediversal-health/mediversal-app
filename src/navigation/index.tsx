@@ -24,8 +24,8 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={EmailSignup} /> */}
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={EmailSignup} />
         <Stack.Screen name="Layout" component={layout} />
         <Stack.Screen name="AllProducts" component={AllProductsScreen} />
         <Stack.Screen
