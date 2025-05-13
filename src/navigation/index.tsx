@@ -5,6 +5,7 @@ import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
 import layout from '../layout';
 import UploadScreen from '../Screens/UploadScreen';
+import CartPage from '../Screens/CartScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
 export type RootStackParamList = {
   Login: undefined;
@@ -13,6 +14,7 @@ export type RootStackParamList = {
   SuccessAnimation: undefined;
   Layout: undefined;
   UploadScreen: undefined;
+  CartPage: undefined;
   AllProducts: undefined;
 };
 
@@ -31,6 +33,7 @@ const AppNavigator = () => {
           component={UploadScreen}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="CartPage" component={CartPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

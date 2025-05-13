@@ -10,9 +10,17 @@ import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
 import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
-import {Clock} from 'lucide-react-native';
+import {
+  Clock,
+  ArrowLeft,
+  Search,
+  ShoppingCart,
+  CircleArrowLeftIcon,
+} from 'lucide-react-native';
 import {styles} from './index.style';
 import ProductCard from '../../components/cards/ProductCard';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
 
 const medicineImages = [
   {
@@ -78,89 +86,108 @@ const products = [
 ];
 
 const UploadScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <MedicineDetail
-            images={medicineImages}
-            rating={4.5}
-            name="Dolo 650mg Tablet"
-            packInfo="Strip of 10 Tablets"
-            saltComposition="Paracetamol (650mg)"
-            currentPrice="₹ 165"
-            originalPrice="₹ 195"
-            discount="15% OFF"
-            deliveryTime="Get by 9pm, Tomorrow"
-          />
-
-          {/* Guarantee cards positioned immediately below medicine details */}
-          <View style={styles.guaranteeSection}>
-            <GuaranteeCards />
-          </View>
-
-          <ProductInfo />
-
-          <View style={styles.cheaperAlternativeContainer}>
-            <CheaperAlternative discountPercentage={5}>
-              <View style={styles.productCardsContainer}>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.productCardsContainer}>
-                  {products.map(product => (
-                    <View key={product.id} style={styles.productCard}>
-                      <ProductCard
-                        product={product}
-                        onAddToCart={product.onAddToCart}
-                        borderColor={'#2D9CDB'}
-                        buttonColor={'#2D9CDB'}
-                      />
-                    </View>
-                  ))}
-                </ScrollView>
-              </View>
-            </CheaperAlternative>
-          </View>
-
-          {/* Related Products Section */}
-          <RNText style={styles.relatedProductsHeading}>
-            Related Products
-          </RNText>
-          <View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={styles.productCardsContainer}>
-              {products.map(product => (
-                <View key={product.id} style={styles.productCard}>
-                  <ProductCard
-                    product={product}
-                    onAddToCart={product.onAddToCart}
-                    borderColor={'#2D9CDB'}
-                    buttonColor={'#2D9CDB'}
-                    backgroundColor={'#E8F4F7'}
-                  />
-                </View>
-              ))}
-            </ScrollView>
+    <>
+      <SafeAreaView style={styles.safeHeader}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <CircleArrowLeftIcon size={16} color="#161D1F" />
+          </TouchableOpacity>
+          <View style={styles.headerRightIcons}>
+            <TouchableOpacity style={styles.iconSpacing}>
+              <Search size={16} color="#161D1F" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('CartPage')}>
+              <ShoppingCart size={16} color="#161D1F" />
+            </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </SafeAreaView>
 
-      {/* Fixed bottom buttons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.reminderButton}>
-          <Clock size={18} color="#0088B1" />
-          <RNText style={styles.reminderButtonText}>Set Reminder</RNText>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buyButton}>
-          <RNText style={styles.buyButtonText}>Buy Now</RNText>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.content}>
+            <MedicineDetail
+              images={medicineImages}
+              rating={4.5}
+              name="Dolo 650mg Tablet"
+              packInfo="Strip of 10 Tablets"
+              saltComposition="Paracetamol (650mg)"
+              currentPrice="₹ 165"
+              originalPrice="₹ 195"
+              discount="15% OFF"
+              deliveryTime="Get by 9pm, Tomorrow"
+            />
+
+            {/* Guarantee cards positioned immediately below medicine details */}
+            <View style={styles.guaranteeSection}>
+              <GuaranteeCards />
+            </View>
+
+            <ProductInfo />
+
+            <View style={styles.cheaperAlternativeContainer}>
+              <CheaperAlternative discountPercentage={5}>
+                <View style={styles.productCardsContainer}>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.productCardsContainer}>
+                    {products.map(product => (
+                      <View key={product.id} style={styles.productCard}>
+                        <ProductCard
+                          product={product}
+                          onAddToCart={product.onAddToCart}
+                          borderColor={'#2D9CDB'}
+                          buttonColor={'#2D9CDB'}
+                        />
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+              </CheaperAlternative>
+            </View>
+
+            {/* Related Products Section */}
+            <RNText style={styles.relatedProductsHeading}>
+              Related Products
+            </RNText>
+            <View>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.productCardsContainer}>
+                {products.map(product => (
+                  <View key={product.id} style={styles.productCard}>
+                    <ProductCard
+                      product={product}
+                      onAddToCart={product.onAddToCart}
+                      borderColor={'#2D9CDB'}
+                      buttonColor={'#2D9CDB'}
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Fixed bottom buttons */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.reminderButton}>
+            <Clock size={18} color="#0088B1" />
+            <RNText style={styles.reminderButtonText}>Set Reminder</RNText>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buyButton}>
+            <RNText style={styles.buyButtonText}>Buy Now</RNText>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 

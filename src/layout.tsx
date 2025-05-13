@@ -26,6 +26,7 @@ const layout = () => {
       style={{
         flex: 1,
         backgroundColor: '#fff',
+        marginBottom: 0,
 
         //marginBottom: StatusBar.currentHeight,
       }}>

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -93,5 +94,27 @@ export const styles = StyleSheet.create({
   relatedProductsContainer: {
     marginTop: 2,
     marginBottom: 24,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 8,
+    backgroundColor: '#fff',
+  },
+
+  headerRightIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  iconSpacing: {
+    marginRight: 16,
+  },
+  safeHeader: {
+    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
 });
