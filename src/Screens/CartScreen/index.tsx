@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -17,14 +18,33 @@ import {
   Search,
   ShoppingCart,
 } from 'lucide-react-native';
-import navigation from '../../navigation';
-import {useNavigation} from '@react-navigation/native';
+// import navigation from '../../navigation';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
 import OtherDetailsCard from '../../components/cards/OtherDetailsCard';
+import LocationModal from '../../components/ui/LocationModal';
+import {RootStackParamList} from '../../navigation';
 
 const CartPage = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [isLocationModalVisible, setLocationModalVisible] = useState(false);
+
+  const showLocationModal = () => {
+    setLocationModalVisible(true);
+  };
+  const hideLocationModal = () => {
+    setLocationModalVisible(false);
+  };
+
+  const handleSelectCurrentLocation = () => {
+    hideLocationModal();
+  };
+
+  const handleEnterManually = () => {
+    navigation.navigate('AddressBookScreen');
+    hideLocationModal();
+  };
   const [selectedRadio, setSelectedRadio] = useState(false);
   const medicines = [
     {
@@ -146,11 +166,20 @@ const CartPage = () => {
             <Text style={styles.amountLabel}>Amount to pay:</Text>
             <Text style={styles.amountText}>₹574</Text>
           </View>
-          <TouchableOpacity style={styles.addressButton}>
+          <TouchableOpacity
+            style={styles.addressButton}
+            onPress={showLocationModal}>
             <Text style={styles.addressButtonText}>Select/Add Address</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      <LocationModal
+        isVisible={isLocationModalVisible}
+        onClose={hideLocationModal}
+        onSelectCurrentLocation={handleSelectCurrentLocation}
+        onEnterManually={handleEnterManually}
+      />
     </>
   );
 };

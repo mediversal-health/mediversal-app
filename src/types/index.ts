@@ -31,3 +31,15 @@ export interface ProductCardProps {
   backgroundColor?: string;
   style?: StyleProp<ViewStyle>;
 }
+
+export interface AddressBookTypes {
+  houseNo: string;
+  areaDetails: string;
+  landmark: string;
+  pincode: string;
+  city: string;
+  state: string;
+  recipient: string;
+  phoneNumber: string;
+  addressType: string;
+}
