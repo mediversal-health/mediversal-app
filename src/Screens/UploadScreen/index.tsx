@@ -141,6 +141,7 @@ const UploadScreen = () => {
                     onAddToCart={product.onAddToCart}
                     borderColor={'#2D9CDB'}
                     buttonColor={'#2D9CDB'}
+                    backgroundColor={'#E8F4F7'}
                   />
                 </View>
               ))}
