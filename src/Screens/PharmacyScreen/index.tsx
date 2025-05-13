@@ -43,21 +43,7 @@ import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
-interface ProductCardProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    quantity: string;
-    delivery: string;
-    originalPrice: number;
-    discountedPrice: number;
-    discountPercentage: number;
-    image: string;
-    onAddToCart?: (id: string, quantity: number) => void;
-  };
-}
-
+import {ProductCardProps} from '../../types';
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const products: ProductCardProps['product'][] = [
@@ -72,9 +58,6 @@ const PharmacyScreen = () => {
       discountPercentage: 30,
       image:
         'https://mediversalapp.s3.ap-south-1.amazonaws.com/products/166161/image_360.png',
-      onAddToCart: (id: string, quantity: number) => {
-        console.log(`Product ${id} added to cart: ${quantity} items`);
-      },
     },
     {
       id: '124',
@@ -87,9 +70,6 @@ const PharmacyScreen = () => {
       discountPercentage: 30,
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-      onAddToCart: (id: string, quantity: number) => {
-        console.log(`Product ${id} added to cart: ${quantity} items`);
-      },
     },
     {
       id: '125',
@@ -102,15 +82,17 @@ const PharmacyScreen = () => {
       discountPercentage: 30,
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-      onAddToCart: (id: string, quantity: number) => {
-        console.log(`Product ${id} added to cart: ${quantity} items`);
-      },
     },
   ];
 
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
     <TouchableOpacity onPress={() => navigation.navigate('UploadScreen')}>
-      <ProductCard product={item} />
+      <ProductCard
+        product={item}
+        onAddToCart={(id: string, quantity: number) => {
+          console.log(`Product ${id} added to cart: ${quantity} items`);
+        }}
+      />
     </TouchableOpacity>
   );
 
@@ -124,6 +106,10 @@ const PharmacyScreen = () => {
         product={item}
         borderColor={'#2D9CDB'}
         buttonColor={'#2D9CDB'}
+        backgroundColor={'#E8F4F7'}
+        onAddToCart={(id: string, quantity: number) => {
+          console.log(`Product ${id} added to cart: ${quantity} items`);
+        }}
       />
     </TouchableOpacity>
   );
@@ -300,7 +286,8 @@ const PharmacyScreen = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AllProducts')}>
                 <Text style={styles.buttonText}>View all Medicines</Text>
               </TouchableOpacity>
             </View>

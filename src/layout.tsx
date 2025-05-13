@@ -15,7 +15,7 @@ import {
 import BottomTabNavigator from './navigation/BottomTabBarNavigation';
 import CustomDrawer from './components/common/CustomDrawer';
 import {useScreenStore} from './store/screenSelector';
-import SearchBar from './components/common/CustomDrawer/SearchBar';
+import SearchBar from './components/common/SearchBar';
 const layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -116,7 +116,9 @@ const layout = () => {
               thumbColor={isEnabled ? '#0088B1' : '#ccc'}
             />
           </View>
-          <SearchBar />
+          <View style={{paddingHorizontal: 20}}>
+            <SearchBar />
+          </View>
         </>
       ) : currentScreen === 'Pharmacy' ? (
         <>
@@ -145,7 +147,9 @@ const layout = () => {
             </View>
             <ShoppingBag size={20} />
           </View>
-          <SearchBar />
+          <View style={{paddingHorizontal: 20}}>
+            <SearchBar />
+          </View>
         </>
       ) : null}
       <BottomTabNavigator />

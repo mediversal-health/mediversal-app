@@ -6,6 +6,7 @@ import EmailSignup from '../components/auth/EmailSignUp';
 import layout from '../layout';
 import UploadScreen from '../Screens/UploadScreen';
 import CartPage from '../Screens/CartScreen';
+import AllProductsScreen from '../Screens/AllProductsScreen';
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   Layout: undefined;
   UploadScreen: undefined;
   CartPage: undefined;
+  AllProducts: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -25,6 +27,7 @@ const AppNavigator = () => {
         {/* <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={EmailSignup} /> */}
         <Stack.Screen name="Layout" component={layout} />
+        <Stack.Screen name="AllProducts" component={AllProductsScreen} />
         <Stack.Screen
           name="UploadScreen"
           component={UploadScreen}

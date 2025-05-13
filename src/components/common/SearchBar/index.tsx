@@ -20,7 +20,6 @@ const SearchBar: React.FC = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 20,
     paddingVertical: 10,
   },
   container: {

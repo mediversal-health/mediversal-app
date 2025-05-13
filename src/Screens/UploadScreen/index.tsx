@@ -102,6 +102,73 @@ const UploadScreen = () => {
             <TouchableOpacity onPress={() => navigation.navigate('CartPage')}>
               <ShoppingCart size={16} color="#161D1F" />
             </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.content}>
+          <MedicineDetail
+            images={medicineImages}
+            rating={4.5}
+            name="Dolo 650mg Tablet"
+            packInfo="Strip of 10 Tablets"
+            saltComposition="Paracetamol (650mg)"
+            currentPrice="₹ 165"
+            originalPrice="₹ 195"
+            discount="15% OFF"
+            deliveryTime="Get by 9pm, Tomorrow"
+          />
+
+          {/* Guarantee cards positioned immediately below medicine details */}
+          <View style={styles.guaranteeSection}>
+            <GuaranteeCards />
+          </View>
+
+          <ProductInfo />
+
+          <View style={styles.cheaperAlternativeContainer}>
+            <CheaperAlternative discountPercentage={5}>
+              <View style={styles.productCardsContainer}>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.productCardsContainer}>
+                  {products.map(product => (
+                    <View key={product.id} style={styles.productCard}>
+                      <ProductCard
+                        product={product}
+                        onAddToCart={product.onAddToCart}
+                        borderColor={'#2D9CDB'}
+                        buttonColor={'#2D9CDB'}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+            </CheaperAlternative>
+          </View>
+
+          {/* Related Products Section */}
+          <RNText style={styles.relatedProductsHeading}>
+            Related Products
+          </RNText>
+          <View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.productCardsContainer}>
+              {products.map(product => (
+                <View key={product.id} style={styles.productCard}>
+                  <ProductCard
+                    product={product}
+                    onAddToCart={product.onAddToCart}
+                    borderColor={'#2D9CDB'}
+                    buttonColor={'#2D9CDB'}
+                    backgroundColor={'#E8F4F7'}
+                  />
+                </View>
+              ))}
+            </ScrollView>
           </View>
         </View>
       </SafeAreaView>
