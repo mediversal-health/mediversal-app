@@ -23,8 +23,9 @@ const layout = () => {
       style={{
         flex: 1,
         backgroundColor: '#fff',
+        marginBottom: 0,
 
-        marginBottom: StatusBar.currentHeight,
+        // marginBottom: StatusBar.currentHeight,
       }}>
       <StatusBar
         backgroundColor="#0088B1" // Change to your desired color
