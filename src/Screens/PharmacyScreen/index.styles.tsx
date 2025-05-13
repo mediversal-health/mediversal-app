@@ -2,11 +2,10 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   safeArea: {
-    flex: 1,
+    padding: 16,
     backgroundColor: '#fff',
   },
   scrollContent: {
-    padding: 16,
     paddingBottom: 32,
   },
   containerx: {
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 12,
     paddingVertical: 16,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
 
     marginBottom: 20,
   },
@@ -135,6 +134,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#0088B1',
+  },
+  imagecontainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    marginTop: 20,
+  },
+  logo: {
+    width: 200,
+    height: 200,
   },
 });
 export default styles;
