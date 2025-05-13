@@ -1,9 +1,9 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   cardContainer: {
-    width: Dimensions.get('window').width * 0.45,
-    height: 240,
+    width: 130,
+    height: 250,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   imageContainer: {
-    height: 100,
+    height: 80,
+
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,

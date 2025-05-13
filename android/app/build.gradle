@@ -84,6 +84,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+         manifestPlaceholders = [
+        'android.app.default_web_client_id': 'YOUR_WEB_CLIENT_ID'
+    ]
     }
     signingConfigs {
         release {
@@ -125,3 +128,4 @@ dependencies {
         implementation jscFlavor
     }
 }
+apply plugin: 'com.google.gms.google-services'

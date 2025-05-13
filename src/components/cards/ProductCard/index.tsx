@@ -1,37 +1,14 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {Clock, Plus, Minus} from 'lucide-react-native';
 import styles from './index.styles';
-interface ProductCardProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    quantity: string;
-    delivery: string;
-    originalPrice: number;
-    discountedPrice: number;
-    discountPercentage: number;
-    image: string;
-  };
-  onAddToCart?: (id: string, quantity: number) => void;
-  borderColor?: string;
-  buttonColor?: string;
-  style?: StyleProp<ViewStyle>;
-}
-
+import {ProductCardProps} from '../../../types';
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onAddToCart,
   borderColor = '#EB575766',
   buttonColor = '#EB575766',
+  backgroundColor = '#FFEBD4',
   style,
 }) => {
   const [itemCount, setItemCount] = useState(0);
@@ -57,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const dynamicStyles = {
     cardContainer: {
       borderColor: borderColor,
+      backgroundColor: backgroundColor,
     },
     addButton: {
       backgroundColor: buttonColor,
@@ -88,6 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Clock size={12} color="#666" />
           <Text style={styles.deliveryText}>{product.delivery}</Text>
         </View>
+
         <View style={styles.discountContainer}>
           <Text style={styles.originalPrice}>₹{product.originalPrice}</Text>
           <Text style={styles.discountPercentage}>

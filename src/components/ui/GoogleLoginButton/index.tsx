@@ -4,17 +4,19 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-// import {useNavigation, NavigationProp} from '@react-navigation/native';
-
-// import {RootStackParamList} from '../../../navigation';
 import {SvgXml} from 'react-native-svg';
 import styles from './index.styles';
+import {useAuthStore} from '../../../store/authStore';
+import {googleSignIn} from '../../../Services/auth';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../navigation';
 
 GoogleSignin.configure({
   scopes: ['profile', 'email'],
   webClientId:
-    '46248115272-m66gnu362gmi9uflfojcm53a3ihulq90.apps.googleusercontent.com',
+    '227480277120-drsep4sjnte9dt49bifu1eo3cufk2mk5.apps.googleusercontent.com',
 });
+
 const GoogleIcon = `
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -23,37 +25,46 @@ const GoogleIcon = `
   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
 </svg>
 `;
-const GoogleLoginButton = () => {
-  // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+const GoogleLoginButton = () => {
+  const setAuthentication = useAuthStore(state => state.setAuthentication);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const handleGoogleLogin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
+
       await GoogleSignin.signOut();
 
       const signInData = await GoogleSignin.signIn();
-      const idToken = (signInData as any)?.idToken;
-
       console.log(signInData);
+      const idToken = (signInData as any)?.idToken;
 
       if (!idToken) {
         Alert.alert('Error', 'Failed to retrieve Google ID Token.');
         return;
       }
 
-      // const response = await fetch('http://13.201.98.12:4000/api/auth/google', {
-      //   method: 'POST',
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: JSON.stringify({idToken}),
-      // });
+      try {
+        const response = await googleSignIn(idToken);
+        const data = response.data;
+        console.log(data);
 
-      // const data = await response.json();
-
-      // if (response.ok && data.user && data.jwt) {
-      //   navigation.navigate('Login');
-      // } else {
-      //   Alert.alert('Login Failed', data.error || 'An error occurred.');
-      // }
+        if (data.success === true) {
+          navigation.navigate('Layout');
+          setAuthentication({
+            token: data.token,
+            email: data.email,
+          });
+          Alert.alert('Success', 'Login successful!');
+        } else {
+          Alert.alert('Login Failed', data.message || 'Authentication failed.');
+        }
+      } catch (apiError: any) {
+        console.error(apiError);
+        const errorMessage =
+          apiError.response?.data?.message || 'Server error occurred';
+        Alert.alert('Login Failed', errorMessage);
+      }
     } catch (error: any) {
       const errorMessage = error?.message || 'Unknown error occurred';
       switch (error.code) {
@@ -67,6 +78,7 @@ const GoogleLoginButton = () => {
           Alert.alert('Error', 'Google Play Services is not available.');
           break;
         default:
+          console.log(error);
           Alert.alert('Error', errorMessage);
       }
     }

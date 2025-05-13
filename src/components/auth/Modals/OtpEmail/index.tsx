@@ -15,7 +15,7 @@ import {sendOTP, verifyOTP} from '../../../../Services/auth';
 import {RootStackParamList} from '../../../../navigation';
 import styles from './index.styles';
 import CustomOtpInput from '../../../ui/CustomOtpInput';
-
+import {useAuthStore} from '../../../../store/authStore';
 interface OTPModalProps {
   isVisible: boolean;
   onClose: () => void;
@@ -36,7 +36,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
   const [error, setError] = useState<string>('');
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const setAuthentication = useAuthStore(state => state.setAuthentication);
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -79,6 +79,10 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
       const res = await verifyOTP(email, enteredOTP, 'email');
       if (res.status === 200 || res.data?.success) {
         // Alert.alert('Success', 'OTP verification successful');
+        setAuthentication({
+          token: res.data.token,
+          email: email,
+        });
         onClose();
         navigation.navigate('Layout');
       } else {

@@ -42,21 +42,8 @@ import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
-interface ProductCardProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    quantity: string;
-    delivery: string;
-    originalPrice: number;
-    discountedPrice: number;
-    discountPercentage: number;
-    image: string;
-    onAddToCart?: (id: string, quantity: number) => void;
-  };
-}
-
+import MediversalLogo from '../../assests/svgs/Logo.svg';
+import {ProductCardProps} from '../../types';
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const products: ProductCardProps['product'][] = [
@@ -70,10 +57,7 @@ const PharmacyScreen = () => {
       discountedPrice: 349,
       discountPercentage: 30,
       image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-      onAddToCart: (id: string, quantity: number) => {
-        console.log(`Product ${id} added to cart: ${quantity} items`);
-      },
+        'https://mediversalapp.s3.ap-south-1.amazonaws.com/products/166161/image_360.png',
     },
     {
       id: '124',
@@ -86,9 +70,6 @@ const PharmacyScreen = () => {
       discountPercentage: 30,
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-      onAddToCart: (id: string, quantity: number) => {
-        console.log(`Product ${id} added to cart: ${quantity} items`);
-      },
     },
     {
       id: '125',
@@ -101,15 +82,17 @@ const PharmacyScreen = () => {
       discountPercentage: 30,
       image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-      onAddToCart: (id: string, quantity: number) => {
-        console.log(`Product ${id} added to cart: ${quantity} items`);
-      },
     },
   ];
 
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
     <TouchableOpacity onPress={() => navigation.navigate('UploadScreen')}>
-      <ProductCard product={item} />
+      <ProductCard
+        product={item}
+        onAddToCart={(id: string, quantity: number) => {
+          console.log(`Product ${id} added to cart: ${quantity} items`);
+        }}
+      />
     </TouchableOpacity>
   );
 
@@ -123,215 +106,228 @@ const PharmacyScreen = () => {
         product={item}
         borderColor={'#2D9CDB'}
         buttonColor={'#2D9CDB'}
+        backgroundColor={'#E8F4F7'}
+        onAddToCart={(id: string, quantity: number) => {
+          console.log(`Product ${id} added to cart: ${quantity} items`);
+        }}
       />
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={{display: 'flex', flexDirection: 'column'}}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <OnboardingSteps />
-        <PromoBanner />
+        <View style={styles.safeArea}>
+          <OnboardingSteps />
+          <PromoBanner />
 
-        <View style={styles.containerx}>
-          <View style={styles.item}>
-            <AuthenticIcon width={34} height={34} />
-            <Text style={styles.text}>100% Authentic</Text>
-          </View>
-          <View style={styles.item}>
-            <PharmacyIcon width={34} height={34} />
-            <Text style={styles.text}>Licensed Pharmacy</Text>
-          </View>
-          <View style={styles.item}>
-            <VerifiedIcon width={34} height={34} />
-            <Text style={styles.text}>Verified Doctors</Text>
-          </View>
-          <View style={styles.item}>
-            <LabIcon width={34} height={34} />
-            <Text style={styles.text}>Certified Lab Tests</Text>
-          </View>
-        </View>
-
-        <LinearGradient
-          colors={['#0088B1', '#F8F8F8']}
-          start={{x: 0, y: 1}}
-          end={{x: 0, y: -1}}
-          style={styles.priscriptionContainer}>
-          <View style={{flexDirection: 'row', gap: 5}}>
-            <PriscriptionSVG width={25} height={32} strokeWidth={2} />
-            <View>
-              <Text style={styles.priscriptionText}>Upload Prescription</Text>
-              <Text style={styles.subtitle}>Quick order with Rx</Text>
+          <View style={styles.containerx}>
+            <View style={styles.item}>
+              <AuthenticIcon width={34} height={34} />
+              <Text style={styles.text}>100% Authentic</Text>
+            </View>
+            <View style={styles.item}>
+              <PharmacyIcon width={34} height={34} />
+              <Text style={styles.text}>Licensed Pharmacy</Text>
+            </View>
+            <View style={styles.item}>
+              <VerifiedIcon width={34} height={34} />
+              <Text style={styles.text}>Verified Doctors</Text>
+            </View>
+            <View style={styles.item}>
+              <LabIcon width={34} height={34} />
+              <Text style={styles.text}>Certified Lab Tests</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.uploadButton}>
-            <Text style={styles.uploadButtonText}>Upload Now</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-        <LinearGradient
-          colors={['#FFE3C1', '#FFFFFF']}
-          locations={[0, 0.3, 1]}
-          start={{x: 0, y: 0}}
-          end={{x: 0, y: 1}}
-          style={styles.gradientBox}>
-          <Vector1 style={styles.vector1} width={40} height={40} />
-          <Vector2 style={styles.vector2} width={30} height={30} />
-          <Vector3 style={styles.vector3} width={30} height={30} />
-          <Vector4 style={styles.vector4} width={30} height={30} />
-          <Vector5 style={styles.vector5} width={40} height={40} />
-          <Vector6 style={styles.vector6} width={30} height={30} />
-          <View style={styles.gradientContent}>
-            <Text style={styles.title}>Super Offers</Text>
-            <Text style={styles.highlight}>SUPER SAVINGS</Text>
-            <Text style={styles.subtext}>
-              Limited-time deals on medicines. Grab them before they're gone!
-            </Text>
-          </View>
 
-          <FlatList
-            data={products}
-            renderItem={renderProduct}
-            keyExtractor={item => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.productList}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-          />
-
-          <Text>Browse by Category</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: 5,
-              marginTop: 10,
-            }}>
-            <CategoryCard
-              SvgImage={Sneezing}
-              title="Cold & Cough"
-              placement="bottom"
-            />
-            <CategoryCard
-              SvgImage={Acitdity}
-              title="Acidity"
-              placement="center"
-            />
-            <CategoryCard
-              SvgImage={Headache}
-              title="Headache"
-              placement="bottom"
-            />
-            <CategoryCard
-              SvgImage={MuscleCramps}
-              title="Muscle Cramps"
-              placement="top"
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: 5,
-              marginTop: 10,
-              marginBottom: 10,
-            }}>
-            <CategoryCard
-              SvgImage={Dehydration}
-              title="Dehydration"
-              placement="bottom"
-            />
-            <CategoryCard
-              SvgImage={Burn}
-              title="Burn Care"
-              placement="bottom"
-            />
-            <CategoryCard
-              SvgImage={BlockedNose}
-              title="Blocked Nose"
-              placement="bottom"
-            />
-            <CategoryCard
-              SvgImage={JointPain}
-              title="Joint Pain"
-              placement="bottom"
-            />
-          </View>
-
-          <Text>Trending Medicines</Text>
-
-          <FlatList
-            data={products}
-            renderItem={renderProductForTrending}
-            keyExtractor={item => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.productList}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-          />
-
-          <Text>Featured Brands</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: 5,
-              marginTop: 10,
-              marginBottom: 10,
-            }}>
-            <CircleCard logo={SunDrop} size={100} />
-            <CircleCard logo={SunDrop} size={100} />
-            <CircleCard logo={SunDrop} size={100} />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: 5,
-              marginTop: 10,
-              marginBottom: 10,
-            }}>
-            <CircleCard logo={SunDrop} size={100} />
-            <CircleCard logo={SunDrop} size={100} />
-            <CircleCard logo={SunDrop} size={100} />
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity>
-              <Text style={styles.buttonText}>View all Medicines</Text>
+          <LinearGradient
+            colors={['#0088B1', '#F8F8F8']}
+            start={{x: 0, y: 1}}
+            end={{x: 0, y: -1}}
+            style={styles.priscriptionContainer}>
+            <View style={{flexDirection: 'row', gap: 5}}>
+              <PriscriptionSVG width={25} height={32} strokeWidth={2} />
+              <View>
+                <Text style={styles.priscriptionText}>Upload Prescription</Text>
+                <Text style={styles.subtitle}>Quick order with Rx</Text>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.uploadButton}>
+              <Text style={styles.uploadButtonText}>Upload Now</Text>
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
+        </View>
+        <View>
+          <LinearGradient
+            colors={['#FFE3C1', '#FFFFFF']}
+            locations={[0, 0.3, 1]}
+            start={{x: 0, y: 0}}
+            end={{x: 0, y: 1}}
+            style={styles.gradientBox}>
+            <Vector1 style={styles.vector1} width={40} height={40} />
+            <Vector2 style={styles.vector2} width={30} height={30} />
+            <Vector3 style={styles.vector3} width={30} height={30} />
+            <Vector4 style={styles.vector4} width={30} height={30} />
+            <Vector5 style={styles.vector5} width={40} height={40} />
+            <Vector6 style={styles.vector6} width={30} height={30} />
+            <View style={styles.gradientContent}>
+              <Text style={styles.title}>Super Offers</Text>
+              <Text style={styles.highlight}>SUPER SAVINGS</Text>
+              <Text style={styles.subtext}>
+                Limited-time deals on medicines. Grab them before they're gone!
+              </Text>
+            </View>
 
-          <Text>Stay Informed, Stay Healthy</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              flexDirection: 'row',
-              gap: 10,
-              paddingHorizontal: 5,
-              marginTop: 10,
-              marginBottom: 10,
-            }}>
-            <ImmunityCard
-              title="5 Simple Ways to Boost Your Immunity Naturally"
-              subtitle="Learn how daily habits like staying hydrated, eating colorful veggies, and getting enough sleep can strengthen your immune system."
-              buttonText="Read More"
-              onPressReadMore={() => console.log('Read More clicked')}
+            <FlatList
+              data={products}
+              renderItem={renderProduct}
+              keyExtractor={item => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.productList}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
             />
-            <ImmunityCard
-              title="The Power of Antioxidants: Foods to Include in Your Diet"
-              subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
-              buttonText="Read More"
-              onPressReadMore={() => console.log('Read More clicked')}
+
+            <Text>Browse by Category</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 5,
+                marginTop: 10,
+              }}>
+              <CategoryCard
+                SvgImage={Sneezing}
+                title="Cold & Cough"
+                placement="bottom"
+              />
+              <CategoryCard
+                SvgImage={Acitdity}
+                title="Acidity"
+                placement="center"
+              />
+              <CategoryCard
+                SvgImage={Headache}
+                title="Headache"
+                placement="bottom"
+              />
+              <CategoryCard
+                SvgImage={MuscleCramps}
+                title="Muscle Cramps"
+                placement="top"
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 5,
+                marginTop: 10,
+                marginBottom: 10,
+              }}>
+              <CategoryCard
+                SvgImage={Dehydration}
+                title="Dehydration"
+                placement="bottom"
+              />
+              <CategoryCard
+                SvgImage={Burn}
+                title="Burn Care"
+                placement="bottom"
+              />
+              <CategoryCard
+                SvgImage={BlockedNose}
+                title="Blocked Nose"
+                placement="bottom"
+              />
+              <CategoryCard
+                SvgImage={JointPain}
+                title="Joint Pain"
+                placement="bottom"
+              />
+            </View>
+
+            <Text>Trending Medicines</Text>
+
+            <FlatList
+              data={products}
+              renderItem={renderProductForTrending}
+              keyExtractor={item => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.productList}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
             />
-            <ImmunityCard
-              title="Stress Management Techniques for a Healthier Life"
-              subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
-              buttonText="Read More"
-              onPressReadMore={() => console.log('Read More clicked')}
-            />
-          </ScrollView>
-        </LinearGradient>
+
+            <Text>Featured Brands</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 5,
+                marginTop: 10,
+                marginBottom: 10,
+              }}>
+              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={SunDrop} size={110} />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 5,
+                marginTop: 10,
+                marginBottom: 10,
+              }}>
+              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={SunDrop} size={110} />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AllProducts')}>
+                <Text style={styles.buttonText}>View all Medicines</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text>Stay Informed, Stay Healthy</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                flexDirection: 'row',
+                gap: 10,
+                paddingHorizontal: 5,
+                marginTop: 10,
+                marginBottom: 10,
+              }}>
+              <ImmunityCard
+                title="5 Simple Ways to Boost Your Immunity Naturally"
+                subtitle="Learn how daily habits like staying hydrated, eating colorful veggies, and getting enough sleep can strengthen your immune system."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="The Power of Antioxidants: Foods to Include in Your Diet"
+                subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="Stress Management Techniques for a Healthier Life"
+                subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+            </ScrollView>
+            <View style={styles.imagecontainer}>
+              <Text style={{fontSize: 8}}>Powered By</Text>
+              <MediversalLogo style={styles.logo} />
+            </View>
+          </LinearGradient>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
