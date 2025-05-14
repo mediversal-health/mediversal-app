@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -17,14 +18,58 @@ import {
   Search,
   ShoppingCart,
 } from 'lucide-react-native';
-import navigation from '../../navigation';
-import {useNavigation} from '@react-navigation/native';
+// import navigation from '../../navigation';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
 import OtherDetailsCard from '../../components/cards/OtherDetailsCard';
+import LocationModal from '../../components/ui/LocationModal';
+import {RootStackParamList} from '../../navigation';
+import NavigationImg from './assets/svgs/navigation.svg';
 
 const CartPage = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [isLocationModalVisible, setLocationModalVisible] = useState(false);
+  const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
+  const formData = route.params?.formData;
+
+  const pincode = formData?.pincode?.trim();
+  const area = formData?.areaDetails?.trim();
+  const landmark = formData?.landmark?.trim();
+
+  const isValidAddress = pincode && area && landmark;
+
+  const formattedAddress = isValidAddress
+    ? `${pincode} - ${area}, ${landmark}`
+    : '';
+  console.log(formattedAddress);
+
+  const showLocationModal = () => {
+    setLocationModalVisible(true);
+  };
+  const hideLocationModal = () => {
+    setLocationModalVisible(false);
+  };
+
+  const handleSelectCurrentLocation = () => {
+    navigation.navigate('LocationMapScreen');
+    hideLocationModal();
+  };
+
+  const handleEnterManually = () => {
+    navigation.navigate('AddressBookScreen', {
+      location: {
+        title: '',
+        address: '',
+      },
+    });
+    hideLocationModal();
+  };
   const [selectedRadio, setSelectedRadio] = useState(false);
   const medicines = [
     {
@@ -75,6 +120,25 @@ const CartPage = () => {
       </SafeAreaView>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {formattedAddress.trim() !== '' && (
+            <View style={styles.container}>
+              <View
+                style={{
+                  backgroundColor: '#E8F4F7',
+                  padding: 20,
+                  flexDirection: 'row',
+                  gap: 15,
+                }}>
+                <NavigationImg />
+                <View style={{flexDirection: 'column'}}>
+                  <Text style={{color: '#899193', fontSize: 10}}>
+                    Deliver to {formData?.recipient}
+                  </Text>
+                  <Text style={{fontSize: 12}}>{formattedAddress}</Text>
+                </View>
+              </View>
+            </View>
+          )}
           {/* Apply Coupon Strip */}
           <LinearGradient
             colors={['#F8F8F8', '#FE90E2']}
@@ -146,11 +210,26 @@ const CartPage = () => {
             <Text style={styles.amountLabel}>Amount to pay:</Text>
             <Text style={styles.amountText}>₹574</Text>
           </View>
-          <TouchableOpacity style={styles.addressButton}>
-            <Text style={styles.addressButtonText}>Select/Add Address</Text>
-          </TouchableOpacity>
+          {formattedAddress.trim() !== '' ? (
+            <TouchableOpacity style={styles.addressButton}>
+              <Text style={styles.addressButtonText}>Checkout</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.addressButton}
+              onPress={showLocationModal}>
+              <Text style={styles.addressButtonText}>Select / Add Address</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
+
+      <LocationModal
+        isVisible={isLocationModalVisible}
+        onClose={hideLocationModal}
+        onSelectCurrentLocation={handleSelectCurrentLocation}
+        onEnterManually={handleEnterManually}
+      />
     </>
   );
 };
