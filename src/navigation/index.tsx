@@ -53,6 +53,12 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="UploadPrescription"
+          component={UploadPrescription}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
           name="AddressBookScreen"
           component={AddressBookScreen}
           options={{headerShown: false}}
