@@ -12,7 +12,6 @@ import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
 import {
   Clock,
-  ArrowLeft,
   Search,
   ShoppingCart,
   CircleArrowLeftIcon,
@@ -99,7 +98,8 @@ const UploadScreen = () => {
             <TouchableOpacity style={styles.iconSpacing}>
               <Search size={16} color="#161D1F" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('CartPage')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CartPage', {})}>
               <ShoppingCart size={16} color="#161D1F" />
             </TouchableOpacity>
           </View>

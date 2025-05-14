@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,14 +11,27 @@ import {
   Platform,
 } from 'react-native';
 import {CircleArrowLeftIcon} from 'lucide-react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useNavigation,
+  RouteProp,
+  useRoute,
+} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import {AddressBookTypes} from '../../types';
 
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
+type AddressBookScreenRouteProp = RouteProp<
+  {params: {location?: {title: string; address: string}}},
+  'params'
+>;
+
 const AddressBookScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const route = useRoute<AddressBookScreenRouteProp>();
+  const locationData = route.params?.location;
+
   const [selectedAddressType, setSelectedAddressType] =
     useState<AddressType>('Home');
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -36,11 +48,38 @@ const AddressBookScreen: React.FC = () => {
     addressType: 'Home',
   });
 
+  const [errors, setErrors] = useState<{
+    [key in keyof AddressBookTypes]?: string;
+  }>({});
+
+  useEffect(() => {
+    if (locationData) {
+      const addressParts = locationData.address
+        .split(',')
+        .map(part => part.trim());
+      const city =
+        addressParts.length >= 3 ? addressParts[addressParts.length - 3] : '';
+      const state =
+        addressParts.length >= 2 ? addressParts[addressParts.length - 2] : '';
+      const pincode = addressParts.find(part => /^\d{6}$/.test(part)) || '';
+
+      setFormData(prevData => ({
+        ...prevData,
+        areaDetails: locationData.title,
+        landmark: addressParts[0] || '',
+        city,
+        state,
+        pincode,
+      }));
+    }
+  }, [locationData]);
+
   const handleInputChange = (
     field: keyof AddressBookTypes,
     value: string,
   ): void => {
     setFormData({...formData, [field]: value});
+    setErrors(prev => ({...prev, [field]: undefined}));
   };
 
   const handleAddressTypeSelect = (type: AddressType): void => {
@@ -48,14 +87,33 @@ const AddressBookScreen: React.FC = () => {
     handleInputChange('addressType', type);
   };
 
-  const handleSaveAndProceed = (): void => {
-    console.log('Form data submitted:', formData);
+  const validateForm = (): boolean => {
+    const newErrors: typeof errors = {};
+
+    if (!formData.houseNo.trim()) {
+      newErrors.houseNo = 'House number is required';
+    }
+
+    if (!formData.recipient.trim()) {
+      newErrors.recipient = 'Recipient name is required';
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      newErrors.phoneNumber = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(formData.phoneNumber.trim())) {
+      newErrors.phoneNumber = 'Enter a valid 10-digit phone number';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const getInputStyle = (field: keyof AddressBookTypes) => [
-    styles.input,
-    focusedField === field && styles.inputFocused,
-  ];
+  const handleSaveAndProceed = (): void => {
+    if (validateForm()) {
+      navigation.navigate('CartPage', {formData});
+      console.log('Form data submitted:', formData);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,7 +121,7 @@ const AddressBookScreen: React.FC = () => {
 
       <View style={styles.header}>
         <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center', gap: 6}}
+          style={styles.headerBackButton}
           onPress={() => navigation.goBack()}>
           <CircleArrowLeftIcon size={32} color="#161D1F" />
           <Text style={styles.headerTitle}>Address Book</Text>
@@ -78,19 +136,30 @@ const AddressBookScreen: React.FC = () => {
             House/Floor/Flat Number <Text style={styles.required}>*</Text>
           </Text>
           <TextInput
-            style={getInputStyle('houseNo')}
+            style={[
+              styles.input,
+              focusedField === 'houseNo' && styles.inputFocused,
+              formData.houseNo !== '' && styles.inputFilled,
+            ]}
             value={formData.houseNo}
             onChangeText={text => handleInputChange('houseNo', text)}
             placeholder="House/Floor/Flat Number"
             onFocus={() => setFocusedField('houseNo')}
             onBlur={() => setFocusedField(null)}
           />
+          {errors.houseNo && (
+            <Text style={styles.errorText}>{errors.houseNo}</Text>
+          )}
         </View>
 
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Area Details</Text>
           <TextInput
-            style={getInputStyle('areaDetails')}
+            style={[
+              styles.input,
+              focusedField === 'areaDetails' && styles.inputFocused,
+              formData.areaDetails !== '' && styles.inputFilled,
+            ]}
             value={formData.areaDetails}
             onChangeText={text => handleInputChange('areaDetails', text)}
             placeholder="Area Details"
@@ -102,7 +171,11 @@ const AddressBookScreen: React.FC = () => {
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Landmark</Text>
           <TextInput
-            style={getInputStyle('landmark')}
+            style={[
+              styles.input,
+              focusedField === 'landmark' && styles.inputFocused,
+              formData.landmark !== '' && styles.inputFilled,
+            ]}
             value={formData.landmark}
             onChangeText={text => handleInputChange('landmark', text)}
             placeholder="Landmark"
@@ -115,7 +188,11 @@ const AddressBookScreen: React.FC = () => {
           <View style={[styles.formGroup, styles.halfWidth]}>
             <Text style={styles.inputLabel}>Pincode</Text>
             <TextInput
-              style={getInputStyle('pincode')}
+              style={[
+                styles.input,
+                focusedField === 'pincode' && styles.inputFocused,
+                formData.pincode !== '' && styles.inputFilled,
+              ]}
               value={formData.pincode}
               onChangeText={text => handleInputChange('pincode', text)}
               placeholder="Pincode"
@@ -128,7 +205,11 @@ const AddressBookScreen: React.FC = () => {
           <View style={[styles.formGroup, styles.halfWidth]}>
             <Text style={styles.inputLabel}>City</Text>
             <TextInput
-              style={getInputStyle('city')}
+              style={[
+                styles.input,
+                focusedField === 'city' && styles.inputFocused,
+                formData.city !== '' && styles.inputFilled,
+              ]}
               value={formData.city}
               onChangeText={text => handleInputChange('city', text)}
               placeholder="City"
@@ -141,7 +222,11 @@ const AddressBookScreen: React.FC = () => {
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>State</Text>
           <TextInput
-            style={getInputStyle('state')}
+            style={[
+              styles.input,
+              focusedField === 'state' && styles.inputFocused,
+              formData.state !== '' && styles.inputFilled,
+            ]}
             value={formData.state}
             onChangeText={text => handleInputChange('state', text)}
             placeholder="State"
@@ -185,13 +270,20 @@ const AddressBookScreen: React.FC = () => {
             Recipient <Text style={styles.required}>*</Text>
           </Text>
           <TextInput
-            style={getInputStyle('recipient')}
+            style={[
+              styles.input,
+              focusedField === 'recipient' && styles.inputFocused,
+              formData.recipient !== '' && styles.inputFilled,
+            ]}
             value={formData.recipient}
             onChangeText={text => handleInputChange('recipient', text)}
             placeholder="Recipient Name"
             onFocus={() => setFocusedField('recipient')}
             onBlur={() => setFocusedField(null)}
           />
+          {errors.recipient && (
+            <Text style={styles.errorText}>{errors.recipient}</Text>
+          )}
         </View>
 
         <View style={styles.formGroup}>
@@ -199,7 +291,11 @@ const AddressBookScreen: React.FC = () => {
             Phone Number <Text style={styles.required}>*</Text>
           </Text>
           <TextInput
-            style={getInputStyle('phoneNumber')}
+            style={[
+              styles.input,
+              focusedField === 'phoneNumber' && styles.inputFocused,
+              formData.phoneNumber !== '' && styles.inputFilled,
+            ]}
             value={formData.phoneNumber}
             onChangeText={text => handleInputChange('phoneNumber', text)}
             placeholder="Phone Number"
@@ -207,6 +303,9 @@ const AddressBookScreen: React.FC = () => {
             onFocus={() => setFocusedField('phoneNumber')}
             onBlur={() => setFocusedField(null)}
           />
+          {errors.phoneNumber && (
+            <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+          )}
         </View>
 
         <Text style={styles.infoText}>
@@ -237,6 +336,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
+  },
+  headerBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   headerTitle: {
     fontSize: 16,
@@ -277,9 +381,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     fontSize: 16,
   },
+  inputFilled: {
+    backgroundColor: '#D3D7D8',
+    borderWidth: 0,
+  },
   inputFocused: {
     borderColor: '#0088B1',
     backgroundColor: '#E8F4F7',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 4,
   },
   formRow: {
     flexDirection: 'row',

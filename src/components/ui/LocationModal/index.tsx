@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
-import {LocateIcon, MapPin} from 'lucide-react-native';
+import {LocateFixed, MapPin} from 'lucide-react-native';
 
 interface LocationModalProps {
   isVisible: boolean;
@@ -39,7 +39,7 @@ const LocationModal: React.FC<LocationModalProps> = ({
           <TouchableOpacity
             style={styles.locationButton}
             onPress={onSelectCurrentLocation}>
-            <LocateIcon color={'#0088B1'} />
+            <LocateFixed color={'#0088B1'} />
             <Text style={styles.locationButtonText}>Current Location</Text>
           </TouchableOpacity>
 
