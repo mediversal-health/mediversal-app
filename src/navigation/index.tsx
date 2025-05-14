@@ -7,6 +7,7 @@ import layout from '../layout';
 import UploadScreen from '../Screens/UploadScreen';
 import CartPage from '../Screens/CartScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
+import UploadPrescription from '../Screens/UploadPrescription';
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   UploadScreen: undefined;
   CartPage: undefined;
   AllProducts: undefined;
+  UploadPrescription: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -24,8 +26,8 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={EmailSignup} />
+        {/* <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={EmailSignup} /> */}
         <Stack.Screen name="Layout" component={layout} />
         <Stack.Screen name="AllProducts" component={AllProductsScreen} />
         <Stack.Screen
@@ -34,6 +36,10 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen name="CartPage" component={CartPage} />
+        <Stack.Screen
+          name="UploadPrescription"
+          component={UploadPrescription}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
