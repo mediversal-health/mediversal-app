@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   FlatList,
   ScrollView,
   SafeAreaView,
+  Touchable,
 } from 'react-native';
 import {
   ShieldCheck,
@@ -23,9 +24,21 @@ import PrescriptionGuideModal from '../../components/modal/PrescriptionGuideModa
 import Expert from './assets/experts.svg';
 import Secure from './assets/secure.svg';
 import Upload from './assets/uploaded.svg';
+import TakePhotoCapture, {
+  TakePhotoCaptureHandle,
+} from '../../components/cards/TakePhotoCapture';
+import UploadImagePicker, {
+  UploadImagePickerHandle,
+} from '../../components/cards/ImagePickerPreview';
 
 const UploadPrescription: React.FC = () => {
   const [showGuideModal, setShowGuideModal] = useState(false);
+  const photoRef = useRef<TakePhotoCaptureHandle>(null);
+
+  const handleTakePhoto = () => {
+    photoRef.current?.openCamera();
+  };
+  const pickerRef = useRef<UploadImagePickerHandle>(null);
 
   const recentPrescriptions = [
     {
@@ -131,15 +144,21 @@ const UploadPrescription: React.FC = () => {
               </Text>
             </TouchableOpacity>
           </View>
+          <TakePhotoCapture ref={photoRef} />
+          <UploadImagePicker ref={pickerRef} />
+
           {/* Choose Upload Method Section */}
           <Text style={styles.sectionTitle}>Choose upload method</Text>
           <View style={styles.uploadMethodsRow}>
             {/* Take Photo */}
             <View style={styles.uploadCard}>
-              <View style={styles.iconWrapper}>
-                <Camera color="#161D1F" size={24} />
-              </View>
-              <Text style={styles.methodLabel}>Take Photo</Text>
+              <TouchableOpacity onPress={handleTakePhoto}>
+                <View style={styles.iconWrapper}>
+                  <Camera color="#161D1F" size={24} />
+                </View>
+                <Text style={styles.methodLabel}>Take Photo</Text>
+              </TouchableOpacity>
+
               <View style={styles.successStrip}>
                 <Text style={styles.successText}>90% success rate</Text>
               </View>
@@ -147,10 +166,15 @@ const UploadPrescription: React.FC = () => {
 
             {/* Upload Image */}
             <View style={styles.uploadCard}>
-              <View style={styles.iconWrapper}>
-                <UploadIcon color="#161D1F" size={24} />
-              </View>
-              <Text style={styles.methodLabel}>Upload Image</Text>
+              <TouchableOpacity
+                onPress={() => pickerRef.current?.openGallery()}>
+                <View style={styles.iconWrapper}>
+                  <UploadIcon color="#161D1F" size={24} />
+                </View>
+
+                <Text style={styles.methodLabel}>Upload Image</Text>
+              </TouchableOpacity>
+
               <View style={styles.successStrip}>
                 <Text style={styles.successText}>90% success rate</Text>
               </View>
