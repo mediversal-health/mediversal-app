@@ -12,7 +12,15 @@ import {ChevronRight, Plus, Check} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
 import OtherOptionsItem from '../../ui/Drawer/OtherOptions';
 import styles from './index.styles';
+import {useAuthStore} from '../../../store/authStore';
+
 const CustomDrawer = ({onClose}: {onClose: () => void}) => {
+  const clearAuthentication = useAuthStore(state => state.clearAuthentication);
+
+  const handleLogout = () => {
+    clearAuthentication();
+    onClose();
+  };
   return (
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.overlay}>
@@ -105,6 +113,12 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
               <OtherOptionsItem title="About Mediversal App" />
               <OtherOptionsItem title="Terms & Conditions" />
               <OtherOptionsItem title="Privacy Policy" />
+              <TouchableOpacity
+                onPress={handleLogout}
+                style={styles.logoutButton}
+                activeOpacity={0.7}>
+                <Text style={styles.logoutText}>Logout</Text>
+              </TouchableOpacity>
             </ScrollView>
           </View>
         </TouchableWithoutFeedback>

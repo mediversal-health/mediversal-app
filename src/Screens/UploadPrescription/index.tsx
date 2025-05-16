@@ -1,18 +1,9 @@
 import React, {useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
-  Touchable,
-} from 'react-native';
+import {View, Text, ScrollView, SafeAreaView} from 'react-native';
 import {
   ShieldCheck,
   File,
   UserCheck,
-  FileCheck,
   Camera,
   UploadIcon,
   Stethoscope,
@@ -30,43 +21,54 @@ import TakePhotoCapture, {
 import UploadImagePicker, {
   UploadImagePickerHandle,
 } from '../../components/cards/ImagePickerPreview';
+import UploadPDFPicker, {
+  UploadPDFPickerHandle,
+} from '../../components/cards/UploadPdfCard';
 
 const UploadPrescription: React.FC = () => {
   const [showGuideModal, setShowGuideModal] = useState(false);
+  const [showUploadContent, setShowUploadContent] = useState(true);
   const photoRef = useRef<TakePhotoCaptureHandle>(null);
+  const pickerRef = useRef<UploadImagePickerHandle>(null);
+  const pdfRef = useRef<UploadPDFPickerHandle>(null);
 
   const handleTakePhoto = () => {
+    setShowUploadContent(false);
     photoRef.current?.openCamera();
   };
-  const pickerRef = useRef<UploadImagePickerHandle>(null);
+
+  const handleUploadImage = () => {
+    setShowUploadContent(false);
+    pickerRef.current?.openGallery();
+  };
+
+  const handleUploadPDF = () => {
+    setShowUploadContent(false);
+    pdfRef.current?.openDocumentPicker();
+  };
+
+  const handleCancelUpload = () => {
+    setShowUploadContent(true);
+  };
 
   const recentPrescriptions = [
     {
-      doctorName: 'Dr. Sharma’s Prescription',
+      doctorName: "Dr. Sharma's Prescription",
       uploadDate: '28th March 2025',
       status: 'Valid' as const,
     },
     {
-      doctorName: 'Dr. Mehta’s Prescription',
+      doctorName: "Dr. Mehta's Prescription",
       uploadDate: '20th March 2025',
       status: 'Expiring' as const,
     },
     {
-      doctorName: 'Dr. Reddy’s Prescription',
+      doctorName: "Dr. Reddy's Prescription",
       uploadDate: '10th March 2025',
-      status: 'Expired' as const,
-    },
-    {
-      doctorName: 'Dr. Rdy’s Prescription',
-      uploadDate: '10th March 2025',
-      status: 'Expired' as const,
-    },
-    {
-      doctorName: 'Dr. Reddy’s Prescription',
-      uploadDate: '10t March 2025',
       status: 'Expired' as const,
     },
   ];
+
   const consultCards = [
     {
       id: 1,
@@ -88,19 +90,30 @@ const UploadPrescription: React.FC = () => {
     },
   ];
 
+  // Render recent prescriptions as normal components instead of using FlatList
+  const renderRecentPrescriptions = () => {
+    return recentPrescriptions.map((item, index) => (
+      <RecentPrescriptionCard
+        key={index}
+        doctorName={item.doctorName}
+        uploadDate={item.uploadDate}
+        status={item.status}
+        onReuse={() => {}}
+      />
+    ));
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          {/* Circular Progress Upload Button */}
           <View style={styles.progressCircle}>
             <File color="#6D7578" size={24} />
             <Text style={styles.uploadText}>Upload</Text>
           </View>
 
-          {/* Info Card */}
           <View style={styles.infoCard}>
             <View style={styles.cardItem}>
               <Secure />
@@ -117,6 +130,7 @@ const UploadPrescription: React.FC = () => {
                 <Text style={styles.cardTextBottom}>Uploaded</Text>
               </View>
             </View>
+
             <View style={styles.cardItem}>
               <Expert />
               <View style={styles.cardTextContainer}>
@@ -126,15 +140,13 @@ const UploadPrescription: React.FC = () => {
             </View>
           </View>
 
-          {/* Heading and Description */}
           <Text style={styles.heading}>Why We Need Your Prescription</Text>
           <Text style={styles.description}>
             We require a valid prescription to ensure your medication is safe
-            and appropriate for your condition. It’s both a legal requirement
+            and appropriate for your condition. It's both a legal requirement
             and for your safety.
           </Text>
 
-          {/* Bottom Info Card */}
           <View style={styles.bottomCard}>
             <TouchableOpacity onPress={() => setShowGuideModal(true)}>
               <Text style={styles.bottomCardText}>
@@ -144,106 +156,95 @@ const UploadPrescription: React.FC = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <TakePhotoCapture ref={photoRef} />
-          <UploadImagePicker ref={pickerRef} />
 
-          {/* Choose Upload Method Section */}
-          <Text style={styles.sectionTitle}>Choose upload method</Text>
-          <View style={styles.uploadMethodsRow}>
-            {/* Take Photo */}
-            <View style={styles.uploadCard}>
-              <TouchableOpacity onPress={handleTakePhoto}>
-                <View style={styles.iconWrapper}>
-                  <Camera color="#161D1F" size={24} />
-                </View>
-                <Text style={styles.methodLabel}>Take Photo</Text>
-              </TouchableOpacity>
+          <TakePhotoCapture ref={photoRef} onCancel={handleCancelUpload} />
+          <UploadImagePicker ref={pickerRef} onCancel={handleCancelUpload} />
+          <UploadPDFPicker ref={pdfRef} onCancel={handleCancelUpload} />
 
-              <View style={styles.successStrip}>
-                <Text style={styles.successText}>90% success rate</Text>
-              </View>
-            </View>
-
-            {/* Upload Image */}
-            <View style={styles.uploadCard}>
-              <TouchableOpacity
-                onPress={() => pickerRef.current?.openGallery()}>
-                <View style={styles.iconWrapper}>
-                  <UploadIcon color="#161D1F" size={24} />
+          {showUploadContent && (
+            <>
+              <Text style={styles.sectionTitle}>Choose upload method</Text>
+              <View style={styles.uploadMethodsRow}>
+                <View style={styles.uploadCard}>
+                  <TouchableOpacity onPress={handleTakePhoto}>
+                    <View style={styles.iconWrapper}>
+                      <Camera color="#161D1F" size={24} />
+                    </View>
+                    <Text style={styles.methodLabel}>Take Photo</Text>
+                  </TouchableOpacity>
+                  <View style={styles.successStrip}>
+                    <Text style={styles.successText}>90% success rate</Text>
+                  </View>
                 </View>
 
-                <Text style={styles.methodLabel}>Upload Image</Text>
-              </TouchableOpacity>
-
-              <View style={styles.successStrip}>
-                <Text style={styles.successText}>90% success rate</Text>
-              </View>
-            </View>
-
-            {/* Upload PDF */}
-            <View style={styles.uploadCard}>
-              <View style={styles.iconWrapper}>
-                <File color="#161D1F" size={24} />
-              </View>
-              <Text style={styles.methodLabel}>Upload PDF</Text>
-              <View style={styles.successStrip}>
-                <Text style={styles.successText}>90% success rate</Text>
-              </View>
-            </View>
-          </View>
-          {/* Recent Prescriptions Header */}
-          <View style={styles.recentHeader}>
-            <Text style={styles.sectionTitle}>Your Recent Prescriptions</Text>
-            <TouchableOpacity>
-              <Text style={styles.viewAll}>View All</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Scrollable Recent Prescriptions List */}
-          <View style={styles.recentListContainer}>
-            <FlatList
-              data={recentPrescriptions}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({item}) => (
-                <RecentPrescriptionCard
-                  doctorName={item.doctorName}
-                  uploadDate={item.uploadDate}
-                  status={item.status}
-                  onReuse={() => {}}
-                />
-              )}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-          {/* Don't have a prescription? Section */}
-          <View style={styles.noPrescriptionSection}>
-            <View style={styles.noPrescriptionHeader}>
-              <View style={styles.iconCircle}>
-                <Stethoscope color="#0088B1" size={26} />
-              </View>
-              <Text style={styles.noPrescriptionText}>
-                Don’t have a prescription?
-              </Text>
-            </View>
-
-            {/* Three Consult Cards */}
-            <View style={styles.consultRow}>
-              {consultCards.map(card => (
-                <View key={card.id} style={styles.consultCard}>
-                  <View style={styles.consultIconWrapper}>{card.icon}</View>
-                  <Text style={styles.consultTitle}>{card.title}</Text>
-                  <Text style={styles.consultSubtitle}>{card.subtitle}</Text>
+                <View style={styles.uploadCard}>
+                  <TouchableOpacity onPress={handleUploadImage}>
+                    <View style={styles.iconWrapper}>
+                      <UploadIcon color="#161D1F" size={24} />
+                    </View>
+                    <Text style={styles.methodLabel}>Upload Image</Text>
+                  </TouchableOpacity>
+                  <View style={styles.successStrip}>
+                    <Text style={styles.successText}>90% success rate</Text>
+                  </View>
                 </View>
-              ))}
-            </View>
 
-            {/* Full-Width Button */}
-            <TouchableOpacity style={styles.consultButton}>
-              <Text style={styles.consultButtonText}>
-                Consult a Doctor (₹99 only)
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <View style={styles.uploadCard}>
+                  <TouchableOpacity onPress={handleUploadPDF}>
+                    <View style={styles.iconWrapper}>
+                      <File color="#161D1F" size={24} />
+                    </View>
+                    <Text style={styles.methodLabel}>Upload PDF</Text>
+                  </TouchableOpacity>
+                  <View style={styles.successStrip}>
+                    <Text style={styles.successText}>90% success rate</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.recentHeader}>
+                <Text style={styles.sectionTitle}>
+                  Your Recent Prescriptions
+                </Text>
+                <TouchableOpacity>
+                  <Text style={styles.viewAll}>View All</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.recentListContainer}>
+                {renderRecentPrescriptions()}
+              </View>
+
+              <View style={styles.noPrescriptionSection}>
+                <View style={styles.noPrescriptionHeader}>
+                  <View style={styles.iconCircle}>
+                    <Stethoscope color="#0088B1" size={26} />
+                  </View>
+                  <Text style={styles.noPrescriptionText}>
+                    Don't have a prescription?
+                  </Text>
+                </View>
+
+                <View style={styles.consultRow}>
+                  {consultCards.map(card => (
+                    <View key={card.id} style={styles.consultCard}>
+                      <View style={styles.consultIconWrapper}>{card.icon}</View>
+                      <Text style={styles.consultTitle}>{card.title}</Text>
+                      <Text style={styles.consultSubtitle}>
+                        {card.subtitle}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+
+                <TouchableOpacity style={styles.consultButton}>
+                  <Text style={styles.consultButtonText}>
+                    Consult a Doctor (₹99 only)
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </View>
         <PrescriptionGuideModal
           visible={showGuideModal}

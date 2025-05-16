@@ -7,17 +7,34 @@ export type TakePhotoCaptureHandle = {
   openCamera: () => void;
 };
 
-const TakePhotoCapture = forwardRef<TakePhotoCaptureHandle>((_, ref) => {
+interface TakePhotoCaptureProps {
+  onCancel?: () => void;
+}
+
+const TakePhotoCapture = forwardRef<
+  TakePhotoCaptureHandle,
+  TakePhotoCaptureProps
+>(({onCancel}, ref) => {
   const [photos, setPhotos] = useState<string[]>([]);
   const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const openCamera = async () => {
+    setIsCameraOpen(true);
     const result = await launchCamera({
       mediaType: 'photo',
       cameraType: 'back',
       quality: 0.7,
     });
+
+    setIsCameraOpen(false);
+
+    if (result.didCancel) {
+      // User canceled the camera
+      handleCancel();
+      return;
+    }
 
     if (result.assets && result.assets[0]?.uri) {
       setPreviewPhoto(result.assets[0].uri);
@@ -44,13 +61,24 @@ const TakePhotoCapture = forwardRef<TakePhotoCaptureHandle>((_, ref) => {
   };
 
   const handleCancel = () => {
-    setShowModal(true);
+    if (photos.length > 0 || previewPhoto) {
+      // Show confirmation modal if there are uploaded photos
+      setShowModal(true);
+    } else {
+      // No photos uploaded, just close
+      handleClose();
+    }
   };
 
-  const confirmRemove = () => {
+  const handleClose = () => {
     setPhotos([]);
     setPreviewPhoto(null);
     setShowModal(false);
+    onCancel?.(); // Notify parent about cancel
+  };
+
+  const confirmRemove = () => {
+    handleClose();
   };
 
   const closeModal = () => {
@@ -61,7 +89,11 @@ const TakePhotoCapture = forwardRef<TakePhotoCaptureHandle>((_, ref) => {
 
   return (
     <View style={styles.container}>
-      {allPhotos.length > 0 && (
+      {isCameraOpen ? (
+        <View style={styles.cameraLoading}>
+          <Text>Fetching...</Text>
+        </View>
+      ) : allPhotos.length > 0 ? (
         <View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
             {allPhotos.map((uri, index) => (
@@ -76,7 +108,7 @@ const TakePhotoCapture = forwardRef<TakePhotoCaptureHandle>((_, ref) => {
           </TouchableOpacity>
 
           <View style={styles.footerButtonsColumn}>
-            <TouchableOpacity style={styles.proceed}>
+            <TouchableOpacity style={styles.proceed} onPress={handleContinue}>
               <Text style={styles.proceedText}>Proceed to next step</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancel} onPress={handleCancel}>
@@ -84,7 +116,7 @@ const TakePhotoCapture = forwardRef<TakePhotoCaptureHandle>((_, ref) => {
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      ) : null}
 
       {/* Confirmation Modal */}
       <Modal

@@ -15,6 +15,12 @@ export default StyleSheet.create({
     borderBlockColor: '#0088B1',
     borderWidth: 1,
   },
+  galleryLoading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
 
   uploadMore: {
     alignItems: 'center',

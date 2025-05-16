@@ -7,22 +7,56 @@ export type UploadImagePickerHandle = {
   openGallery: () => void;
 };
 
-const UploadImagePicker = forwardRef<UploadImagePickerHandle>((_, ref) => {
+interface UploadImagePickerProps {
+  onCancel?: () => void;
+}
+
+const UploadImagePicker = forwardRef<
+  UploadImagePickerHandle,
+  UploadImagePickerProps
+>(({onCancel}, ref) => {
   const [images, setImages] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   const openGallery = async () => {
+    setIsGalleryOpen(true);
     const result = await launchImageLibrary({
       mediaType: 'photo',
       selectionLimit: 0,
       quality: 0.8,
     });
 
+    setIsGalleryOpen(false);
+
+    if (result.didCancel) {
+      // User canceled from image picker
+      handleCancel();
+      return;
+    }
+
     if (result.assets) {
+      console.log('Selected assets:', result.assets);
+
       const selectedUris = result.assets
         .map(asset => asset.uri)
         .filter(Boolean) as string[];
+
       setImages([...images, ...selectedUris]);
+
+      // Prepare FormData to send to backend
+      const formData = new FormData();
+      result.assets.forEach((asset, index) => {
+        if (asset.uri && asset.type && asset.fileName) {
+          formData.append('files', {
+            uri: asset.uri,
+            type: asset.type,
+            name: asset.fileName,
+          } as any); // `as any` is necessary for React Native types
+        }
+      });
+
+      console.log('FormData ready to send:', formData);
     }
   };
 
@@ -35,21 +69,56 @@ const UploadImagePicker = forwardRef<UploadImagePickerHandle>((_, ref) => {
   };
 
   const handleCancel = () => {
-    setShowModal(true);
+    if (images.length > 0) {
+      // Show confirmation modal if there are uploaded images
+      setShowModal(true);
+    } else {
+      // No images uploaded, just close
+      handleClose();
+    }
+  };
+
+  const handleClose = () => {
+    setImages([]);
+    setShowModal(false);
+    onCancel?.(); // Notify parent about cancel
   };
 
   const confirmRemove = () => {
-    setImages([]);
-    setShowModal(false);
+    handleClose();
   };
 
   const closeModal = () => {
     setShowModal(false);
   };
 
+  const handleSubmit = () => {
+    const formData = new FormData();
+
+    images.forEach((uri, index) => {
+      const filename = uri.split('/').pop() || `image_${index}.jpg`;
+      const fileType = filename.endsWith('.png') ? 'image/png' : 'image/jpeg';
+
+      const file = {
+        uri,
+        type: fileType,
+        name: filename,
+      };
+
+      console.log(`Appending file:`, file); // ✅ Log each file object
+      formData.append('files', file as any);
+    });
+
+    console.log('FormData ready to send');
+  };
+
   return (
     <View style={styles.container}>
-      {images.length > 0 && (
+      {isGalleryOpen ? (
+        <View style={styles.galleryLoading}>
+          <Text>Fetching...</Text>
+        </View>
+      ) : images.length > 0 ? (
         <View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
             {images.map((uri, index) => (
@@ -64,15 +133,16 @@ const UploadImagePicker = forwardRef<UploadImagePickerHandle>((_, ref) => {
           </TouchableOpacity>
 
           <View style={styles.footerButtonsColumn}>
-            <TouchableOpacity style={styles.proceed}>
+            <TouchableOpacity style={styles.proceed} onPress={handleSubmit}>
               <Text style={styles.proceedText}>Proceed to next step</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={styles.cancel} onPress={handleCancel}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      ) : null}
 
       {/* Modal Confirmation */}
       <Modal

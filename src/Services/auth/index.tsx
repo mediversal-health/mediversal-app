@@ -8,7 +8,7 @@ export const sendOTP = async (
   password: string,
   method: string,
 ) => {
-  return axios.post(`${IP_ADDR}/api/login`, {
+  return axios.post(`${IP_ADDR}/api/Auth/login`, {
     identifier: identifier,
     password: password,
     method: method,
@@ -20,7 +20,7 @@ export const verifyOTP = async (
   otp: string,
   method: string,
 ) => {
-  return axios.post(`${IP_ADDR}/api/verify-otp`, {
+  return axios.post(`${IP_ADDR}/api/Auth/verify-otp`, {
     identifier: identifier,
     otp,
     method: method,
@@ -28,7 +28,7 @@ export const verifyOTP = async (
 };
 
 export const forgotPassword = async (identifier: string, method: string) => {
-  return axios.post(`${IP_ADDR}/api/forgot-password`, {
+  return axios.post(`${IP_ADDR}/api/Auth/forgot-password`, {
     identifier: identifier,
     method: method,
   });
@@ -39,7 +39,7 @@ export const verifyResetOtp = async (
   otp: string,
   method: string,
 ) => {
-  return axios.post(`${IP_ADDR}/api/verify-reset-otp`, {
+  return axios.post(`${IP_ADDR}/api/Auth/verify-reset-otp`, {
     identifier: identifier,
     otp,
     method: method,
@@ -51,7 +51,7 @@ export const ResetPassword = async (
   newPassword: string,
   method: string,
 ) => {
-  return axios.post(`${IP_ADDR}/api/reset-password`, {
+  return axios.post(`${IP_ADDR}/api/Auth/reset-password`, {
     identifier: identifier,
     newPassword: newPassword,
     method: method,
@@ -59,7 +59,7 @@ export const ResetPassword = async (
 };
 
 export const RegisterUser = async (identifier: string, password: string) => {
-  return axios.post(`${IP_ADDR}/api/register`, {
+  return axios.post(`${IP_ADDR}/api/Auth/register`, {
     email: identifier,
     password: password,
   });
@@ -70,7 +70,7 @@ export const verifyRegisterUser = async (
   otp: string,
   password: string,
 ) => {
-  return axios.post(`${IP_ADDR}/api/verify-register-otp`, {
+  return axios.post(`${IP_ADDR}/api/Auth/verify-register-otp`, {
     email: identifier,
     otp,
     password: password,
@@ -78,7 +78,7 @@ export const verifyRegisterUser = async (
 };
 
 export const googleSignIn = async (idToken: string) => {
-  return axios.post(`${IP_ADDR}/api/auth/google`, {
+  return axios.post(`${IP_ADDR}/api/Auth/auth/google`, {
     idToken,
   });
 };
