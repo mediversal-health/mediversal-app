@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 80, // Add padding to ensure content doesn't get hidden behind buttons
   },
+
   guaranteeSection: {
     marginTop: 8, // Small margin between medicine details and guarantee cards
     paddingBottom: 16, // Add some padding at the bottom
@@ -109,7 +110,14 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
+  backButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#e8f4f7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   iconSpacing: {
     marginRight: 16,
   },

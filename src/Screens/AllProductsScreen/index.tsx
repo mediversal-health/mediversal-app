@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
 import {
@@ -13,6 +12,10 @@ import ProductCard from '../../components/cards/ProductCard';
 import SearchBar from '../../components/common/SearchBar';
 import {ProductCardProps} from '../../types';
 import styles from './index.styles';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
+import useProductStore from '../../store/productsStore';
+
 interface Category {
   id: string;
   name: string;
@@ -21,6 +24,17 @@ interface Category {
 
 const AllProductsScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const {cardProducts, getOriginalProduct} = useProductStore();
+  const handleProductPress = (cardProduct: ProductCardProps['product']) => {
+    const originalProduct = getOriginalProduct(cardProduct.id);
+    navigation.navigate('UploadScreen', {
+      product: originalProduct,
+    });
+  };
+  console.log(cardProducts);
 
   const categories: Category[] = [
     {
@@ -55,47 +69,10 @@ const AllProductsScreen: React.FC = () => {
     },
   ];
 
-  const products: ProductCardProps['product'][] = [
-    {
-      id: '123',
-      name: 'Lacto Calamine SPF 50',
-      description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
-      quantity: 'Tube · 50 gm',
-      delivery: 'By Sun, 13 Apr',
-      originalPrice: 499,
-      discountedPrice: 349,
-      discountPercentage: 30,
-      image:
-        'https://mediversalapp.s3.ap-south-1.amazonaws.com/products/166161/image_360.png',
-    },
-    {
-      id: '124',
-      name: 'Lacto Calamine SPF 50',
-      description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
-      quantity: 'Tube · 50 gm',
-      delivery: 'By Sun, 13 Apr',
-      originalPrice: 499,
-      discountedPrice: 349,
-      discountPercentage: 30,
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-    },
-    {
-      id: '125',
-      name: 'Lacto Calamine SPF 50',
-      description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
-      quantity: 'Tube · 50 gm',
-      delivery: 'By Sun, 13 Apr',
-      originalPrice: 499,
-      discountedPrice: 349,
-      discountPercentage: 30,
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-    },
-  ];
-
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
-    <TouchableOpacity style={styles.productCardContainer}>
+    <TouchableOpacity
+      onPress={() => handleProductPress(item)}
+      style={styles.productCardContainer}>
       <ProductCard
         product={item}
         borderColor={'#2D9CDB'}
@@ -107,7 +84,6 @@ const AllProductsScreen: React.FC = () => {
       />
     </TouchableOpacity>
   );
-
   const renderCategory = ({item}: {item: Category}) => (
     <TouchableOpacity
       style={[
@@ -130,9 +106,11 @@ const AllProductsScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <View style={styles.backButton}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
             <ChevronLeft size={20} color="#0088B1" />
-          </View>
+          </TouchableOpacity>
           <Text style={styles.headerText}>All Products</Text>
         </View>
         <ShoppingBag size={20} />
@@ -166,7 +144,7 @@ const AllProductsScreen: React.FC = () => {
             </View>
           </View>
           <FlatList
-            data={products}
+            data={cardProducts}
             renderItem={renderProduct}
             keyExtractor={item => item.id}
             numColumns={2}

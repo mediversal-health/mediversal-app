@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   counterText: {
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: '500',
     marginHorizontal: 4,
     color: '#161D1F',
