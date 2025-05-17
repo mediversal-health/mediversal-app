@@ -22,11 +22,14 @@ import Animated, {
   runOnJS,
   withSpring,
 } from 'react-native-reanimated';
+import {useAuthStore} from '../../../store/authStore';
 
 const {width} = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3;
 
 const CustomDrawer = ({onClose}: {onClose: () => void}) => {
+  const clearAuthentication = useAuthStore(state => state.clearAuthentication);
+
   const translateX = useSharedValue(-width);
   const startX = useSharedValue(0);
 
@@ -35,6 +38,10 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
       transform: [{translateX: translateX.value}],
     };
   });
+  const handleLogout = () => {
+    clearAuthentication();
+    onClose();
+  };
 
   const handleClose = () => {
     translateX.value = withTiming(
