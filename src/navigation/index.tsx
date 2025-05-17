@@ -1,10 +1,9 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-
 import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
-import Layout from '../Layout';
+import layout from '../Layout';
 import UploadScreen from '../Screens/UploadScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
 import UploadPrescription from '../Screens/UploadPrescription';
@@ -13,6 +12,8 @@ import CartPage from '../Screens/CartScreen';
 import LocationMapScreen from '../Screens/LocationMapScreen';
 import {AddressBookTypes, Product} from '../types';
 import SearchScreen from '../Screens/SearchScreen';
+import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
+
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
@@ -35,71 +36,40 @@ export type RootStackParamList = {
   SearchScreen: undefined;
 };
 
-import {useAuthStore} from '../store/authStore';
-
-const Stack = createStackNavigator();
-
-const AuthStack = () => (
-  <Stack.Navigator screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="SignUp" component={EmailSignup} />
-  </Stack.Navigator>
-);
-
-const AppStack = () => (
-  <Stack.Navigator screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Layout" component={Layout} />
-    <Stack.Screen name="AllProducts" component={AllProductsScreen} />
-    <Stack.Screen name="UploadScreen" component={UploadScreen} />
-    <Stack.Screen name="CartPage" component={CartPage} />
-    <Stack.Screen name="UploadPrescription" component={UploadPrescription} />
-    <Stack.Screen name="AddressBookScreen" component={AddressBookScreen} />
-    <Stack.Screen name="LocationMapScreen" component={LocationMapScreen} />
-  </Stack.Navigator>
-);
+const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
-  const token = useAuthStore(state => state.token);
+  const token = useAuthStore(state => state.token); // 🔐 get token from store
 
   return (
     <NavigationContainer>
-      {token ? <AppStack /> : <AuthStack />}
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={EmailSignup} /> */}
-        <Stack.Screen name="Layout" component={Layout} />
-        <Stack.Screen name="AllProducts" component={AllProductsScreen} />
-        <Stack.Screen
-          name="UploadScreen"
-          component={UploadScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="CartPage"
-          component={CartPage}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="UploadPrescription"
-          component={UploadPrescription}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
-          name="AddressBookScreen"
-          component={AddressBookScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="LocationMapScreen"
-          component={LocationMapScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="SearchScreen"
-          component={SearchScreen}
-          options={{headerShown: false}}
-        />
+        {token ? (
+          <>
+            <Stack.Screen name="Layout" component={layout} />
+            <Stack.Screen name="AllProducts" component={AllProductsScreen} />
+            <Stack.Screen name="UploadScreen" component={UploadScreen} />
+            <Stack.Screen name="CartPage" component={CartPage} />
+            <Stack.Screen
+              name="UploadPrescription"
+              component={UploadPrescription}
+            />
+            <Stack.Screen
+              name="AddressBookScreen"
+              component={AddressBookScreen}
+            />
+            <Stack.Screen
+              name="LocationMapScreen"
+              component={LocationMapScreen}
+            />
+            <Stack.Screen name="SearchScreen" component={SearchScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="SignUp" component={EmailSignup} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

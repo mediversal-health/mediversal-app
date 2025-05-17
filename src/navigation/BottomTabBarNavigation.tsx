@@ -13,6 +13,8 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   const setcurrentScreen = useScreenStore(state => state.setCurrentScreen);
+  const EmptyScreen = () => <View />;
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -84,9 +86,9 @@ export default function BottomTabNavigator() {
           focus: () => setcurrentScreen('Pharmacy'),
         }}
       />
-      <Tab.Screen name="Menu" component={() => null} />
-      <Tab.Screen name="Homecare" component={() => null} />
-      <Tab.Screen name="Profile" component={() => null} />
+      <Tab.Screen name="Menu" component={EmptyScreen} />
+      <Tab.Screen name="Homecare" component={EmptyScreen} />
+      <Tab.Screen name="Profile" component={EmptyScreen} />
     </Tab.Navigator>
   );
 }
