@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import React from 'react';
 import {
   View,
@@ -10,15 +11,14 @@ import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
 import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
-import {
-  Clock,
-  Search,
-  ShoppingCart,
-  CircleArrowLeftIcon,
-} from 'lucide-react-native';
+import {Clock, Search, ChevronLeft, ShoppingBag} from 'lucide-react-native';
 import {styles} from './index.style';
 import ProductCard from '../../components/cards/ProductCard';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 
 const medicineImages = [
@@ -84,23 +84,28 @@ const products = [
   },
 ];
 
-const UploadScreen = () => {
+type UploadScreenRouteProp = RouteProp<RootStackParamList, 'UploadScreen'>;
+
+const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {product} = route.params;
 
   return (
     <>
       <SafeAreaView style={styles.safeHeader}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <CircleArrowLeftIcon size={16} color="#161D1F" />
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <View style={styles.headerRightIcons}>
             <TouchableOpacity style={styles.iconSpacing}>
-              <Search size={16} color="#161D1F" />
+              <Search size={20} color="#161D1F" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('CartPage', {})}>
-              <ShoppingCart size={16} color="#161D1F" />
+              <ShoppingBag size={20} color="#161D1F" />
             </TouchableOpacity>
           </View>
         </View>
@@ -114,7 +119,7 @@ const UploadScreen = () => {
             <MedicineDetail
               images={medicineImages}
               rating={4.5}
-              name="Dolo 650mg Tablet"
+              name={product?.ProductName}
               packInfo="Strip of 10 Tablets"
               saltComposition="Paracetamol (650mg)"
               currentPrice="₹ 165"
@@ -122,14 +127,6 @@ const UploadScreen = () => {
               discount="15% OFF"
               deliveryTime="Get by 9pm, Tomorrow"
             />
-
-            {/* Guarantee cards positioned immediately below medicine details */}
-            <View style={styles.guaranteeSection}>
-              <GuaranteeCards />
-            </View>
-
-            <ProductInfo />
-
             <View style={styles.cheaperAlternativeContainer}>
               <CheaperAlternative discountPercentage={5}>
                 <View style={styles.productCardsContainer}>
@@ -151,6 +148,12 @@ const UploadScreen = () => {
                 </View>
               </CheaperAlternative>
             </View>
+            {/* Guarantee cards positioned immediately below medicine details */}
+            <View style={styles.guaranteeSection}>
+              <GuaranteeCards />
+            </View>
+
+            <ProductInfo />
 
             {/* Related Products Section */}
             <RNText style={styles.relatedProductsHeading}>

@@ -16,10 +16,13 @@ import BottomTabNavigator from './navigation/BottomTabBarNavigation';
 import CustomDrawer from './components/common/CustomDrawer';
 import {useScreenStore} from './store/screenSelector';
 import SearchBar from './components/common/SearchBar';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from './navigation';
+
 const layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
   return (
     <SafeAreaView
@@ -72,7 +75,10 @@ const layout = () => {
                     width: '90%',
                   }}>
                   <View style={{flexDirection: 'row', gap: 3}}>
-                    <Text>Gandhi Maidan 800024</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('SearchScreen')}>
+                      <Text>Gandhi Maidan 800024</Text>
+                    </TouchableOpacity>
                     <ChevronDown size={20} />
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
@@ -132,7 +138,7 @@ const layout = () => {
               paddingBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <View
+              <TouchableOpacity
                 style={{
                   width: 32,
                   height: 32,
@@ -140,9 +146,10 @@ const layout = () => {
                   backgroundColor: '#e8f4f7',
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}>
+                }}
+                onPress={() => navigation.goBack}>
                 <ChevronLeft size={20} color="#0088B1" />
-              </View>
+              </TouchableOpacity>
               <Text style={{fontSize: 16}}>Pharmacy</Text>
             </View>
             <ShoppingBag size={20} />

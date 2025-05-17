@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -44,49 +44,48 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
 import {ProductCardProps} from '../../types';
+import {getProducts} from '../../Services/pharmacy';
+import useProductStore from '../../store/productsStore';
+import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const products: ProductCardProps['product'][] = [
-    {
-      id: '123',
-      name: 'Lacto Calamine SPF 50',
-      description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
-      quantity: 'Tube · 50 gm',
-      delivery: 'By Sun, 13 Apr',
-      originalPrice: 499,
-      discountedPrice: 349,
-      discountPercentage: 30,
-      image:
-        'https://mediversalapp.s3.ap-south-1.amazonaws.com/products/166161/image_360.png',
-    },
-    {
-      id: '124',
-      name: 'Lacto Calamine SPF 50',
-      description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
-      quantity: 'Tube · 50 gm',
-      delivery: 'By Sun, 13 Apr',
-      originalPrice: 499,
-      discountedPrice: 349,
-      discountPercentage: 30,
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-    },
-    {
-      id: '125',
-      name: 'Lacto Calamine SPF 50',
-      description: 'PA+++ UVA/UVB\nSunscreen Lotion. 50gm',
-      quantity: 'Tube · 50 gm',
-      delivery: 'By Sun, 13 Apr',
-      originalPrice: 499,
-      discountedPrice: 349,
-      discountPercentage: 30,
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+
+  const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
+  useEffect(() => {
+    const fetchProducts = () => {
+      setLoading(true);
+      getProducts()
+        .then(response => {
+          setProducts(response.data);
+          setLoading(false);
+          console.log('Products:', response.data);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.error('Error fetching products:', error);
+        });
+    };
+
+    fetchProducts();
+  }, [setProducts]);
+
+  const handleProductPress = (cardProduct: ProductCardProps['product']) => {
+    const originalProduct = getOriginalProduct(cardProduct.id);
+    navigation.navigate('UploadScreen', {
+      product: originalProduct,
+    });
+  };
+  console.log(cardProducts);
+  const renderProductShimmer = () => <ProductCardShimmer />;
+  const skeletonItems = loading
+    ? Array(5)
+        .fill(0)
+        .map((_, index) => ({id: `skeleton-${index}`}))
+    : cardProducts;
 
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
-    <TouchableOpacity onPress={() => navigation.navigate('UploadScreen')}>
+    <TouchableOpacity onPress={() => handleProductPress(item)}>
       <ProductCard
         product={item}
         onAddToCart={(id: string, quantity: number) => {
@@ -101,7 +100,7 @@ const PharmacyScreen = () => {
   }: {
     item: ProductCardProps['product'];
   }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('UploadScreen')}>
+    <TouchableOpacity onPress={() => handleProductPress(item)}>
       <ProductCard
         product={item}
         borderColor={'#2D9CDB'}
@@ -177,16 +176,27 @@ const PharmacyScreen = () => {
                 Limited-time deals on medicines. Grab them before they're gone!
               </Text>
             </View>
-
-            <FlatList
-              data={products}
-              renderItem={renderProduct}
-              keyExtractor={item => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.productList}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-            />
+            {loading ? (
+              <FlatList
+                data={skeletonItems}
+                renderItem={renderProductShimmer}
+                keyExtractor={item => item.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.productList}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
+              />
+            ) : (
+              <FlatList
+                data={cardProducts}
+                renderItem={renderProduct}
+                keyExtractor={item => item.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.productList}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
+              />
+            )}
 
             <Text>Browse by Category</Text>
             <View
@@ -249,16 +259,27 @@ const PharmacyScreen = () => {
 
             <Text>Trending Medicines</Text>
 
-            <FlatList
-              data={products}
-              renderItem={renderProductForTrending}
-              keyExtractor={item => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.productList}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-            />
-
+            {loading ? (
+              <FlatList
+                data={skeletonItems}
+                renderItem={renderProductShimmer}
+                keyExtractor={item => item.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.productList}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
+              />
+            ) : (
+              <FlatList
+                data={cardProducts}
+                renderItem={renderProductForTrending}
+                keyExtractor={item => item.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.productList}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
+              />
+            )}
             <Text>Featured Brands</Text>
             <View
               style={{

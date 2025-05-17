@@ -1,14 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {styles} from './index.styles';
-import {
-  Trash2,
-  Minus,
-  Plus,
-  Square,
-  SquareMinus,
-  SquarePlus,
-} from 'lucide-react-native';
+import {Trash2, SquareMinus, SquarePlus} from 'lucide-react-native';
 
 type CartItemCardProps = {
   imageUrl: string;
@@ -52,16 +45,16 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       {/* Right Side Delete & Controls */}
       <View style={styles.rightControls}>
         <TouchableOpacity style={styles.deleteIcon}>
-          <Trash2 size={14} color="#EB5757" />
+          <Trash2 size={20} color="#EB5757" />
         </TouchableOpacity>
 
         <View style={styles.counterContainer}>
           <TouchableOpacity onPress={decreaseQty}>
-            <SquareMinus size={16} color="#0088B1" />
+            <SquareMinus size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.counterText}>{qty}</Text>
           <TouchableOpacity onPress={increaseQty}>
-            <SquarePlus size={16} color="#0088B1" />
+            <SquarePlus size={20} color="#0088B1" />
           </TouchableOpacity>
         </View>
       </View>

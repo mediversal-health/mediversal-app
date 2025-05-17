@@ -14,9 +14,9 @@ import {
   ChevronRight,
   Truck,
   Wallet,
-  CircleArrowLeftIcon,
   Search,
-  ShoppingCart,
+  ChevronLeft,
+  ShoppingBag,
 } from 'lucide-react-native';
 // import navigation from '../../navigation';
 import {
@@ -105,15 +105,17 @@ const CartPage = () => {
     <>
       <SafeAreaView style={styles.safeHeader}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <CircleArrowLeftIcon size={16} color="#161D1F" />
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <View style={styles.headerRightIcons}>
             <TouchableOpacity style={styles.iconSpacing}>
-              <Search size={16} color="#161D1F" />
+              <Search size={20} color="#161D1F" />
             </TouchableOpacity>
             <TouchableOpacity>
-              <ShoppingCart size={16} color="#161D1F" />
+              <ShoppingBag size={20} color="#161D1F" />
             </TouchableOpacity>
           </View>
         </View>

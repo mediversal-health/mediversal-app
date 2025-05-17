@@ -10,14 +10,15 @@ import UploadPrescription from '../Screens/UploadPrescription';
 import AddressBookScreen from '../Screens/AddressBookScreen';
 import CartPage from '../Screens/CartScreen';
 import LocationMapScreen from '../Screens/LocationMapScreen';
-import {AddressBookTypes} from '../types';
+import {AddressBookTypes, Product} from '../types';
+import SearchScreen from '../Screens/SearchScreen';
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   HomeScreen: undefined;
   SuccessAnimation: undefined;
   Layout: undefined;
-  UploadScreen: undefined;
+  UploadScreen: {product?: Product};
   AllProducts: undefined;
   UploadPrescription: undefined;
   CartPage: {
@@ -30,6 +31,7 @@ export type RootStackParamList = {
     };
   };
   LocationMapScreen: undefined;
+  SearchScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -38,8 +40,8 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={EmailSignup} />
+        {/* <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={EmailSignup} /> */}
         <Stack.Screen name="Layout" component={layout} />
         <Stack.Screen name="AllProducts" component={AllProductsScreen} />
         <Stack.Screen
@@ -66,6 +68,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name="LocationMapScreen"
           component={LocationMapScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
