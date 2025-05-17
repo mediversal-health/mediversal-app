@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import ExpandableSection from './index';
 import styles from './index.styles';
 

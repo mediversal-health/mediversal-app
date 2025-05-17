@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
     width: '85%',
     backgroundColor: '#fff',
     padding: 10,
-    // borderTopRightRadius: 16,
-    // borderBottomRightRadius: 16,
+    borderTopRightRadius: 16,
+    borderBottomRightRadius: 16,
     elevation: 10,
   },
   header: {

@@ -12,7 +12,14 @@ export const styles = StyleSheet.create({
     color: '#161D1F',
     marginBottom: 2,
   },
-
+  backButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#e8f4f7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   couponStrip: {
     flexDirection: 'row',
     alignItems: 'center',

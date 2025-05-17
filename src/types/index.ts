@@ -43,3 +43,30 @@ export interface AddressBookTypes {
   phoneNumber: string;
   addressType: string;
 }
+
+export interface Product {
+  productId: number;
+  ProductName: string;
+  CostPrice: string;
+  SellingPrice: string;
+  DiscountedPrice: string;
+  Type: string;
+  PrescriptionRequired: string;
+  ColdChain: string;
+  ManufacturerName: string;
+  Composition: string;
+  ProductInformation: string;
+  SafetyAdvices: string;
+  StorageInstructions: string;
+  Substitutes: string;
+  SimilarProducts: string;
+  GST: string;
+  Coupons: string | null;
+  AvailableInInventory: number;
+  InventoryUpdated: string;
+  InventoryUpdatedBy: number;
+  DiscountedPercentage: string;
+  updated_by: number;
+  archivedProduct: number;
+  images: string[];
+}

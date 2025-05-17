@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   FlatList,
   Dimensions,
   TouchableOpacity,
@@ -14,7 +13,7 @@ import {styles} from './index.styles';
 interface MedicineDetailProps {
   images: any[];
   rating: number;
-  name: string;
+  name: string | undefined;
   packInfo: string;
   saltComposition: string;
   currentPrice: string;
