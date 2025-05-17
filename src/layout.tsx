@@ -150,7 +150,10 @@ const Layout = () => {
               </TouchableOpacity>
               <Text style={{fontSize: 16}}>Pharmacy</Text>
             </View>
-            <ShoppingBag size={20} />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CartPage', {})}>
+              <ShoppingBag size={20} />
+            </TouchableOpacity>
           </View>
           <View style={{paddingHorizontal: 20}}>
             <SearchBar />
