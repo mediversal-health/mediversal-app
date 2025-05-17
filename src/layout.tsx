@@ -16,7 +16,7 @@ import BottomTabNavigator from './navigation/BottomTabBarNavigation';
 import CustomDrawer from './components/common/CustomDrawer';
 import {useScreenStore} from './store/screenSelector';
 import SearchBar from './components/common/SearchBar';
-const layout = () => {
+const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -161,4 +161,4 @@ const layout = () => {
   );
 };
 
-export default layout;
+export default Layout;

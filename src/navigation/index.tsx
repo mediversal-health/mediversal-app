@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
-import layout from '../layout';
+import Layout from '../Layout';
 import UploadScreen from '../Screens/UploadScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
 import UploadPrescription from '../Screens/UploadPrescription';
@@ -12,7 +12,7 @@ import AddressBookScreen from '../Screens/AddressBookScreen';
 import CartPage from '../Screens/CartScreen';
 import LocationMapScreen from '../Screens/LocationMapScreen';
 
-import {useAuthStore} from '../store/authStore'; // adjust path as needed
+import {useAuthStore} from '../store/authStore';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +25,7 @@ const AuthStack = () => (
 
 const AppStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Layout" component={layout} />
+    <Stack.Screen name="Layout" component={Layout} />
     <Stack.Screen name="AllProducts" component={AllProductsScreen} />
     <Stack.Screen name="UploadScreen" component={UploadScreen} />
     <Stack.Screen name="CartPage" component={CartPage} />
