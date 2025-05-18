@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
-import layout from '../Layout';
+import layout from '../layout';
 import UploadScreen from '../Screens/UploadScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
 import UploadPrescription from '../Screens/UploadPrescription';
