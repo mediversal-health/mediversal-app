@@ -1,4 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 12,
     color: '#6D7578',
-    fontWeight: 'regular',
+    fontFamily: Fonts.JakartaRegular,
   },
   infoCard: {
     flexDirection: 'row',
@@ -45,16 +46,17 @@ const styles = StyleSheet.create({
   },
   cardTextTop: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#000',
   },
   cardTextBottom: {
     fontSize: 11,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   heading: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     marginBottom: 8,
     color: '#000000',
   },
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#899193',
     marginBottom: 20,
+    fontFamily: Fonts.JakartaRegular,
   },
   bottomCard: {
     backgroundColor: '#0088B1',
@@ -76,10 +79,11 @@ const styles = StyleSheet.create({
   },
   underline: {
     textDecorationLine: 'underline',
+    fontFamily: Fonts.JakartaRegular,
   },
   sectionTitle: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#161D1F',
     marginTop: 16,
   },
@@ -115,6 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: '#161D1F',
     marginBottom: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   successStrip: {
     position: 'absolute',
@@ -130,6 +135,7 @@ const styles = StyleSheet.create({
   successText: {
     fontSize: 8,
     color: '#FFFFFF',
+    fontFamily: Fonts.JakartaRegular,
   },
   recentHeader: {
     flexDirection: 'row',
@@ -163,7 +169,7 @@ const styles = StyleSheet.create({
   noPrescriptionText: {
     fontSize: 12,
     color: '#0088B1',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   consultCardRow: {
     flexDirection: 'row',
@@ -205,7 +211,7 @@ const styles = StyleSheet.create({
   consultButtonText: {
     color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   safeArea: {
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
@@ -224,13 +230,13 @@ const styles = StyleSheet.create({
 
   consultTitle: {
     fontSize: 10,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#161D1F',
   },
 
   consultSubtitle: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#161D1F',
   },
 });

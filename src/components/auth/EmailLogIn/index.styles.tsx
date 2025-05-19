@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,14 +14,17 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 12,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   focusedInput: {
     borderColor: '#0088b1',
+    fontFamily: Fonts.JakartaRegular,
   },
   errorText: {
     color: 'red',
     fontSize: 13,
     marginTop: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   errorBorder: {
     borderColor: 'red',
@@ -31,6 +35,7 @@ const styles = StyleSheet.create({
   },
   passwordInput: {
     paddingRight: 45,
+    fontFamily: Fonts.JakartaRegular,
   },
   eyeIcon: {
     position: 'absolute',
@@ -44,6 +49,7 @@ const styles = StyleSheet.create({
   forgotText: {
     color: '#0088b1',
     fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
   },
   loginButton: {
     backgroundColor: '#0088B1',
@@ -55,6 +61,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: '#fff',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -70,6 +77,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     color: '#999',
     fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
   },
   googleButton: {
     padding: 14,
@@ -89,6 +97,7 @@ const styles = StyleSheet.create({
   helpText: {
     fontSize: 14,
     color: '#333',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

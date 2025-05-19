@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
   discountText: {
     color: 'black',
     fontSize: 9,
+    fontFamily: Fonts.JakartaRegular,
   },
   textContent: {
     flexDirection: 'column',
@@ -38,11 +40,12 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 16,
     color: '#fff',
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   subText: {
     fontSize: 12,
     color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
   },
   button: {
     borderRadius: 6,
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
   cartSVG: {
     position: 'absolute',

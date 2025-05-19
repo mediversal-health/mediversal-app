@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'center',
     marginTop: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   priscriptionContainer: {
     width: '100%',
@@ -37,11 +39,12 @@ const styles = StyleSheet.create({
   priscriptionText: {
     flex: 1,
     color: '#FFF',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   subtitle: {
     color: '#FFF',
     fontSize: 8,
+    fontFamily: Fonts.JakartaRegular,
   },
   uploadButton: {
     borderRadius: 12,
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#0088B1',
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
   gradientBox: {
     width: '100%',
@@ -102,20 +106,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: '600',
     color: '#EB5757',
     marginBottom: 4,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   highlight: {
     fontSize: 20,
-    fontWeight: 'bold',
     color: '#EB5757',
     marginBottom: 6,
+    fontFamily: Fonts.JakartaItalic,
   },
   subtext: {
     fontSize: 12,
     color: '#000',
     textAlign: 'center',
+    fontFamily: Fonts.JakartaRegular,
   },
   productList: {
     paddingVertical: 10,
@@ -134,6 +139,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   imagecontainer: {
     flex: 1,

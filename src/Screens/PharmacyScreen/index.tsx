@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 
 import OnboardingSteps from '../../components/Banners/OnboardingBanner';
@@ -47,28 +48,39 @@ import {ProductCardProps} from '../../types';
 import {getProducts} from '../../Services/pharmacy';
 import useProductStore from '../../store/productsStore';
 import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
+import {Fonts} from '../../styles/fonts';
+
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
-  useEffect(() => {
-    const fetchProducts = () => {
-      setLoading(true);
-      getProducts()
-        .then(response => {
-          setProducts(response.data);
-          setLoading(false);
-          console.log('Products:', response.data);
-        })
-        .catch(error => {
-          setLoading(false);
-          console.error('Error fetching products:', error);
-        });
-    };
 
-    fetchProducts();
+  const fetchProducts = useCallback(() => {
+    setLoading(true);
+    getProducts()
+      .then(response => {
+        setProducts(response.data);
+        setLoading(false);
+        setRefreshing(false);
+        console.log('Products:', response.data);
+      })
+      .catch(error => {
+        setLoading(false);
+        setRefreshing(false);
+        console.error('Error fetching products:', error);
+      });
   }, [setProducts]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchProducts();
+  };
 
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
@@ -76,6 +88,7 @@ const PharmacyScreen = () => {
       product: originalProduct,
     });
   };
+
   console.log(cardProducts);
   const renderProductShimmer = () => <ProductCardShimmer />;
   const skeletonItems = loading
@@ -115,7 +128,16 @@ const PharmacyScreen = () => {
 
   return (
     <SafeAreaView style={{display: 'flex', flexDirection: 'column'}}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#0088B1']} // Color of the refresh indicator
+            tintColor={'#0088B1'} // iOS specific color
+          />
+        }>
         <View style={styles.safeArea}>
           <OnboardingSteps />
           <PromoBanner />
@@ -198,7 +220,9 @@ const PharmacyScreen = () => {
               />
             )}
 
-            <Text>Browse by Category</Text>
+            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              Browse by Category
+            </Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -257,7 +281,9 @@ const PharmacyScreen = () => {
               />
             </View>
 
-            <Text>Trending Medicines</Text>
+            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              Trending Medicines
+            </Text>
 
             {loading ? (
               <FlatList
@@ -280,7 +306,9 @@ const PharmacyScreen = () => {
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
               />
             )}
-            <Text>Featured Brands</Text>
+            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              Featured Brands
+            </Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -313,7 +341,9 @@ const PharmacyScreen = () => {
               </TouchableOpacity>
             </View>
 
-            <Text>Stay Informed, Stay Healthy</Text>
+            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              Stay Informed, Stay Healthy
+            </Text>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}

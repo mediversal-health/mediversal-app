@@ -1,4 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,8 +27,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 16,
-    fontWeight: '600',
     color: '#212121',
+    fontFamily: Fonts.JakartaBold,
   },
   scrollView: {
     flex: 1,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaBold,
     color: '#212121',
     marginBottom: 12,
   },
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#606060',
     marginBottom: 8,
   },
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: '#FFFFFF',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   inputFilled: {
     backgroundColor: '#D3D7D8',
@@ -108,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#000',
     marginLeft: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   selectedAddressTypeText: {
     color: '#FFFFFF',

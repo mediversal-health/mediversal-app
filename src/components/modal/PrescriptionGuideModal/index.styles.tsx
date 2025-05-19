@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modalOverlay: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
     marginBottom: 16,
   },
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   caption: {
     textAlign: 'center',
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#161D1F',
     marginBottom: 4,
   },
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
     color: '#899193',
     marginBottom: 20,
     paddingHorizontal: 8,
+    fontFamily: Fonts.JakartaRegular,
   },
   closeButton: {
     backgroundColor: '#FFFFFF',
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: '#0088B1',
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
 });
 

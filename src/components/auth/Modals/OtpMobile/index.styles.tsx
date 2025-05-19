@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modal: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
     alignSelf: 'flex-start',
   },
@@ -23,14 +24,16 @@ const styles = StyleSheet.create({
     color: '#7f7f7f',
     alignSelf: 'flex-start',
     paddingBottom: 20,
+    fontFamily: Fonts.JakartaRegular,
   },
   editLink: {
     color: '#7f7f7f',
     fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
   },
   editLinkHighlight: {
     color: '#0088B1',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   otpRow: {
     flexDirection: 'row',
@@ -58,9 +61,11 @@ const styles = StyleSheet.create({
   },
   resendText: {
     color: '#7f7f7f',
+    fontFamily: Fonts.JakartaRegular,
   },
   timerText: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   resendButton: {
     minHeight: 20,
@@ -69,6 +74,7 @@ const styles = StyleSheet.create({
   resendLink: {
     color: '#0088B1',
     fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   verifyButton: {
     marginTop: 24,
@@ -77,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0088B1',
     borderRadius: 10,
     alignItems: 'center',
+    fontFamily: Fonts.JakartaRegular,
   },
   verifyButtonDisabled: {
     borderWidth: 1,
@@ -89,6 +96,7 @@ const styles = StyleSheet.create({
   verifyButtonText: {
     color: '#fff',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   disabledText: {
     color: '#0088B1',
@@ -98,6 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 5,
     textAlign: 'center',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

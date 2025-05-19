@@ -56,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       <View style={styles.infoContainer}>
         <Text style={styles.productName}>{product.name}</Text>
-        <Text style={styles.productDescription}>{product.description}</Text>
+        {/* <Text style={styles.productDescription}>{product.description}</Text> */}
 
         <View style={styles.quantityContainer}>
           <Text style={styles.quantityText}>{product.quantity}</Text>

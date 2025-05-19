@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modal: {
@@ -20,12 +21,13 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 6,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
+    fontFamily: Fonts.JakartaRegular,
   },
   buttonContainer: {
     width: '100%',
@@ -46,6 +48,7 @@ const styles = StyleSheet.create({
   locationButtonText: {
     color: '#0088B1',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     color: '#666',
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   manuallocationButton: {
     width: '100%',
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
   manuallocationButtonText: {
     color: '#FFF',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 

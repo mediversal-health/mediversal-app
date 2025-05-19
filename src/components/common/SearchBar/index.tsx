@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Search, Mic} from 'lucide-react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const SearchBar: React.FC = () => {
   return (
@@ -40,9 +41,11 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     color: '#999',
+    fontFamily: Fonts.JakartaRegular,
   },
   highlight: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 

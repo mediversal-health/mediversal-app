@@ -6,6 +6,7 @@ import {
   LayoutAnimation,
   Text,
 } from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 interface ToggleButtonsProps {
   isMobile: boolean;
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
   toggleButtonText: {
     fontSize: 14,
     color: '#666666',
+    fontFamily: Fonts.JakartaBold,
   },
   selectedToggleButtonText: {
     color: '#f8f8f8',

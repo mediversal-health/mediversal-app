@@ -59,11 +59,12 @@ const styles = StyleSheet.create({
   noAccountText: {
     fontSize: 18,
     color: '#000000',
+    fontFamily: Fonts.JakartaRegular,
   },
   createOneText: {
     marginTop: 4,
     color: '#0088B1',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     fontSize: 14,
   },
   termsText: {
@@ -72,9 +73,11 @@ const styles = StyleSheet.create({
     color: '#666666',
     marginTop: 40,
     marginBottom: 24,
+    fontFamily: Fonts.JakartaRegular,
   },
   termsHighlight: {
     color: '#000000',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

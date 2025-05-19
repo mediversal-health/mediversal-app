@@ -2,6 +2,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Bell, ChevronRight} from 'lucide-react-native';
+import {Fonts} from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#161D1F',
     marginTop: 6,
+    fontFamily: Fonts.JakartaRegular,
   },
   description: {
     fontSize: 10,

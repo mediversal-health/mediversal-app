@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {Platform, StatusBar} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -87,7 +88,7 @@ export const styles = StyleSheet.create({
 
   relatedProductsHeading: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     marginBottom: 12,
     paddingHorizontal: 16,
     color: '#000',
