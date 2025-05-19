@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable react-native/no-inline-styles */
 import {Bell, ChevronDown, ChevronLeft, ShoppingBag} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {
@@ -19,7 +17,7 @@ import SearchBar from './components/common/SearchBar';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from './navigation';
 
-const layout = () => {
+const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -171,4 +169,4 @@ const layout = () => {
   );
 };
 
-export default layout;
+export default Layout;

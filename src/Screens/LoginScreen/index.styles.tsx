@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -27,21 +28,21 @@ const styles = StyleSheet.create({
   welcomeText: {
     color: '#FFFFFF',
     fontSize: 20,
-    fontWeight: '400',
     paddingVertical: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   appNameText: {
     color: '#FFFFFF',
     fontSize: 40,
-    fontWeight: 'bold',
     lineHeight: 42,
     paddingBottom: 4,
+    fontFamily: Fonts.JakartaBold,
   },
   taglineText: {
     color: '#FFFFFF',
     fontSize: 20,
-    fontWeight: '400',
     paddingBottom: 14,
+    fontFamily: Fonts.JakartaRegular,
   },
   bottomSection: {
     flex: 1,

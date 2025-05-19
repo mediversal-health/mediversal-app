@@ -100,5 +100,28 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontWeight: 'bold',
   },
+  logoutContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    paddingTop: 10,
+    backgroundColor: 'white', // match drawer background
+  },
+  logoutButton: {
+    marginTop: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    backgroundColor: '#E53935', // red color
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  logoutText: {
+    color: '#fff',
+    fontWeight: '400',
+    fontSize: 12,
+  },
 });
 export default styles;
