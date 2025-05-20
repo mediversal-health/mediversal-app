@@ -30,6 +30,19 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaBold,
     color: '#212121',
   },
+  markerWrapper: {
+    backgroundColor: '#ffffff',
+    padding: 6,
+    borderRadius: 20,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   content: {
     flex: 1,
   },
@@ -127,6 +140,27 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 3,
+  },
+  markerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pinWrapper: {
+    backgroundColor: '#0088B1',
+    borderRadius: 20,
+    padding: 3,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  pinShadow: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    marginTop: -4,
   },
 });
 

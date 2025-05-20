@@ -311,9 +311,13 @@ const LocationMapScreen: React.FC = () => {
             <Marker
               coordinate={currentLocation}
               title={locationTitle}
-              description={locationAddress || 'Fetching current address...'}
-              pinColor="#0088B1">
-              <MapPin size={30} color="#0088B1" />
+              description={locationAddress || 'Fetching current address...'}>
+              <View style={styles.markerContainer}>
+                <View style={styles.pinWrapper}>
+                  <MapPin size={25} color="#ffffff" />
+                </View>
+                <View style={styles.pinShadow} />
+              </View>
             </Marker>
           </MapView>
         )}
