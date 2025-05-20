@@ -1,6 +1,6 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import {
   View,
   Text,
@@ -282,6 +282,15 @@ const LocationMapScreen: React.FC = () => {
       handleRetryLocation();
     }
   };
+  const initialRegion = useMemo(() => {
+    if (!currentLocation) return undefined;
+    return {
+      latitude: currentLocation.latitude,
+      longitude: currentLocation.longitude,
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.02,
+    };
+  }, [currentLocation]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -302,12 +311,7 @@ const LocationMapScreen: React.FC = () => {
             ref={ref => setMapRef(ref)}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            initialRegion={{
-              latitude: currentLocation.latitude,
-              longitude: currentLocation.longitude,
-              latitudeDelta: 0.02,
-              longitudeDelta: 0.02,
-            }}>
+            initialRegion={initialRegion}>
             <Marker
               coordinate={currentLocation}
               title={locationTitle}

@@ -14,7 +14,7 @@ import {RootStackParamList} from '../../../navigation';
 GoogleSignin.configure({
   scopes: ['profile', 'email'],
   webClientId:
-    '227480277120-drsep4sjnte9dt49bifu1eo3cufk2mk5.apps.googleusercontent.com',
+    '46248115272-m66gnu362gmi9uflfojcm53a3ihulq90.apps.googleusercontent.com',
 });
 
 const GoogleIcon = `
