@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +14,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingVertical: 14,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   button: {
     backgroundColor: '#0088B1',
@@ -38,6 +41,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     color: '#999',
     fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
   },
   googleButton: {
     padding: 14,
@@ -72,20 +77,24 @@ const styles = StyleSheet.create({
   helpText: {
     fontSize: 18,
     color: '#333',
+    fontFamily: Fonts.JakartaRegular,
   },
   termsText: {
     fontSize: 12,
     textAlign: 'center',
     color: '#666666',
     padding: 40,
+    fontFamily: Fonts.JakartaRegular,
   },
   termsHighlight: {
     color: '#000000',
+    fontFamily: Fonts.JakartaRegular,
   },
   haveAccountText: {
     color: '#0088B1',
     fontWeight: '600',
     fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

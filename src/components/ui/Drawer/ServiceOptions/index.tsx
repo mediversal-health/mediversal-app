@@ -2,6 +2,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Bell, ChevronRight} from 'lucide-react-native';
+import {Fonts} from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
@@ -46,13 +47,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
   description: {
     fontSize: 10,
     color: '#666',
     marginTop: 2,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 

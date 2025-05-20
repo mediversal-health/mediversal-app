@@ -14,6 +14,8 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import styles from './index.styles';
 import {GOOGLE_API_KEY} from '@env';
+import {Fonts} from '../../styles/fonts';
+
 interface PlacePrediction {
   description: string;
   place_id: string;
@@ -58,6 +60,29 @@ export default function SearchScreen() {
     }
   };
 
+  // Proper debouncing implementation
+  const debouncedFetchPlaces = (text: string): void => {
+    // Clear any existing timeout to cancel previous pending searches
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Only set a new timeout if the search text is meaningful
+    if (text.length > 1) {
+      // Set loading state immediately to show feedback to user
+      setIsLoading(true);
+
+      // Schedule new search after debounce delay
+      timeoutRef.current = setTimeout(() => {
+        fetchPlaces(text);
+      }, 3000); // 300ms debounce delay
+    } else {
+      setIsLoading(false);
+      setSuggestions([]);
+    }
+  };
+
+  // Cleanup timeout on component unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -68,14 +93,7 @@ export default function SearchScreen() {
 
   const handleSearch = (text: string): void => {
     setSearchText(text);
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      fetchPlaces(text);
-    }, 300);
+    debouncedFetchPlaces(text);
   };
 
   const handleSelectPlace = (place: PlacePrediction): void => {
@@ -118,7 +136,12 @@ export default function SearchScreen() {
           <ChevronLeft size={20} color="#0088B1" />
         </TouchableOpacity>
 
-        <Text style={{fontSize: 16, marginLeft: 10}}>
+        <Text
+          style={{
+            fontSize: 16,
+            marginLeft: 10,
+            fontFamily: Fonts.JakartaBold,
+          }}>
           Select Delivery Location
         </Text>
       </View>
@@ -141,8 +164,10 @@ export default function SearchScreen() {
               marginLeft: 8,
               fontSize: 14,
               color: '#333',
+              fontFamily: Fonts.JakartaRegular,
             }}
             placeholder="Search for building, society, location..."
+            placeholderTextColor={'#899193'}
             value={searchText}
             onChangeText={handleSearch}
             autoFocus
@@ -163,7 +188,12 @@ export default function SearchScreen() {
         }}>
         <MapPinned color={'#0088B1'} size={20} />
         <TouchableOpacity onPress={handleUseCurrentLocation}>
-          <Text style={{color: '#0088B1', fontSize: 14}}>
+          <Text
+            style={{
+              color: '#0088B1',
+              fontSize: 14,
+              fontFamily: Fonts.JakartaRegular,
+            }}>
             Use current Location
           </Text>
         </TouchableOpacity>

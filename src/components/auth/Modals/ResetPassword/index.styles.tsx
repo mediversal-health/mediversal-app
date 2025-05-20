@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modal: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088b1',
     marginBottom: 8,
   },
@@ -21,10 +22,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginBottom: 20,
+    fontFamily: Fonts.JakartaRegular,
   },
   inputWrapper: {
     position: 'relative',
     marginBottom: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   input: {
     height: 48,
@@ -34,7 +37,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     color: '#333',
-    paddingRight: 48, // space for icon
+    paddingRight: 48,
+    fontFamily: Fonts.JakartaRegular, // space for icon
   },
   icon: {
     position: 'absolute',
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#f8f8f8',
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
 });
 export default styles;

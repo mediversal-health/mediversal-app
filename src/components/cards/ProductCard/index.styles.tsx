@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   cardContainer: {
     width: 130,
-    height: 250,
+    height: 215,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   imageContainer: {
-    height: 80,
+    height: 100,
 
     alignItems: 'center',
     justifyContent: 'center',
@@ -40,13 +41,15 @@ const styles = StyleSheet.create({
   },
   productName: {
     marginTop: 4,
-    fontSize: 12,
+    fontSize: 10,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   productDescription: {
     fontSize: 12,
     color: '#000',
     marginTop: 2,
+    fontFamily: Fonts.JakartaRegular,
   },
   quantityContainer: {
     marginTop: 4,
@@ -54,6 +57,7 @@ const styles = StyleSheet.create({
   quantityText: {
     fontSize: 8,
     color: '#666',
+    fontFamily: Fonts.JakartaRegular,
   },
   deliveryContainer: {
     flexDirection: 'row',
@@ -61,28 +65,32 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   deliveryText: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#34C759',
     marginLeft: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   discountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   originalPrice: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#666',
     textDecorationLine: 'line-through',
     marginRight: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   discountPercentage: {
-    fontSize: 12,
+    fontSize: 8,
     color: '#00A86B',
+    fontFamily: Fonts.JakartaRegular,
   },
   currentPrice: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   addButton: {
     position: 'absolute',
@@ -98,7 +106,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    height: 24,
+    height: 20,
     borderTopLeftRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
@@ -106,7 +114,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   counterButton: {
-    width: 20,
+    width: 16,
     height: 24,
     alignItems: 'center',
     justifyContent: 'center',
@@ -116,6 +124,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 12,
     paddingHorizontal: 6,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

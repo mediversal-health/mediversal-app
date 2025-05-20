@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -44,13 +45,14 @@ export const styles = StyleSheet.create({
   },
   medicineName: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#333',
+    fontFamily: Fonts.JakartaBold,
   },
   medicinePack: {
     fontSize: 14,
     color: '#666',
     marginTop: 4,
+    fontFamily: Fonts.JakartaRegular,
   },
   saltLabel: {
     fontSize: 16,
@@ -64,6 +66,7 @@ export const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
     paddingHorizontal: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   priceContainer: {
     flexDirection: 'row',
@@ -101,13 +104,13 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontWeight: '600',
     textAlign: 'center',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   consultButtonText: {
     color: '#0088B1',
-    fontWeight: '600',
     marginLeft: 8,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   icon: {
     width: 16,
@@ -116,7 +119,7 @@ export const styles = StyleSheet.create({
   },
   currentPrice: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#333',
   },
   originalPrice: {
@@ -124,12 +127,13 @@ export const styles = StyleSheet.create({
     color: '#999',
     textDecorationLine: 'line-through',
     marginLeft: 8,
+    fontFamily: Fonts.JakartaRegular,
   },
   discount: {
     fontSize: 14,
     color: '#4CAF50',
     marginLeft: 8,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   stockContainer: {
     flexDirection: 'row',
@@ -145,10 +149,11 @@ export const styles = StyleSheet.create({
   inStock: {
     fontSize: 14,
     color: '#50B57F',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   deliveryText: {
     fontSize: 14,
     color: '#50B57F',
+    fontFamily: Fonts.JakartaRegular,
   },
 });

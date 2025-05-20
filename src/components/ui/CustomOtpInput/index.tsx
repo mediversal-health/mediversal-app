@@ -1,5 +1,6 @@
 import React, {useRef, useEffect} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 interface CustomOtpInputProps {
   otp: string[];
@@ -98,10 +99,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: Fonts.JakartaRegular,
   },
   otpInputFilled: {
     borderColor: '#0088B1',
     borderWidth: 1.5,
+    fontFamily: Fonts.JakartaRegular,
   },
   otpInputEmpty: {
     borderColor: '#d3d3d3',

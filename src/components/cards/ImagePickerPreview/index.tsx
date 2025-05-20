@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, forwardRef, useImperativeHandle} from 'react';
 import {View, Image, TouchableOpacity, Text, Modal} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import styles from './index.styles';
+import {Fonts} from '../../../styles/fonts';
 
 export type UploadImagePickerHandle = {
   openGallery: () => void;
@@ -46,7 +48,7 @@ const UploadImagePicker = forwardRef<
 
       // Prepare FormData to send to backend
       const formData = new FormData();
-      result.assets.forEach((asset, index) => {
+      result.assets.forEach(asset => {
         if (asset.uri && asset.type && asset.fileName) {
           formData.append('files', {
             uri: asset.uri,
@@ -105,7 +107,7 @@ const UploadImagePicker = forwardRef<
         name: filename,
       };
 
-      console.log(`Appending file:`, file); // ✅ Log each file object
+      // console.log(`Appending file:`, file); // ✅ Log each file object
       formData.append('files', file as any);
     });
 
@@ -116,7 +118,9 @@ const UploadImagePicker = forwardRef<
     <View style={styles.container}>
       {isGalleryOpen ? (
         <View style={styles.galleryLoading}>
-          <Text>Fetching...</Text>
+          <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+            Fetching...
+          </Text>
         </View>
       ) : images.length > 0 ? (
         <View>

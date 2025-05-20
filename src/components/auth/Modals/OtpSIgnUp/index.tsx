@@ -173,7 +173,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
           {timer > 0 ? (
             <Text style={styles.timerText}>
               <Text style={styles.grayText}>Didn't get OTP? </Text>
-              <Text style={styles.blueText}>{timer}s</Text>
+              <Text style={styles.blueText}>{timer}</Text>
             </Text>
           ) : (
             <TouchableOpacity

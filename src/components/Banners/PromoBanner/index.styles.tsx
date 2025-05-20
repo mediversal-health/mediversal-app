@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,11 +14,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#0088B1',
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   subtitle: {
     color: '#0088B1',
     fontSize: 8,
+    fontFamily: Fonts.JakartaRegular,
   },
   button: {
     backgroundColor: '#E8F4F7',
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

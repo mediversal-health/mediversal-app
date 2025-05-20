@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
@@ -8,6 +9,7 @@ import Pharmacy from './assests/svgs/Layer 2.svg';
 import Homecare from './assests/svgs/homecare.svg';
 import PharmacyScreen from '../Screens/PharmacyScreen';
 import {useScreenStore} from '../store/screenSelector';
+import {Fonts} from '../styles/fonts';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +20,6 @@ export default function BottomTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        // eslint-disable-next-line react/no-unstable-nested-components
         tabBarIcon: ({color, size}) => {
           let IconComponent;
 
@@ -58,6 +59,7 @@ export default function BottomTabNavigator() {
         tabBarActiveTintColor: '#0088B1',
         tabBarInactiveTintColor: '#B0B6B8',
         headerShown: false,
+        fontFamily: Fonts.JakartaRegular,
         tabBarStyle: {
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
@@ -69,6 +71,7 @@ export default function BottomTabNavigator() {
         tabBarLabel: route.name === 'Menu' ? () => null : undefined,
         tabBarLabelStyle: {
           fontSize: 12,
+
           marginBottom: 5,
         },
       })}>

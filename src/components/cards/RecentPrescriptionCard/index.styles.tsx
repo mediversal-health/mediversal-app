@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   card: {
@@ -17,12 +18,13 @@ const styles = StyleSheet.create({
   },
   doctorText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#000000',
   },
   uploadedText: {
     fontSize: 8,
     color: '#6D7578',
+    fontFamily: Fonts.JakartaRegular,
   },
   rightContent: {
     flexDirection: 'row',
@@ -40,16 +42,18 @@ const styles = StyleSheet.create({
   badgeText: {
     color: '#fff',
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
   reuseButton: {
     backgroundColor: '#0088B1',
     borderRadius: 6,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 3,
   },
   reuseText: {
     color: '#fff',
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 
