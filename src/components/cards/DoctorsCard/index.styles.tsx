@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
   statusText: {
     color: 'black',
     fontSize: 5,
+    fontFamily: Fonts.JakartaRegular,
   },
   doctorInfoRow: {
     flexDirection: 'row',
@@ -64,12 +66,12 @@ const styles = StyleSheet.create({
   doctorName: {
     color: '#fff',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   doctorSpecialty: {
     color: '#fff',
     fontSize: 8,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   scheduleContainer: {
     borderRadius: 6,
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     color: '#888',
     fontSize: 8,
+    fontFamily: Fonts.JakartaRegular,
   },
   divider: {
     width: 1,

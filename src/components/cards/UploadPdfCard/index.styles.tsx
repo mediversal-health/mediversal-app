@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   previewContainer: {
@@ -9,9 +10,9 @@ const styles = StyleSheet.create({
   },
   previewTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
     marginBottom: 6,
     color: '#333',
+    fontFamily: Fonts.JakartaBold,
   },
   fileName: {
     fontSize: 14,
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
   proceedText: {
     color: '#F8F8F8',
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
   cancel: {
     borderColor: '#0088B1',
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
   cancelText: {
     color: '#0088B1',
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
   modalOverlay: {
     flex: 1,
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#0088B1',
     textAlign: 'center',
   },
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#899193',
     marginTop: 8,
-    fontWeight: '400',
+    fontFamily: Fonts.JakartaRegular,
     flex: 1,
   },
   modalButtons: {
@@ -92,7 +95,7 @@ const styles = StyleSheet.create({
     color: '#F8F8F8',
     fontSize: 12,
     textAlign: 'center',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   modalCancelBtn: {
     borderColor: '#0088B1',
@@ -119,6 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: '#6D7578',
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 

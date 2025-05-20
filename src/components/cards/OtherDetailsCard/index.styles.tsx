@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     color: '#161D1F',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   expandedContent: {
     marginHorizontal: 12,
@@ -30,6 +31,7 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     color: '#333',
     lineHeight: 18,
+    fontFamily: Fonts.JakartaRegular,
   },
   terms: {
     color: 'green',

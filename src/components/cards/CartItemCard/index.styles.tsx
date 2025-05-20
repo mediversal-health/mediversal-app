@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
@@ -31,12 +32,13 @@ export const styles = StyleSheet.create({
   },
   name: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#0088B1',
   },
   quantity: {
     fontSize: 8,
     color: '#6D7578',
+    fontFamily: Fonts.JakartaRegular,
   },
   priceRow: {
     flexDirection: 'row',
@@ -47,11 +49,11 @@ export const styles = StyleSheet.create({
     fontSize: 8,
     color: '#6D7578',
     textDecorationLine: 'line-through',
-    fontWeight: 400,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   actualPrice: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#0088B1',
   },
   rightControls: {

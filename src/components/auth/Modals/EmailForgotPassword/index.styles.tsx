@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,14 +11,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#0088B1',
     marginBottom: 10,
+    fontFamily: Fonts.JakartaBold,
   },
   subtitle: {
     fontSize: 15,
     color: '#6B7280',
     marginBottom: 20,
+    fontFamily: Fonts.JakartaRegular,
   },
   inputWrapper: {
     width: '100%',
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
     height: 45,
     fontSize: 16,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
   errorText: {
     color: '#EF4444',
@@ -54,6 +57,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
   },
   helpWrapper: {
     marginTop: 30,
@@ -62,6 +66,7 @@ const styles = StyleSheet.create({
   helpText: {
     fontSize: 14,
     color: '#000',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

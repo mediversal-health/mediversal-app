@@ -1,25 +1,12 @@
 // src/components/modals/PrescriptionGuideModal.tsx
 
 import React, {useState} from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import {X, ChevronRight} from 'lucide-react-native';
+import {Modal, View, Text, TouchableOpacity, Dimensions} from 'react-native';
+import {ChevronRight} from 'lucide-react-native';
 import styles from './index.styles';
 import Slip from './assets/slip.svg';
 
 const screenHeight = Dimensions.get('window').height;
-
-const images = [
-  require('./assets/slip.svg'),
-  require('./assets/slip.svg'),
-  require('./assets/slip.svg'),
-];
 
 interface Props {
   visible: boolean;

@@ -28,9 +28,10 @@ import {
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
 import OtherDetailsCard from '../../components/cards/OtherDetailsCard';
-import LocationModal from '../../components/ui/LocationModal';
+import LocationModal from '../../components/modal/LocationModal';
 import {RootStackParamList} from '../../navigation';
 import NavigationImg from './assets/svgs/navigation.svg';
+import {Fonts} from '../../styles/fonts';
 
 const CartPage = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -133,10 +134,18 @@ const CartPage = () => {
                 }}>
                 <NavigationImg />
                 <View style={{flexDirection: 'column'}}>
-                  <Text style={{color: '#899193', fontSize: 10}}>
+                  <Text
+                    style={{
+                      color: '#899193',
+                      fontSize: 10,
+                      fontFamily: Fonts.JakartaRegular,
+                    }}>
                     Deliver to {formData?.recipient}
                   </Text>
-                  <Text style={{fontSize: 12}}>{formattedAddress}</Text>
+                  <Text
+                    style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
+                    {formattedAddress}
+                  </Text>
                 </View>
               </View>
             </View>

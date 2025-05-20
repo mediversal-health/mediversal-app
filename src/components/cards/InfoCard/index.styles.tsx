@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
   bannerText: {
     fontSize: 4,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#fff',
     textAlign: 'center',
   },
@@ -33,15 +34,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontWeight: 'bold',
     fontSize: 14,
     color: '#000',
     textAlign: 'center',
+    fontFamily: Fonts.JakartaBold,
   },
   subHeading: {
     fontSize: 8,
     color: '#000',
     textAlign: 'center',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

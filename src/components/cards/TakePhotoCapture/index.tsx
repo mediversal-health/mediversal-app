@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useImperativeHandle, useState, forwardRef} from 'react';
 import {View, Image, TouchableOpacity, Text, Modal} from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
 import styles from './index.styles';
+import {Fonts} from '../../../styles/fonts';
 
 export type TakePhotoCaptureHandle = {
   openCamera: () => void;
@@ -91,7 +93,9 @@ const TakePhotoCapture = forwardRef<
     <View style={styles.container}>
       {isCameraOpen ? (
         <View style={styles.cameraLoading}>
-          <Text>Fetching...</Text>
+          <Text style={{fontFamily: Fonts.JakartaSemiBold, fontSize: 12}}>
+            Fetching...
+          </Text>
         </View>
       ) : allPhotos.length > 0 ? (
         <View>

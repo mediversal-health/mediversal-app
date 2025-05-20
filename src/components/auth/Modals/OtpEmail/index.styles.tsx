@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modal: {
@@ -19,13 +20,14 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 12,
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
   },
   subtitle: {
     marginBottom: 12,
     fontSize: 16,
     color: '#666',
+    fontFamily: Fonts.JakartaRegular,
   },
   changeEmailContainer: {
     alignSelf: 'flex-start',
@@ -36,9 +38,11 @@ const styles = StyleSheet.create({
   },
   grayText: {
     color: '#666',
+    fontFamily: Fonts.JakartaRegular,
   },
   blueText: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   emailInputContainer: {
     alignSelf: 'stretch',
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     height: 40,
+    fontFamily: Fonts.JakartaRegular,
   },
   otpContainer: {
     flexDirection: 'row',
@@ -88,6 +93,7 @@ const styles = StyleSheet.create({
   resendText: {
     fontWeight: 'bold',
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   verifyButton: {
     marginTop: 24,
@@ -111,12 +117,14 @@ const styles = StyleSheet.create({
   },
   disabledText: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   errorText: {
     color: '#ff3b30',
     fontSize: 12,
     marginTop: 5,
     textAlign: 'center',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -36,7 +37,7 @@ export const styles = StyleSheet.create({
   headerText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   content: {
     paddingHorizontal: 16,

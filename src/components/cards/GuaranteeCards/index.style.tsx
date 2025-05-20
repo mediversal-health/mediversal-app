@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -16,7 +17,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#50B57F',
     width: 250,
-    height: 121,
+    height: 130,
   },
   verifiedBadge: {
     backgroundColor: '#38B87C',
@@ -34,12 +35,13 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '300',
     marginLeft: 4,
-    fontSize: 12,
+    fontSize: 10,
     lineHeight: 8,
+    fontFamily: Fonts.JakartaRegular,
   },
   guaranteeTitle: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#222222',
     marginBottom: 6,
   },
@@ -47,7 +49,7 @@ export const styles = StyleSheet.create({
     fontSize: 8,
     color: '#161D1F',
     marginBottom: 2,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     lineHeight: 12,
   },
   featureContainer: {
@@ -67,7 +69,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 6,
     color: '#555555',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaRegular,
   },
   divider: {
     width: 1,
@@ -81,11 +83,11 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#0088B1',
     width: 250,
-    height: 121,
+    height: 130,
   },
   personalizedTitle: {
     fontSize: 12,
-    fontWeight: '700',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#111111',
     marginBottom: 4,
   },
@@ -93,6 +95,7 @@ export const styles = StyleSheet.create({
     fontSize: 8,
     color: '#555555',
     marginBottom: 8,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   personalizedFeatures: {
     marginTop: 4,
@@ -110,5 +113,6 @@ export const styles = StyleSheet.create({
     marginLeft: 6,
     fontSize: 8,
     color: '#444444',
+    fontFamily: Fonts.JakartaRegular,
   },
 });

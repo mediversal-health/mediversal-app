@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   card: {
     width: 126,
-    height: 218,
+    height: 230,
     borderRadius: 12,
     padding: 8,
     position: 'relative',
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#FFFFFF',
     marginBottom: 8,
     lineHeight: 22,
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 8,
     color: '#FFFFFF',
+    fontFamily: Fonts.JakartaRegular,
   },
   button: {
     backgroundColor: '#FFFFFF',

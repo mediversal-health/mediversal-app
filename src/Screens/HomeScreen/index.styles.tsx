@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +14,7 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
   headerRow: {
     justifyContent: 'space-between',
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   countText: {
     fontSize: 10,
@@ -35,6 +37,7 @@ const styles = StyleSheet.create({
   },
   seeAllText: {
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
   arrowIcon: {
     marginTop: 3,
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
   },
   priscriptionText: {
     flex: 1,
+    fontFamily: Fonts.JakartaRegular,
   },
   uploadButton: {
     borderRadius: 12,
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
   gridWrap: {
     flexDirection: 'row',
@@ -94,11 +99,12 @@ const styles = StyleSheet.create({
   },
   smallHeading: {
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
   greenHeading: {
     fontSize: 15,
     color: '#00FF80',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaBold,
   },
   line: {
     flex: 1,
@@ -114,6 +120,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 10,
     color: '#ccc',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 

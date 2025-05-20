@@ -1,4 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,6 +12,7 @@ export const styles = StyleSheet.create({
     fontSize: 10,
     color: '#161D1F',
     marginBottom: 2,
+    fontFamily: Fonts.JakartaRegular,
   },
   backButton: {
     width: 32,
@@ -35,7 +37,7 @@ export const styles = StyleSheet.create({
   couponText: {
     fontSize: 12,
     marginLeft: 6,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   icon: {
     marginRight: 6,
@@ -48,7 +50,7 @@ export const styles = StyleSheet.create({
   },
   deliveryText: {
     fontSize: 14,
-    fontWeight: 500,
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#161D1F',
     marginBottom: 5,
   },
@@ -70,7 +72,7 @@ export const styles = StyleSheet.create({
   },
   mediCashText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     color: '#B0B6B8',
   },
   radioCircle: {
@@ -95,7 +97,7 @@ export const styles = StyleSheet.create({
   },
   billSummaryLabel: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaRegular,
     marginHorizontal: 12,
     marginTop: 16,
     color: '#161D1F',
@@ -115,7 +117,7 @@ export const styles = StyleSheet.create({
   },
   amountText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
   addressButton: {
@@ -126,7 +128,7 @@ export const styles = StyleSheet.create({
   },
   addressButtonText: {
     color: '#fff',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaBold,
   },
   header: {
     flexDirection: 'row',

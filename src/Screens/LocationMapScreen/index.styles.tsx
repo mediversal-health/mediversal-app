@@ -1,4 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaBold,
     color: '#212121',
   },
   content: {
@@ -61,13 +62,14 @@ const styles = StyleSheet.create({
   },
   locationTitle: {
     color: '#000',
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     fontSize: 16,
   },
   locationAddress: {
     fontSize: 14,
     color: '#606060',
     lineHeight: 20,
+    fontFamily: Fonts.JakartaRegular,
   },
   proceedButton: {
     backgroundColor: '#0088B1',
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
   proceedButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   mapPlaceholder: {
     flex: 1,

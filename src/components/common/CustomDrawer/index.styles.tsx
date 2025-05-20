@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   overlay: {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   greeting: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   profileProgress: {
     flexDirection: 'row',
@@ -50,10 +51,11 @@ const styles = StyleSheet.create({
   completeText: {
     fontSize: 14,
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   percentComplete: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   familySection: {
     paddingVertical: 10,
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   },
   familyTitle: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
   addNew: {
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
   addNewText: {
     fontSize: 12,
     color: '#B0B6B8',
+    fontFamily: Fonts.JakartaRegular,
   },
   familyTags: {
     flexDirection: 'row',
@@ -92,13 +95,14 @@ const styles = StyleSheet.create({
   tagText: {
     fontSize: 10,
     color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
   },
   sectionHeader: {
     fontSize: 14,
     color: '#0088B1',
     paddingHorizontal: 10,
     paddingTop: 10,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
   },
   logoutContainer: {
     position: 'absolute',

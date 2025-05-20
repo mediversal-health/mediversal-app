@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 12,
     color: '#000000',
+    fontFamily: Fonts.JakartaRegular,
   },
   otpButton: {
     backgroundColor: '#0088B1',
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   },
   otpButtonText: {
     fontSize: 16,
-    fontWeight: '400',
+    fontFamily: Fonts.JakartaSemiBold,
     textAlign: 'center',
     color: '#F8F8F8',
   },

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export default StyleSheet.create({
   section: {
@@ -6,6 +7,7 @@ export default StyleSheet.create({
     fontSize: 14,
     color: '#555',
     lineHeight: 20,
+    fontFamily: Fonts.JakartaRegular,
   },
   heading: {
     marginTop: 12,

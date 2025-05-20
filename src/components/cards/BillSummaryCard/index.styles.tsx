@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
@@ -21,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   billTitle: {
     color: '#161D1F',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     fontSize: 12,
   },
   priceWrapper: {
@@ -37,7 +38,7 @@ export const styles = StyleSheet.create({
   finalPrice: {
     fontSize: 12,
     color: '#161D1F',
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   savingsRow: {
     flexDirection: 'row',
@@ -49,7 +50,7 @@ export const styles = StyleSheet.create({
   savingsText: {
     color: '#161D1F',
     fontSize: 10,
-    fontWeight: '400',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   detailsSection: {
     backgroundColor: '#ffffff',
@@ -61,7 +62,7 @@ export const styles = StyleSheet.create({
   inclCharges: {
     color: '#6C7375',
     fontSize: 10,
-    fontWeight: '400',
+    fontFamily: Fonts.JakartaSemiBold,
   },
 
   detailsHeading: {

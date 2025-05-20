@@ -2,6 +2,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {ChevronDown, ChevronUp} from 'lucide-react-native';
+import {Fonts} from '../../../styles/fonts';
 
 interface ExpandableSectionProps {
   title: string;
@@ -38,7 +39,9 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
           borderBottomWidth: 2,
           borderRadius: 10,
         }}>
-        <Text style={{fontSize: 12, fontWeight: '500'}}>{title}</Text>
+        <Text style={{fontSize: 12, fontFamily: Fonts.JakartaSemiBold}}>
+          {title}
+        </Text>
         {expanded ? (
           <ChevronUp size={16} color="#000" />
         ) : (

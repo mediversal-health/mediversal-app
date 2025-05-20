@@ -1,6 +1,7 @@
 // src/app/component/styles/TakePhotoCapture.styles.ts
 
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 export default StyleSheet.create({
   container: {
@@ -58,6 +59,7 @@ export default StyleSheet.create({
     color: '#0088B1',
     fontSize: 12,
     marginBottom: 10,
+    fontFamily: Fonts.JakartaRegular,
   },
 
   footerButtonsColumn: {
@@ -79,6 +81,7 @@ export default StyleSheet.create({
   proceedText: {
     color: '#F8F8F8',
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
 
   cancel: {
@@ -94,6 +97,7 @@ export default StyleSheet.create({
   cancelText: {
     color: '#0088B1',
     fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
 
   modalOverlay: {
@@ -114,7 +118,7 @@ export default StyleSheet.create({
 
   modalTitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
     textAlign: 'center',
   },
@@ -125,6 +129,7 @@ export default StyleSheet.create({
     marginTop: 8,
     fontWeight: '400',
     flex: 1,
+    fontFamily: Fonts.JakartaRegular,
   },
 
   // Updated to vertical layout for modal buttons
@@ -146,7 +151,7 @@ export default StyleSheet.create({
     color: '#F8F8F8',
     fontSize: 12,
     textAlign: 'center',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaBold,
   },
 
   modalCancelBtn: {
@@ -157,6 +162,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    fontFamily: Fonts.JakartaRegular,
   },
 
   modalCancelText: {

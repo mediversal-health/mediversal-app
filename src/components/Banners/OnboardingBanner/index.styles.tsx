@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,13 +31,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: Fonts.JakartaBold,
     color: '#fff',
     marginBottom: 4,
   },
   subtitleText: {
     fontSize: 10,
-
+    fontFamily: Fonts.JakartaRegular,
     color: '#fff',
   },
   stepsRow: {
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
   stepLabel: {
     color: '#0088B1',
     fontSize: 10,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   boxesContainer: {
     flexDirection: 'row',
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   stepText: {
     color: '#0088B1',
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
     marginTop: 6,
     textAlign: 'center',
   },

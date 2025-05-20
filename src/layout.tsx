@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {Bell, ChevronDown, ChevronLeft, ShoppingBag} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {
@@ -16,6 +17,7 @@ import {useScreenStore} from './store/screenSelector';
 import SearchBar from './components/common/SearchBar';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from './navigation';
+import {Fonts} from './styles/fonts';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -63,7 +65,11 @@ const Layout = () => {
               </TouchableWithoutFeedback>
 
               <View style={{flexDirection: 'column'}}>
-                <Text style={{fontSize: 12, fontWeight: 'bold'}}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: Fonts.JakartaBold,
+                  }}>
                   Delivering to
                 </Text>
                 <View
@@ -75,7 +81,13 @@ const Layout = () => {
                   <View style={{flexDirection: 'row', gap: 3}}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('SearchScreen')}>
-                      <Text>Gandhi Maidan 800024</Text>
+                      <Text
+                        style={{
+                          fontFamily: Fonts.JakartaRegular,
+                          fontSize: 12,
+                        }}>
+                        Gandhi Maidan 800024
+                      </Text>
                     </TouchableOpacity>
                     <ChevronDown size={20} />
                   </View>
@@ -94,19 +106,25 @@ const Layout = () => {
               paddingHorizontal: 20,
             }}>
             <View style={{flexDirection: 'column'}}>
-              <Text style={{fontSize: 12}}>
+              <Text style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
                 Get Medicine reminderds and other updates{' '}
               </Text>
               <View style={{flexDirection: 'row', gap: 3}}>
-                <Text style={{fontSize: 12, marginLeft: 5}}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginLeft: 5,
+                    fontFamily: Fonts.JakartaRegular,
+                  }}>
                   via notification
                 </Text>
                 <TouchableOpacity>
                   <Text
                     style={{
                       fontSize: 12,
-                      fontWeight: 'bold',
+
                       textDecorationLine: 'underline',
+                      fontFamily: Fonts.JakartaBold,
                     }}>
                     View More
                   </Text>
