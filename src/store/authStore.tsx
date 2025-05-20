@@ -7,12 +7,14 @@ export const useAuthStore = create<AuthState>()(
   persist(
     set => ({
       token: null,
+      customer_id: null,
       email: null,
       phoneNumber: null,
 
-      setAuthentication: ({token, email, phoneNumber}) =>
+      setAuthentication: ({token, customer_id, email, phoneNumber}) =>
         set({
           token,
+          customer_id: customer_id || null,
           email: email || null,
           phoneNumber: phoneNumber || null,
         }),
@@ -20,6 +22,7 @@ export const useAuthStore = create<AuthState>()(
       clearAuthentication: () =>
         set({
           token: null,
+          customer_id: null,
           email: null,
           phoneNumber: null,
         }),

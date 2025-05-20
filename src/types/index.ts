@@ -2,11 +2,13 @@ import {StyleProp, ViewStyle} from 'react-native';
 
 export type AuthState = {
   token: string | null;
+  customer_id: number | null;
   email: string | null;
   phoneNumber: string | null;
 
   setAuthentication: (params: {
     token: string;
+    customer_id?: number;
     email?: string;
     phoneNumber?: string;
   }) => void;

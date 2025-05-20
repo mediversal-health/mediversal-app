@@ -81,6 +81,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
         // Alert.alert('Success', 'OTP verification successful');
         setAuthentication({
           token: res.data.token,
+          customer_id: res.data.customer_id,
           email: email,
         });
         onClose();
