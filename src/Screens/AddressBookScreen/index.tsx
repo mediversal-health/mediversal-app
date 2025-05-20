@@ -21,7 +21,25 @@ import styles from './index.styles';
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
 type AddressBookScreenRouteProp = RouteProp<
-  {params: {location?: {title: string; address: string}}},
+  {
+    params: {
+      location?: {
+        title: string;
+        address: string;
+        coords: {
+          latitude: number;
+          longitude: number;
+        };
+        formattedAddress?: {
+          street: string;
+          area: string;
+          city: string;
+          state: string;
+          pincode: string;
+        };
+      };
+    };
+  },
   'params'
 >;
 
@@ -52,23 +70,42 @@ const AddressBookScreen: React.FC = () => {
 
   useEffect(() => {
     if (locationData) {
-      const addressParts = locationData.address
-        .split(',')
-        .map(part => part.trim());
-      const city =
-        addressParts.length >= 3 ? addressParts[addressParts.length - 3] : '';
-      const state =
-        addressParts.length >= 2 ? addressParts[addressParts.length - 2] : '';
-      const pincode = addressParts.find(part => /^\d{6}$/.test(part)) || '';
+      // Use the formatted address data if available, otherwise fallback to parsing
+      if (locationData.formattedAddress) {
+        setFormData(prevData => ({
+          ...prevData,
+          houseNo: '',
+          landmark: '',
+          areaDetails:
+            locationData.formattedAddress?.area || locationData.title || '',
+          city: locationData.formattedAddress?.city || '',
+          state: locationData.formattedAddress?.state || '',
+          pincode: locationData.formattedAddress?.pincode || '',
+        }));
+      } else {
+        // Fallback to the old parsing logic (you can keep this as a backup)
+        const addressParts = locationData.address
+          .split(',')
+          .map(part => part.trim());
 
-      setFormData(prevData => ({
-        ...prevData,
-        areaDetails: locationData.title,
-        landmark: addressParts[0] || '',
-        city,
-        state,
-        pincode,
-      }));
+        const city =
+          addressParts.length >= 3 ? addressParts[addressParts.length - 3] : '';
+        const state =
+          addressParts.length >= 2 ? addressParts[addressParts.length - 2] : '';
+        // Look for a 5-6 digit number pattern for the pincode/zip
+        const pincodeMatch = locationData.address.match(/\b\d{5,6}\b/);
+        const pincode = pincodeMatch ? pincodeMatch[0] : '';
+
+        setFormData(prevData => ({
+          ...prevData,
+          houseNo: '',
+          landmark: '',
+          areaDetails: locationData.title !== '' ? locationData.title : '',
+          city,
+          state,
+          pincode,
+        }));
+      }
     }
   }, [locationData]);
 

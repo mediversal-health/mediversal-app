@@ -32,13 +32,16 @@ export type RootStackParamList = {
     formData?: AddressBookTypes;
   };
   AddressBookScreen: {
-    location?: {
+    location: {
       title: string;
       address: string;
-      coords?: {
-        // Make coords optional in case you navigate without it sometimes
-        latitude: number;
-        longitude: number;
+      coords?: {latitude: number; longitude: number};
+      formattedAddress: {
+        street: string;
+        area: string;
+        city: string;
+        state: string;
+        pincode: string;
       };
     };
   };
