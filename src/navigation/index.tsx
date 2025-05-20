@@ -13,11 +13,16 @@ import LocationMapScreen from '../Screens/LocationMapScreen';
 import {AddressBookTypes, Product} from '../types';
 import SearchScreen from '../Screens/SearchScreen';
 import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
+import PrescriptionVerification from '../components/cards/PrescriptionVerification';
 
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   HomeScreen: undefined;
+  PrescriptionVerification: {
+    pdfs: string[];
+    pdfName: string | null;
+  };
   SuccessAnimation: undefined;
   Layout: undefined;
   UploadScreen: {product?: Product};
@@ -27,9 +32,17 @@ export type RootStackParamList = {
     formData?: AddressBookTypes;
   };
   AddressBookScreen: {
-    location?: {
+    location: {
       title: string;
       address: string;
+      coords?: {latitude: number; longitude: number};
+      formattedAddress: {
+        street: string;
+        area: string;
+        city: string;
+        state: string;
+        pincode: string;
+      };
     };
   };
   LocationMapScreen: undefined;
@@ -63,6 +76,10 @@ const AppNavigator = () => {
               component={LocationMapScreen}
             />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen
+              name="PrescriptionVerification"
+              component={PrescriptionVerification}
+            />
           </>
         ) : (
           <>

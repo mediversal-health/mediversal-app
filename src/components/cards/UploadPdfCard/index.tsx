@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import {pick} from '@react-native-documents/picker';
 import styles from './index.styles';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../navigation';
 
 export interface UploadPDFPickerHandle {
   openDocumentPicker: () => void;
@@ -24,6 +26,7 @@ const UploadPDFPicker = forwardRef<UploadPDFPickerHandle, UploadPDFPickerProps>(
     );
     const [showModal, setShowModal] = useState(false);
     const [isPickerOpen, setIsPickerOpen] = useState(false);
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const openDocumentPicker = async () => {
       setIsPickerOpen(true);
@@ -51,8 +54,10 @@ const UploadPDFPicker = forwardRef<UploadPDFPickerHandle, UploadPDFPickerProps>(
     }));
 
     const handleProceed = () => {
-      // Handle proceed logic (e.g., navigate or store the file)
-      console.log('Proceed with:', selectedFileName);
+      navigation.navigate('PrescriptionVerification', {
+        pdfs: selectedFileName ? [selectedFileName] : [],
+        pdfName: selectedFileName,
+      });
     };
 
     const handleCancel = () => {
