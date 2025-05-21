@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,7 +7,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  PermissionsAndroid,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
@@ -29,32 +28,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  useEffect(() => {
-    requestlocationPermission();
-  }, []);
-  const requestlocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Cool Photo App location Permission',
-          message:
-            'Cool Photo App needs access to your location ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-      } else {
-        console.log('location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

@@ -106,11 +106,12 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
         'phone',
       )) as ApiResponse;
       console.log(response);
+      console.log(response.data?.user.customer_id);
 
       if (response.data?.success) {
         setAuthentication({
           token: response.data.token as string,
-          customer_id: response.data.user?.customer_id,
+          customer_id: response.data.user.customer_id,
           phoneNumber: phoneNumber,
         });
         navigation.navigate('Layout');

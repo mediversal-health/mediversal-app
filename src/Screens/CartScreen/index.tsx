@@ -67,6 +67,13 @@ const CartPage = () => {
       location: {
         title: '',
         address: '',
+        formattedAddress: {
+          street: '',
+          area: '',
+          city: '',
+          state: '',
+          pincode: '',
+        },
       },
     });
     hideLocationModal();

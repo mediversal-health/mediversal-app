@@ -15,36 +15,26 @@ import PrescriptionGuideModal from '../../components/modal/PrescriptionGuideModa
 import Expert from './assets/experts.svg';
 import Secure from './assets/secure.svg';
 import Upload from './assets/uploaded.svg';
-import TakePhotoCapture, {
-  TakePhotoCaptureHandle,
-} from '../../components/cards/TakePhotoCapture';
-import UploadImagePicker, {
-  UploadImagePickerHandle,
-} from '../../components/cards/ImagePickerPreview';
-import UploadPDFPicker, {
-  UploadPDFPickerHandle,
-} from '../../components/cards/UploadPdfCard';
-
+import UploadPicker from '../../components/common/UploadPicker';
+import {UploadPickerHandle} from '../../types/index';
 const UploadPrescription: React.FC = () => {
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(true);
-  const photoRef = useRef<TakePhotoCaptureHandle>(null);
-  const pickerRef = useRef<UploadImagePickerHandle>(null);
-  const pdfRef = useRef<UploadPDFPickerHandle>(null);
+  const uploadRef = useRef<UploadPickerHandle>(null);
 
   const handleTakePhoto = () => {
     setShowUploadContent(false);
-    photoRef.current?.openCamera();
+    uploadRef.current?.openCamera();
   };
 
   const handleUploadImage = () => {
     setShowUploadContent(false);
-    pickerRef.current?.openGallery();
+    uploadRef.current?.openGallery();
   };
 
   const handleUploadPDF = () => {
     setShowUploadContent(false);
-    pdfRef.current?.openDocumentPicker();
+    uploadRef.current?.openDocumentPicker();
   };
 
   const handleCancelUpload = () => {
@@ -157,9 +147,7 @@ const UploadPrescription: React.FC = () => {
             </TouchableOpacity>
           </View>
 
-          <TakePhotoCapture ref={photoRef} onCancel={handleCancelUpload} />
-          <UploadImagePicker ref={pickerRef} onCancel={handleCancelUpload} />
-          <UploadPDFPicker ref={pdfRef} onCancel={handleCancelUpload} />
+          <UploadPicker ref={uploadRef} onCancel={handleCancelUpload} />
 
           {showUploadContent && (
             <>
