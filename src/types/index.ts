@@ -72,3 +72,12 @@ export interface Product {
   archivedProduct: number;
   images: string[];
 }
+
+export type UploadType = 'image' | 'pdf' | 'camera';
+
+export interface UploadPickerHandle {
+  openPicker: (type: UploadType) => void;
+  openCamera: () => void;
+  openGallery: () => void;
+  openDocumentPicker: () => void;
+}
