@@ -171,4 +171,33 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
   },
+  pickerLoading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  loadingText: {
+    marginTop: 10,
+    color: '#6D7578',
+    fontSize: 16,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  previewContainer: {
+    backgroundColor: '#F5F5F5',
+    padding: 16,
+    marginTop: 16,
+    borderRadius: 12,
+  },
+  previewTitle: {
+    fontSize: 16,
+    marginBottom: 6,
+    color: '#333',
+    fontFamily: Fonts.JakartaBold,
+  },
+  fileName: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 12,
+  },
 });

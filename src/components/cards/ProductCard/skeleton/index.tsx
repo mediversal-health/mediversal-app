@@ -80,7 +80,7 @@ const ProductCardShimmer = ({
 const styles = StyleSheet.create({
   cardContainer: {
     width: 130,
-    height: 250,
+    height: 215,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   imageContainer: {
-    height: 80,
+    height: 100,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,

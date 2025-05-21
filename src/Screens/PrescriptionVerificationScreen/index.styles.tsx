@@ -1,5 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {Fonts} from '../../styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -44,16 +44,6 @@ export const styles = StyleSheet.create({
     color: '#161D1F',
     marginBottom: 16,
     fontFamily: Fonts.JakartaBold,
-  },
-  expandedContent: {
-    marginTop: 1,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    marginBottom: 12,
-    paddingVertical: 5,
-    paddingHorizontal: 16,
-    marginHorizontal: 5,
-    flex: 1,
   },
 
   verificationRow: {
@@ -104,81 +94,7 @@ export const styles = StyleSheet.create({
     marginRight: 4,
     fontFamily: Fonts.JakartaSemiBold,
   },
-  cardContainer: {
-    backgroundColor: '#E8F4F7',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 20,
-  },
-  cardContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    borderRadius: 100,
-    backgroundColor: '#D9D9D9',
-    marginRight: 12,
-    justifyContent: 'center',
-  },
-  nameSection: {
-    flex: 1,
-  },
-  nameText: {
-    fontSize: 16,
-    fontFamily: Fonts.JakartaSemiBold,
-  },
-  pharmacistLabel: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  labelText: {
-    fontSize: 12,
-    color: '#161D1F',
-    fontFamily: Fonts.JakartaRegular,
-  },
-  avatarContainer: {
-    borderRadius: 100,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 40,
-    height: 40,
-    marginRight: 8,
-  },
-  statusDot: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 'auto',
-    backgroundColor: '#C9FFD7',
-    borderRadius: 100,
-    padding: 4,
-    paddingHorizontal: 8,
-    justifyContent: 'center',
-  },
-  onlineText: {
-    fontSize: 8,
-    color: '#50B57F',
-    fontFamily: Fonts.JakartaRegular,
-    marginLeft: 4,
-  },
-  expandedSection: {
-    marginTop: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  expLabel: {
-    fontSize: 12,
-    color: '#161D1F',
-    fontFamily: Fonts.JakartaRegular,
-    textAlign: 'left',
-    flexDirection: 'row',
-  },
-  expValue: {
-    fontSize: 14,
-    color: '#161D1F',
-    fontFamily: Fonts.JakartaBold,
-  },
+
   pdfText: {
     fontSize: 12,
     marginTop: 4,
@@ -201,5 +117,57 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: '#6D7578',
     fontWeight: 'regular',
+  },
+  imageListContainer: {
+    marginTop: 20,
+    paddingHorizontal: 16,
+  },
+
+  imageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  imageItem: {
+    width: '31%',
+    marginBottom: 12,
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#f8f9fa',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  uploadedImage: {
+    width: '100%',
+    height: 120,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  uploadTime: {
+    fontSize: 10,
+    color: '#6D7578',
+    padding: 6,
+    textAlign: 'center',
+  },
+  noDataContainer: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+    marginVertical: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    minHeight: 100,
+  },
+  noDataText: {
+    fontSize: 16,
+    color: '#6D7578',
+    textAlign: 'center',
+    fontWeight: '500',
   },
 });
