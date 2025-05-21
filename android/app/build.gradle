@@ -85,9 +85,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-         manifestPlaceholders = [
-        'android.app.default_web_client_id': 'YOUR_WEB_CLIENT_ID'
-    ]
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'com.mediversal_app' 
+        ]
     }
     signingConfigs {
         release {
@@ -130,6 +130,7 @@ android {
     }
 }
 
+
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
@@ -152,4 +153,3 @@ dependencies {
   implementation 'com.google.android.gms:play-services-maps:18.0.2'
   implementation project(':react-native-onesignal')
 }
-// apply plugin: 'com.google.gms.google-services'

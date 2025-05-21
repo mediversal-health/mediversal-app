@@ -1,22 +1,22 @@
-import React from 'react';
-import {TouchableOpacity, Text, Alert, View} from 'react-native';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import React, {useState} from 'react';
+import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {SvgXml} from 'react-native-svg';
 import styles from './index.styles';
-import {useAuthStore} from '../../../store/authStore';
-import {googleSignIn} from '../../../Services/auth';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../navigation';
+import {useAuthStore} from '../../../store/authStore';
 
 GoogleSignin.configure({
-  scopes: ['profile', 'email'],
   webClientId:
-    '227480277120-drsep4sjnte9dt49bifu1eo3cufk2mk5.apps.googleusercontent.com',
+    '999256390369-k7iemau93gpqk6bn3gh6fllcjca3m6da.apps.googleusercontent.com',
+  offlineAccess: true,
+  forceCodeForRefreshToken: true,
+  iosClientId:
+    '999256390369-7ung1vni76jouip9ev7s5n5sedd59f5h.apps.googleusercontent.com',
 });
 
+// Google SVG Icon
 const GoogleIcon = `
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -27,70 +27,53 @@ const GoogleIcon = `
 `;
 
 const GoogleLoginButton = () => {
-  const setAuthentication = useAuthStore(state => state.setAuthentication);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const {setAuthentication} = useAuthStore();
+
   const handleGoogleLogin = async () => {
+    setLoading(true);
+
     try {
       await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const tokens = await GoogleSignin.getTokens();
 
-      await GoogleSignin.signOut();
+      console.log('Google userInfo:', userInfo);
+      console.log('Google tokens:', tokens);
 
-      const signInData = await GoogleSignin.signIn();
-      console.log(signInData);
-      const idToken = (signInData as any)?.idToken;
-
-      if (!idToken) {
-        Alert.alert('Error', 'Failed to retrieve Google ID Token.');
-        return;
-      }
-
-      try {
-        const response = await googleSignIn(idToken);
-        const data = response.data;
-        console.log(data);
-
-        if (data.success === true) {
-          navigation.navigate('Layout');
-          setAuthentication({
-            token: data.token,
-            email: data.email,
-          });
-          Alert.alert('Success', 'Login successful!');
-        } else {
-          Alert.alert('Login Failed', data.message || 'Authentication failed.');
-        }
-      } catch (apiError: any) {
-        console.error(apiError);
-        const errorMessage =
-          apiError.response?.data?.message || 'Server error occurred';
-        Alert.alert('Login Failed', errorMessage);
-      }
+      setAuthentication({
+        token: tokens?.idToken ?? null,
+        customer_id: userInfo?.user?.id ?? null,
+        email: userInfo?.user?.email ?? null,
+        phoneNumber: userInfo?.user?.phoneNumber ?? null,
+      });
     } catch (error: any) {
-      const errorMessage = error?.message || 'Unknown error occurred';
-      switch (error.code) {
-        case statusCodes.SIGN_IN_CANCELLED:
-          Alert.alert('Cancelled', 'Google Sign-In was cancelled.');
-          break;
-        case statusCodes.IN_PROGRESS:
-          Alert.alert('In Progress', 'Google Sign-In is already in progress.');
-          break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          Alert.alert('Error', 'Google Play Services is not available.');
-          break;
-        default:
-          console.log(error);
-          Alert.alert('Error', errorMessage);
-      }
+      console.error('Google sign-in error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <TouchableOpacity style={styles.button} onPress={handleGoogleLogin}>
-      <SvgXml xml={GoogleIcon} width={24} height={24} style={styles.icon} />
-      <View style={styles.separator} />
-      <Text style={styles.text}>Login with Google</Text>
+    <TouchableOpacity
+      style={[styles.button, loading && styles.disabledButton]}
+      onPress={handleGoogleLogin}
+      disabled={loading}>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color="#4285F4" />
+          <Text style={styles.loadingText}>Signing in...</Text>
+        </View>
+      ) : (
+        <>
+          <SvgXml xml={GoogleIcon} width={24} height={24} style={styles.icon} />
+          <View style={styles.separator} />
+          <Text style={styles.text}>Login with Google</Text>
+        </>
+      )}
     </TouchableOpacity>
   );
 };
-
 export default GoogleLoginButton;
