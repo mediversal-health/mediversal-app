@@ -32,23 +32,24 @@ import LocationModal from '../../components/modal/LocationModal';
 import {RootStackParamList} from '../../navigation';
 import NavigationImg from './assets/svgs/navigation.svg';
 import {Fonts} from '../../styles/fonts';
+import {useAuthStore} from '../../store/authStore';
 
 const CartPage = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
   const formData = route.params?.formData;
+  const customer_id = useAuthStore(state => state.customer_id);
+  console.log(customer_id);
+  const pincode = formData?.PinCode;
+  const area = formData?.Area_details?.trim();
+  const landmark = formData?.LandMark?.trim();
 
-  const pincode = formData?.pincode?.trim();
-  const area = formData?.areaDetails?.trim();
-  const landmark = formData?.landmark?.trim();
+  console.log(pincode, area, landmark);
 
-  const isValidAddress = pincode && area && landmark;
+  const formattedAddress = `${pincode} - ${area}, ${landmark}`;
 
-  const formattedAddress = isValidAddress
-    ? `${pincode} - ${area}, ${landmark}`
-    : '';
-  console.log(formattedAddress);
+  console.log('formatted ADDRESS', formattedAddress);
 
   const showLocationModal = () => {
     setLocationModalVisible(true);
@@ -130,7 +131,7 @@ const CartPage = () => {
       </SafeAreaView>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {formattedAddress.trim() !== '' && (
+          {formattedAddress !== 'undefined - undefined, undefined' && (
             <View style={styles.container}>
               <View
                 style={{
@@ -147,7 +148,7 @@ const CartPage = () => {
                       fontSize: 10,
                       fontFamily: Fonts.JakartaRegular,
                     }}>
-                    Deliver to {formData?.recipient}
+                    Deliver to {formData?.Recipient_name}
                   </Text>
                   <Text
                     style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
@@ -228,7 +229,7 @@ const CartPage = () => {
             <Text style={styles.amountLabel}>Amount to pay:</Text>
             <Text style={styles.amountText}>₹574</Text>
           </View>
-          {formattedAddress.trim() !== '' ? (
+          {formattedAddress !== 'undefined - undefined, undefined' ? (
             <TouchableOpacity style={styles.addressButton}>
               <Text style={styles.addressButtonText}>Checkout</Text>
             </TouchableOpacity>
