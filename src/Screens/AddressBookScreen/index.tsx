@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
+  Alert,
 } from 'react-native';
 import {ChevronLeft} from 'lucide-react-native';
 import {
@@ -18,6 +19,8 @@ import {
 import {RootStackParamList} from '../../navigation';
 import {AddressBookTypes} from '../../types';
 import styles from './index.styles';
+import {useAuthStore} from '../../store/authStore';
+import {saveCustomerAddress} from '../../Services/address';
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
 type AddressBookScreenRouteProp = RouteProp<
@@ -35,7 +38,7 @@ type AddressBookScreenRouteProp = RouteProp<
           area: string;
           city: string;
           state: string;
-          pincode: string;
+          pincode: number;
         };
       };
     };
@@ -46,24 +49,28 @@ type AddressBookScreenRouteProp = RouteProp<
 const AddressBookScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<AddressBookScreenRouteProp>();
+  const [isLoading, setIsLoading] = useState(false);
   const locationData = route.params?.location;
-
+  const customer_id = useAuthStore(state => state.customer_id);
+  console.log(customer_id);
   const [selectedAddressType, setSelectedAddressType] =
     useState<AddressType>('Home');
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<AddressBookTypes>({
-    houseNo: '',
-    areaDetails: '',
-    landmark: '',
-    pincode: '',
-    city: '',
-    state: '',
-    recipient: '',
-    phoneNumber: '',
-    addressType: 'Home',
+    Address: '',
+    Home_Floor_FlatNumber: '',
+    Area_details: '',
+    LandMark: '',
+    City: '',
+    State: '',
+    Contact_details: '',
+    Recipient_name: '',
+    PhoneNumber: '',
+    PinCode: 0,
+    Country: '',
+    Address_type: 'Home',
   });
-
   const [errors, setErrors] = useState<{
     [key in keyof AddressBookTypes]?: string;
   }>({});
@@ -74,13 +81,13 @@ const AddressBookScreen: React.FC = () => {
       if (locationData.formattedAddress) {
         setFormData(prevData => ({
           ...prevData,
-          houseNo: '',
-          landmark: '',
-          areaDetails:
+          Home_Floor_FlatNumber: '',
+          LandMark: '',
+          Area_details:
             locationData.formattedAddress?.area || locationData.title || '',
-          city: locationData.formattedAddress?.city || '',
-          state: locationData.formattedAddress?.state || '',
-          pincode: locationData.formattedAddress?.pincode || '',
+          City: locationData.formattedAddress?.city || '',
+          State: locationData.formattedAddress?.state || '',
+          PinCode: locationData.formattedAddress?.pincode || 0,
         }));
       } else {
         // Fallback to the old parsing logic (you can keep this as a backup)
@@ -119,34 +126,55 @@ const AddressBookScreen: React.FC = () => {
 
   const handleAddressTypeSelect = (type: AddressType): void => {
     setSelectedAddressType(type);
-    handleInputChange('addressType', type);
+    handleInputChange('Address_type', type);
   };
 
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
 
-    if (!formData.houseNo.trim()) {
-      newErrors.houseNo = 'House number is required';
+    if (!formData.Home_Floor_FlatNumber.trim()) {
+      newErrors.Home_Floor_FlatNumber = 'House number is required';
     }
 
-    if (!formData.recipient.trim()) {
-      newErrors.recipient = 'Recipient name is required';
+    if (!formData.Recipient_name.trim()) {
+      newErrors.Recipient_name = 'Recipient name is required';
     }
 
-    if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(formData.phoneNumber.trim())) {
-      newErrors.phoneNumber = 'Enter a valid 10-digit phone number';
+    if (!formData.PhoneNumber.trim()) {
+      newErrors.PhoneNumber = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(formData.PhoneNumber.trim())) {
+      newErrors.PhoneNumber = 'Enter a valid 10-digit phone number';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSaveAndProceed = (): void => {
-    if (validateForm()) {
+  const handleSaveAndProceed = async (): Promise<void> => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      let res;
+      if (customer_id) {
+        res = await saveCustomerAddress(customer_id.toString(), formData);
+      }
+      console.log(res);
+
       navigation.navigate('CartPage', {formData});
       console.log('Form data submitted:', formData);
+    } catch (error) {
+      console.error('Error saving address:', error);
+      Alert.alert(
+        'Error',
+        'Failed to save address. Please try again.',
+        [{text: 'OK'}],
+        {cancelable: false},
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -173,17 +201,19 @@ const AddressBookScreen: React.FC = () => {
           <TextInput
             style={[
               styles.input,
-              focusedField === 'houseNo' && styles.inputFocused,
-              formData.houseNo !== '' && styles.inputFilled,
+              focusedField === 'Home_Floor_FlatNumber' && styles.inputFocused,
+              formData.Home_Floor_FlatNumber !== '' && styles.inputFilled,
             ]}
-            value={formData.houseNo}
-            onChangeText={text => handleInputChange('houseNo', text)}
+            value={formData.Home_Floor_FlatNumber}
+            onChangeText={text =>
+              handleInputChange('Home_Floor_FlatNumber', text)
+            }
             placeholder="House/Floor/Flat Number"
-            onFocus={() => setFocusedField('houseNo')}
+            onFocus={() => setFocusedField('Home_Floor_FlatNumber')}
             onBlur={() => setFocusedField(null)}
           />
-          {errors.houseNo && (
-            <Text style={styles.errorText}>{errors.houseNo}</Text>
+          {errors.Home_Floor_FlatNumber && (
+            <Text style={styles.errorText}>{errors.Home_Floor_FlatNumber}</Text>
           )}
         </View>
 
@@ -192,13 +222,13 @@ const AddressBookScreen: React.FC = () => {
           <TextInput
             style={[
               styles.input,
-              focusedField === 'areaDetails' && styles.inputFocused,
-              formData.areaDetails !== '' && styles.inputFilled,
+              focusedField === 'Area_details' && styles.inputFocused,
+              formData.Area_details !== '' && styles.inputFilled,
             ]}
-            value={formData.areaDetails}
-            onChangeText={text => handleInputChange('areaDetails', text)}
+            value={formData.Area_details}
+            onChangeText={text => handleInputChange('Area_details', text)}
             placeholder="Area Details"
-            onFocus={() => setFocusedField('areaDetails')}
+            onFocus={() => setFocusedField('Area_details')}
             onBlur={() => setFocusedField(null)}
           />
         </View>
@@ -208,13 +238,13 @@ const AddressBookScreen: React.FC = () => {
           <TextInput
             style={[
               styles.input,
-              focusedField === 'landmark' && styles.inputFocused,
-              formData.landmark !== '' && styles.inputFilled,
+              focusedField === 'LandMark' && styles.inputFocused,
+              formData.LandMark !== '' && styles.inputFilled,
             ]}
-            value={formData.landmark}
-            onChangeText={text => handleInputChange('landmark', text)}
+            value={formData.LandMark}
+            onChangeText={text => handleInputChange('LandMark', text)}
             placeholder="Landmark"
-            onFocus={() => setFocusedField('landmark')}
+            onFocus={() => setFocusedField('LandMark')}
             onBlur={() => setFocusedField(null)}
           />
         </View>
@@ -225,14 +255,14 @@ const AddressBookScreen: React.FC = () => {
             <TextInput
               style={[
                 styles.input,
-                focusedField === 'pincode' && styles.inputFocused,
-                formData.pincode !== '' && styles.inputFilled,
+                focusedField === 'PinCode' && styles.inputFocused,
+                formData.PinCode !== 0 && styles.inputFilled,
               ]}
-              value={formData.pincode}
-              onChangeText={text => handleInputChange('pincode', text)}
+              value={formData.PinCode === 0 ? '' : String(formData.PinCode)}
+              onChangeText={text => handleInputChange('PinCode', text)}
               placeholder="Pincode"
               keyboardType="number-pad"
-              onFocus={() => setFocusedField('pincode')}
+              onFocus={() => setFocusedField('PinCode')}
               onBlur={() => setFocusedField(null)}
             />
           </View>
@@ -242,13 +272,13 @@ const AddressBookScreen: React.FC = () => {
             <TextInput
               style={[
                 styles.input,
-                focusedField === 'city' && styles.inputFocused,
-                formData.city !== '' && styles.inputFilled,
+                focusedField === 'City' && styles.inputFocused,
+                formData.City !== '' && styles.inputFilled,
               ]}
-              value={formData.city}
-              onChangeText={text => handleInputChange('city', text)}
+              value={formData.City}
+              onChangeText={text => handleInputChange('City', text)}
               placeholder="City"
-              onFocus={() => setFocusedField('city')}
+              onFocus={() => setFocusedField('City')}
               onBlur={() => setFocusedField(null)}
             />
           </View>
@@ -259,13 +289,13 @@ const AddressBookScreen: React.FC = () => {
           <TextInput
             style={[
               styles.input,
-              focusedField === 'state' && styles.inputFocused,
-              formData.state !== '' && styles.inputFilled,
+              focusedField === 'State' && styles.inputFocused,
+              formData.State !== '' && styles.inputFilled,
             ]}
-            value={formData.state}
-            onChangeText={text => handleInputChange('state', text)}
+            value={formData.State}
+            onChangeText={text => handleInputChange('State', text)}
             placeholder="State"
-            onFocus={() => setFocusedField('state')}
+            onFocus={() => setFocusedField('State')}
             onBlur={() => setFocusedField(null)}
           />
         </View>
@@ -307,17 +337,17 @@ const AddressBookScreen: React.FC = () => {
           <TextInput
             style={[
               styles.input,
-              focusedField === 'recipient' && styles.inputFocused,
-              formData.recipient !== '' && styles.inputFilled,
+              focusedField === 'Recipient_name' && styles.inputFocused,
+              formData.Recipient_name !== '' && styles.inputFilled,
             ]}
-            value={formData.recipient}
-            onChangeText={text => handleInputChange('recipient', text)}
+            value={formData.Recipient_name}
+            onChangeText={text => handleInputChange('Recipient_name', text)}
             placeholder="Recipient Name"
-            onFocus={() => setFocusedField('recipient')}
+            onFocus={() => setFocusedField('Recipient_name')}
             onBlur={() => setFocusedField(null)}
           />
-          {errors.recipient && (
-            <Text style={styles.errorText}>{errors.recipient}</Text>
+          {errors.Recipient_name && (
+            <Text style={styles.errorText}>{errors.Recipient_name}</Text>
           )}
         </View>
 
@@ -328,18 +358,18 @@ const AddressBookScreen: React.FC = () => {
           <TextInput
             style={[
               styles.input,
-              focusedField === 'phoneNumber' && styles.inputFocused,
-              formData.phoneNumber !== '' && styles.inputFilled,
+              focusedField === 'PhoneNumber' && styles.inputFocused,
+              formData.PhoneNumber !== '' && styles.inputFilled,
             ]}
-            value={formData.phoneNumber}
-            onChangeText={text => handleInputChange('phoneNumber', text)}
+            value={formData.PhoneNumber}
+            onChangeText={text => handleInputChange('PhoneNumber', text)}
             placeholder="Phone Number"
             keyboardType="phone-pad"
             onFocus={() => setFocusedField('phoneNumber')}
             onBlur={() => setFocusedField(null)}
           />
-          {errors.phoneNumber && (
-            <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+          {errors.PhoneNumber && (
+            <Text style={styles.errorText}>{errors.PhoneNumber}</Text>
           )}
         </View>
 
@@ -348,9 +378,12 @@ const AddressBookScreen: React.FC = () => {
         </Text>
 
         <TouchableOpacity
-          style={styles.saveButton}
-          onPress={handleSaveAndProceed}>
-          <Text style={styles.saveButtonText}>Save & Proceed</Text>
+          style={[styles.saveButton, isLoading && styles.disabledButton]}
+          onPress={handleSaveAndProceed}
+          disabled={isLoading}>
+          <Text style={styles.saveButtonText}>
+            {isLoading ? 'Saving...' : 'Save & Proceed'}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

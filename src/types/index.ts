@@ -35,17 +35,22 @@ export interface ProductCardProps {
 }
 
 export interface AddressBookTypes {
-  houseNo: string;
-  areaDetails: string;
-  landmark: string;
-  pincode: string;
-  city: string;
-  state: string;
-  recipient: string;
-  phoneNumber: string;
-  addressType: string;
+  sno?: number;
+  Customer_id?: string;
+  Customer_Address_id?: string;
+  Address: string;
+  Home_Floor_FlatNumber: string;
+  Area_details: string;
+  LandMark: string;
+  City: string;
+  State: string;
+  Contact_details: string;
+  Recipient_name: string;
+  PhoneNumber: string;
+  PinCode: number;
+  Country: string;
+  Address_type: string;
 }
-
 export interface Product {
   productId: number;
   ProductName: string;

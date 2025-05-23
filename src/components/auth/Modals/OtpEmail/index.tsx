@@ -76,19 +76,17 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
     setError('');
 
     try {
-      const res = await verifyOTP(email, enteredOTP, 'email');
-      if (res.status === 200 || res.data?.success) {
-        // Alert.alert('Success', 'OTP verification successful');
+      const response = await verifyOTP(email, enteredOTP, 'email');
+      if (response.data?.success) {
         setAuthentication({
-          token: res.data.token,
-          customer_id: res.data.customer_id,
+          token: response.data.token as string,
+          customer_id: response.data.user.customer_id,
           email: email,
         });
-        onClose();
         navigation.navigate('Layout');
       } else {
-        setError(res.data?.message || 'Invalid OTP');
-        // Alert.alert('Error', res.data?.message || 'Invalid OTP');
+        // Alert.alert('Error', response.data?.message || 'Resend failed');
+        setError(response.data?.message || 'Invalid OTP');
       }
     } catch (error: any) {
       setError(error?.response?.data?.message || 'Error verifying OTP');

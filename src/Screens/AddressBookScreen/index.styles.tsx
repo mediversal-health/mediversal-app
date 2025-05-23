@@ -134,5 +134,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  disabledButton: {
+    backgroundColor: '#cccccc',
+    opacity: 0.7,
+  },
 });
 export default styles;

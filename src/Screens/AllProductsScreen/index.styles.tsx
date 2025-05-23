@@ -113,5 +113,21 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: Fonts.JakartaRegular,
   },
+  dropdown: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    elevation: 5,
+    top: 30,
+    right: 0,
+    borderRadius: 8,
+    zIndex: 10,
+    paddingVertical: 4,
+  },
+  dropdownOption: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#eee',
+    flexDirection: 'row',
+  },
 });
 export default styles;
