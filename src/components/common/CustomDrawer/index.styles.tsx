@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
   },
   greeting: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: Fonts.JakartaBold,
   },
   profileProgress: {

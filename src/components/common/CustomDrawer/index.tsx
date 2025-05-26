@@ -29,6 +29,7 @@ const SWIPE_THRESHOLD = width * 0.3;
 
 const CustomDrawer = ({onClose}: {onClose: () => void}) => {
   const clearAuthentication = useAuthStore(state => state.clearAuthentication);
+  const {email, phoneNumber, customer_id} = useAuthStore();
 
   const translateX = useSharedValue(-width);
   const startX = useSharedValue(0);
@@ -107,14 +108,16 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                   style={styles.avatar}
                 />
                 <View style={{flexDirection: 'column'}}>
-                  <Text style={styles.greeting}>Namaste, Guest</Text>
+                  <Text style={styles.greeting}>
+                    {`${email || phoneNumber || 'Guest'}`}
+                  </Text>
                   <View style={styles.profileProgress}>
                     <Text style={styles.completeText}>
-                      Complete your profile (9% Done)
+                      Complete your profile (29% Done)
                     </Text>
                     <ChevronRight size={20} color={'#0088B1'} />
                   </View>
-                  <Text style={styles.percentComplete}>9% Completed</Text>
+                  <Text style={styles.percentComplete}>29% Completed</Text>
                 </View>
               </View>
 
