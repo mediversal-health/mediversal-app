@@ -4,7 +4,7 @@ import {Fonts} from '../../../styles/fonts';
 const styles = StyleSheet.create({
   cardContainer: {
     width: 130,
-    height: 215,
+    height: 230,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,

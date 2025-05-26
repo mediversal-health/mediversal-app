@@ -133,15 +133,15 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
         // Prepare files for upload
         const files =
           fileType === 'pdf'
-            ? pdfs.map(pdfName => ({
-                uri: pdfName, // Assuming pdfs array contains URIs; adjust if it only contains names
+            ? pdfs.map(pdfUri => ({
+                uri: pdfUri,
                 type: 'application/pdf',
-                name: pdfName.split('/').pop() || 'document.pdf',
+                name: pdfUri.split('/').pop() || `document_${Date.now()}.pdf`,
               }))
-            : images.map((uri, index) => ({
+            : images.map(uri => ({
                 uri,
                 type: 'image/jpeg',
-                name: `image_${index}.jpg`,
+                name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
               }));
 
         // Call the API
@@ -150,14 +150,13 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
           files,
         );
 
-        // Handle successful upload
         console.log('Upload successful:', response.data);
 
-        // Continue with navigation as before
+        // Continue with navigation
         if (fileType === 'pdf') {
           navigation.navigate('PrescriptionVerification', {
             pdfs: pdfs,
-            pdfName: pdfs[0],
+            pdfName: pdfs[0].split('/').pop() || 'document.pdf',
           });
         } else {
           navigation.navigate('PrescriptionVerification', {

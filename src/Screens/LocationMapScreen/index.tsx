@@ -253,6 +253,7 @@ const LocationMapScreen: React.FC = () => {
           coords: currentLocation,
           formattedAddress: formattedAddress,
         },
+        fromLocationMap: true,
       });
     } else {
       Alert.alert(
