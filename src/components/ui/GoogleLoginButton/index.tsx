@@ -3,8 +3,7 @@ import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {SvgXml} from 'react-native-svg';
 import styles from './index.styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../navigation';
+
 import {useAuthStore} from '../../../store/authStore';
 
 GoogleSignin.configure({
@@ -28,7 +27,6 @@ const GoogleIcon = `
 
 const GoogleLoginButton = () => {
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const {setAuthentication} = useAuthStore();
 
@@ -45,9 +43,8 @@ const GoogleLoginButton = () => {
 
       setAuthentication({
         token: tokens?.idToken ?? null,
-        customer_id: userInfo?.user?.id ?? null,
-        email: userInfo?.user?.email ?? null,
-        phoneNumber: userInfo?.user?.phoneNumber ?? null,
+        customer_id: userInfo.data?.user.id,
+        email: userInfo.data?.user.email,
       });
     } catch (error: any) {
       console.error('Google sign-in error:', error);

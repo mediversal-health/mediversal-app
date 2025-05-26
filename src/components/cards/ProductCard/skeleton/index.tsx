@@ -18,7 +18,6 @@ const ProductCardShimmer = ({
 
   return (
     <View style={[styles.cardContainer, dynamicStyles.cardContainer]}>
-      {/* Image container shimmer */}
       <View style={styles.imageContainer}>
         <ShimmerPlaceholder
           style={styles.productImage}
@@ -27,25 +26,23 @@ const ProductCardShimmer = ({
       </View>
 
       <View style={styles.infoContainer}>
-        {/* Product name shimmer */}
         <ShimmerPlaceholder
           style={styles.productName}
           shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
         />
 
-        {/* Product description shimmer */}
         <ShimmerPlaceholder
           style={styles.productDescription}
           shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
         />
 
-        {/* Quantity shimmer */}
-        <ShimmerPlaceholder
-          style={styles.quantityText}
-          shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
-        />
+        <View style={styles.quantityContainer}>
+          <ShimmerPlaceholder
+            style={styles.quantityText}
+            shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
+          />
+        </View>
 
-        {/* Delivery shimmer */}
         <View style={styles.deliveryContainer}>
           <ShimmerPlaceholder
             style={styles.deliveryShimmer}
@@ -53,22 +50,23 @@ const ProductCardShimmer = ({
           />
         </View>
 
-        {/* Price shimmer */}
-        <View style={styles.priceContainer}>
+        <View style={styles.discountContainer}>
           <ShimmerPlaceholder
-            style={styles.priceShimmer}
+            style={styles.originalPriceShimmer}
+            shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
+          />
+          <ShimmerPlaceholder
+            style={styles.discountPercentageShimmer}
             shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
           />
         </View>
 
-        {/* Current price shimmer */}
         <ShimmerPlaceholder
           style={styles.currentPrice}
           shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
         />
       </View>
 
-      {/* Add button shimmer */}
       <ShimmerPlaceholder
         style={styles.addButton}
         shimmerColors={['#f6f7f8', '#edeef1', '#f6f7f8']}
@@ -80,7 +78,7 @@ const ProductCardShimmer = ({
 const styles = StyleSheet.create({
   cardContainer: {
     width: 130,
-    height: 215,
+    height: 230,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   productImage: {
-    height: 60,
+    height: 90,
     width: '100%',
     borderRadius: 4,
   },
@@ -114,47 +112,56 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   productName: {
-    marginTop: 8,
-    height: 12,
+    marginTop: 4,
+    height: 10,
     width: '80%',
     borderRadius: 4,
   },
   productDescription: {
     height: 12,
     width: '90%',
-    marginTop: 6,
+    marginTop: 2,
     borderRadius: 4,
+  },
+  quantityContainer: {
+    marginTop: 4,
   },
   quantityText: {
     height: 8,
     width: '40%',
-    marginTop: 8,
     borderRadius: 4,
   },
   deliveryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 4,
   },
   deliveryShimmer: {
-    height: 8,
-    width: '60%',
+    height: 10,
+    width: '50%',
     borderRadius: 4,
+    marginLeft: 4,
   },
-  priceContainer: {
+  discountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 4,
   },
-  priceShimmer: {
-    height: 12,
-    width: '70%',
+  originalPriceShimmer: {
+    height: 10,
+    width: '35%',
+    borderRadius: 4,
+    marginRight: 4,
+  },
+  discountPercentageShimmer: {
+    height: 8,
+    width: '25%',
     borderRadius: 4,
   },
   currentPrice: {
-    height: 16,
+    height: 14,
     width: '50%',
-    marginTop: 8,
+    marginTop: 4,
     borderRadius: 4,
   },
   addButton: {

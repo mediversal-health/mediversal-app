@@ -4,7 +4,7 @@ import {Fonts} from '../../styles/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#FFF',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   header: {
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#F8F8F8',
   },
   sectionTitle: {
     fontSize: 16,
@@ -128,6 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 40,
+    padding: 12,
   },
   saveButtonText: {
     color: '#FFFFFF',
@@ -138,5 +140,200 @@ const styles = StyleSheet.create({
     backgroundColor: '#cccccc',
     opacity: 0.7,
   },
+
+  // Full Width Dropdown Styles
+  fullWidthDropdownContainer: {
+    marginBottom: 16,
+    position: 'relative',
+    zIndex: 1000,
+    marginHorizontal: -16, // Extend to full width by negating container padding
+  },
+  fullWidthDropdownButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    minHeight: 48,
+  },
+  fullWidthDropdownContent: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+
+    zIndex: 1001,
+    maxHeight: 300,
+  },
+  dropdownContainer: {
+    marginBottom: 16,
+    position: 'relative',
+    zIndex: 1000,
+  },
+  dropdownButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    minHeight: 48,
+  },
+  dropdownButtonText: {
+    fontSize: 16,
+    color: '#212121',
+    fontFamily: Fonts.JakartaRegular,
+    flex: 1,
+  },
+  dropdownContent: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderTopWidth: 0,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 1001,
+    maxHeight: 300,
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+  },
+  dropdownItemText: {
+    fontSize: 16,
+    color: '#212121',
+    fontFamily: Fonts.JakartaRegular,
+    marginLeft: 12,
+  },
+
+  // Saved Address Item Styles
+  savedAddressItem: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginHorizontal: 8,
+    marginVertical: 4,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  selectedSavedAddress: {
+    borderColor: '#0088B1',
+    borderWidth: 2,
+    backgroundColor: '#F0F8FF',
+  },
+  savedAddressHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  savedAddressInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8,
+    flex: 1,
+  },
+  savedAddressType: {
+    fontSize: 16,
+    fontFamily: Fonts.JakartaBold,
+    color: '#212121',
+  },
+  defaultBadge: {
+    backgroundColor: '#0088B1',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    marginLeft: 8,
+  },
+  defaultBadgeText: {
+    fontSize: 10,
+    color: '#FFFFFF',
+    fontFamily: Fonts.JakartaSemiBold,
+  },
+  savedAddressName: {
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#212121',
+    marginBottom: 4,
+  },
+  savedAddressText: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#606060',
+    lineHeight: 16,
+    marginBottom: 4,
+  },
+  savedAddressPhone: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#606060',
+  },
+  dropdownHeader: {
+    padding: 12,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+
+    marginBottom: 30,
+  },
+  dropdownHeaderforselecteAddress: {
+    padding: 12,
+    backgroundColor: '#E8F4F7',
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  dropdownHeaderText: {
+    fontSize: 16,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#000',
+  },
+  addressTypeDropdownOptions: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginTop: 5,
+    zIndex: 10,
+    position: 'absolute',
+    top: 45,
+    width: '100%',
+  },
+  addressTypeOption: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    backgroundColor: '#fff',
+  },
 });
+
 export default styles;

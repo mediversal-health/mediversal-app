@@ -19,12 +19,7 @@ import {
   ShoppingBag,
 } from 'lucide-react-native';
 // import navigation from '../../navigation';
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
 import OtherDetailsCard from '../../components/cards/OtherDetailsCard';
@@ -33,22 +28,25 @@ import {RootStackParamList} from '../../navigation';
 import NavigationImg from './assets/svgs/navigation.svg';
 import {Fonts} from '../../styles/fonts';
 import {useAuthStore} from '../../store/authStore';
-
+import {useAddressBookStore} from '../../store/addressStore';
+import {StackNavigationProp} from '@react-navigation/stack';
 const CartPage = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
   const formData = route.params?.formData;
   const customer_id = useAuthStore(state => state.customer_id);
   console.log(customer_id);
   const pincode = formData?.PinCode;
-  const area = formData?.Area_details?.trim();
-  const landmark = formData?.LandMark?.trim();
+  const area = formData?.Area_details;
+  const City = formData?.City;
+  const state = formData?.State;
 
-  console.log(pincode, area, landmark);
+  console.log(pincode, area, City);
 
-  const formattedAddress = `${pincode} - ${area}, ${landmark}`;
-
+  const formattedAddress = `${pincode} - ${area}, ${City}, ${state}`;
+  const {selectedAddress} = useAddressBookStore();
+  console.log(selectedAddress);
   console.log('formatted ADDRESS', formattedAddress);
 
   const showLocationModal = () => {
@@ -131,7 +129,8 @@ const CartPage = () => {
       </SafeAreaView>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {formattedAddress !== 'undefined - undefined, undefined' && (
+          {formattedAddress !==
+            'undefined - undefined, undefined, undefined' && (
             <View style={styles.container}>
               <View
                 style={{
@@ -139,22 +138,41 @@ const CartPage = () => {
                   padding: 20,
                   flexDirection: 'row',
                   gap: 15,
+                  justifyContent: 'space-between',
                 }}>
-                <NavigationImg />
-                <View style={{flexDirection: 'column'}}>
+                <View style={{flexDirection: 'row', gap: 10}}>
+                  <NavigationImg />
+                  <View style={{flexDirection: 'column', width: '70%'}}>
+                    <Text
+                      style={{
+                        color: '#899193',
+                        fontSize: 10,
+                        fontFamily: Fonts.JakartaRegular,
+                      }}>
+                      Deliver to {formData?.Recipient_name}
+                    </Text>
+                    <Text
+                      style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
+                      {formattedAddress}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.replace('AddressBookScreen', {
+                      fromLocationMap: false,
+                    })
+                  }>
                   <Text
                     style={{
-                      color: '#899193',
-                      fontSize: 10,
-                      fontFamily: Fonts.JakartaRegular,
+                      justifyContent: 'flex-end',
+                      fontFamily: Fonts.JakartaSemiBold,
+                      color: '#50B57F',
+                      fontSize: 12,
                     }}>
-                    Deliver to {formData?.Recipient_name}
+                    Change
                   </Text>
-                  <Text
-                    style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
-                    {formattedAddress}
-                  </Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -229,7 +247,8 @@ const CartPage = () => {
             <Text style={styles.amountLabel}>Amount to pay:</Text>
             <Text style={styles.amountText}>₹574</Text>
           </View>
-          {formattedAddress !== 'undefined - undefined, undefined' ? (
+          {formattedAddress !==
+          'undefined - undefined, undefined, undefined' ? (
             <TouchableOpacity style={styles.addressButton}>
               <Text style={styles.addressButtonText}>Checkout</Text>
             </TouchableOpacity>
