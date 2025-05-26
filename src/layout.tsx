@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Bell, ChevronDown, ChevronLeft, ShoppingBag} from 'lucide-react-native';
+import {Bell, ChevronDown, ShoppingBag} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {
   Image,

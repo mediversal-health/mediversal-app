@@ -86,3 +86,17 @@ export interface UploadPickerHandle {
   openGallery: () => void;
   openDocumentPicker: () => void;
 }
+export type OrderStatus =
+  | 'Completed'
+  | 'On Going'
+  | 'Clarification Needed'
+  | 'Shipped'
+  | 'Cancelled';
+export interface Order {
+  name: string;
+  orderId: string;
+  date: string;
+  items: string;
+  amount: string;
+  status: OrderStatus;
+}

@@ -6,11 +6,12 @@ import {Fonts} from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
+  onPress?: () => void; // Add onPress prop
 };
 
-const OtherOptionsItem = ({title}: OptionsItemProps) => {
+const OtherOptionsItem = ({title, onPress}: OptionsItemProps) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.leftSection}>
         <View style={{marginTop: 5}}>
           <Bell size={24} color="#B0B6B8" />

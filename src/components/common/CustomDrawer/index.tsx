@@ -23,14 +23,17 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import {useAuthStore} from '../../../store/authStore';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../navigation';
 
 const {width} = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3;
 
 const CustomDrawer = ({onClose}: {onClose: () => void}) => {
   const clearAuthentication = useAuthStore(state => state.clearAuthentication);
-  const {email, phoneNumber, customer_id} = useAuthStore();
-
+  const {email, phoneNumber} = useAuthStore();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const translateX = useSharedValue(-width);
   const startX = useSharedValue(0);
 
@@ -172,7 +175,12 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             />
 
             <Text style={styles.sectionHeader}>Records</Text>
-            <OtherOptionsItem title="My Orders" />
+            <OtherOptionsItem
+              title="My Orders"
+              onPress={() => {
+                navigation.navigate('OrdersScreen');
+              }}
+            />
             <OtherOptionsItem title="Health Reports" />
             <OtherOptionsItem title="Bill & Invoice" />
 
