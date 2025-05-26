@@ -154,18 +154,6 @@ const Layout = () => {
               paddingBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <TouchableOpacity
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  backgroundColor: '#e8f4f7',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() => navigation.goBack}>
-                <ChevronLeft size={20} color="#0088B1" />
-              </TouchableOpacity>
               <Text style={{fontSize: 16}}>Pharmacy</Text>
             </View>
             <TouchableOpacity

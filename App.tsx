@@ -1,23 +1,24 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+// App.tsx
+import React from 'react';
 import {SafeAreaView} from 'react-native';
 import SplashScreen from './src/Screens/SplashScreen';
 import AppNavigator from './src/navigation';
+import {useAuthStore} from './src/store/authStore';
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const rehydrated = useAuthStore(state => state.rehydrated);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
-
-    return () => clearTimeout(timer);
-  }, []);
+  if (!rehydrated) {
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <SplashScreen />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      {isLoading ? <SplashScreen /> : <AppNavigator />}
+      <AppNavigator />
     </SafeAreaView>
   );
 };
