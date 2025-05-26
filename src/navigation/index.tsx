@@ -14,6 +14,7 @@ import {AddressBookTypes, Product} from '../types';
 import SearchScreen from '../Screens/SearchScreen';
 import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
 import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen';
+import OrdersScreen from '../Screens/OrdersScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -49,6 +50,7 @@ export type RootStackParamList = {
   };
   LocationMapScreen: undefined;
   SearchScreen: undefined;
+  OrdersScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -82,6 +84,7 @@ const AppNavigator = () => {
               name="PrescriptionVerification"
               component={PrescriptionVerification}
             />
+            <Stack.Screen name="OrdersScreen" component={OrdersScreen} />
           </>
         ) : (
           <>
