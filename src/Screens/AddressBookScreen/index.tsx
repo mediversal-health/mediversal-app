@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -9,18 +10,23 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import {ChevronLeft} from 'lucide-react-native';
-import {
-  NavigationProp,
-  useNavigation,
-  RouteProp,
-  useRoute,
-} from '@react-navigation/native';
+import {ChevronDown, ChevronLeft, Plus} from 'lucide-react-native';
+import {useNavigation, RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import {AddressBookTypes} from '../../types';
 import styles from './index.styles';
 import {useAuthStore} from '../../store/authStore';
-import {saveCustomerAddress} from '../../Services/address';
+import {
+  getCustomerAddresses,
+  saveCustomerAddress,
+  updateCustomerAddress,
+  deleteCustomerAddress,
+} from '../../Services/address';
+import AddressCard from '../../components/cards/AddressCard';
+import {useAddressBookStore} from '../../store/addressStore';
+import AddressActionModal from '../../components/modal/AddressActionModal';
+import {StackNavigationProp} from '@react-navigation/stack';
+
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
 type AddressBookScreenRouteProp = RouteProp<
@@ -41,21 +47,36 @@ type AddressBookScreenRouteProp = RouteProp<
           pincode: number;
         };
       };
+      fromLocationMap?: boolean;
     };
   },
   'params'
 >;
 
 const AddressBookScreen: React.FC = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<AddressBookScreenRouteProp>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const locationData = route.params?.location;
   const customer_id = useAuthStore(state => state.customer_id);
-  console.log(customer_id);
+  const fromLocationMap = route.params?.fromLocationMap || false;
   const [selectedAddressType, setSelectedAddressType] =
     useState<AddressType>('Home');
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const {addresses, setAddresses, selectedAddress, setSelectedAddress} =
+    useAddressBookStore();
+
+  const [isFormVisible, setIsFormVisible] = useState(
+    fromLocationMap || addresses.length === 0,
+  );
+  const [isAddressCardVisible, setIsAddressCardVisible] = useState(
+    !fromLocationMap && addresses.length > 0,
+  );
+  const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
+  const savedFormDataRef = useRef<AddressBookTypes | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const [formData, setFormData] = useState<AddressBookTypes>({
     Address: '',
@@ -76,8 +97,35 @@ const AddressBookScreen: React.FC = () => {
   }>({});
 
   useEffect(() => {
+    if (
+      shouldNavigateAfterSave &&
+      selectedAddress &&
+      savedFormDataRef.current
+    ) {
+      setShouldNavigateAfterSave(false);
+      navigation.replace('CartPage', {formData: savedFormDataRef.current});
+      savedFormDataRef.current = null;
+    }
+  }, [selectedAddress, shouldNavigateAfterSave, navigation]);
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        let res;
+        if (customer_id) {
+          res = await getCustomerAddresses(customer_id.toString());
+        }
+        setAddresses(res?.data);
+      } catch (error) {
+        console.log('Failed to fetch addresses:', error);
+      }
+    };
+
+    fetchAddresses();
+  }, [customer_id, setAddresses]);
+
+  useEffect(() => {
     if (locationData) {
-      // Use the formatted address data if available, otherwise fallback to parsing
       if (locationData.formattedAddress) {
         setFormData(prevData => ({
           ...prevData,
@@ -90,7 +138,6 @@ const AddressBookScreen: React.FC = () => {
           PinCode: locationData.formattedAddress?.pincode || 0,
         }));
       } else {
-        // Fallback to the old parsing logic (you can keep this as a backup)
         const addressParts = locationData.address
           .split(',')
           .map(part => part.trim());
@@ -99,7 +146,6 @@ const AddressBookScreen: React.FC = () => {
           addressParts.length >= 3 ? addressParts[addressParts.length - 3] : '';
         const state =
           addressParts.length >= 2 ? addressParts[addressParts.length - 2] : '';
-        // Look for a 5-6 digit number pattern for the pincode/zip
         const pincodeMatch = locationData.address.match(/\b\d{5,6}\b/);
         const pincode = pincodeMatch ? pincodeMatch[0] : '';
 
@@ -150,23 +196,103 @@ const AddressBookScreen: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSaveAndProceed = async (): Promise<void> => {
+  const handleEditAddress = (address: AddressBookTypes | null) => {
+    if (!address) {
+      return;
+    }
+
+    setSelectedAddress(address);
+    setIsEditMode(true);
+
+    setFormData(prev => ({
+      ...prev,
+      Customer_Address_id: address.Customer_Address_id,
+      Home_Floor_FlatNumber: address.Home_Floor_FlatNumber || '',
+      Area_details: address.Area_details || '',
+      LandMark: address.LandMark || '',
+      City: address.City || '',
+      State: address.State || '',
+      PinCode: address.PinCode || 0,
+      Recipient_name: address.Recipient_name || '',
+      PhoneNumber: address.PhoneNumber || '',
+      Address: address.Address || '',
+      Country: address.Country || '',
+      Address_type: address.Address_type || 'Home',
+      Contact_details: address.Contact_details || '',
+    }));
+
+    setSelectedAddressType((address.Address_type as AddressType) || 'Home');
+
+    setIsAddressCardVisible(false);
+    setModalVisible(false);
+    setIsFormVisible(true);
+  };
+
+  const handleDeleteAddress = async () => {
+    if (
+      !selectedAddress ||
+      !selectedAddress.Customer_Address_id ||
+      !customer_id
+    ) {
+      return;
+    }
+
+    try {
+      await deleteCustomerAddress(
+        customer_id.toString(),
+        selectedAddress.Customer_Address_id.toString(),
+      );
+
+      const res = await getCustomerAddresses(customer_id.toString());
+      setAddresses(res?.data);
+
+      setModalVisible(false);
+      Alert.alert('Success', 'Address deleted successfully');
+    } catch (error) {
+      console.error('Error deleting address:', error);
+      Alert.alert('Error', 'Failed to delete address. Please try again.');
+    }
+  };
+
+  const handleSaveAddress = async (): Promise<void> => {
     if (!validateForm()) {
       return;
     }
 
     setIsLoading(true);
     try {
-      let res;
       if (customer_id) {
-        res = await saveCustomerAddress(customer_id.toString(), formData);
+        if (isEditMode && formData.Customer_Address_id) {
+          setIsUpdating(true);
+          await updateCustomerAddress(
+            customer_id.toString(),
+            formData.Customer_Address_id.toString(),
+            formData,
+          );
+          setIsUpdating(false);
+        } else {
+          await saveCustomerAddress(customer_id.toString(), formData);
+        }
       }
-      console.log(res);
 
-      navigation.navigate('CartPage', {formData});
-      console.log('Form data submitted:', formData);
+      if (customer_id) {
+        const updatedAddresses = await getCustomerAddresses(
+          customer_id.toString(),
+        );
+        setAddresses(updatedAddresses?.data);
+      }
+
+      savedFormDataRef.current = formData;
+      setShouldNavigateAfterSave(true);
+      setSelectedAddress(formData);
+
+      if (!shouldNavigateAfterSave) {
+        resetForm();
+      }
     } catch (error) {
       console.error('Error saving address:', error);
+      setShouldNavigateAfterSave(false);
+      savedFormDataRef.current = null;
       Alert.alert(
         'Error',
         'Failed to save address. Please try again.',
@@ -175,7 +301,43 @@ const AddressBookScreen: React.FC = () => {
       );
     } finally {
       setIsLoading(false);
+      setIsEditMode(false);
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      Address: '',
+      Home_Floor_FlatNumber: '',
+      Area_details: '',
+      LandMark: '',
+      City: '',
+      State: '',
+      Contact_details: '',
+      Recipient_name: '',
+      PhoneNumber: '',
+      PinCode: 0,
+      Country: '',
+      Address_type: 'Home',
+    });
+    setSelectedAddressType('Home');
+    setErrors({});
+  };
+
+  const handleSaveAndProceed = async (): Promise<void> => {
+    await handleSaveAddress();
+  };
+
+  const handleProceedWithSelectedAddress = (): void => {
+    if (!selectedAddress) {
+      Alert.alert('Error', 'Please select an address', [{text: 'OK'}]);
+      return;
+    }
+    navigation.replace('CartPage', {formData: selectedAddress});
+  };
+
+  const handleModalClose = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -191,201 +353,335 @@ const AddressBookScreen: React.FC = () => {
         <Text style={styles.headerTitle}>Address Book</Text>
       </View>
 
-      <ScrollView style={styles.scrollView}>
-        <Text style={styles.sectionTitle}>Address Details</Text>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>
-            House/Floor/Flat Number <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedField === 'Home_Floor_FlatNumber' && styles.inputFocused,
-              formData.Home_Floor_FlatNumber !== '' && styles.inputFilled,
-            ]}
-            value={formData.Home_Floor_FlatNumber}
-            onChangeText={text =>
-              handleInputChange('Home_Floor_FlatNumber', text)
-            }
-            placeholder="House/Floor/Flat Number"
-            onFocus={() => setFocusedField('Home_Floor_FlatNumber')}
-            onBlur={() => setFocusedField(null)}
-          />
-          {errors.Home_Floor_FlatNumber && (
-            <Text style={styles.errorText}>{errors.Home_Floor_FlatNumber}</Text>
+      <View style={{justifyContent: 'space-between', flex: 1}}>
+        <ScrollView style={styles.scrollView}>
+          {addresses.length > 0 && (
+            <TouchableOpacity
+              style={styles.dropdownHeaderforselecteAddress}
+              onPress={() => {
+                setIsAddressCardVisible(prev => !prev);
+                setIsFormVisible(false);
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}>
+                <View
+                  style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                  <Text style={styles.dropdownHeaderText}>Select Address</Text>
+                </View>
+                <View
+                  style={{
+                    transform: [
+                      {rotate: isAddressCardVisible ? '180deg' : '0deg'},
+                    ],
+                  }}>
+                  <ChevronDown size={20} color="#000" />
+                </View>
+              </View>
+            </TouchableOpacity>
           )}
-        </View>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>Area Details</Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedField === 'Area_details' && styles.inputFocused,
-              formData.Area_details !== '' && styles.inputFilled,
-            ]}
-            value={formData.Area_details}
-            onChangeText={text => handleInputChange('Area_details', text)}
-            placeholder="Area Details"
-            onFocus={() => setFocusedField('Area_details')}
-            onBlur={() => setFocusedField(null)}
-          />
-        </View>
+          {isAddressCardVisible && (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              {addresses.map((addr, idx) => (
+                <AddressCard
+                  key={idx}
+                  title={addr.Address_type}
+                  address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
+                  phoneNumber={addr.PhoneNumber}
+                  selected={
+                    selectedAddress?.Customer_Address_id ===
+                    addr.Customer_Address_id
+                  }
+                  onPress={() => setSelectedAddress(addr)}
+                  onMorePress={() => {
+                    setSelectedAddress(addr);
+                    setModalVisible(true);
+                  }}
+                />
+              ))}
+            </View>
+          )}
+          {addresses.length > 0 && (
+            <TouchableOpacity
+              style={styles.dropdownHeader}
+              onPress={() => {
+                setIsFormVisible(prev => !prev);
+                setIsAddressCardVisible(false);
+                setIsEditMode(false);
+                resetForm();
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}>
+                <View
+                  style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                  <Plus size={20} color="#000" />
+                  <Text style={styles.dropdownHeaderText}>Add New Address</Text>
+                </View>
+                <View
+                  style={{
+                    transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
+                  }}>
+                  <ChevronDown size={20} color="#000" />
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+          {isFormVisible && (
+            <>
+              <Text style={styles.sectionTitle}>Address Details</Text>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>Landmark</Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedField === 'LandMark' && styles.inputFocused,
-              formData.LandMark !== '' && styles.inputFilled,
-            ]}
-            value={formData.LandMark}
-            onChangeText={text => handleInputChange('LandMark', text)}
-            placeholder="Landmark"
-            onFocus={() => setFocusedField('LandMark')}
-            onBlur={() => setFocusedField(null)}
-          />
-        </View>
-
-        <View style={styles.formRow}>
-          <View style={[styles.formGroup, styles.halfWidth]}>
-            <Text style={styles.inputLabel}>Pincode</Text>
-            <TextInput
-              style={[
-                styles.input,
-                focusedField === 'PinCode' && styles.inputFocused,
-                formData.PinCode !== 0 && styles.inputFilled,
-              ]}
-              value={formData.PinCode === 0 ? '' : String(formData.PinCode)}
-              onChangeText={text => handleInputChange('PinCode', text)}
-              placeholder="Pincode"
-              keyboardType="number-pad"
-              onFocus={() => setFocusedField('PinCode')}
-              onBlur={() => setFocusedField(null)}
-            />
-          </View>
-
-          <View style={[styles.formGroup, styles.halfWidth]}>
-            <Text style={styles.inputLabel}>City</Text>
-            <TextInput
-              style={[
-                styles.input,
-                focusedField === 'City' && styles.inputFocused,
-                formData.City !== '' && styles.inputFilled,
-              ]}
-              value={formData.City}
-              onChangeText={text => handleInputChange('City', text)}
-              placeholder="City"
-              onFocus={() => setFocusedField('City')}
-              onBlur={() => setFocusedField(null)}
-            />
-          </View>
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>State</Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedField === 'State' && styles.inputFocused,
-              formData.State !== '' && styles.inputFilled,
-            ]}
-            value={formData.State}
-            onChangeText={text => handleInputChange('State', text)}
-            placeholder="State"
-            onFocus={() => setFocusedField('State')}
-            onBlur={() => setFocusedField(null)}
-          />
-        </View>
-
-        <Text style={[styles.sectionTitle, styles.contactTitle]}>
-          Contact Details
-        </Text>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>Address Type</Text>
-          <View style={styles.addressTypeContainer}>
-            {(
-              ['Home', 'Office', 'Family & Friends', 'Other'] as AddressType[]
-            ).map(type => (
-              <TouchableOpacity
-                key={type}
-                style={[
-                  styles.addressTypeButton,
-                  selectedAddressType === type && styles.selectedAddressType,
-                ]}
-                onPress={() => handleAddressTypeSelect(type)}>
-                <Text
-                  style={[
-                    styles.addressTypeText,
-                    selectedAddressType === type &&
-                      styles.selectedAddressTypeText,
-                  ]}>
-                  {type}
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>
+                  House/Floor/Flat Number <Text style={styles.required}>*</Text>
                 </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+                <TextInput
+                  style={[
+                    styles.input,
+                    focusedField === 'Home_Floor_FlatNumber' &&
+                      styles.inputFocused,
+                    formData.Home_Floor_FlatNumber !== '' && styles.inputFilled,
+                  ]}
+                  value={formData.Home_Floor_FlatNumber}
+                  onChangeText={text =>
+                    handleInputChange('Home_Floor_FlatNumber', text)
+                  }
+                  placeholder="House/Floor/Flat Number"
+                  onFocus={() => setFocusedField('Home_Floor_FlatNumber')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                {errors.Home_Floor_FlatNumber && (
+                  <Text style={styles.errorText}>
+                    {errors.Home_Floor_FlatNumber}
+                  </Text>
+                )}
+              </View>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>
-            Recipient <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedField === 'Recipient_name' && styles.inputFocused,
-              formData.Recipient_name !== '' && styles.inputFilled,
-            ]}
-            value={formData.Recipient_name}
-            onChangeText={text => handleInputChange('Recipient_name', text)}
-            placeholder="Recipient Name"
-            onFocus={() => setFocusedField('Recipient_name')}
-            onBlur={() => setFocusedField(null)}
-          />
-          {errors.Recipient_name && (
-            <Text style={styles.errorText}>{errors.Recipient_name}</Text>
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>Area Details</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    focusedField === 'Area_details' && styles.inputFocused,
+                    formData.Area_details !== '' && styles.inputFilled,
+                  ]}
+                  value={formData.Area_details}
+                  onChangeText={text => handleInputChange('Area_details', text)}
+                  placeholder="Area Details"
+                  onFocus={() => setFocusedField('Area_details')}
+                  onBlur={() => setFocusedField(null)}
+                />
+              </View>
+
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>Landmark</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    focusedField === 'LandMark' && styles.inputFocused,
+                    formData.LandMark !== '' && styles.inputFilled,
+                  ]}
+                  value={formData.LandMark}
+                  onChangeText={text => handleInputChange('LandMark', text)}
+                  placeholder="Landmark"
+                  onFocus={() => setFocusedField('LandMark')}
+                  onBlur={() => setFocusedField(null)}
+                />
+              </View>
+
+              <View style={styles.formRow}>
+                <View style={[styles.formGroup, styles.halfWidth]}>
+                  <Text style={styles.inputLabel}>Pincode</Text>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      focusedField === 'PinCode' && styles.inputFocused,
+                      formData.PinCode !== 0 && styles.inputFilled,
+                    ]}
+                    value={
+                      formData.PinCode === 0 ? '' : String(formData.PinCode)
+                    }
+                    onChangeText={text => handleInputChange('PinCode', text)}
+                    placeholder="Pincode"
+                    keyboardType="number-pad"
+                    onFocus={() => setFocusedField('PinCode')}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                </View>
+
+                <View style={[styles.formGroup, styles.halfWidth]}>
+                  <Text style={styles.inputLabel}>City</Text>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      focusedField === 'City' && styles.inputFocused,
+                      formData.City !== '' && styles.inputFilled,
+                    ]}
+                    value={formData.City}
+                    onChangeText={text => handleInputChange('City', text)}
+                    placeholder="City"
+                    onFocus={() => setFocusedField('City')}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>State</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    focusedField === 'State' && styles.inputFocused,
+                    formData.State !== '' && styles.inputFilled,
+                  ]}
+                  value={formData.State}
+                  onChangeText={text => handleInputChange('State', text)}
+                  placeholder="State"
+                  onFocus={() => setFocusedField('State')}
+                  onBlur={() => setFocusedField(null)}
+                />
+              </View>
+
+              <Text style={[styles.sectionTitle, styles.contactTitle]}>
+                Contact Details
+              </Text>
+
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>Address Type</Text>
+                <View style={styles.addressTypeContainer}>
+                  {(
+                    [
+                      'Home',
+                      'Office',
+                      'Family & Friends',
+                      'Other',
+                    ] as AddressType[]
+                  ).map(type => (
+                    <TouchableOpacity
+                      key={type}
+                      style={[
+                        styles.addressTypeButton,
+                        selectedAddressType === type &&
+                          styles.selectedAddressType,
+                      ]}
+                      onPress={() => handleAddressTypeSelect(type)}>
+                      <Text
+                        style={[
+                          styles.addressTypeText,
+                          selectedAddressType === type &&
+                            styles.selectedAddressTypeText,
+                        ]}>
+                        {type}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>
+                  Recipient <Text style={styles.required}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    focusedField === 'Recipient_name' && styles.inputFocused,
+                    formData.Recipient_name !== '' && styles.inputFilled,
+                  ]}
+                  value={formData.Recipient_name}
+                  onChangeText={text =>
+                    handleInputChange('Recipient_name', text)
+                  }
+                  placeholder="Recipient Name"
+                  onFocus={() => setFocusedField('Recipient_name')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                {errors.Recipient_name && (
+                  <Text style={styles.errorText}>{errors.Recipient_name}</Text>
+                )}
+              </View>
+
+              <View style={styles.formGroup}>
+                <Text style={styles.inputLabel}>
+                  Phone Number <Text style={styles.required}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    focusedField === 'PhoneNumber' && styles.inputFocused,
+                    formData.PhoneNumber !== '' && styles.inputFilled,
+                  ]}
+                  value={formData.PhoneNumber}
+                  onChangeText={text => handleInputChange('PhoneNumber', text)}
+                  placeholder="Phone Number"
+                  keyboardType="phone-pad"
+                  onFocus={() => setFocusedField('phoneNumber')}
+                  onBlur={() => setFocusedField(null)}
+                />
+                {errors.PhoneNumber && (
+                  <Text style={styles.errorText}>{errors.PhoneNumber}</Text>
+                )}
+              </View>
+
+              <Text style={styles.infoText}>
+                Billing will be done using the recipient name on the
+                prescription.
+              </Text>
+            </>
           )}
+        </ScrollView>
+
+        <View style={{marginHorizontal: 16}}>
+          {isAddressCardVisible ? (
+            <TouchableOpacity
+              style={[
+                styles.saveButton,
+                !selectedAddress && styles.disabledButton,
+              ]}
+              onPress={handleProceedWithSelectedAddress}
+              disabled={!selectedAddress}>
+              <Text style={styles.saveButtonText}>
+                Proceed with Selected Address
+              </Text>
+            </TouchableOpacity>
+          ) : isFormVisible ? (
+            <TouchableOpacity
+              style={[
+                styles.saveButton,
+                (isLoading || isUpdating) && styles.disabledButton,
+              ]}
+              onPress={handleSaveAndProceed}
+              disabled={isLoading || isUpdating}>
+              <Text style={styles.saveButtonText}>
+                {isUpdating
+                  ? 'Updating...'
+                  : isLoading
+                  ? 'Saving...'
+                  : isEditMode
+                  ? 'Update Address'
+                  : 'Save & Proceed'}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
+      </View>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.inputLabel}>
-            Phone Number <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedField === 'PhoneNumber' && styles.inputFocused,
-              formData.PhoneNumber !== '' && styles.inputFilled,
-            ]}
-            value={formData.PhoneNumber}
-            onChangeText={text => handleInputChange('PhoneNumber', text)}
-            placeholder="Phone Number"
-            keyboardType="phone-pad"
-            onFocus={() => setFocusedField('phoneNumber')}
-            onBlur={() => setFocusedField(null)}
-          />
-          {errors.PhoneNumber && (
-            <Text style={styles.errorText}>{errors.PhoneNumber}</Text>
-          )}
-        </View>
-
-        <Text style={styles.infoText}>
-          Billing will be done using the recipient name on the prescription.
-        </Text>
-
-        <TouchableOpacity
-          style={[styles.saveButton, isLoading && styles.disabledButton]}
-          onPress={handleSaveAndProceed}
-          disabled={isLoading}>
-          <Text style={styles.saveButtonText}>
-            {isLoading ? 'Saving...' : 'Save & Proceed'}
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+      <AddressActionModal
+        visible={modalVisible}
+        onClose={handleModalClose}
+        selectedAddress={selectedAddress}
+        onEditAddress={handleEditAddress}
+        onDeleteAddress={handleDeleteAddress}
+      />
     </SafeAreaView>
   );
 };

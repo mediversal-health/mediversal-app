@@ -33,7 +33,7 @@ export type RootStackParamList = {
     formData?: AddressBookTypes;
   };
   AddressBookScreen: {
-    location: {
+    location?: {
       title: string;
       address: string;
       coords?: {latitude: number; longitude: number};
@@ -45,6 +45,7 @@ export type RootStackParamList = {
         pincode: string;
       };
     };
+    fromLocationMap?: boolean;
   };
   LocationMapScreen: undefined;
   SearchScreen: undefined;

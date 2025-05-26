@@ -20,41 +20,31 @@ export const uploadPrescriptions = async (
   files: FileObject | FileObject[],
 ): Promise<AxiosResponse<UploadResponse>> => {
   const formData = new FormData();
-
   formData.append('Customer_id', customerId);
 
-  if (Array.isArray(files)) {
-    files.forEach((file: FileObject, index: number) => {
-      const fileType: string =
-        file.type ||
-        (file.uri.endsWith('.pdf') ? 'application/pdf' : 'image/jpeg');
+  const filesArray = Array.isArray(files) ? files : [files];
 
-      const fileName: string =
-        file.name ||
-        (fileType === 'application/pdf'
-          ? `document_${index}.pdf`
-          : `image_${index}.jpg`);
+  for (const file of filesArray) {
+    const fileExtension = file.uri.split('.').pop()?.toLowerCase();
 
-      formData.append('images', {
-        uri: file.uri,
-        type: fileType,
-        name: fileName,
-      } as any);
-    });
-  } else if (files) {
-    const fileType: string =
-      files.type ||
-      (files.uri.endsWith('.pdf') ? 'application/pdf' : 'image/jpeg');
+    const fileType =
+      file.type || (fileExtension === 'pdf' ? 'application/pdf' : 'image/jpeg');
 
-    const fileName: string =
-      files.name ||
-      (fileType === 'application/pdf' ? 'document.pdf' : 'image.jpg');
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 8);
+    const fileName =
+      file.name ||
+      (fileType === 'application/pdf'
+        ? `document_${timestamp}_${randomString}.pdf`
+        : `image_${timestamp}_${randomString}.${fileExtension || 'jpg'}`);
 
-    formData.append('images', {
-      uri: files.uri,
+    const fileObject = {
+      uri: file.uri,
       type: fileType,
       name: fileName,
-    } as any);
+    };
+
+    formData.append('images', fileObject as any);
   }
 
   const config = {
