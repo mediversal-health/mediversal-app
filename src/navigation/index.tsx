@@ -15,6 +15,7 @@ import SearchScreen from '../Screens/SearchScreen';
 import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
 import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen';
 import OrdersScreen from '../Screens/OrdersScreen';
+import PrescribedScreen from '../Screens/PrescribedScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -23,7 +24,8 @@ export type RootStackParamList = {
   PrescriptionVerification: {
     pdfs?: string[];
     images?: string[];
-    pdfName?: string | null;
+    pdfName?: string;
+    fileType: 'pdf' | 'image';
   };
   SuccessAnimation: undefined;
   Layout: undefined;
@@ -51,6 +53,7 @@ export type RootStackParamList = {
   LocationMapScreen: undefined;
   SearchScreen: undefined;
   OrdersScreen: undefined;
+  PrescribedScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -85,6 +88,10 @@ const AppNavigator = () => {
               component={PrescriptionVerification}
             />
             <Stack.Screen name="OrdersScreen" component={OrdersScreen} />
+            <Stack.Screen
+              name="PrescribedScreen"
+              component={PrescribedScreen}
+            />
           </>
         ) : (
           <>

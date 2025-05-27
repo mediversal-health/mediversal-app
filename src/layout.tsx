@@ -154,7 +154,9 @@ const Layout = () => {
               paddingBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <Text style={{fontSize: 16}}>Pharmacy</Text>
+              <Text style={{fontSize: 16, fontFamily: Fonts.JakartaSemiBold}}>
+                Pharmacy
+              </Text>
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('CartPage', {})}>

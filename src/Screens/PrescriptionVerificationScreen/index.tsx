@@ -8,10 +8,15 @@ import {
   SafeAreaView,
   Image,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import {styles} from './index.styles';
-import {ChevronRight, FileText, Clock} from 'lucide-react-native';
-
+import {
+  ChevronRight,
+  FileText,
+  Clock,
+  Image as ImageIcon,
+} from 'lucide-react-native';
 import {getPrescriptions} from '../../Services/prescription';
 import {useAuthStore} from '../../store/authStore';
 import PharmacistCard from '../../components/cards/PharmacistCard';
@@ -21,6 +26,7 @@ interface PrescriptionItem {
   customer_id: number;
   prescriptionURL: string;
   created_at: string;
+  fileType?: 'pdf' | 'image'; // Add fileType for easier categorization
 }
 
 const PrescriptionVerification = () => {
@@ -45,46 +51,32 @@ const PrescriptionVerification = () => {
         console.log('API Response:', response);
 
         if (response.status === 200) {
-          // Check if response.data exists and is an array
-          if (response.data && Array.isArray(response.data)) {
-            // Sort prescriptions by created_at (newest first)
-            const sortedPrescriptions = [...response.data].sort(
-              (a: PrescriptionItem, b: PrescriptionItem) => {
-                return (
-                  new Date(b.created_at).getTime() -
-                  new Date(a.created_at).getTime()
-                );
-              },
-            );
-            setPrescriptions(sortedPrescriptions);
-          } else if (response.data) {
-            // If response.data exists but is not an array (might be a single object or different format)
-            console.log('Response data is not an array:', response.data);
-            // Try to handle other potential formats
-            if (typeof response.data === 'object' && response.data !== null) {
-              // Check if there's a nested data property
-              const dataArray =
-                response.data.data || response.data.prescriptions || [];
-              if (Array.isArray(dataArray)) {
-                const sortedPrescriptions = [...dataArray].sort(
-                  (a: PrescriptionItem, b: PrescriptionItem) => {
-                    return (
-                      new Date(b.created_at).getTime() -
-                      new Date(a.created_at).getTime()
-                    );
-                  },
-                );
-                setPrescriptions(sortedPrescriptions);
-              } else {
-                setPrescriptions([]);
-              }
-            } else {
-              setPrescriptions([]);
-            }
-          } else {
-            // Handle empty data
-            setPrescriptions([]);
+          let prescriptionsData: PrescriptionItem[] = [];
+
+          // Handle different response formats
+          if (Array.isArray(response.data)) {
+            prescriptionsData = response.data;
+          } else if (response.data && typeof response.data === 'object') {
+            prescriptionsData =
+              response.data.data || response.data.prescriptions || [];
           }
+
+          // Enhance data with fileType information
+          const enhancedPrescriptions = prescriptionsData.map(item => ({
+            ...item,
+            fileType: item.prescriptionURL?.toLowerCase().endsWith('.pdf')
+              ? 'pdf'
+              : 'image',
+          })) as PrescriptionItem[];
+
+          // Sort by date (newest first)
+          const sortedPrescriptions = [...enhancedPrescriptions].sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime(),
+          );
+
+          setPrescriptions(sortedPrescriptions);
         } else {
           setError('Failed to fetch prescriptions');
         }
@@ -99,15 +91,15 @@ const PrescriptionVerification = () => {
     fetchPrescriptions();
   }, [customer_id]);
 
-  // Separate PDFs and images from the prescriptions
-  const pdfs = prescriptions.filter(item =>
-    item.prescriptionURL?.toLowerCase().endsWith('.pdf'),
-  );
-  const images = prescriptions.filter(
-    item =>
-      item.prescriptionURL &&
-      !item.prescriptionURL.toLowerCase().endsWith('.pdf'),
-  );
+  // Separate PDFs and images
+  const pdfs = prescriptions.filter(item => item.fileType === 'pdf');
+  const images = prescriptions.filter(item => item.fileType === 'image');
+
+  const handleOpenPDF = (url: string) => {
+    Linking.openURL(url).catch(err =>
+      console.error('Failed to open PDF:', err),
+    );
+  };
 
   if (loading) {
     return (
@@ -167,37 +159,54 @@ const PrescriptionVerification = () => {
           specialization="Pharma_D"
         />
 
+        {/* PDF Section with improved UI */}
         {pdfs.length > 0 && (
-          <View style={styles.pdfListContainer}>
-            <Text style={styles.heading}>Uploaded PDFs:</Text>
-            {pdfs.map(pdf => (
-              <View key={`pdf-${pdf.sno}`} style={styles.pdfItem}>
-                <FileText size={16} color="#007AFF" />
-                <Text style={styles.pdfName}>
-                  {pdf.prescriptionURL.split('/').pop()}
-                </Text>
-                <Text style={styles.uploadTime}>
-                  {new Date(pdf.created_at).toLocaleString()}
-                </Text>
-              </View>
-            ))}
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Uploaded PDF Documents</Text>
+            <View style={styles.pdfList}>
+              {pdfs.map((pdf, index) => (
+                <TouchableOpacity
+                  key={`pdf-${pdf.sno}-${index}`}
+                  style={styles.pdfCard}
+                  onPress={() => handleOpenPDF(pdf.prescriptionURL)}>
+                  <View style={styles.pdfIconContainer}>
+                    <FileText size={24} color="#007AFF" />
+                  </View>
+                  <View style={styles.pdfInfo}>
+                    <Text style={styles.pdfName} numberOfLines={1}>
+                      {pdf.prescriptionURL.split('/').pop() || 'Document.pdf'}
+                    </Text>
+                    <Text style={styles.pdfDate}>
+                      Uploaded: {new Date(pdf.created_at).toLocaleDateString()}
+                    </Text>
+                  </View>
+                  <ChevronRight size={18} color="#6D7578" />
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         )}
 
+        {/* Images Section with improved UI */}
         {images.length > 0 && (
-          <View style={styles.imageListContainer}>
-            <Text style={styles.heading}>Uploaded Images:</Text>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Uploaded Images</Text>
             <View style={styles.imageGrid}>
-              {images.map(image => (
-                <View key={`img-${image.sno}`} style={styles.imageItem}>
+              {images.map((image, index) => (
+                <View
+                  key={`img-${image.sno}-${index}`}
+                  style={styles.imageCard}>
                   <Image
                     source={{uri: image.prescriptionURL}}
                     style={styles.uploadedImage}
                     resizeMode="cover"
                   />
-                  <Text style={styles.uploadTime}>
-                    {new Date(image.created_at).toLocaleString()}
-                  </Text>
+                  <View style={styles.imageInfo}>
+                    <ImageIcon size={14} color="#6D7578" />
+                    <Text style={styles.imageDate}>
+                      {new Date(image.created_at).toLocaleDateString()}
+                    </Text>
+                  </View>
                 </View>
               ))}
             </View>

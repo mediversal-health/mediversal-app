@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
   },
   reminderButtonText: {
     color: '#0088B1',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     marginLeft: 8,
   },
   buyButton: {
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
   },
   buyButtonText: {
     color: '#FFFFFF',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   productCardsContainer: {
     flexDirection: 'row',

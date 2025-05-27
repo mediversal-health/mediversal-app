@@ -24,12 +24,18 @@ interface UploadPickerProps {
   onCancel?: () => void;
   initialType?: UploadType;
 }
-
+interface ExtendedDocumentPickerResponse {
+  uri: string;
+  fileCopyUri?: string; // Optional because it might not exist on all platforms
+  name: string;
+  type: string;
+  size: number;
+}
 const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
   ({onCancel, initialType = 'image'}, ref) => {
     const [fileType, setFileType] = useState<UploadType>(initialType);
     const [images, setImages] = useState<string[]>([]);
-    const [pdfs, setPdfs] = useState<string[]>([]);
+    const [pdfs, setPdfs] = useState<ExtendedDocumentPickerResponse[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [isPickerOpen, setIsPickerOpen] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -82,14 +88,35 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
     };
 
     const openDocumentPicker = async () => {
-      const [result] = await pick({type: ['application/pdf']});
-      if (result?.name) {
-        setPdfs(prev => [...prev, result.name || 'Untitled PDF']);
-      } else {
+      try {
+        const [result] = await pick({type: ['application/pdf']});
+
+        if (!result) {
+          handleCancel();
+          return;
+        }
+
+        // Type assertion to our extended interface
+        const pdfResult = result as ExtendedDocumentPickerResponse;
+
+        // Create a proper file object instead of just storing the URI
+        const fileObject = {
+          uri: pdfResult.fileCopyUri || pdfResult.uri,
+          type: pdfResult.type || 'application/pdf',
+          name: pdfResult.name || `document_${Date.now()}.pdf`,
+          size: pdfResult.size || 0,
+        };
+
+        if (fileObject.uri) {
+          setPdfs(prev => [...prev, fileObject]);
+        } else {
+          handleCancel();
+        }
+      } catch (error) {
+        console.error('Document picker error:', error);
         handleCancel();
       }
     };
-
     const openCamera = async () => {
       const result = await launchCamera({
         mediaType: 'photo',
@@ -130,13 +157,13 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
       setIsUploading(true);
       try {
-        // Prepare files for upload
+        // Prepare files for upload - Fixed to handle PDF and images separately
         const files =
           fileType === 'pdf'
-            ? pdfs.map(pdfUri => ({
-                uri: pdfUri,
-                type: 'application/pdf',
-                name: pdfUri.split('/').pop() || `document_${Date.now()}.pdf`,
+            ? pdfs.map(pdfObj => ({
+                uri: pdfObj.uri,
+                type: pdfObj.type || 'application/pdf',
+                name: pdfObj.name || `document_${Date.now()}.pdf`,
               }))
             : images.map(uri => ({
                 uri,
@@ -152,15 +179,17 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
         console.log('Upload successful:', response.data);
 
-        // Continue with navigation
+        // Fixed navigation - pass only the relevant data based on file type
         if (fileType === 'pdf') {
           navigation.navigate('PrescriptionVerification', {
-            pdfs: pdfs,
-            pdfName: pdfs[0].split('/').pop() || 'document.pdf',
+            pdfs: pdfs.map(pdfObj => pdfObj.uri),
+            pdfName: pdfs[0]?.name || 'document.pdf',
+            fileType: 'pdf', // Add file type to help the receiving component
           });
         } else {
           navigation.navigate('PrescriptionVerification', {
             images: images,
+            fileType: 'image', // Add file type to help the receiving component
           });
         }
       } catch (error) {
@@ -224,7 +253,9 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
             </Text>
 
             {fileType === 'pdf' ? (
-              <Text style={styles.fileName}>{pdfs[0]}</Text>
+              <Text style={styles.fileName}>
+                {pdfs[0]?.name || pdfs[0]?.uri}
+              </Text>
             ) : (
               <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
                 {images.map((uri, index) => (

@@ -170,4 +170,58 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
   },
+  sectionContainer: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 12,
+  },
+  pdfList: {
+    marginBottom: 16,
+  },
+  pdfCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  pdfIconContainer: {
+    backgroundColor: '#E6F2FF',
+    borderRadius: 6,
+    padding: 8,
+    marginRight: 12,
+  },
+  pdfInfo: {
+    flex: 1,
+  },
+
+  pdfDate: {
+    fontSize: 12,
+    color: '#6D7578',
+    marginTop: 4,
+  },
+  imageCard: {
+    width: '48%',
+    marginBottom: 12,
+  },
+  imageInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  imageDate: {
+    fontSize: 12,
+    color: '#6D7578',
+    marginLeft: 4,
+  },
 });

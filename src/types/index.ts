@@ -92,6 +92,7 @@ export type OrderStatus =
   | 'Clarification Needed'
   | 'Shipped'
   | 'Cancelled';
+
 export interface Order {
   name: string;
   orderId: string;
@@ -99,4 +100,12 @@ export interface Order {
   items: string;
   amount: string;
   status: OrderStatus;
+}
+export type PrescribedOrderStatus = 'Approved' | 'Clarification Needed';
+export interface PrescribedOrder {
+  name: string;
+  orderId: string;
+  quantity: string;
+  amount: string;
+  status: PrescribedOrderStatus;
 }
