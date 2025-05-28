@@ -21,12 +21,7 @@ export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   HomeScreen: undefined;
-  PrescriptionVerification: {
-    pdfs?: string[];
-    images?: string[];
-    pdfName?: string;
-    fileType: 'pdf' | 'image';
-  };
+  PrescriptionVerification: undefined;
   SuccessAnimation: undefined;
   Layout: undefined;
   UploadScreen: {product?: Product};

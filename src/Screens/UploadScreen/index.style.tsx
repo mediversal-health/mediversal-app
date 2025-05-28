@@ -61,6 +61,7 @@ export const styles = StyleSheet.create({
     color: '#0088B1',
     fontFamily: Fonts.JakartaSemiBold,
     marginLeft: 8,
+    fontSize: 10,
   },
   buyButton: {
     flex: 1,
@@ -74,6 +75,7 @@ export const styles = StyleSheet.create({
   },
   buyButtonText: {
     color: '#FFFFFF',
+    fontSize: 10,
     fontFamily: Fonts.JakartaSemiBold,
   },
   productCardsContainer: {

@@ -93,7 +93,9 @@ const Layout = () => {
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
                     <Bell size={20} />
-                    <ShoppingBag size={20} />
+                    <TouchableOpacity>
+                      <ShoppingBag size={20} />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

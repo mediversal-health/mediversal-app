@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   amountText: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
@@ -128,6 +128,7 @@ export const styles = StyleSheet.create({
   },
   addressButtonText: {
     color: '#fff',
+    fontSize: 10,
     fontFamily: Fonts.JakartaBold,
   },
   header: {

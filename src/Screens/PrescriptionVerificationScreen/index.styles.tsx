@@ -1,5 +1,8 @@
-import {Platform, StatusBar, StyleSheet} from 'react-native';
+import {Dimensions, Platform, StatusBar, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
+
+const {width} = Dimensions.get('window');
+const ITEM_WIDTH = (width - 48) / 3; // 16px padding on each side + 8px gap between items
 
 export const styles = StyleSheet.create({
   container: {
@@ -12,21 +15,32 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  pdfListContainer: {
-    marginTop: 8,
-    marginBottom: 24,
+  headerWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+
+    paddingBottom: 10,
   },
-  pdfItem: {
+  headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 6,
+    gap: 10,
   },
-  pdfName: {
-    fontSize: 14,
-    marginLeft: 8,
-    color: '#333',
+  backButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#e8f4f7',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-
+  headerTitle: {
+    fontSize: 16,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#111827',
+  },
   progressCircle: {
     width: 150,
     height: 150,
@@ -45,32 +59,6 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     fontFamily: Fonts.JakartaBold,
   },
-
-  verificationRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 8,
-    paddingHorizontal: 4,
-  },
-
-  verificationTextLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  verificationTextRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  verificationIconText: {
-    fontSize: 12,
-    color: '#161D1F',
-    fontFamily: Fonts.JakartaRegular,
-    marginLeft: 4,
-  },
-
   heading: {
     fontSize: 12,
     marginTop: 12,
@@ -82,6 +70,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: '#899193',
     marginBottom: 12,
+    fontFamily: Fonts.JakartaRegular,
   },
   learnMoreRow: {
     flexDirection: 'row',
@@ -94,64 +83,62 @@ export const styles = StyleSheet.create({
     marginRight: 4,
     fontFamily: Fonts.JakartaSemiBold,
   },
-
-  pdfText: {
-    fontSize: 12,
-    marginTop: 4,
-    color: '#444',
-  },
-  exploreBtn: {
-    marginTop: 20,
-    backgroundColor: '#0088B1',
-    borderRadius: 10,
+  infoCard: {
     paddingVertical: 16,
-    alignItems: 'center',
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    marginBottom: 24,
   },
-  exploreText: {
-    color: '#F8F8F8',
+  infoCardText: {
     fontSize: 12,
+    marginBottom: 12,
+    color: '#fff',
     fontFamily: Fonts.JakartaRegular,
   },
-  uploadText: {
-    marginTop: 4,
-    fontSize: 12,
-    color: '#6D7578',
-    fontWeight: 'regular',
+  sectionContainer: {
+    marginBottom: 24,
   },
-  imageListContainer: {
-    marginTop: 20,
-    paddingHorizontal: 16,
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: Fonts.JakartaBold,
+    color: '#161D1F',
+    marginBottom: 16,
   },
-
-  imageGrid: {
+  prescriptionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 10,
   },
-  imageItem: {
-    width: '31%',
+  prescriptionItem: {
+    width: ITEM_WIDTH,
+    height: 180,
     marginBottom: 12,
     borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: '#f8f9fa',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#0088B1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
   },
-  uploadedImage: {
-    width: '100%',
-    height: 120,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+  itemIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#E1F0F7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
   },
-  uploadTime: {
+  itemTypeText: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#0088B1',
+    marginBottom: 4,
+  },
+  itemDateText: {
     fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
     color: '#6D7578',
-    padding: 6,
-    textAlign: 'center',
   },
   noDataContainer: {
     padding: 20,
@@ -168,60 +155,58 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6D7578',
     textAlign: 'center',
-    fontWeight: '500',
+    fontFamily: Fonts.JakartaSemiBold,
   },
-  sectionContainer: {
+  uploadMoreButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 24,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 12,
+  uploadMoreText: {
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#0088B1',
+    fontSize: 14,
   },
-  pdfList: {
-    marginBottom: 16,
-  },
-  pdfCard: {
-    flexDirection: 'row',
+  exploreBtn: {
+    borderRadius: 12,
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    justifyContent: 'center',
+    marginBottom: 50,
+  },
+  whatsappButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exploreText: {
+    color: '#F8F8F8',
+    fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
+  },
+  uploadText: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#6D7578',
+    fontFamily: Fonts.JakartaRegular,
   },
   pdfIconContainer: {
-    backgroundColor: '#E6F2FF',
-    borderRadius: 6,
-    padding: 8,
-    marginRight: 12,
-  },
-  pdfInfo: {
-    flex: 1,
-  },
-
-  pdfDate: {
-    fontSize: 12,
-    color: '#6D7578',
-    marginTop: 4,
-  },
-  imageCard: {
-    width: '48%',
-    marginBottom: 12,
-  },
-  imageInfo: {
-    flexDirection: 'row',
+    width: '100%',
+    height: 148,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 4,
+    backgroundColor: '#F5FAFC',
+    borderRadius: 6,
+    marginBottom: 8,
+    padding: 10,
   },
-  imageDate: {
-    fontSize: 12,
-    color: '#6D7578',
-    marginLeft: 4,
+  imageThumbnail: {
+    width: '100%',
+    height: 148,
+    borderRadius: 6,
+    marginBottom: 8,
+    backgroundColor: '#F5FAFC',
   },
 });
