@@ -5,10 +5,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFEBD4',
     borderRadius: 8,
-
     overflow: 'hidden',
-    width: 83.5,
+    flex: 1,
     height: 83.5,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
   },
   imageContainer: {
     flex: 1,

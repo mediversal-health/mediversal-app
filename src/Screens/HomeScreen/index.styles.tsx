@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   gridWrap: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flex: 1,
     gap: 12,
     justifyContent: 'space-between',
     padding: 10,

@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   amountText: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
@@ -128,6 +128,7 @@ export const styles = StyleSheet.create({
   },
   addressButtonText: {
     color: '#fff',
+    fontSize: 10,
     fontFamily: Fonts.JakartaBold,
   },
   header: {
@@ -151,5 +152,37 @@ export const styles = StyleSheet.create({
   safeHeader: {
     backgroundColor: '#fff',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  retryButton: {
+    backgroundColor: '#0088B1',
+    padding: 10,
+    borderRadius: 5,
+  },
+  retryButtonText: {
+    color: 'white',
+  },
+  emptyCartContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  emptyCartText: {
+    fontSize: 16,
+    color: '#666',
   },
 });

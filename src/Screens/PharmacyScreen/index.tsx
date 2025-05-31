@@ -9,6 +9,7 @@ import {
   ScrollView,
   FlatList,
   RefreshControl,
+  Alert,
 } from 'react-native';
 
 import OnboardingSteps from '../../components/Banners/OnboardingBanner';
@@ -41,22 +42,28 @@ import CircleCard from '../../components/cards/CircularCards';
 import SunDrop from './assests/svgs/Card 1.svg';
 import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
 import {ProductCardProps} from '../../types';
-import {getProducts} from '../../Services/pharmacy';
+import {getProducts, getProductsById} from '../../Services/pharmacy';
 import useProductStore from '../../store/productsStore';
 import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
 import {Fonts} from '../../styles/fonts';
+import {addToCart} from '../../Services/cart';
+import {useAuthStore} from '../../store/authStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
-
+  const customer_id = useAuthStore(state => state.customer_id);
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -76,12 +83,16 @@ const PharmacyScreen = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts();
+    }, [fetchProducts]),
+  );
   const onRefresh = () => {
     setRefreshing(true);
     fetchProducts();
   };
-
+  console.log(customer_id);
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
     navigation.navigate('UploadScreen', {
@@ -90,6 +101,36 @@ const PharmacyScreen = () => {
   };
 
   console.log(cardProducts);
+
+  const handleAddToCart = async (productId: string, quantity: number) => {
+    try {
+      setAddingToCart(productId);
+      const numericProductId = parseInt(productId, 10);
+
+      const productResponse = await getProductsById(numericProductId);
+      const productData = {
+        ...productResponse.data,
+        quantity: quantity || 1,
+      };
+
+      const cartResponse = await addToCart(customer_id, productData);
+      console.log('Product added to cart successfully:', cartResponse);
+
+      Alert.alert(
+        'Success',
+        `${productData.name || 'Product'} has been added to your cart!`,
+        [{text: 'OK'}],
+      );
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      Alert.alert('Error', 'Failed to add product to cart. Please try again.', [
+        {text: 'OK'},
+      ]);
+    } finally {
+      setAddingToCart(null);
+    }
+  };
+
   const renderProductShimmer = () => <ProductCardShimmer />;
   const skeletonItems = loading
     ? Array(5)
@@ -101,9 +142,8 @@ const PharmacyScreen = () => {
     <TouchableOpacity onPress={() => handleProductPress(item)}>
       <ProductCard
         product={item}
-        onAddToCart={(id: string, quantity: number) => {
-          console.log(`Product ${id} added to cart: ${quantity} items`);
-        }}
+        onAddToCart={handleAddToCart}
+        addingToCart={addingToCart === item.id}
       />
     </TouchableOpacity>
   );
@@ -173,7 +213,9 @@ const PharmacyScreen = () => {
                 <Text style={styles.subtitle}>Quick order with Rx</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.uploadButton}>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={() => navigation.navigate('UploadPrescription')}>
               <Text style={styles.uploadButtonText}>Upload Now</Text>
             </TouchableOpacity>
           </LinearGradient>

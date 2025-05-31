@@ -89,6 +89,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
   },
+  disabledButton: {
+    backgroundColor: '#787a79',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    flex: 1,
+    marginRight: 8,
+  },
   consultButton: {
     backgroundColor: '#E8F4F7',
     paddingVertical: 12,

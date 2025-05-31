@@ -3,6 +3,7 @@ import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     borderWidth: 1,
     borderColor: '#afb3b0',
     marginTop: 10,
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     justifyContent: 'space-between',
     flexDirection: 'row',
+    overflow: 'hidden',
   },
   title: {
     color: '#0088B1',

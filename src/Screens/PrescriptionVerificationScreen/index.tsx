@@ -8,19 +8,36 @@ import {
   SafeAreaView,
   Image,
   ActivityIndicator,
+  Linking,
+  Alert,
 } from 'react-native';
 import {styles} from './index.styles';
-import {ChevronRight, FileText, Clock} from 'lucide-react-native';
-
-import {getPrescriptions} from '../../Services/prescription';
+import {
+  ChevronRight,
+  FileText,
+  Clock,
+  ChevronLeft,
+  Trash2,
+} from 'lucide-react-native';
+import {
+  deletePrescription,
+  getPrescriptions,
+} from '../../Services/prescription';
 import {useAuthStore} from '../../store/authStore';
-import PharmacistCard from '../../components/cards/PharmacistCard';
+
+import LinearGradient from 'react-native-linear-gradient';
+
+import Whatsapp from './assets/svgs/Whatsapp.svg';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
 
 interface PrescriptionItem {
   sno: number;
   customer_id: number;
   prescriptionURL: string;
   created_at: string;
+  prescription_id: string;
+  fileType?: 'pdf' | 'image';
 }
 
 const PrescriptionVerification = () => {
@@ -28,7 +45,7 @@ const PrescriptionVerification = () => {
   const [prescriptions, setPrescriptions] = useState<PrescriptionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
@@ -45,46 +62,29 @@ const PrescriptionVerification = () => {
         console.log('API Response:', response);
 
         if (response.status === 200) {
-          // Check if response.data exists and is an array
-          if (response.data && Array.isArray(response.data)) {
-            // Sort prescriptions by created_at (newest first)
-            const sortedPrescriptions = [...response.data].sort(
-              (a: PrescriptionItem, b: PrescriptionItem) => {
-                return (
-                  new Date(b.created_at).getTime() -
-                  new Date(a.created_at).getTime()
-                );
-              },
-            );
-            setPrescriptions(sortedPrescriptions);
-          } else if (response.data) {
-            // If response.data exists but is not an array (might be a single object or different format)
-            console.log('Response data is not an array:', response.data);
-            // Try to handle other potential formats
-            if (typeof response.data === 'object' && response.data !== null) {
-              // Check if there's a nested data property
-              const dataArray =
-                response.data.data || response.data.prescriptions || [];
-              if (Array.isArray(dataArray)) {
-                const sortedPrescriptions = [...dataArray].sort(
-                  (a: PrescriptionItem, b: PrescriptionItem) => {
-                    return (
-                      new Date(b.created_at).getTime() -
-                      new Date(a.created_at).getTime()
-                    );
-                  },
-                );
-                setPrescriptions(sortedPrescriptions);
-              } else {
-                setPrescriptions([]);
-              }
-            } else {
-              setPrescriptions([]);
-            }
-          } else {
-            // Handle empty data
-            setPrescriptions([]);
+          let prescriptionsData: PrescriptionItem[] = [];
+
+          if (Array.isArray(response.data)) {
+            prescriptionsData = response.data;
+          } else if (response.data && typeof response.data === 'object') {
+            prescriptionsData =
+              response.data.data || response.data.prescriptions || [];
           }
+
+          const enhancedPrescriptions = prescriptionsData.map(item => ({
+            ...item,
+            fileType: item.prescriptionURL?.toLowerCase().endsWith('.pdf')
+              ? 'pdf'
+              : 'image',
+          })) as PrescriptionItem[];
+
+          const sortedPrescriptions = [...enhancedPrescriptions].sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime(),
+          );
+
+          setPrescriptions(sortedPrescriptions);
         } else {
           setError('Failed to fetch prescriptions');
         }
@@ -99,23 +99,67 @@ const PrescriptionVerification = () => {
     fetchPrescriptions();
   }, [customer_id]);
 
-  // Separate PDFs and images from the prescriptions
-  const pdfs = prescriptions.filter(item =>
-    item.prescriptionURL?.toLowerCase().endsWith('.pdf'),
-  );
-  const images = prescriptions.filter(
-    item =>
-      item.prescriptionURL &&
-      !item.prescriptionURL.toLowerCase().endsWith('.pdf'),
-  );
+  const handleOpenPDF = (url: string) => {
+    Linking.openURL(url).catch(err =>
+      console.error('Failed to open PDF:', err),
+    );
+  };
+  console.log(prescriptions);
+  const renderPrescriptionItem = (item: PrescriptionItem, index: number) => {
+    return (
+      <TouchableOpacity
+        key={`prescription-${item.sno}-${index}`}
+        style={styles.prescriptionItem}
+        onPress={() => {
+          if (item.fileType === 'pdf') {
+            handleOpenPDF(item.prescriptionURL);
+          }
+        }}>
+        {item.fileType === 'image' ? (
+          <Image
+            source={{uri: item.prescriptionURL}}
+            style={styles.imageThumbnail}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={styles.pdfIconContainer}>
+            <FileText size={76} color="red" />
+          </View>
+        )}
+        <Text style={styles.itemDateText}>
+          {new Date(item.created_at).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+          })}
+        </Text>
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 5,
+            right: 5,
+
+            padding: 5,
+          }}
+          onPress={() => handleDeletePrescription(item.prescription_id)}>
+          <Trash2 size={16} color="#FF4444" />
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
 
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <ActivityIndicator size="large" color="#0088B1" />
           <Text style={styles.description}>Loading your prescriptions...</Text>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -132,9 +176,55 @@ const PrescriptionVerification = () => {
       </SafeAreaView>
     );
   }
+  const handleDeletePrescription = async (prescriptionId: string) => {
+    Alert.alert(
+      'Delete Prescription',
+      'Are you sure you want to delete this prescription?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const response = await deletePrescription(
+                customer_id,
+                prescriptionId,
+              );
 
+              if (response.status === 200) {
+                setPrescriptions(prev =>
+                  prev.filter(item => item.prescription_id !== prescriptionId),
+                );
+                Alert.alert('Success', 'Prescription deleted successfully');
+              } else {
+                Alert.alert('Error', 'Failed to delete prescription');
+              }
+              // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
+            } catch (error) {
+              console.error('Error deleting prescription:', error);
+              Alert.alert('Error', 'Failed to delete prescription');
+            }
+          },
+        },
+      ],
+    );
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.headerWrapper}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ChevronLeft size={20} color="#0088B1" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Upload Prescription</Text>
+        </View>
+      </View>
       <ScrollView style={styles.container}>
         <View style={styles.progressCircle}>
           <Clock color="#6D7578" size={24} />
@@ -157,49 +247,32 @@ const PrescriptionVerification = () => {
           <ChevronRight size={14} color="#6D7578" />
         </TouchableOpacity>
 
-        <Text style={styles.heading}>
-          Your prescription is being verified by:
-        </Text>
+        <LinearGradient
+          colors={['#58D163', '#1C9B31']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          style={styles.infoCard}>
+          <Text style={styles.infoCardText}>
+            We will need some time to review the prescription and prepare the
+            list of medicines and tests mentioned in it. If we require any
+            clarification, our verified pharmacist may reach out to you.
+          </Text>
 
-        <PharmacistCard
-          name="Dr. Neha Sharma"
-          experience="5+ years"
-          specialization="Pharma_D"
-        />
+          <Text style={styles.infoCardText}>
+            Alternatively, if you would like to connect with the pharmacist
+            directly, please send us a message by clicking the chat button on
+            WhatsApp.
+          </Text>
+        </LinearGradient>
 
-        {pdfs.length > 0 && (
-          <View style={styles.pdfListContainer}>
-            <Text style={styles.heading}>Uploaded PDFs:</Text>
-            {pdfs.map(pdf => (
-              <View key={`pdf-${pdf.sno}`} style={styles.pdfItem}>
-                <FileText size={16} color="#007AFF" />
-                <Text style={styles.pdfName}>
-                  {pdf.prescriptionURL.split('/').pop()}
-                </Text>
-                <Text style={styles.uploadTime}>
-                  {new Date(pdf.created_at).toLocaleString()}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {images.length > 0 && (
-          <View style={styles.imageListContainer}>
-            <Text style={styles.heading}>Uploaded Images:</Text>
-            <View style={styles.imageGrid}>
-              {images.map(image => (
-                <View key={`img-${image.sno}`} style={styles.imageItem}>
-                  <Image
-                    source={{uri: image.prescriptionURL}}
-                    style={styles.uploadedImage}
-                    resizeMode="cover"
-                  />
-                  <Text style={styles.uploadTime}>
-                    {new Date(image.created_at).toLocaleString()}
-                  </Text>
-                </View>
-              ))}
+        {/* Uploaded Prescriptions Grid */}
+        {prescriptions.length > 0 && (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Your Uploaded Prescriptions</Text>
+            <View style={styles.prescriptionsGrid}>
+              {prescriptions.map((item, index) =>
+                renderPrescriptionItem(item, index),
+              )}
             </View>
           </View>
         )}
@@ -209,11 +282,22 @@ const PrescriptionVerification = () => {
             <Text style={styles.noDataText}>No prescriptions found</Text>
           </View>
         )}
-
-        <TouchableOpacity style={styles.exploreBtn}>
-          <Text style={styles.exploreText}>Explore More Products</Text>
+        <TouchableOpacity style={styles.uploadMoreButton}>
+          <Text style={styles.uploadMoreText}>Upload more prescriptions</Text>
         </TouchableOpacity>
       </ScrollView>
+      <View style={{paddingHorizontal: 20, paddingTop: 20}}>
+        <LinearGradient
+          colors={['#58D163', '#1C9B31']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          style={styles.exploreBtn}>
+          <TouchableOpacity style={styles.whatsappButton} activeOpacity={0.8}>
+            <Whatsapp height={20} width={20} />
+            <Text style={styles.exploreText}>Contact with Pharmacist</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
     </SafeAreaView>
   );
 };

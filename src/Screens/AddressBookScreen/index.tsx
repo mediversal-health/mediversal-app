@@ -10,7 +10,7 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import {ChevronDown, ChevronLeft, Plus} from 'lucide-react-native';
+import {ChevronDown, ChevronLeft} from 'lucide-react-native';
 import {useNavigation, RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import {AddressBookTypes} from '../../types';
@@ -357,9 +357,13 @@ const AddressBookScreen: React.FC = () => {
         <ScrollView style={styles.scrollView}>
           {addresses.length > 0 && (
             <TouchableOpacity
-              style={styles.dropdownHeaderforselecteAddress}
+              style={
+                isAddressCardVisible
+                  ? styles.dropdownHeaderOpen
+                  : styles.dropdownHeader
+              }
               onPress={() => {
-                setIsAddressCardVisible(prev => !prev);
+                setIsAddressCardVisible(true);
                 setIsFormVisible(false);
               }}>
               <View
@@ -408,9 +412,13 @@ const AddressBookScreen: React.FC = () => {
           )}
           {addresses.length > 0 && (
             <TouchableOpacity
-              style={styles.dropdownHeader}
+              style={
+                isFormVisible
+                  ? styles.dropdownHeaderOpen
+                  : styles.dropdownHeader
+              }
               onPress={() => {
-                setIsFormVisible(prev => !prev);
+                setIsFormVisible(true);
                 setIsAddressCardVisible(false);
                 setIsEditMode(false);
                 resetForm();
@@ -424,7 +432,6 @@ const AddressBookScreen: React.FC = () => {
                 }}>
                 <View
                   style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-                  <Plus size={20} color="#000" />
                   <Text style={styles.dropdownHeaderText}>Add New Address</Text>
                 </View>
                 <View

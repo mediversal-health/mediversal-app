@@ -7,12 +7,15 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {Stethoscope} from 'lucide-react-native';
 import {styles} from './index.styles';
+import {useCartStore} from '../../../store/cartStore';
 
 interface MedicineDetailProps {
   images: any[];
+  productId: number | undefined;
   rating: number;
   name: string | undefined;
   packInfo: string;
@@ -21,10 +24,13 @@ interface MedicineDetailProps {
   originalPrice: string;
   discount: string;
   deliveryTime: string;
+  onAddToCart?: () => void; // Add this prop
+  isAddingToCart?: boolean; // Add this prop
 }
 
 const MedicineDetail: React.FC<MedicineDetailProps> = ({
   images,
+  productId,
   rating = 4.5,
   name = 'Dolo 650mg Tablet',
   packInfo = 'Strip of 10 Tablets',
@@ -33,10 +39,17 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   originalPrice = '₹ 195',
   discount = '15% OFF',
   deliveryTime = 'Get by 9pm, Tomorrow',
+  onAddToCart,
+  isAddingToCart = false,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const screenWidth = Dimensions.get('window').width;
+  const quantity = useCartStore(state =>
+    state.getProductQuantity(productId ?? 0),
+  );
+
+  const isInCart = quantity > 0;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -138,8 +151,20 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.addCartButton}>
-          <Text style={styles.buttonText}>Add Cart</Text>
+        <TouchableOpacity
+          style={[
+            styles.addCartButton,
+            (isAddingToCart || isInCart) && styles.disabledButton,
+          ]}
+          onPress={onAddToCart}
+          disabled={isAddingToCart || isInCart}>
+          {isAddingToCart ? (
+            <ActivityIndicator size="small" color="#0088B1" />
+          ) : isInCart ? (
+            <Text style={styles.buttonText}>Already in Cart</Text>
+          ) : (
+            <Text style={styles.buttonText}>Add Cart</Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.consultButton}>
           <Stethoscope size={16} color="#0088B1" />

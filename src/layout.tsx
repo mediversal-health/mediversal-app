@@ -93,7 +93,10 @@ const Layout = () => {
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
                     <Bell size={20} />
-                    <ShoppingBag size={20} />
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('CartPage', {})}>
+                      <ShoppingBag size={20} />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -154,7 +157,9 @@ const Layout = () => {
               paddingBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <Text style={{fontSize: 16}}>Pharmacy</Text>
+              <Text style={{fontSize: 16, fontFamily: Fonts.JakartaSemiBold}}>
+                Pharmacy
+              </Text>
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('CartPage', {})}>

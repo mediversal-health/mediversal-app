@@ -134,7 +134,10 @@ const OrdersScreen: React.FC = () => {
 
       <View style={styles.orderList}>
         {filteredOrders.map((order, index) => (
-          <OrderCard key={index} order={order} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PrescribedScreen')}>
+            <OrderCard key={index} order={order} />
+          </TouchableOpacity>
         ))}
       </View>
     </ScrollView>
