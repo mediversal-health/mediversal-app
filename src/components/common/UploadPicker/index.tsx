@@ -181,16 +181,9 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
         // Fixed navigation - pass only the relevant data based on file type
         if (fileType === 'pdf') {
-          navigation.navigate('PrescriptionVerification', {
-            pdfs: pdfs.map(pdfObj => pdfObj.uri),
-            pdfName: pdfs[0]?.name || 'document.pdf',
-            fileType: 'pdf', // Add file type to help the receiving component
-          });
+          navigation.navigate('PrescriptionVerification');
         } else {
-          navigation.navigate('PrescriptionVerification', {
-            images: images,
-            fileType: 'image', // Add file type to help the receiving component
-          });
+          navigation.navigate('PrescriptionVerification');
         }
       } catch (error) {
         console.error('Upload failed:', error);

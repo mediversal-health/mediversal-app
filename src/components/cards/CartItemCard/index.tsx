@@ -1,32 +1,95 @@
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {styles} from './index.styles';
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {Trash2, SquareMinus, SquarePlus} from 'lucide-react-native';
+import {styles} from './index.styles';
+import {useCartStore} from '../../../store/cartStore';
+import {DeleteFromCart} from '../../../Services/cart';
+import {useAuthStore} from '../../../store/authStore';
 
 type CartItemCardProps = {
-  imageUrl: string;
+  productId: number;
+  imageUrl?: string;
   name: string;
-  quantity: number;
-  mrp: number;
-  price: number;
+  mrp: string | number;
+  price: string | number;
+  onRemove?: () => void;
+  removing?: boolean;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
+  productId,
   imageUrl,
   name,
-  quantity: initialQty,
   mrp,
   price,
+  onRemove,
+  removing = false,
 }) => {
-  const [qty, setQty] = useState(initialQty);
-  const totalPrice = price * qty;
+  const quantity = useCartStore(state => state.getProductQuantity(productId));
+  const setProductQuantity = useCartStore(state => state.setProductQuantity);
+  const customer_id = useAuthStore(state => state.customer_id);
 
-  const increaseQty = () => setQty(qty + 1);
-  const decreaseQty = () => {
-    if (qty > 1) {
-      setQty(qty - 1);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
+
+  const increaseQty = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      setProductQuantity(productId, quantity + 1);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const decreaseQty = async () => {
+    if (isLoading || quantity <= 1) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      setProductQuantity(productId, quantity - 1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemove = async () => {
+    if (isDeleting) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+
+      const res = await DeleteFromCart(customer_id, [productId]);
+      console.log('Delete API response:', res);
+
+      setProductQuantity(productId, 0);
+
+      if (onRemove) {
+        onRemove();
+      }
+
+      console.log('Product successfully removed from cart');
+    } catch (error) {
+      console.error('Error deleting product from cart:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const totalPrice = Number(price) * quantity;
+  const showLoading = isLoading || removing || isDeleting;
 
   return (
     <View style={styles.card}>
@@ -36,27 +99,38 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       {/* Middle Details */}
       <View style={styles.middleContent}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.quantity}>Strip of Tablets: {qty}</Text>
+        <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
         <View style={styles.priceRow}>
           <Text style={styles.actualPrice}>₹{totalPrice}</Text>
-
           <Text style={styles.mrp}>₹{mrp}</Text>
         </View>
       </View>
 
       {/* Right Side Delete & Controls */}
       <View style={styles.rightControls}>
-        <TouchableOpacity style={styles.deleteIcon}>
-          <Trash2 size={20} color="#EB5757" />
+        <TouchableOpacity
+          style={styles.deleteIcon}
+          onPress={handleRemove}
+          disabled={showLoading}>
+          {isDeleting ? (
+            <ActivityIndicator size="small" color="#EB5757" />
+          ) : (
+            <Trash2 size={20} color="#EB5757" />
+          )}
         </TouchableOpacity>
 
         <View style={styles.counterContainer}>
-          <TouchableOpacity onPress={decreaseQty}>
-            <SquareMinus size={20} color="#0088B1" />
+          <TouchableOpacity
+            onPress={decreaseQty}
+            disabled={showLoading || quantity <= 1}>
+            <SquareMinus
+              size={20}
+              color={showLoading || quantity <= 1 ? '#cccccc' : '#0088B1'}
+            />
           </TouchableOpacity>
-          <Text style={styles.counterText}>{qty}</Text>
-          <TouchableOpacity onPress={increaseQty}>
-            <SquarePlus size={20} color="#0088B1" />
+          <Text style={styles.counterText}>{quantity}</Text>
+          <TouchableOpacity onPress={increaseQty} disabled={showLoading}>
+            <SquarePlus size={20} color={showLoading ? '#cccccc' : '#0088B1'} />
           </TouchableOpacity>
         </View>
       </View>

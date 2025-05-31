@@ -1,11 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -18,7 +19,6 @@ import {
   ChevronLeft,
   ShoppingBag,
 } from 'lucide-react-native';
-// import navigation from '../../navigation';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
@@ -28,30 +28,54 @@ import {RootStackParamList} from '../../navigation';
 import NavigationImg from './assets/svgs/navigation.svg';
 import {Fonts} from '../../styles/fonts';
 import {useAuthStore} from '../../store/authStore';
-import {useAddressBookStore} from '../../store/addressStore';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useCallback} from 'react';
+import {getCartItems} from '../../Services/cart';
+
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
+
   const formData = route.params?.formData;
   const customer_id = useAuthStore(state => state.customer_id);
-  console.log(customer_id);
   const pincode = formData?.PinCode;
   const area = formData?.Area_details;
   const City = formData?.City;
-  const state = formData?.State;
+  const State = formData?.State;
 
-  console.log(pincode, area, City);
+  const formattedAddress = `${pincode} - ${area}, ${City}, ${State}`;
 
-  const formattedAddress = `${pincode} - ${area}, ${City}, ${state}`;
-  const {selectedAddress} = useAddressBookStore();
-  console.log(selectedAddress);
-  console.log('formatted ADDRESS', formattedAddress);
+  const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchProductDetails = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      const apiItems = await getCartItems(customer_id);
+      setApiProductDetails(apiItems);
+    } catch (err) {
+      setError('Failed to load product details. Please try again.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [customer_id]);
+
+  useEffect(() => {
+    if (customer_id) {
+      fetchProductDetails();
+    }
+  }, [customer_id, fetchProductDetails]);
+
+  console.log('API product details:', apiProductDetails);
 
   const showLocationModal = () => {
     setLocationModalVisible(true);
   };
+
   const hideLocationModal = () => {
     setLocationModalVisible(false);
   };
@@ -77,36 +101,43 @@ const CartPage = () => {
     });
     hideLocationModal();
   };
+
   const [selectedRadio, setSelectedRadio] = useState(false);
-  const medicines = [
-    {
-      id: 1,
-      name: 'Paracetamol 500mg',
-      quantity: 1,
-      mrp: 99,
-      price: 79,
-      imageUrl:
-        'https://onemg.gumlet.io/l_watermark_346,w_690,h_700/a_ignore,w_690,h_700,c_pad,q_auto,f_auto/29022d224cb249a98378af4a1b220191.jpg',
-    },
-    {
-      id: 2,
-      name: 'Vitamin C Tablets',
-      quantity: 1,
-      mrp: 150,
-      price: 120,
-      imageUrl:
-        'https://onemg.gumlet.io/l_watermark_346,w_690,h_700/a_ignore,w_690,h_700,c_pad,q_auto,f_auto/29022d224cb249a98378af4a1b220191.jpg',
-    },
-    {
-      id: 3,
-      name: 'Cough Syrup 100ml',
-      quantity: 2,
-      mrp: 200,
-      price: 160,
-      imageUrl:
-        'https://onemg.gumlet.io/l_watermark_346,w_690,h_700/a_ignore,w_690,h_700,c_pad,q_auto,f_auto/29022d224cb249a98378af4a1b220191.jpg',
-    },
-  ];
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0088B1" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => {
+            setError(null);
+            setLoading(true);
+            getCartItems(customer_id)
+              .then(apiItems => {
+                setApiProductDetails(apiItems);
+              })
+              .catch(err => {
+                console.error(err);
+                setError('Failed to load product details. Please try again.');
+              })
+              .finally(() => {
+                setLoading(false);
+              });
+          }}>
+          <Text style={styles.retryButtonText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -176,7 +207,6 @@ const CartPage = () => {
               </View>
             </View>
           )}
-          {/* Apply Coupon Strip */}
           <LinearGradient
             colors={['#F8F8F8', '#FE90E2']}
             start={{x: 0, y: 0}}
@@ -188,22 +218,29 @@ const CartPage = () => {
             </View>
             <ChevronRight size={16} color="#000" />
           </LinearGradient>
-
-          {/* Delivery Info */}
-          <View style={styles.deliveryRow}>
-            <Truck size={18} color="#000" style={styles.icon} />
-            <Text style={styles.deliveryText}>By Sun, 11 May</Text>
-          </View>
-          {medicines.map(item => (
-            <CartItemCard
-              key={item.id}
-              imageUrl={item.imageUrl}
-              name={item.name}
-              quantity={item.quantity}
-              mrp={item.mrp}
-              price={item.price}
-            />
-          ))}
+          {apiProductDetails.length > 0 && (
+            <View style={styles.deliveryRow}>
+              <Truck size={18} color="#000" style={styles.icon} />
+              <Text style={styles.deliveryText}>By Sun, 11 May</Text>
+            </View>
+          )}
+          {apiProductDetails.length > 0 ? (
+            apiProductDetails.map(item => (
+              <CartItemCard
+                key={item.id}
+                productId={item.productId}
+                imageUrl={item.imageUrl}
+                name={item.ProductName}
+                mrp={item.SellingPrice}
+                price={item.CostPrice}
+                onRemove={fetchProductDetails}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyCartContainer}>
+              <Text style={styles.emptyCartText}>Your cart is empty</Text>
+            </View>
+          )}
 
           {/* MediCash Card */}
           <View style={styles.mediCashCard}>
@@ -224,7 +261,6 @@ const CartPage = () => {
               </View>
             </TouchableOpacity>
           </View>
-
           {/* Bill Summary Label */}
           <Text style={styles.billSummaryLabel}>Bill Summary</Text>
           <BillSummaryCard

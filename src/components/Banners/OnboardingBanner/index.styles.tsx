@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   gradientBox: {
+    flex: 1,
     height: 220,
     borderRadius: 12,
     paddingVertical: 16,
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    overflow: 'hidden',
   },
   onboardingContainer: {
     width: '100%',

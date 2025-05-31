@@ -3,7 +3,7 @@ import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
-    width: 110,
+    flex: 1,
     height: 104,
     borderRadius: 12,
     paddingHorizontal: 10,

@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 10,
   },
-  dropdownHeaderforselecteAddress: {
+  dropdownHeaderOpen: {
     padding: 12,
     backgroundColor: '#E8F4F7',
     borderRadius: 8,

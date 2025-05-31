@@ -28,10 +28,12 @@ export interface ProductCardProps {
     image: string;
   };
   onAddToCart?: (id: string, quantity: number) => void;
+  onUpdateCart?: (id: string, quantity: number) => void;
   borderColor?: string;
   buttonColor?: string;
   backgroundColor?: string;
   style?: StyleProp<ViewStyle>;
+  addingToCart?: boolean;
 }
 
 export interface AddressBookTypes {
@@ -76,6 +78,7 @@ export interface Product {
   updated_by: number;
   archivedProduct: number;
   images: string[];
+  quantity?: number;
 }
 
 export type UploadType = 'image' | 'pdf' | 'camera';

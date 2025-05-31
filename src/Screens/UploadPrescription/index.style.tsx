@@ -6,6 +6,32 @@ const styles = StyleSheet.create({
     padding: 16,
     flex: 1,
   },
+  headerWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+
+    paddingBottom: 10,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  backButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#e8f4f7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#111827',
+  },
   progressCircle: {
     width: 150,
     height: 150,
@@ -91,6 +117,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 12,
+    flex: 1,
+    gap: 8,
   },
   recentListContainer: {
     backgroundColor: '#FFFFFF',
@@ -101,7 +129,7 @@ const styles = StyleSheet.create({
   },
 
   uploadCard: {
-    width: 116,
+    flex: 1,
     height: 110,
     backgroundColor: '#E8F4F7',
     borderRadius: 8,
@@ -177,7 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   consultCard: {
-    width: 122,
+    flex: 1,
     height: 87,
     backgroundColor: '#E8F4F7',
     borderRadius: 8,
@@ -226,6 +254,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 12,
     marginBottom: 16,
+    flex: 1,
+    gap: 8,
   },
 
   consultTitle: {

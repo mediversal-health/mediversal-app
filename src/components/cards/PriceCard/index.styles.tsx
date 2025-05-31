@@ -3,7 +3,7 @@ import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   card: {
-    width: 179,
+    flex: 1,
     height: 108,
     borderRadius: 12,
     overflow: 'hidden',

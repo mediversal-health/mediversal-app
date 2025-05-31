@@ -359,11 +359,11 @@ const AddressBookScreen: React.FC = () => {
             <TouchableOpacity
               style={
                 isAddressCardVisible
-                  ? styles.dropdownHeader
-                  : styles.dropdownHeaderforselecteAddress
+                  ? styles.dropdownHeaderOpen
+                  : styles.dropdownHeader
               }
               onPress={() => {
-                setIsAddressCardVisible(prev => !prev);
+                setIsAddressCardVisible(true);
                 setIsFormVisible(false);
               }}>
               <View
@@ -414,11 +414,11 @@ const AddressBookScreen: React.FC = () => {
             <TouchableOpacity
               style={
                 isFormVisible
-                  ? styles.dropdownHeader
-                  : styles.dropdownHeaderforselecteAddress
+                  ? styles.dropdownHeaderOpen
+                  : styles.dropdownHeader
               }
               onPress={() => {
-                setIsFormVisible(prev => !prev);
+                setIsFormVisible(true);
                 setIsAddressCardVisible(false);
                 setIsEditMode(false);
                 resetForm();

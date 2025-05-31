@@ -93,7 +93,8 @@ const Layout = () => {
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
                     <Bell size={20} />
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('CartPage', {})}>
                       <ShoppingBag size={20} />
                     </TouchableOpacity>
                   </View>

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#50B57F',
     width: 250,
-    height: 130,
+    flex: 1,
   },
   verifiedBadge: {
     backgroundColor: '#38B87C',
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#0088B1',
     width: 250,
-    height: 130,
+    flex: 1,
   },
   personalizedTitle: {
     fontSize: 12,

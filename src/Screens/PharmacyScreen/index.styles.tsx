@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
   },
   priscriptionContainer: {
-    width: '100%',
+    flex: 1,
+    overflow: 'hidden',
     backgroundColor: '#E8F4F7',
     borderRadius: 12,
     paddingHorizontal: 10,

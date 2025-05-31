@@ -64,3 +64,12 @@ export const getPrescriptions = async (customer_id: any) => {
     `${IP_ADDR}/api/prescription/getPrescription/${customer_id}`,
   );
 };
+
+export const deletePrescription = async (
+  customer_id: any,
+  prescription_id: any,
+) => {
+  return axios.delete(
+    `${IP_ADDR}/api/prescription/deletePrescription/${customer_id}/${prescription_id} }`,
+  );
+};

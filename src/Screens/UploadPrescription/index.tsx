@@ -7,6 +7,7 @@ import {
   Camera,
   UploadIcon,
   Stethoscope,
+  ChevronLeft,
 } from 'lucide-react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from './index.style';
@@ -17,11 +18,13 @@ import Secure from './assets/secure.svg';
 import Upload from './assets/uploaded.svg';
 import UploadPicker from '../../components/common/UploadPicker';
 import {UploadPickerHandle} from '../../types/index';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
 const UploadPrescription: React.FC = () => {
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(true);
   const uploadRef = useRef<UploadPickerHandle>(null);
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const handleTakePhoto = () => {
     setShowUploadContent(false);
     uploadRef.current?.openCamera();
@@ -95,6 +98,16 @@ const UploadPrescription: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.headerWrapper}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ChevronLeft size={20} color="#0088B1" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Upload Prescription</Text>
+        </View>
+      </View>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>

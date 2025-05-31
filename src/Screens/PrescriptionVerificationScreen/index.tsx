@@ -9,10 +9,20 @@ import {
   Image,
   ActivityIndicator,
   Linking,
+  Alert,
 } from 'react-native';
 import {styles} from './index.styles';
-import {ChevronRight, FileText, Clock, ChevronLeft} from 'lucide-react-native';
-import {getPrescriptions} from '../../Services/prescription';
+import {
+  ChevronRight,
+  FileText,
+  Clock,
+  ChevronLeft,
+  Trash2,
+} from 'lucide-react-native';
+import {
+  deletePrescription,
+  getPrescriptions,
+} from '../../Services/prescription';
 import {useAuthStore} from '../../store/authStore';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -26,6 +36,7 @@ interface PrescriptionItem {
   customer_id: number;
   prescriptionURL: string;
   created_at: string;
+  prescription_id: string;
   fileType?: 'pdf' | 'image';
 }
 
@@ -93,7 +104,7 @@ const PrescriptionVerification = () => {
       console.error('Failed to open PDF:', err),
     );
   };
-
+  console.log(prescriptions);
   const renderPrescriptionItem = (item: PrescriptionItem, index: number) => {
     return (
       <TouchableOpacity
@@ -121,6 +132,17 @@ const PrescriptionVerification = () => {
             day: 'numeric',
           })}
         </Text>
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 5,
+            right: 5,
+
+            padding: 5,
+          }}
+          onPress={() => handleDeletePrescription(item.prescription_id)}>
+          <Trash2 size={16} color="#FF4444" />
+        </TouchableOpacity>
       </TouchableOpacity>
     );
   };
@@ -154,7 +176,43 @@ const PrescriptionVerification = () => {
       </SafeAreaView>
     );
   }
+  const handleDeletePrescription = async (prescriptionId: string) => {
+    Alert.alert(
+      'Delete Prescription',
+      'Are you sure you want to delete this prescription?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const response = await deletePrescription(
+                customer_id,
+                prescriptionId,
+              );
 
+              if (response.status === 200) {
+                setPrescriptions(prev =>
+                  prev.filter(item => item.prescription_id !== prescriptionId),
+                );
+                Alert.alert('Success', 'Prescription deleted successfully');
+              } else {
+                Alert.alert('Error', 'Failed to delete prescription');
+              }
+              // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
+            } catch (error) {
+              console.error('Error deleting prescription:', error);
+              Alert.alert('Error', 'Failed to delete prescription');
+            }
+          },
+        },
+      ],
+    );
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerWrapper}>

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text as RNText,
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
@@ -20,6 +21,10 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
+import {addToCart} from '../../Services/cart';
+import {useAuthStore} from '../../store/authStore';
+import {Product} from '../../types';
+import {useCartStore} from '../../store/cartStore';
 
 const medicineImages = [
   {
@@ -89,7 +94,46 @@ type UploadScreenRouteProp = RouteProp<RootStackParamList, 'UploadScreen'>;
 const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {product} = route.params;
+  const customer_id = useAuthStore(state => state.customer_id);
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
+  const handleAddToCart = async () => {
+    try {
+      setAddingToCart(product?.productId?.toString() ?? null);
 
+      // Get current quantity from store
+      const currentQuantity = useCartStore
+        .getState()
+        .getProductQuantity(product?.productId ?? 0);
+      const newQuantity = currentQuantity + 1;
+
+      const productData = {
+        ...product,
+        quantity: newQuantity,
+      };
+
+      const cartResponse = await addToCart(customer_id, productData as Product);
+      console.log('Product added to cart successfully:', cartResponse);
+
+      useCartStore
+        .getState()
+        .setProductQuantity(product?.productId ?? 0, newQuantity);
+
+      Alert.alert(
+        'Success',
+        `${
+          productData.ProductName || 'Product'
+        } has been added to your cart! (Quantity: ${newQuantity})`,
+        [{text: 'OK'}],
+      );
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      Alert.alert('Error', 'Failed to add product to cart. Please try again.', [
+        {text: 'OK'},
+      ]);
+    } finally {
+      setAddingToCart(null);
+    }
+  };
   return (
     <>
       <SafeAreaView style={styles.safeHeader}>
@@ -118,6 +162,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
           <View style={styles.content}>
             <MedicineDetail
               images={medicineImages}
+              productId={product?.productId}
               rating={4.5}
               name={product?.ProductName}
               packInfo="Strip of 10 Tablets"
@@ -126,6 +171,8 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               originalPrice="₹ 195"
               discount="15% OFF"
               deliveryTime="Get by 9pm, Tomorrow"
+              onAddToCart={handleAddToCart}
+              isAddingToCart={!!addingToCart}
             />
             <View style={styles.cheaperAlternativeContainer}>
               <CheaperAlternative discountPercentage={5}>
