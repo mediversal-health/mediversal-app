@@ -10,6 +10,7 @@ import {
   FlatList,
   RefreshControl,
   Alert,
+  Platform,
 } from 'react-native';
 
 import OnboardingSteps from '../../components/Banners/OnboardingBanner';
@@ -201,11 +202,7 @@ const PharmacyScreen = () => {
             </View>
           </View>
 
-          <LinearGradient
-            colors={['#0088B1', '#F8F8F8']}
-            start={{x: 0, y: 1}}
-            end={{x: 0, y: -1}}
-            style={styles.priscriptionContainer}>
+          <View style={styles.priscriptionContainer}>
             <View style={{flexDirection: 'row', gap: 5}}>
               <PriscriptionSVG width={25} height={32} strokeWidth={2} />
               <View>
@@ -218,7 +215,7 @@ const PharmacyScreen = () => {
               onPress={() => navigation.navigate('UploadPrescription')}>
               <Text style={styles.uploadButtonText}>Upload Now</Text>
             </TouchableOpacity>
-          </LinearGradient>
+          </View>
         </View>
         <View>
           <LinearGradient
@@ -262,7 +259,12 @@ const PharmacyScreen = () => {
               />
             )}
 
-            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+            <Text
+              style={{
+                fontFamily: Fonts.JakartaRegular,
+                fontSize: 12,
+                marginLeft: 10,
+              }}>
               Browse by Category
             </Text>
             <View
@@ -271,6 +273,7 @@ const PharmacyScreen = () => {
                 justifyContent: 'space-between',
                 gap: 5,
                 marginTop: 10,
+                marginHorizontal: Platform.OS === 'android' ? 0 : 10,
               }}>
               <CategoryCard
                 SvgImage={Sneezing}
@@ -300,6 +303,7 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginBottom: 10,
+                marginHorizontal: Platform.OS === 'android' ? 0 : 10,
               }}>
               <CategoryCard
                 SvgImage={Dehydration}
@@ -322,10 +326,11 @@ const PharmacyScreen = () => {
                 placement="bottom"
               />
             </View>
-
-            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
-              Trending Medicines
-            </Text>
+            <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
+              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+                Trending Medicines
+              </Text>
+            </View>
 
             {loading ? (
               <FlatList
@@ -348,9 +353,11 @@ const PharmacyScreen = () => {
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
               />
             )}
-            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
-              Featured Brands
-            </Text>
+            <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
+              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+                Featured Brands
+              </Text>
+            </View>
             <View
               style={{
                 flexDirection: 'row',
@@ -358,6 +365,7 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginBottom: 10,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
               <CircleCard logo={SunDrop} size={110} />
               <CircleCard logo={SunDrop} size={110} />
@@ -370,6 +378,7 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginBottom: 10,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
               <CircleCard logo={SunDrop} size={110} />
               <CircleCard logo={SunDrop} size={110} />
@@ -382,44 +391,50 @@ const PharmacyScreen = () => {
                 <Text style={styles.buttonText}>View all Medicines</Text>
               </TouchableOpacity>
             </View>
-
-            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
-              Stay Informed, Stay Healthy
-            </Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                flexDirection: 'row',
-                gap: 10,
-                paddingHorizontal: 5,
-                marginTop: 10,
-                marginBottom: 10,
-              }}>
-              <ImmunityCard
-                title="5 Simple Ways to Boost Your Immunity Naturally"
-                subtitle="Learn how daily habits like staying hydrated, eating colorful veggies, and getting enough sleep can strengthen your immune system."
-                buttonText="Read More"
-                onPressReadMore={() => console.log('Read More clicked')}
-              />
-              <ImmunityCard
-                title="The Power of Antioxidants: Foods to Include in Your Diet"
-                subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
-                buttonText="Read More"
-                onPressReadMore={() => console.log('Read More clicked')}
-              />
-              <ImmunityCard
-                title="Stress Management Techniques for a Healthier Life"
-                subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
-                buttonText="Read More"
-                onPressReadMore={() => console.log('Read More clicked')}
-              />
-            </ScrollView>
-            <View style={styles.imagecontainer}>
-              <Text style={{fontSize: 8}}>Powered By</Text>
-              <MediversalLogo style={styles.logo} />
+            <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaRegular,
+                  fontSize: 12,
+                  marginBottom: 10,
+                }}>
+                Stay Informed, Stay Healthy
+              </Text>
             </View>
           </LinearGradient>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              flexDirection: 'row',
+              gap: Platform.OS === 'ios' ? 0 : 10,
+              paddingHorizontal: Platform.OS === 'ios' ? 0 : 10,
+              marginBottom: 5,
+            }}>
+            <ImmunityCard
+              title="5 Simple Ways to Boost Your Immunity Naturally"
+              subtitle="Learn how daily habits like staying hydrated, eating colorful veggies, and getting enough sleep can strengthen your immune system."
+              buttonText="Read More"
+              onPressReadMore={() => console.log('Read More clicked')}
+            />
+            <ImmunityCard
+              title="The Power of Antioxidants: Foods to Include in Your Diet"
+              subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
+              buttonText="Read More"
+              onPressReadMore={() => console.log('Read More clicked')}
+            />
+            <ImmunityCard
+              title="Stress Management Techniques for a Healthier Life"
+              subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
+              buttonText="Read More"
+              onPressReadMore={() => console.log('Read More clicked')}
+            />
+          </ScrollView>
+
+          <View style={styles.imagecontainer}>
+            <Text style={{fontSize: 8}}>Powered By</Text>
+            <MediversalLogo style={styles.logo} />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

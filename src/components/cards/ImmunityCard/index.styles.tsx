@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     paddingVertical: 8,
-    paddingHorizontal: 30,
+    paddingHorizontal: Platform.OS === 'ios' ? 20 : 30,
     alignSelf: 'center',
     position: 'absolute',
+
     bottom: 16,
     zIndex: 2,
   },

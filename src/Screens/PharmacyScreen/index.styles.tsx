@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
   },
   priscriptionContainer: {
-    flex: 1,
-    overflow: 'hidden',
-    backgroundColor: '#E8F4F7',
+    width: '95%',
+    alignSelf: 'center',
+    backgroundColor: '#0088B1',
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
   gradientBox: {
     width: '100%',
     borderRadius: 12,
-    paddingVertical: 16,
-    paddingHorizontal: 10,
+    paddingVertical: 0,
+    paddingHorizontal: Platform.OS === 'ios' ? 0 : 10,
 
     marginBottom: 20,
   },
@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    marginTop: 20,
+    marginBottom: Platform.OS === 'android' ? 45 : 30,
+    padding: 25,
   },
   logo: {
     width: 200,
