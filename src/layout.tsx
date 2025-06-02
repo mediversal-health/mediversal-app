@@ -3,6 +3,7 @@ import {Bell, ChevronDown, ShoppingBag} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {
   Image,
+  Platform,
   SafeAreaView,
   StatusBar,
   Switch,
@@ -47,7 +48,8 @@ const Layout = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 20,
               paddingBottom: 10,
-              marginTop: '11%',
+              paddingTop:
+                Platform.OS === 'ios' ? 40 : StatusBar.currentHeight || 20,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>

@@ -50,8 +50,10 @@ const styles = StyleSheet.create({
   },
   statusText: {
     color: 'black',
-    fontSize: 5,
+    fontSize: 6, // Slightly bigger
+    lineHeight: 8, // Add line height
     fontFamily: Fonts.JakartaRegular,
+    marginHorizontal: 23,
   },
   doctorInfoRow: {
     flexDirection: 'row',
@@ -76,9 +78,11 @@ const styles = StyleSheet.create({
   scheduleContainer: {
     borderRadius: 6,
     backgroundColor: '#fff',
-    marginTop: 20,
-    padding: 3,
+    marginTop: 10,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
   },
+
   scheduleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -93,9 +97,13 @@ const styles = StyleSheet.create({
   scheduleText: {
     marginLeft: 6,
     color: '#888',
-    fontSize: 8,
+    fontSize: 9,
+    lineHeight: 11,
     fontFamily: Fonts.JakartaRegular,
+    includeFontPadding: false, // Android-only
+    textAlignVertical: 'center',
   },
+
   divider: {
     width: 1,
     height: 20,
