@@ -31,8 +31,9 @@ const Layout = () => {
         flex: 1,
         backgroundColor: '#fff',
         marginBottom: 0,
+        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight || 120,
 
-        //marginBottom: StatusBar.currentHeight,
+        // marginBottom: StatusBar.currentHeight,
       }}>
       <StatusBar
         backgroundColor="#0088B1" // Change to your desired color
@@ -48,8 +49,9 @@ const Layout = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 20,
               paddingBottom: 10,
-              paddingTop:
-                Platform.OS === 'ios' ? 40 : StatusBar.currentHeight || 20,
+              marginBottom: 10,
+              // paddingTop:
+              //   Platform.OS === 'ios' ? 40 : StatusBar.currentHeight || 20,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>

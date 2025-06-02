@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'space-between',
   },
+
   banner: {
     borderRadius: 6,
     paddingHorizontal: 6,
