@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -6,12 +6,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 104,
     borderRadius: 12,
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
     paddingTop: 6,
     overflow: 'hidden',
     justifyContent: 'space-between',
   },
-
   banner: {
     borderRadius: 6,
     paddingHorizontal: 6,
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   bannerText: {
-    fontSize: 4,
+    fontSize: Platform.OS === 'android' ? 4 : 6,
     fontFamily: Fonts.JakartaSemiBold,
     color: '#fff',
     textAlign: 'center',
