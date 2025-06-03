@@ -406,9 +406,11 @@ const PharmacyScreen = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
+              flex: 1,
               flexDirection: 'row',
-              gap: Platform.OS === 'ios' ? 0 : 10,
-              paddingHorizontal: Platform.OS === 'ios' ? 0 : 10,
+              justifyContent: 'space-between',
+              // gap: Platform.OS === 'ios' ? 0 : 10,
+              paddingHorizontal: Platform.OS === 'ios' ? 10 : 10,
               marginBottom: 5,
             }}>
             <ImmunityCard
