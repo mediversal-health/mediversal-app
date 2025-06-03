@@ -3,7 +3,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
 import {Home, User} from 'lucide-react-native';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import Menu from './assests/svgs/Menu 3.svg'; // your custom SVG
 import Pharmacy from './assests/svgs/Layer 2.svg';
 import Homecare from './assests/svgs/homecare.svg';
@@ -65,13 +65,12 @@ export default function BottomTabNavigator() {
           borderTopRightRadius: 20,
           elevation: 5,
           position: 'absolute',
-          backgroundColor: '#E8F4F7',
-          height: 60,
+          backgroundColor: '#FFFFFF',
+          height: Platform.OS === 'ios' ? 66 : 80,
         },
         tabBarLabel: route.name === 'Menu' ? () => null : undefined,
         tabBarLabelStyle: {
           fontSize: 12,
-
           marginBottom: 5,
         },
       })}>

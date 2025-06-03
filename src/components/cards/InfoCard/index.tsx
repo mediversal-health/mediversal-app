@@ -23,7 +23,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       style={styles.container}
       start={{x: 0, y: 1}}
       end={{x: 0, y: 0}}>
-      {flag === 'Online' && (
+      {/* {flag === 'Online' && (
         <LinearGradient
           colors={['#003A4B', '#0088B1']}
           start={{x: 0, y: 1}}
@@ -31,7 +31,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           style={styles.banner}>
           <Text style={styles.bannerText}>Doctor's in 10 minutes</Text>
         </LinearGradient>
-      )}
+      )} */}
 
       <View style={styles.content}>
         <View>

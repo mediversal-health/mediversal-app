@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -216,14 +217,22 @@ const CartPage = () => {
               onPress={() => navigation.navigate('ApplyCouponScreen')}>
               <LinearGradient
                 colors={['#F8F8F8', '#FE90E2']}
-                start={{x: 1, y: 0}}
-                end={{x: 1, y: 1}}
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
                 style={styles.couponStrip}>
                 <View style={styles.couponLeft}>
-                  <Percent size={16} color="#000" style={styles.icon} />
+                  <Percent
+                    size={16}
+                    color="#000"
+                    style={{marginLeft: Platform.OS === 'android' ? 0 : 10}}
+                  />
                   <Text style={styles.couponText}>Apply Coupon</Text>
                 </View>
-                <ChevronRight size={16} color="#000" />
+                <ChevronRight
+                  size={16}
+                  color="#000"
+                  style={{marginRight: Platform.OS === 'ios' ? 10 : 0}}
+                />
               </LinearGradient>
             </TouchableOpacity>
           )}
@@ -235,7 +244,11 @@ const CartPage = () => {
               end={{x: 0, y: 1}}
               style={styles.appliedCouponContainer}>
               <View style={styles.appliedCouponLeft}>
-                <View style={{flexDirection: 'row'}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: Platform.OS === 'ios' ? 5 : 0,
+                  }}>
                   <Text style={styles.appliedCouponText}>Coupon Applied:</Text>
                   <Text style={styles.appliedCouponCode}>
                     {selectedCoupon?.couponCode}

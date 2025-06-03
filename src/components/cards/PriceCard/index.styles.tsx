@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -10,10 +10,12 @@ const styles = StyleSheet.create({
   },
   topHalf: {
     height: 54,
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
     paddingTop: 8,
     justifyContent: 'center',
     backgroundColor: 'transparent',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   bottomHalf: {
     height: 54,
@@ -27,11 +29,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: Fonts.JakartaBold,
     fontSize: 12,
+    paddingLeft: Platform.OS === 'android' ? 0 : 4,
   },
   subHeading: {
     color: '#fff',
     fontSize: 8,
     fontFamily: Fonts.JakartaRegular,
+    paddingLeft: Platform.OS === 'android' ? 0 : 4,
   },
   offer: {
     color: '#000',

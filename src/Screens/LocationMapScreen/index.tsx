@@ -311,7 +311,7 @@ const LocationMapScreen: React.FC = () => {
         {currentLocation && (
           <MapView
             ref={ref => setMapRef(ref)}
-            provider={PROVIDER_GOOGLE}
+            provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
             style={styles.map}
             initialRegion={initialRegion}>
             <Marker

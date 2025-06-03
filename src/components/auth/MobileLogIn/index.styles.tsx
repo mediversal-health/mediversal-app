@@ -13,14 +13,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     columnGap: 12,
+    height: 50,
   },
   countryCodeBox: {
-    padding: 12,
+    height: '100%', // ✅ fill full height of input row
+    justifyContent: 'center', // ✅ center picker vertically
+    paddingHorizontal: 12, // ⬅ keep padding consistent horizontally
     backgroundColor: '#f8f8f8',
     borderWidth: 1,
     borderColor: '#e0e0e0',
     borderRadius: 12,
   },
+
   mobileInputContainer: {
     flex: 1,
     padding: 4,
@@ -29,6 +33,8 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     borderRadius: 12,
     minHeight: 50,
+    height: '100%',
+    justifyContent: 'center',
   },
   focusedInput: {
     borderColor: '#0088b1',
