@@ -1,4 +1,4 @@
-import {Search} from 'lucide-react-native';
+// import {Search} from 'lucide-react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
@@ -64,7 +64,6 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     'Category',
     'Salt Name',
     'Manufacturer',
-    'Price Range',
     'Availability',
     'Prescription Required',
     'Special Tags',
@@ -109,6 +108,20 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       {key: 'alkem', label: 'Alkem Laboratories'},
       {key: 'biocon', label: 'Biocon'},
       {key: 'wockhardt', label: 'Wockhardt'},
+    ],
+    Availability: [
+      {key: 'inStock', label: 'In Stock'},
+      {key: 'outOfStock', label: 'Out of Stock'},
+    ],
+    'Prescription Required': [
+      {key: 'prescriptionRequired', label: 'Prescription Required'},
+      {key: 'noPrescriptionRequired', label: 'No Prescription Required'},
+    ],
+    'Special Tags': [
+      {key: 'sugarFree', label: 'Sugar - Free'},
+      {key: 'vegetarian', label: 'Vegetarian'},
+      {key: 'lactoseFree', label: 'Lactose - Free'},
+      {key: 'glutenFree', label: 'Gluten - Free'},
     ],
   };
 
@@ -165,7 +178,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
 
   const renderSearchableContent = (options: CategoryOption[]) => (
     <View style={styles.contentContainer}>
-      <View style={styles.searchContainer}>
+      {/* <View style={styles.searchContainer}>
         <Search color={'#0088B1'} size={20} />
         <TextInput
           style={styles.searchInput}
@@ -174,7 +187,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
           onChangeText={setSearchText}
           placeholderTextColor="#999"
         />
-      </View>
+      </View> */}
 
       <ScrollView
         style={styles.optionsContainer}

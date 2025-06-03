@@ -112,3 +112,8 @@ export interface PrescribedOrder {
   amount: string;
   status: PrescribedOrderStatus;
 }
+export interface Coupon {
+  couponCode: string;
+  title: string;
+  description: string;
+}
