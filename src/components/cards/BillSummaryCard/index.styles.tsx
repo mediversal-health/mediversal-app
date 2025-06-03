@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 12,
     justifyContent: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     marginTop: 12,
     backgroundColor: '#fff',
   },
@@ -17,8 +17,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     justifyContent: 'space-between',
-    paddingVertical: 10,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#FFFFFF',
   },
   billTitle: {
     color: '#161D1F',

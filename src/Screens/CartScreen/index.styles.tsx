@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 12,
+    padding: Platform.OS === 'ios' ? 0 : 12,
     borderRadius: 6,
     margin: 12,
   },
@@ -37,6 +37,8 @@ export const styles = StyleSheet.create({
   couponText: {
     fontSize: 12,
     marginLeft: 6,
+    lineHeight: 20,
+    paddingVertical: Platform.OS === 'ios' ? 12 : 0,
     fontFamily: Fonts.JakartaSemiBold,
   },
   icon: {

@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -213,10 +214,18 @@ const CartPage = () => {
             end={{x: 1, y: 0}}
             style={styles.couponStrip}>
             <View style={styles.couponLeft}>
-              <Percent size={16} color="#000" style={styles.icon} />
+              <Percent
+                size={16}
+                color="#000"
+                style={{marginLeft: Platform.OS === 'android' ? 0 : 10}}
+              />
               <Text style={styles.couponText}>Apply Coupon</Text>
             </View>
-            <ChevronRight size={16} color="#000" />
+            <ChevronRight
+              size={16}
+              color="#000"
+              style={{marginRight: Platform.OS === 'ios' ? 10 : 0}}
+            />
           </LinearGradient>
           {apiProductDetails.length > 0 && (
             <View style={styles.deliveryRow}>
