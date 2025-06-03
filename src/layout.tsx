@@ -30,7 +30,7 @@ const Layout = () => {
       style={{
         flex: 1,
         backgroundColor: '#fff',
-        marginBottom: 0,
+        marginBottom: Platform.OS === 'ios' ? -11 : -5,
         paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight || 120,
 
         // marginBottom: StatusBar.currentHeight,
