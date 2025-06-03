@@ -12,6 +12,7 @@ import {ProductCardProps} from '../../../types';
 import {useCartStore} from '../../../store/cartStore';
 import {DeleteFromCart} from '../../../Services/cart'; // Import your delete function
 import {useAuthStore} from '../../../store/authStore';
+import useProductStore from '../../../store/productsStore';
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
@@ -28,7 +29,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const {getOriginalProduct} = useProductStore();
+  const originalProduct = getOriginalProduct(productId.toString());
+  const availableInventory = originalProduct?.AvailableInInventory || 0;
+  const isOutOfStock = availableInventory === 0;
+  const canIncreaseQuantity = quantity < availableInventory;
   const handleAddItem = async () => {
     if (isLoading) {
       return;
@@ -49,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const handleIncrement = async () => {
-    if (isLoading) {
+    if (isLoading || !canIncreaseQuantity) {
       return;
     }
 
@@ -143,17 +148,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <TouchableOpacity
             style={styles.counterButton}
             onPress={handleIncrement}
-            disabled={showLoading}>
-            <Plus size={14} color="#FFF" />
+            disabled={showLoading || !canIncreaseQuantity}>
+            <Plus size={14} color={!canIncreaseQuantity ? '#cccccc' : '#FFF'} />
           </TouchableOpacity>
         </View>
       ) : (
         <TouchableOpacity
           style={[styles.addButton, dynamicStyles.addButton]}
           onPress={handleAddItem}
-          disabled={showLoading}>
+          disabled={showLoading || isOutOfStock}>
           {showLoading ? (
             <ActivityIndicator size="small" color="#FFF" />
+          ) : isOutOfStock ? (
+            <Text style={styles.outOfStockButtonText}>Out of Stock</Text>
           ) : (
             <Plus size={16} color="#FFF" />
           )}

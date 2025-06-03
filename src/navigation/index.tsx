@@ -16,6 +16,7 @@ import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
 import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen';
 import OrdersScreen from '../Screens/OrdersScreen';
 import PrescribedScreen from '../Screens/PrescribedScreen';
+import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -49,6 +50,7 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   OrdersScreen: undefined;
   PrescribedScreen: undefined;
+  ApplyCouponScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -86,6 +88,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="PrescribedScreen"
               component={PrescribedScreen}
+            />
+            <Stack.Screen
+              name="ApplyCouponScreen"
+              component={ApplyCouponScreen}
             />
           </>
         ) : (

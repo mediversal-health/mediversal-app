@@ -32,6 +32,7 @@ import {useAuthStore} from '../../store/authStore';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useCallback} from 'react';
 import {getCartItems} from '../../Services/cart';
+import {useCouponStore} from '../../store/couponStore';
 
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -50,7 +51,10 @@ const CartPage = () => {
   const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const {selectedCoupon, setSelectedCoupon} = useCouponStore();
+  const handleCouponRemove = () => {
+    setSelectedCoupon(null);
+  };
   const fetchProductDetails = useCallback(async () => {
     try {
       setLoading(true);
@@ -208,25 +212,42 @@ const CartPage = () => {
               </View>
             </View>
           )}
-          <LinearGradient
-            colors={['#F8F8F8', '#FE90E2']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={styles.couponStrip}>
-            <View style={styles.couponLeft}>
-              <Percent
-                size={16}
-                color="#000"
-                style={{marginLeft: Platform.OS === 'android' ? 0 : 10}}
-              />
-              <Text style={styles.couponText}>Apply Coupon</Text>
-            </View>
-            <ChevronRight
-              size={16}
-              color="#000"
-              style={{marginRight: Platform.OS === 'ios' ? 10 : 0}}
-            />
-          </LinearGradient>
+          {apiProductDetails.length > 0 && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ApplyCouponScreen')}>
+              <LinearGradient
+                colors={['#F8F8F8', '#FE90E2']}
+                start={{x: 1, y: 0}}
+                end={{x: 1, y: 1}}
+                style={styles.couponStrip}>
+                <View style={styles.couponLeft}>
+                  <Percent size={16} color="#000" style={styles.icon} />
+                  <Text style={styles.couponText}>Apply Coupon</Text>
+                </View>
+                <ChevronRight size={16} color="#000" />
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+
+          {selectedCoupon && (
+            <LinearGradient
+              colors={['#FFFFFF', '#0088B1']}
+              start={{x: 1, y: 1}}
+              end={{x: 0, y: 1}}
+              style={styles.appliedCouponContainer}>
+              <View style={styles.appliedCouponLeft}>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styles.appliedCouponText}>Coupon Applied:</Text>
+                  <Text style={styles.appliedCouponCode}>
+                    {selectedCoupon?.couponCode}
+                  </Text>
+                </View>
+              </View>
+              <TouchableOpacity onPress={handleCouponRemove}>
+                <Text style={styles.removeCouponText}>Remove</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          )}
           {apiProductDetails.length > 0 && (
             <View style={styles.deliveryRow}>
               <Truck size={18} color="#000" style={styles.icon} />

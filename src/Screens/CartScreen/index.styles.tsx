@@ -28,7 +28,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: Platform.OS === 'ios' ? 0 : 12,
     borderRadius: 6,
-    margin: 12,
+    marginHorizontal: 12,
+    marginTop: 12,
+    backgroundColor: '#E8F4F7',
   },
   couponLeft: {
     flexDirection: 'row',
@@ -186,5 +188,39 @@ export const styles = StyleSheet.create({
   emptyCartText: {
     fontSize: 16,
     color: '#666',
+  },
+  appliedCouponContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 5,
+    marginHorizontal: 20,
+    backgroundColor: '#E8F4F7',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  appliedCouponLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  appliedCouponCode: {
+    fontSize: 10,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#FFFFFF',
+    marginLeft: 4,
+  },
+  appliedCouponText: {
+    fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#E8F4F7',
+    marginLeft: 8,
+    marginTop: 2,
+  },
+  removeCouponText: {
+    fontSize: 10,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#0088B1',
+    textDecorationLine: 'underline',
   },
 });

@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     height: 81,
     marginHorizontal: 12,
-    marginVertical: 2,
+    marginTop: 2,
     padding: 10,
     position: 'relative',
     alignItems: 'center',
@@ -71,5 +71,48 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     marginHorizontal: 4,
     color: '#161D1F',
+  },
+  outOfStockContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 5,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    backgroundColor: '#EB5757',
+  },
+
+  outOfStockLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+
+  outOfStockText: {
+    fontSize: 10,
+    textAlign: 'center',
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#FFF',
+    marginLeft: 4,
+  },
+  outOfStockSubText: {
+    fontSize: 8,
+    textAlign: 'center',
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#FFF',
+    marginLeft: 4,
+  },
+  lowStockContainer: {
+    padding: 5,
+    marginTop: 8,
+    backgroundColor: '#FFF3CD', // Light yellow background
+    borderRadius: 8,
+  },
+
+  lowStockText: {
+    fontSize: 10,
+    fontFamily: 'YourFontFamily-Regular', // Replace with your font
+    color: '#856404',
+    textAlign: 'center',
   },
 });

@@ -1,4 +1,3 @@
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import {
@@ -118,7 +117,7 @@ const LocationMapScreen: React.FC = () => {
         // If high accuracy fails, try low accuracy
         if (retryAttemptRef.current < maxRetryAttempts) {
           retryAttemptRef.current += 1;
-          setLocationStatus(`Wait... `);
+          setLocationStatus('Wait... ');
           setTimeout(getLocationWithLowAccuracy, 1000);
         } else {
           startLocationWatch();
