@@ -126,5 +126,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     fontFamily: Fonts.JakartaRegular,
   },
+  outOfStockButtonText: {
+    fontSize: 10,
+    fontFamily: 'YourFontFamily-Medium', // Replace with your font
+    color: '#666',
+  },
 });
 export default styles;
