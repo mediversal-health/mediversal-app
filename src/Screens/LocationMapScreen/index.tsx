@@ -284,7 +284,9 @@ const LocationMapScreen: React.FC = () => {
     }
   };
   const initialRegion = useMemo(() => {
-    if (!currentLocation) return undefined;
+    if (!currentLocation) {
+      return undefined;
+    }
     return {
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
@@ -310,7 +312,7 @@ const LocationMapScreen: React.FC = () => {
         {currentLocation && (
           <MapView
             ref={ref => setMapRef(ref)}
-            provider={PROVIDER_GOOGLE}
+            provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
             style={styles.map}
             initialRegion={initialRegion}>
             <Marker

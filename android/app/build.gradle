@@ -84,7 +84,9 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
+        resConfigs "en", "hi"  
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.mediversal_app' 
         ]
@@ -115,7 +117,6 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
-            minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             shrinkResources true
             minifyEnabled true
@@ -123,14 +124,27 @@ android {
         }
     }
     splits {
+         abi {
+        enable enableSeparateBuildPerCPUArchitecture
+        reset()
+        include "armeabi-v7a"
+        include "arm64-v8a"
+        universalApk false
+    }
+    }
+    bundle {
         abi {
-            enable true
-            reset()
-            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-            universalApk false // Set true if you want a combined APK
+            enableSplit true
+        }
+        density {
+            enableSplit true
+        }
+        language {
+            enableSplit true
         }
     }
 }
+
 
 
 dependencies {
