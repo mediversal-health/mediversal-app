@@ -103,7 +103,10 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
       // Get current quantity from store
       const currentQuantity = useCartStore
         .getState()
-        .getProductQuantity(product?.productId ?? 0);
+        .getProductQuantity(
+          customer_id?.toString() ?? '',
+          product?.productId ?? 0,
+        );
       const newQuantity = currentQuantity + 1;
 
       const productData = {
@@ -116,7 +119,11 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
 
       useCartStore
         .getState()
-        .setProductQuantity(product?.productId ?? 0, newQuantity);
+        .setProductQuantity(
+          customer_id?.toString() ?? '',
+          product?.productId ?? 0,
+          newQuantity,
+        );
 
       Alert.alert(
         'Success',

@@ -25,7 +25,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const productId = parseInt(product.id, 10);
   const customer_id = useAuthStore(state => state.customer_id);
-  const quantity = useCartStore(state => state.getProductQuantity(productId));
+  const quantity = useCartStore(state =>
+    state.getProductQuantity(customer_id?.toString() ?? '', productId),
+  );
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -44,10 +46,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
       if (onAddToCart) {
         await onAddToCart(product.id, 1);
       }
-      setProductQuantity(productId, 1);
+      setProductQuantity(customer_id?.toString() ?? '', productId, 1);
     } catch (error) {
       console.error('Add item error:', error);
-      setProductQuantity(productId, 0);
+      setProductQuantity(customer_id?.toString() ?? '', productId, 1);
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       return;
     }
 
-    setProductQuantity(productId, quantity + 1);
+    setProductQuantity(customer_id?.toString() ?? '', productId, quantity + 1);
   };
 
   const handleDecrement = async () => {
@@ -72,15 +74,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
       setIsLoading(true);
 
       if (newQuantity === 0) {
-        const res = await DeleteFromCart(customer_id, [productId]);
+        const res = await DeleteFromCart(customer_id?.toString() ?? '', [
+          productId,
+        ]);
         console.log('deleted', res);
       }
 
-      setProductQuantity(productId, newQuantity);
+      setProductQuantity(customer_id?.toString() ?? '', productId, newQuantity);
     } catch (error) {
       console.error('Delete from cart error:', error);
 
-      setProductQuantity(productId, quantity);
+      setProductQuantity(customer_id?.toString() ?? '', productId, quantity);
     } finally {
       setIsLoading(false);
     }

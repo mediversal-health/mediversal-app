@@ -33,9 +33,11 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   onRemove,
   removing = false,
 }) => {
-  const quantity = useCartStore(state => state.getProductQuantity(productId));
-  const setProductQuantity = useCartStore(state => state.setProductQuantity);
   const customer_id = useAuthStore(state => state.customer_id);
+  const quantity = useCartStore(state =>
+    state.getProductQuantity(customer_id?.toString() ?? '', productId),
+  );
+  const setProductQuantity = useCartStore(state => state.setProductQuantity);
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
@@ -54,9 +56,13 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     if (isLoading || !canIncreaseQuantity) {
       return;
     }
-    setIsLoading(true);
+    setProductQuantity(customer_id?.toString() ?? '', productId, quantity + 1);
     try {
-      setProductQuantity(productId, quantity + 1);
+      setProductQuantity(
+        customer_id?.toString() ?? '',
+        productId,
+        quantity + 1,
+      );
     } finally {
       setIsLoading(false);
     }
@@ -66,9 +72,13 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     if (isLoading || quantity <= 1) {
       return;
     }
-    setIsLoading(true);
+    setProductQuantity(customer_id?.toString() ?? '', productId, quantity - 1);
     try {
-      setProductQuantity(productId, quantity - 1);
+      setProductQuantity(
+        customer_id?.toString() ?? '',
+        productId,
+        quantity + 1,
+      );
     } finally {
       setIsLoading(false);
     }
@@ -82,10 +92,8 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     try {
       setIsDeleting(true);
 
-      const res = await DeleteFromCart(customer_id, [productId]);
-      console.log('Delete API response:', res);
-
-      setProductQuantity(productId, 0);
+      await DeleteFromCart(customer_id, [productId]);
+      setProductQuantity(customer_id?.toString() ?? '', productId, 0);
 
       if (onRemove) {
         onRemove();
@@ -100,7 +108,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     }
   };
 
-  const totalPrice = Number(price) * quantity;
+  // const totalPrice = Number(price) * quantity;
   const showLoading = isLoading || removing || isDeleting;
 
   return (
@@ -114,7 +122,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
           <View style={styles.priceRow}>
-            <Text style={styles.actualPrice}>₹{totalPrice}</Text>
+            <Text style={styles.actualPrice}>₹{price}</Text>
             <Text style={styles.mrp}>₹{mrp}</Text>
           </View>
         </View>

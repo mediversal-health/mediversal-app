@@ -51,6 +51,7 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const {selectedCoupon, setSelectedCoupon} = useCouponStore();
+
   const handleCouponRemove = () => {
     setSelectedCoupon(null);
   };
@@ -59,7 +60,7 @@ const CartPage = () => {
       setLoading(true);
 
       const apiItems = await getCartItems(customer_id);
-      setApiProductDetails(apiItems);
+      setApiProductDetails(Array.isArray(apiItems) ? apiItems : []);
     } catch (err) {
       setError('Failed to load product details. Please try again.');
       console.error(err);
@@ -211,48 +212,53 @@ const CartPage = () => {
               </View>
             </View>
           )}
-          {apiProductDetails.length > 0 && (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ApplyCouponScreen')}>
-              <LinearGradient
-                colors={['#F8F8F8', '#FE90E2']}
-                start={{x: 1, y: 0}}
-                end={{x: 1, y: 1}}
-                style={styles.couponStrip}>
-                <View style={styles.couponLeft}>
-                  <Percent size={16} color="#000" style={styles.icon} />
-                  <Text style={styles.couponText}>Apply Coupon</Text>
-                </View>
-                <ChevronRight size={16} color="#000" />
-              </LinearGradient>
-            </TouchableOpacity>
-          )}
-
-          {selectedCoupon && (
-            <LinearGradient
-              colors={['#FFFFFF', '#0088B1']}
-              start={{x: 1, y: 1}}
-              end={{x: 0, y: 1}}
-              style={styles.appliedCouponContainer}>
-              <View style={styles.appliedCouponLeft}>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.appliedCouponText}>Coupon Applied:</Text>
-                  <Text style={styles.appliedCouponCode}>
-                    {selectedCoupon?.couponCode}
-                  </Text>
-                </View>
-              </View>
-              <TouchableOpacity onPress={handleCouponRemove}>
-                <Text style={styles.removeCouponText}>Remove</Text>
+          {apiProductDetails.length === 0 ||
+            (apiProductDetails && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ApplyCouponScreen')}>
+                <LinearGradient
+                  colors={['#F8F8F8', '#FE90E2']}
+                  start={{x: 1, y: 0}}
+                  end={{x: 1, y: 1}}
+                  style={styles.couponStrip}>
+                  <View style={styles.couponLeft}>
+                    <Percent size={16} color="#000" style={styles.icon} />
+                    <Text style={styles.couponText}>Apply Coupon</Text>
+                  </View>
+                  <ChevronRight size={16} color="#000" />
+                </LinearGradient>
               </TouchableOpacity>
-            </LinearGradient>
-          )}
-          {apiProductDetails.length > 0 && (
-            <View style={styles.deliveryRow}>
-              <Truck size={18} color="#000" style={styles.icon} />
-              <Text style={styles.deliveryText}>By Sun, 11 May</Text>
-            </View>
-          )}
+            ))}
+
+          {apiProductDetails.length === 0 ||
+            (apiProductDetails && selectedCoupon && (
+              <LinearGradient
+                colors={['#FFFFFF', '#0088B1']}
+                start={{x: 1, y: 1}}
+                end={{x: 0, y: 1}}
+                style={styles.appliedCouponContainer}>
+                <View style={styles.appliedCouponLeft}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.appliedCouponText}>
+                      Coupon Applied:
+                    </Text>
+                    <Text style={styles.appliedCouponCode}>
+                      {selectedCoupon?.couponCode}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={handleCouponRemove}>
+                  <Text style={styles.removeCouponText}>Remove</Text>
+                </TouchableOpacity>
+              </LinearGradient>
+            ))}
+          {apiProductDetails.length === 0 ||
+            (apiProductDetails && (
+              <View style={styles.deliveryRow}>
+                <Truck size={18} color="#000" style={styles.icon} />
+                <Text style={styles.deliveryText}>By Sun, 11 May</Text>
+              </View>
+            ))}
           {apiProductDetails.length > 0 ? (
             apiProductDetails.map(item => (
               <CartItemCard

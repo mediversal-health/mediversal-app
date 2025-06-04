@@ -12,6 +12,7 @@ import {
 import {Stethoscope} from 'lucide-react-native';
 import {styles} from './index.styles';
 import {useCartStore} from '../../../store/cartStore';
+import {useAuthStore} from '../../../store/authStore';
 
 interface MedicineDetailProps {
   images: any[];
@@ -45,8 +46,9 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const screenWidth = Dimensions.get('window').width;
+  const customer_id = useAuthStore(state => state.customer_id);
   const quantity = useCartStore(state =>
-    state.getProductQuantity(productId ?? 0),
+    state.getProductQuantity(customer_id?.toString() ?? '', productId ?? 0),
   );
 
   const isInCart = quantity > 0;
