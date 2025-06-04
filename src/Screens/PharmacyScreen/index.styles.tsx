@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
   },
   priscriptionContainer: {
-    width: '95%',
+    width: '99%',
     alignSelf: 'center',
     backgroundColor: '#0088B1',
     borderRadius: 12,
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     alignItems: 'center',
     marginBottom: 10,
+    marginHorizontal: Platform.OS === 'android' ? 0 : 10,
   },
   buttonText: {
     color: '#0088B1',

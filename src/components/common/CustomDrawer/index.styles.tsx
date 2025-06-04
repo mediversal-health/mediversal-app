@@ -4,7 +4,7 @@ import {Fonts} from '../../../styles/fonts';
 const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 0 : 50,
+    top: Platform.OS === 'ios' ? 60 : 50,
     left: 0,
     height: '100%',
     width: '100%',

@@ -168,15 +168,16 @@ const PharmacyScreen = () => {
   );
 
   return (
-    <SafeAreaView style={{display: 'flex', flexDirection: 'column'}}>
+    <SafeAreaView
+      style={{flex: 1, flexDirection: 'column', backgroundColor: '#fff'}}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#0088B1']} // Color of the refresh indicator
-            tintColor={'#0088B1'} // iOS specific color
+            colors={['#0088B1']}
+            tintColor={'#0088B1'}
           />
         }>
         <View style={styles.safeArea}>
