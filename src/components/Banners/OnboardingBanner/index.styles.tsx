@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
   },
   gradientBox: {
     flex: 1,
-    height: 220,
+    height: 230,
     borderRadius: 12,
     paddingVertical: 16,
-    paddingHorizontal: 20,
+    paddingHorizontal: Platform.OS === 'ios' ? 0 : 16,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   onboardingContainer: {
     width: '100%',
     alignItems: 'flex-start',
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   titleContainer: {
     alignItems: 'flex-start',

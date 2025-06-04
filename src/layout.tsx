@@ -3,7 +3,6 @@ import {Bell, ChevronDown, ShoppingBag} from 'lucide-react-native';
 import React, {useState} from 'react';
 import {
   Image,
-  SafeAreaView,
   StatusBar,
   Switch,
   Text,
@@ -11,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import BottomTabNavigator from './navigation/BottomTabBarNavigation';
 import CustomDrawer from './components/common/CustomDrawer';
 import {useScreenStore} from './store/screenSelector';
@@ -25,20 +25,13 @@ const Layout = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: '#fff',
-        marginBottom: 0,
-
-        //marginBottom: StatusBar.currentHeight,
-      }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
       <StatusBar
-        backgroundColor="#0088B1" // Change to your desired color
-        barStyle="light-content" // Options: 'default', 'light-content', 'dark-content'
+        backgroundColor="#0088B1"
+        barStyle="light-content"
         translucent={true}
+        showHideTransition={'fade'}
       />
-
       {currentScreen === 'Home' ? (
         <>
           <View
@@ -46,8 +39,10 @@ const Layout = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               paddingHorizontal: 20,
-              paddingBottom: 10,
-              marginTop: '11%',
+              paddingBottom: 0,
+              marginBottom: 10,
+              // paddingTop:
+              //   Platform.OS === 'ios' ? 40 : StatusBar.currentHeight || 20,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
@@ -153,7 +148,6 @@ const Layout = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingHorizontal: 20,
-              marginTop: '11%',
               paddingBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
@@ -166,13 +160,12 @@ const Layout = () => {
               <ShoppingBag size={20} />
             </TouchableOpacity>
           </View>
-          <View style={{paddingHorizontal: 20}}>
+          <View style={{paddingHorizontal: 20, marginBottom: 5}}>
             <SearchBar />
           </View>
         </>
       ) : null}
       <BottomTabNavigator />
-
       {drawerVisible && (
         <CustomDrawer onClose={() => setDrawerVisible(false)} />
       )}

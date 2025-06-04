@@ -62,10 +62,10 @@ const LoginScreen = () => {
   }, [isSignup]);
 
   return (
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.scrollViewContent}>
-      <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.topSection}>
           {(isMobile || isSignup) && (
             <View style={styles.carouselContainer}>
@@ -112,15 +112,15 @@ const LoginScreen = () => {
               )}
               {!isMobile && (
                 <Text style={styles.termsText}>
-                  By logging in, you agree to our{' '}
+                  By logging in, you agree to our
                   <Text style={styles.termsHighlight}>Terms & Conditions</Text>
                 </Text>
               )}
             </>
           )}
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

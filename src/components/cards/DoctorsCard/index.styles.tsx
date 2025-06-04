@@ -4,7 +4,7 @@ import {Fonts} from '../../../styles/fonts';
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 12,
-    padding: 12,
+    padding: 0,
     height: 106,
     width: 254,
     position: 'relative',

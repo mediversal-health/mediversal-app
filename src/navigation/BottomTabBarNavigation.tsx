@@ -65,13 +65,12 @@ export default function BottomTabNavigator() {
           borderTopRightRadius: 20,
           elevation: 5,
           position: 'absolute',
-          backgroundColor: '#E8F4F7',
-          height: 60,
+          backgroundColor: '#FFFFFF',
+          height: 70,
         },
         tabBarLabel: route.name === 'Menu' ? () => null : undefined,
         tabBarLabelStyle: {
           fontSize: 12,
-
           marginBottom: 5,
         },
       })}>

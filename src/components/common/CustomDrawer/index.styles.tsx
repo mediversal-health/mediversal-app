@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
-    top: 40,
+    top: Platform.OS === 'ios' ? 60 : 50,
     left: 0,
     height: '100%',
     width: '100%',
