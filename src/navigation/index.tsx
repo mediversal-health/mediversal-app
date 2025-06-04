@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
-import Layout from '../Layout';
+// import Layout from '../Layout';
 import UploadScreen from '../Screens/UploadScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
 import UploadPrescription from '../Screens/UploadPrescription';
@@ -17,6 +17,7 @@ import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen'
 import OrdersScreen from '../Screens/OrdersScreen';
 import PrescribedScreen from '../Screens/PrescribedScreen';
 import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
+import Layout from '../layout';
 
 export type RootStackParamList = {
   Login: undefined;
