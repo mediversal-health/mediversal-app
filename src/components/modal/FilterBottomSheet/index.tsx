@@ -152,6 +152,31 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
         ),
       );
     }
+    if (selectedCategory === 'Salt Name' && activeFilters.length) {
+      filtered = filtered.filter(product =>
+        activeFilters.some(filter =>
+          product.Composition?.toLowerCase().includes(filter.toLowerCase()),
+        ),
+      );
+    }
+
+    //  if (selectedCategory === 'Category' && activeFilters.length) {
+    //   filtered = filtered.filter(product =>
+    //     activeFilters.some(filter =>
+    //       product.category?.toLowerCase().includes(filter.toLowerCase()),
+    //     ),
+    //   );
+    // }
+
+    if (selectedCategory === 'Manufacturer' && activeFilters.length) {
+      filtered = filtered.filter(product =>
+        activeFilters.some(filter =>
+          product.ManufacturerName?.toLowerCase().includes(
+            filter.toLowerCase(),
+          ),
+        ),
+      );
+    }
 
     // Add logic for other filters similarly...
 

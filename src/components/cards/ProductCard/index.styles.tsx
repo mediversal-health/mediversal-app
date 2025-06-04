@@ -102,11 +102,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  addButtonForOutofStock: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 54,
+    height: 24,
+    borderTopLeftRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   counterContainer: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    height: 20,
+    width: 64,
+    height: 24,
     borderTopLeftRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
@@ -127,9 +138,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
   },
   outOfStockButtonText: {
-    fontSize: 10,
-    fontFamily: 'YourFontFamily-Medium', // Replace with your font
-    color: '#666',
+    fontSize: 8,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#fff',
   },
 });
 export default styles;

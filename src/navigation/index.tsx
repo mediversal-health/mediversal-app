@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
-import layout from '../layout';
+import Layout from '../Layout';
 import UploadScreen from '../Screens/UploadScreen';
 import AllProductsScreen from '../Screens/AllProductsScreen';
 import UploadPrescription from '../Screens/UploadPrescription';
@@ -63,7 +63,7 @@ const AppNavigator = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         {token ? (
           <>
-            <Stack.Screen name="Layout" component={layout} />
+            <Stack.Screen name="Layout" component={Layout} />
             <Stack.Screen name="AllProducts" component={AllProductsScreen} />
             <Stack.Screen name="UploadScreen" component={UploadScreen} />
             <Stack.Screen name="CartPage" component={CartPage} />

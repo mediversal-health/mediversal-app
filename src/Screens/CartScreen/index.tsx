@@ -7,7 +7,6 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -33,6 +32,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {useCallback} from 'react';
 import {getCartItems} from '../../Services/cart';
 import {useCouponStore} from '../../store/couponStore';
+import {useCartStore} from '../../store/cartStore';
 
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -51,10 +51,11 @@ const CartPage = () => {
   const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const {selectedCoupon, setSelectedCoupon} = useCouponStore();
+  const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
+  const selectedCoupon = getSelectedCoupon(String(customer_id));
 
   const handleCouponRemove = () => {
-    setSelectedCoupon(null);
+    setSelectedCoupon(String(customer_id), null);
   };
   const fetchProductDetails = useCallback(async () => {
     try {
@@ -107,6 +108,31 @@ const CartPage = () => {
     });
     hideLocationModal();
   };
+  const getProductQuantity = useCartStore(state => state.getProductQuantity);
+  const [version, setVersion] = useState(0);
+  useEffect(() => {}, [version]);
+  const handleQuantityChange = () => {
+    // Recalculate cartTotal on any quantity change
+    setVersion(prev => prev + 1); // Triggers re-render
+  };
+  // Calculate cartTotal and couponDiscount for use in JSX
+  const cartTotal = apiProductDetails.reduce((total, item) => {
+    const qty = getProductQuantity(
+      customer_id?.toString() ?? '',
+      item.productId,
+    );
+    return total + item.CostPrice * qty;
+  }, 0);
+
+  let couponDiscount = 0;
+  if (selectedCoupon) {
+    const discountValue = parseFloat(selectedCoupon.discountNumber || '0');
+    if (selectedCoupon.discountType === 'Fixed') {
+      couponDiscount = discountValue;
+    } else if (selectedCoupon.discountType === 'Percentage') {
+      couponDiscount = Math.round((cartTotal * discountValue) / 100);
+    }
+  }
 
   const [selectedRadio, setSelectedRadio] = useState(false);
 
@@ -270,6 +296,7 @@ const CartPage = () => {
                 mrp={item.SellingPrice}
                 price={item.CostPrice}
                 onRemove={fetchProductDetails}
+                onQuantityChange={handleQuantityChange}
               />
             ))
           ) : (
@@ -279,59 +306,76 @@ const CartPage = () => {
           )}
 
           {/* MediCash Card */}
-          <View style={styles.mediCashCard}>
-            <View style={styles.mediCashLeft}>
-              <Wallet size={20} color="#B0B6B8" style={styles.icon} />
-              <Text style={styles.mediCashText}>Use MediCash</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => setSelectedRadio(!selectedRadio)}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={[styles.radioLabel, {marginRight: 8}]}>0MCs</Text>
-              <View
-                style={[
-                  styles.radioCircle,
-                  selectedRadio && {borderColor: '#0088B1'},
-                ]}>
-                {selectedRadio && <View style={styles.selectedDot} />}
+          {apiProductDetails.length === 0 ||
+            (apiProductDetails && (
+              <View style={styles.mediCashCard}>
+                <View style={styles.mediCashLeft}>
+                  <Wallet size={20} color="#B0B6B8" style={styles.icon} />
+                  <Text style={styles.mediCashText}>Use MediCash</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => setSelectedRadio(!selectedRadio)}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={[styles.radioLabel, {marginRight: 8}]}>
+                    0MCs
+                  </Text>
+                  <View
+                    style={[
+                      styles.radioCircle,
+                      selectedRadio && {borderColor: '#0088B1'},
+                    ]}>
+                    {selectedRadio && <View style={styles.selectedDot} />}
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
+            ))}
           {/* Bill Summary Label */}
-          <Text style={styles.billSummaryLabel}>Bill Summary</Text>
-          <BillSummaryCard
-            originalPrice={599}
-            finalPrice={574}
-            details={{
-              cartTotal: 599,
-              couponDiscount: 25,
-              handlingFee: 5,
-              platformFee: 0,
-              deliveryCharges: 0,
-            }}
-          />
-          <OtherDetailsCard />
+          {apiProductDetails.length === 0 ||
+            (apiProductDetails && (
+              <>
+                <Text style={styles.billSummaryLabel}>Bill Summary</Text>
+                <BillSummaryCard
+                  originalPrice={cartTotal}
+                  finalPrice={cartTotal - couponDiscount + 5 + 40}
+                  details={{
+                    cartTotal: cartTotal,
+                    couponDiscount: couponDiscount,
+                    handlingFee: 5,
+                    platformFee: 0,
+                    deliveryCharges: 40,
+                  }}
+                />
+
+                <OtherDetailsCard />
+              </>
+            ))}
         </ScrollView>
 
         {/* Sticky Bottom Section */}
-        <View style={styles.bottomBar}>
-          <View>
-            <Text style={styles.amountLabel}>Amount to pay:</Text>
-            <Text style={styles.amountText}>₹574</Text>
+        {apiProductDetails.length !== 0 && apiProductDetails && (
+          <View style={styles.bottomBar}>
+            <View>
+              <Text style={styles.amountLabel}>Amount to pay:</Text>
+              <Text style={styles.amountText}>
+                {cartTotal - couponDiscount + 5 + 40}
+              </Text>
+            </View>
+            {formattedAddress !==
+            'undefined - undefined, undefined, undefined' ? (
+              <TouchableOpacity style={styles.addressButton}>
+                <Text style={styles.addressButtonText}>Checkout</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.addressButton}
+                onPress={showLocationModal}>
+                <Text style={styles.addressButtonText}>
+                  Select / Add Address
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
-          {formattedAddress !==
-          'undefined - undefined, undefined, undefined' ? (
-            <TouchableOpacity style={styles.addressButton}>
-              <Text style={styles.addressButtonText}>Checkout</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.addressButton}
-              onPress={showLocationModal}>
-              <Text style={styles.addressButtonText}>Select / Add Address</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        )}
       </View>
 
       <LocationModal

@@ -13,6 +13,7 @@ import {useCartStore} from '../../../store/cartStore';
 import {DeleteFromCart} from '../../../Services/cart';
 import {useAuthStore} from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
+import {useCouponStore} from '../../../store/couponStore';
 
 type CartItemCardProps = {
   productId: number;
@@ -22,6 +23,7 @@ type CartItemCardProps = {
   price: string | number;
   onRemove?: () => void;
   removing?: boolean;
+  onQuantityChange?: () => void;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -32,6 +34,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   price,
   onRemove,
   removing = false,
+  onQuantityChange,
 }) => {
   const customer_id = useAuthStore(state => state.customer_id);
   const quantity = useCartStore(state =>
@@ -43,7 +46,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   const [isDeleting, setIsDeleting] = React.useState(false);
   const {getOriginalProduct} = useProductStore();
   const originalProduct = getOriginalProduct(productId.toString());
-
+  const {setSelectedCoupon} = useCouponStore();
   const availableInventory = originalProduct?.AvailableInInventory || 0;
   const isOutOfStock = availableInventory === 0;
   const canIncreaseQuantity = quantity < availableInventory;
@@ -63,6 +66,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         productId,
         quantity + 1,
       );
+      onQuantityChange?.();
     } finally {
       setIsLoading(false);
     }
@@ -77,8 +81,9 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       setProductQuantity(
         customer_id?.toString() ?? '',
         productId,
-        quantity + 1,
+        quantity - 1,
       );
+      onQuantityChange?.();
     } finally {
       setIsLoading(false);
     }
@@ -94,7 +99,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
 
       await DeleteFromCart(customer_id, [productId]);
       setProductQuantity(customer_id?.toString() ?? '', productId, 0);
-
+      setSelectedCoupon(String(customer_id), null);
       if (onRemove) {
         onRemove();
       }

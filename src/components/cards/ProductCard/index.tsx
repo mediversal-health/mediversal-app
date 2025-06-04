@@ -158,7 +158,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </View>
       ) : (
         <TouchableOpacity
-          style={[styles.addButton, dynamicStyles.addButton]}
+          style={[styles.addButtonForOutofStock, dynamicStyles.addButton]}
           onPress={handleAddItem}
           disabled={showLoading || isOutOfStock}>
           {showLoading ? (
