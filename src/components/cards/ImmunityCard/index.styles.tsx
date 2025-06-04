@@ -19,12 +19,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaBold,
     color: '#FFFFFF',
     marginBottom: 8,
-    lineHeight: 22,
+    lineHeight: 17,
+    paddingRight: Platform.OS === 'ios' ? 15 : 0,
   },
   subtitle: {
     fontSize: 8,
     color: '#FFFFFF',
     fontFamily: Fonts.JakartaRegular,
+    textAlign: 'left',
+    paddingRight: Platform.OS === 'ios' ? 15 : 0,
   },
   button: {
     backgroundColor: '#FFFFFF',

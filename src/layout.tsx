@@ -27,8 +27,8 @@ const Layout = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
       <StatusBar
-        backgroundColor="#0088B1" // Change to your desired color
-        barStyle="light-content" // Options: 'default', 'light-content', 'dark-content'
+        backgroundColor="#0088B1"
+        barStyle="light-content"
         translucent={true}
         showHideTransition={'fade'}
       />
@@ -148,7 +148,6 @@ const Layout = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingHorizontal: 20,
-              marginTop: '11%',
               paddingBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
@@ -161,7 +160,7 @@ const Layout = () => {
               <ShoppingBag size={20} />
             </TouchableOpacity>
           </View>
-          <View style={{paddingHorizontal: 20}}>
+          <View style={{paddingHorizontal: 20, marginBottom: 5}}>
             <SearchBar />
           </View>
         </>

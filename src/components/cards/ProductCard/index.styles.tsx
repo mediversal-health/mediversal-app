@@ -3,7 +3,7 @@ import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   cardContainer: {
-    width: 130,
+    flex: 1,
     height: 230,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,

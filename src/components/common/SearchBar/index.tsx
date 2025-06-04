@@ -21,7 +21,7 @@ const SearchBar: React.FC = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingVertical: 10,
+    paddingTop: 10,
   },
   container: {
     backgroundColor: '#e8f4f7',
