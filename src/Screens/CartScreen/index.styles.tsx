@@ -188,6 +188,7 @@ export const styles = StyleSheet.create({
   emptyCartText: {
     fontSize: 16,
     color: '#666',
+    fontFamily: Fonts.JakartaSemiBold,
   },
   appliedCouponContainer: {
     flexDirection: 'row',

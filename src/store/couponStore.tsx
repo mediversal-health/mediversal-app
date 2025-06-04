@@ -1,20 +1,27 @@
 import {create} from 'zustand';
 import {Coupon} from '../types';
-interface CouponState {
-  selectedCoupon: Coupon | null;
 
-  setSelectedCoupon: (coupon: Coupon | null) => void;
-  getSelectedCoupon: () => Coupon | null;
+interface CouponState {
+  customerCoupons: Record<string, Coupon | null>;
+
+  setSelectedCoupon: (customerId: string, coupon: Coupon | null) => void;
+
+  getSelectedCoupon: (customerId: string) => Coupon | null;
 }
 
 export const useCouponStore = create<CouponState>((set, get) => ({
-  selectedCoupon: null,
+  customerCoupons: {},
 
-  setSelectedCoupon: (coupon: Coupon | null) => {
-    set({selectedCoupon: coupon});
+  setSelectedCoupon: (customerId: string, coupon: Coupon | null) => {
+    set(state => ({
+      customerCoupons: {
+        ...state.customerCoupons,
+        [customerId]: coupon,
+      },
+    }));
   },
 
-  getSelectedCoupon: () => {
-    return get().selectedCoupon;
+  getSelectedCoupon: (customerId: string) => {
+    return get().customerCoupons[customerId] || null;
   },
 }));

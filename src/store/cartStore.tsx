@@ -4,45 +4,44 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {Product} from '../types';
 
 interface ProductStore {
-  quantityMap: Record<number, number>;
-  // cartItems: Record<number, Product>;
-  setProductQuantity: (productId: number, quantity: number) => void;
-  getProductQuantity: (productId: number) => number;
-  // setProductData: (productId: number, product: Product) => void;
-  // getProductData: (productId: number) => Product | undefined;
+  userQuantityMap: Record<string, Record<number, number>>;
+  setProductQuantity: (
+    customerId: string,
+    productId: number,
+    quantity: number,
+  ) => void;
+  getProductQuantity: (customerId: string, productId: number) => number;
+  clearUserData: (customerId: string) => void;
 }
 
 export const useCartStore = create<ProductStore>()(
   persist(
     (set, get) => ({
-      quantityMap: {},
-      // cartItems: {},
+      userQuantityMap: {},
 
-      setProductQuantity: (productId, quantity) => {
+      setProductQuantity: (customerId, productId, quantity) => {
         set(state => ({
-          quantityMap: {
-            ...state.quantityMap,
-            [productId]: quantity,
+          userQuantityMap: {
+            ...state.userQuantityMap,
+            [customerId]: {
+              ...(state.userQuantityMap[customerId] || {}),
+              [productId]: quantity,
+            },
           },
         }));
       },
 
-      getProductQuantity: productId => {
-        return get().quantityMap[productId] ?? 0;
+      getProductQuantity: (customerId, productId) => {
+        return get().userQuantityMap[customerId]?.[productId] ?? 0;
       },
 
-      // setProductData: (productId, product) => {
-      //   set(state => ({
-      //     cartItems: {
-      //       ...state.cartItems,
-      //       [productId]: product,
-      //     },
-      //   }));
-      // },
-
-      // getProductData: productId => {
-      //   return get().cartItems[productId];
-      // },
+      clearUserData: customerId => {
+        set(state => {
+          const newUserQuantityMap = {...state.userQuantityMap};
+          delete newUserQuantityMap[customerId];
+          return {userQuantityMap: newUserQuantityMap};
+        });
+      },
     }),
     {
       name: 'product-store',

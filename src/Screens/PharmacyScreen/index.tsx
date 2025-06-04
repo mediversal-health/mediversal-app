@@ -43,11 +43,7 @@ import CircleCard from '../../components/cards/CircularCards';
 import SunDrop from './assests/svgs/Card 1.svg';
 import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
-import {
-  NavigationProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
 import {ProductCardProps} from '../../types';
@@ -83,12 +79,12 @@ const PharmacyScreen = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
-  useFocusEffect(
-    useCallback(() => {
-      fetchProducts();
-    }, [fetchProducts]),
-  );
+  }, []);
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     fetchProducts();
+  //   }, [fetchProducts]),
+  // );
   const onRefresh = () => {
     setRefreshing(true);
     fetchProducts();

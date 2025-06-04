@@ -16,42 +16,54 @@ import {RootStackParamList} from '../../navigation';
 import CouponCard from '../../components/cards/CouponCard';
 import {useCouponStore} from '../../store/couponStore';
 import {Coupon} from '../../types';
+import {useAuthStore} from '../../store/authStore';
+
 const ApplyCouponScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const customer_id = useAuthStore(state => state.customer_id);
   const [searchQuery, setSearchQuery] = useState('');
   const {setSelectedCoupon} = useCouponStore();
-
   const topCoupons: Coupon[] = [
     {
       couponCode: 'GETMED',
       title: 'Save ₹50 + Earn 10+2 MC',
+      discountType: 'Fixed',
+      discountNumber: '25',
       description:
-        '15% Cashback on Medicine* and upto 5% cashback on non-medicine item + Delivery Fees Savings on adding circle membership(worth ₹149 or ₹199) to cart.',
+        '15% Cashback on Medicine* and up to 5% cashback on non-medicine items + Delivery Fee Savings on adding Circle membership (worth ₹149 or ₹199) to cart.',
     },
     {
       couponCode: 'GETHEALTH',
-      title: 'Save ₹ 100 + Earn 20+4 MC',
+      title: 'Save ₹100 + Earn 20+4 MC',
+      discountType: 'Fixed',
+      discountNumber: '100',
       description:
-        '20% Cashback on Supplements* and upto 10% cashback on fitness products + Free Shipping on orders above ₹ 999.',
+        '20% Cashback on Supplements* and up to 10% cashback on fitness products + Free Shipping on orders above ₹999.',
     },
   ];
 
   const moreCoupons: Coupon[] = [
     {
       couponCode: 'GETWELL',
-      title: 'Save ₹ 75 + Earn 15+3 MC',
+      title: 'Save ₹75 + Earn 15+3 MC',
+      discountType: 'Fixed',
+      discountNumber: '75',
       description:
-        '18% Cashback on Personal Care* and upto 7% cashback on wellness items + Exclusive Discounts on first order.',
+        '18% Cashback on Personal Care* and up to 7% cashback on wellness items + Exclusive Discounts on first order.',
     },
     {
       couponCode: 'WELLNESS25',
       title: '25% Off on Wellness',
+      discountType: 'Percentage',
+      discountNumber: '25',
       description:
         'Get 25% discount on wellness products. Maximum discount of ₹150.',
     },
     {
       couponCode: 'FIRSTORDER',
       title: 'First Order Special',
+      discountType: 'Fixed',
+      discountNumber: '100',
       description:
         'Special discount for first-time customers. Flat ₹100 off on orders above ₹800.',
     },
@@ -64,12 +76,16 @@ const ApplyCouponScreen = () => {
   };
 
   const handleApplyCoupon = (coupon: Coupon) => {
-    console.log('Applied coupon:', coupon.couponCode);
+    setSelectedCoupon(String(customer_id), coupon);
+    console.log(
+      `Applied coupon ${coupon.couponCode} for customer ${String(customer_id)}`,
+    );
     navigation.goBack();
   };
 
-  const handleRemoveCoupon = (coupon: Coupon) => {
-    console.log('Removed coupon:', coupon.couponCode);
+  const handleRemoveCoupon = () => {
+    setSelectedCoupon(String(customer_id), null);
+    console.log(`Removed coupon for customer ${String(customer_id)}`);
   };
 
   const handleApplySearchedCoupon = () => {
@@ -78,14 +94,17 @@ const ApplyCouponScreen = () => {
       return;
     }
 
-    // Check if the searched coupon exists in our coupon list
     const foundCoupon = allCoupons.find(
       coupon => coupon.couponCode.toLowerCase() === searchQuery.toLowerCase(),
     );
 
     if (foundCoupon) {
-      setSelectedCoupon(foundCoupon);
-      console.log('Applied searched coupon:', foundCoupon.couponCode);
+      setSelectedCoupon(String(customer_id), foundCoupon);
+      console.log(
+        `Applied searched coupon ${
+          foundCoupon.couponCode
+        } for customer ${String(customer_id)}`,
+      );
       navigation.goBack();
     } else {
       Alert.alert(
@@ -134,13 +153,11 @@ const ApplyCouponScreen = () => {
             autoCorrect={false}
           />
           {searchQuery.length > 0 && (
-            <>
-              <TouchableOpacity
-                style={styles.applySearchButton}
-                onPress={handleApplySearchedCoupon}>
-                <Text style={styles.applySearchButtonText}>Apply</Text>
-              </TouchableOpacity>
-            </>
+            <TouchableOpacity
+              style={styles.applySearchButton}
+              onPress={handleApplySearchedCoupon}>
+              <Text style={styles.applySearchButtonText}>Apply</Text>
+            </TouchableOpacity>
           )}
         </View>
       </View>

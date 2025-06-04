@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {Bell, ChevronDown, ShoppingBag} from 'lucide-react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
@@ -18,12 +18,29 @@ import SearchBar from './components/common/SearchBar';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from './navigation';
 import {Fonts} from './styles/fonts';
+import {getProducts} from './Services/pharmacy';
+import useProductStore from './store/productsStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
+
+  const {setProducts} = useProductStore();
+  const fetchProducts = useCallback(() => {
+    getProducts()
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  }, [setProducts]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
       <StatusBar

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 // App.tsx
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';

@@ -115,5 +115,7 @@ export interface PrescribedOrder {
 export interface Coupon {
   couponCode: string;
   title: string;
+  discountType?: 'Fixed' | 'Percentage';
+  discountNumber: string;
   description: string;
 }

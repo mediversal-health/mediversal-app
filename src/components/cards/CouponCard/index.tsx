@@ -4,6 +4,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {useCouponStore} from '../../../store/couponStore';
 import {Coupon} from '../../../types';
 import styles from './index.styles';
+import {useAuthStore} from '../../../store/authStore';
 interface CouponCardProps {
   coupon: Coupon;
   applyButtonText?: string;
@@ -19,18 +20,26 @@ const CouponCard: React.FC<CouponCardProps> = ({
   onApply,
   onRemove,
 }) => {
-  const {selectedCoupon, setSelectedCoupon} = useCouponStore();
+  const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
+  const customer_id = useAuthStore(state => state.customer_id);
 
+  const selectedCoupon = customer_id
+    ? getSelectedCoupon(String(customer_id))
+    : null;
   const isApplied = selectedCoupon?.couponCode === coupon.couponCode;
 
   const handleApply = () => {
-    setSelectedCoupon(coupon);
-    onApply?.(coupon);
+    if (customer_id !== null && customer_id !== undefined) {
+      setSelectedCoupon(String(customer_id), coupon);
+      onApply?.(coupon);
+    }
   };
 
   const handleRemove = () => {
-    setSelectedCoupon(null);
-    onRemove?.(coupon);
+    if (customer_id !== null && customer_id !== undefined) {
+      setSelectedCoupon(String(customer_id), null);
+      onRemove?.(coupon);
+    }
   };
 
   return (
