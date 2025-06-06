@@ -66,10 +66,27 @@ export const getPrescriptions = async (customer_id: any) => {
 };
 
 export const deletePrescription = async (
-  customer_id: any,
-  prescription_id: any,
+  customer_id: string | number,
+  prescription_id: string | number,
 ) => {
-  return axios.delete(
-    `${IP_ADDR}/api/prescription/deletePrescription/${customer_id}/${prescription_id} }`,
-  );
+  try {
+    const cleanCustomerId = String(customer_id).trim();
+    const cleanPrescriptionId = String(prescription_id).trim();
+
+    const response = await axios.delete(
+      `${IP_ADDR}/api/prescription/deletePrescription/${encodeURIComponent(
+        cleanCustomerId,
+      )}/${encodeURIComponent(cleanPrescriptionId)}`,
+    );
+
+    return response;
+  } catch (error) {
+    console.error('Error in deletePrescription:', {
+      error,
+      customer_id,
+      prescription_id,
+      endpoint: `${IP_ADDR}/api/prescription/deletePrescription/${customer_id}/${prescription_id}`,
+    });
+    throw error;
+  }
 };

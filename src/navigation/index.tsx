@@ -17,7 +17,7 @@ import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen'
 import OrdersScreen from '../Screens/OrdersScreen';
 import PrescribedScreen from '../Screens/PrescribedScreen';
 import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
-import Layout from '../layout';
+import Layout from '../Layout';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -51,7 +51,7 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   OrdersScreen: undefined;
   PrescribedScreen: undefined;
-  ApplyCouponScreen: undefined;
+  ApplyCouponScreen: {cartTotal: number};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

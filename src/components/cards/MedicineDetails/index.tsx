@@ -15,14 +15,14 @@ import {useCartStore} from '../../../store/cartStore';
 import {useAuthStore} from '../../../store/authStore';
 
 interface MedicineDetailProps {
-  images: any[];
+  images: string[];
   productId: number | undefined;
   rating: number;
   name: string | undefined;
   packInfo: string;
-  saltComposition: string;
-  currentPrice: string;
-  originalPrice: string;
+  saltComposition: string | undefined;
+  currentPrice: string | undefined;
+  originalPrice: string | undefined;
   discount: string;
   deliveryTime: string;
   onAddToCart?: () => void; // Add this prop
@@ -52,7 +52,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   );
 
   const isInCart = quantity > 0;
-
+  console.log(images);
   useEffect(() => {
     const interval = setInterval(() => {
       const nextIndex = (activeIndex + 1) % images.length;
@@ -102,13 +102,27 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => <Image source={item} style={styles.image} />}
+          renderItem={({item}) => (
+            <Image
+              source={typeof item === 'string' ? {uri: item} : item}
+              style={[styles.image, {width: screenWidth, height: 300}]}
+              resizeMode="contain"
+              onError={e =>
+                console.log('Image loading error:', e.nativeEvent.error)
+              }
+            />
+          )}
           onMomentumScrollEnd={event => {
             const index = Math.round(
               event.nativeEvent.contentOffset.x / screenWidth,
             );
             setActiveIndex(index);
           }}
+          getItemLayout={(data, index) => ({
+            length: screenWidth,
+            offset: screenWidth * index,
+            index,
+          })}
         />
       </View>
 

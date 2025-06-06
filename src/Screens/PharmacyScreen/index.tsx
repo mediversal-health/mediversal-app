@@ -156,9 +156,8 @@ const PharmacyScreen = () => {
         borderColor={'#2D9CDB'}
         buttonColor={'#2D9CDB'}
         backgroundColor={'#E8F4F7'}
-        onAddToCart={(id: string, quantity: number) => {
-          console.log(`Product ${id} added to cart: ${quantity} items`);
-        }}
+        onAddToCart={handleAddToCart}
+        addingToCart={addingToCart === item.id}
       />
     </TouchableOpacity>
   );

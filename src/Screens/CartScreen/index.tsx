@@ -126,10 +126,10 @@ const CartPage = () => {
 
   let couponDiscount = 0;
   if (selectedCoupon) {
-    const discountValue = parseFloat(selectedCoupon.discountNumber || '0');
-    if (selectedCoupon.discountType === 'Fixed') {
+    const discountValue = parseFloat(selectedCoupon.discount_value || '0');
+    if (selectedCoupon.discount_type === 'fixed') {
       couponDiscount = discountValue;
-    } else if (selectedCoupon.discountType === 'Percentage') {
+    } else if (selectedCoupon.discount_type === 'percentage') {
       couponDiscount = Math.round((cartTotal * discountValue) / 100);
     }
   }
@@ -242,7 +242,11 @@ const CartPage = () => {
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <TouchableOpacity
-                onPress={() => navigation.navigate('ApplyCouponScreen')}>
+                onPress={() =>
+                  navigation.navigate('ApplyCouponScreen', {
+                    cartTotal: cartTotal,
+                  })
+                }>
                 <LinearGradient
                   colors={['#F8F8F8', '#FE90E2']}
                   start={{x: 1, y: 0}}
@@ -270,7 +274,7 @@ const CartPage = () => {
                       Coupon Applied:
                     </Text>
                     <Text style={styles.appliedCouponCode}>
-                      {selectedCoupon?.couponCode}
+                      {selectedCoupon?.coupon_code}
                     </Text>
                   </View>
                 </View>

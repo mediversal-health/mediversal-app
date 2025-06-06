@@ -1,5 +1,5 @@
 import {ChevronLeft} from 'lucide-react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -8,68 +8,82 @@ import {
   Text,
   TextInput,
   ScrollView,
-  Alert,
+  // Alert,
 } from 'react-native';
 import styles from './index.styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import CouponCard from '../../components/cards/CouponCard';
 import {useCouponStore} from '../../store/couponStore';
 import {Coupon} from '../../types';
 import {useAuthStore} from '../../store/authStore';
+import {fetchCoupons} from '../../Services/coupons';
+
+type ApplyCouponScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'ApplyCouponScreen'
+>;
 
 const ApplyCouponScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const customer_id = useAuthStore(state => state.customer_id);
   const [searchQuery, setSearchQuery] = useState('');
+  const [topCoupons, setTopCoupons] = useState<Coupon[]>([]);
+  const [moreCoupons, setMoreCoupons] = useState<Coupon[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const route = useRoute<ApplyCouponScreenRouteProp>();
+  const cartTotal = route.params?.cartTotal || 0;
   const {setSelectedCoupon} = useCouponStore();
-  const topCoupons: Coupon[] = [
-    {
-      couponCode: 'GETMED',
-      title: 'Save ₹50 + Earn 10+2 MC',
-      discountType: 'Fixed',
-      discountNumber: '25',
-      description:
-        '15% Cashback on Medicine* and up to 5% cashback on non-medicine items + Delivery Fee Savings on adding Circle membership (worth ₹149 or ₹199) to cart.',
-    },
-    {
-      couponCode: 'GETHEALTH',
-      title: 'Save ₹100 + Earn 20+4 MC',
-      discountType: 'Fixed',
-      discountNumber: '100',
-      description:
-        '20% Cashback on Supplements* and up to 10% cashback on fitness products + Free Shipping on orders above ₹999.',
-    },
-  ];
 
-  const moreCoupons: Coupon[] = [
-    {
-      couponCode: 'GETWELL',
-      title: 'Save ₹75 + Earn 15+3 MC',
-      discountType: 'Fixed',
-      discountNumber: '75',
-      description:
-        '18% Cashback on Personal Care* and up to 7% cashback on wellness items + Exclusive Discounts on first order.',
-    },
-    {
-      couponCode: 'WELLNESS25',
-      title: '25% Off on Wellness',
-      discountType: 'Percentage',
-      discountNumber: '25',
-      description:
-        'Get 25% discount on wellness products. Maximum discount of ₹150.',
-    },
-    {
-      couponCode: 'FIRSTORDER',
-      title: 'First Order Special',
-      discountType: 'Fixed',
-      discountNumber: '100',
-      description:
-        'Special discount for first-time customers. Flat ₹100 off on orders above ₹800.',
-    },
-  ];
+  useEffect(() => {
+    const loadCoupons = async () => {
+      try {
+        setLoading(true);
+        setError(false);
+        const response = await fetchCoupons(customer_id, cartTotal);
 
-  const allCoupons = [...topCoupons, ...moreCoupons];
+        // Check if response is null, undefined, or failed
+        if (!response) {
+          setError(true);
+          setTopCoupons([]);
+          setMoreCoupons([]);
+          return;
+        }
+
+        if (response.topCoupons && response.moreCoupons) {
+          setTopCoupons(response.topCoupons);
+          setMoreCoupons(response.moreCoupons);
+        } else if (response.coupons) {
+          const allCoupons = response.coupons;
+          const midIndex = Math.ceil(allCoupons.length / 2);
+          setTopCoupons(allCoupons.slice(0, midIndex));
+          setMoreCoupons(allCoupons.slice(midIndex));
+        } else {
+          setTopCoupons(response.slice(0, 2) || []);
+          setMoreCoupons(response.slice(2) || []);
+        }
+      } catch (err) {
+        console.error('Error fetching coupons:', err);
+        setError(true);
+        setTopCoupons([]);
+        setMoreCoupons([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (customer_id) {
+      loadCoupons();
+    }
+  }, [customer_id, cartTotal]);
+
+  // const allCoupons = [...topCoupons, ...moreCoupons];
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
@@ -78,7 +92,9 @@ const ApplyCouponScreen = () => {
   const handleApplyCoupon = (coupon: Coupon) => {
     setSelectedCoupon(String(customer_id), coupon);
     console.log(
-      `Applied coupon ${coupon.couponCode} for customer ${String(customer_id)}`,
+      `Applied coupon ${coupon.coupon_name} for customer ${String(
+        customer_id,
+      )}`,
     );
     navigation.goBack();
   };
@@ -88,45 +104,64 @@ const ApplyCouponScreen = () => {
     console.log(`Removed coupon for customer ${String(customer_id)}`);
   };
 
-  const handleApplySearchedCoupon = () => {
-    if (searchQuery.trim() === '') {
-      Alert.alert('Error', 'Please enter a coupon code');
-      return;
+  // const handleApplySearchedCoupon = () => {
+  //   const trimmedQuery = searchQuery.trim();
+  //   if (trimmedQuery === '') {
+  //     Alert.alert('Error', 'Please enter a coupon code');
+  //     return;
+  //   }
+
+  //   const foundCoupon = allCoupons.find(
+  //     coupon => coupon.coupon_name.toLowerCase() === trimmedQuery.toLowerCase(),
+  //   );
+
+  //   if (foundCoupon) {
+  //     setSelectedCoupon(String(customer_id), foundCoupon);
+  //     console.log(
+  //       `Applied searched coupon ${
+  //         foundCoupon.coupon_name
+  //       } for customer ${String(customer_id)}`,
+  //     );
+  //     navigation.goBack();
+  //   } else {
+  //     Alert.alert(
+  //       'Invalid Coupon',
+  //       'The coupon code you entered is not valid or has expired.',
+  //     );
+  //   }
+  // };
+
+  const searchCoupons = (coupons: Coupon[], query: string) => {
+    if (!query.trim()) {
+      return coupons;
     }
 
-    const foundCoupon = allCoupons.find(
-      coupon => coupon.couponCode.toLowerCase() === searchQuery.toLowerCase(),
-    );
+    const searchTerm = query.toLowerCase().trim();
 
-    if (foundCoupon) {
-      setSelectedCoupon(String(customer_id), foundCoupon);
-      console.log(
-        `Applied searched coupon ${
-          foundCoupon.couponCode
-        } for customer ${String(customer_id)}`,
-      );
-      navigation.goBack();
-    } else {
-      Alert.alert(
-        'Invalid Coupon',
-        'The coupon code you entered is not valid or has expired.',
-      );
-    }
+    return coupons.filter(coupon => {
+      const nameMatch = coupon.coupon_name.toLowerCase().includes(searchTerm);
+
+      const descriptionMatch = coupon.description
+        ? coupon.description.toLowerCase().includes(searchTerm)
+        : false;
+
+      const codeMatch = coupon.coupon_code
+        ? coupon.coupon_code.toLowerCase().includes(searchTerm)
+        : false;
+
+      const discountMatch = coupon.discount_value
+        ? coupon.discount_value.toLowerCase().includes(searchTerm)
+        : false;
+
+      return nameMatch || descriptionMatch || codeMatch || discountMatch;
+    });
   };
 
-  const filteredTopCoupons = topCoupons.filter(
-    coupon =>
-      coupon.couponCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      coupon.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredTopCoupons = searchCoupons(topCoupons, searchQuery);
+  const filteredMoreCoupons = searchCoupons(moreCoupons, searchQuery);
 
-  const filteredMoreCoupons = moreCoupons.filter(
-    coupon =>
-      coupon.couponCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      coupon.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  const showSearchResults = searchQuery.length > 0;
+  const showSearchResults = searchQuery.trim().length > 0;
+  const hasNoCoupons = topCoupons.length === 0 && moreCoupons.length === 0;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -152,49 +187,64 @@ const ApplyCouponScreen = () => {
             autoCapitalize="characters"
             autoCorrect={false}
           />
-          {searchQuery.length > 0 && (
+          {/* {searchQuery.trim().length > 0 && (
             <TouchableOpacity
               style={styles.applySearchButton}
               onPress={handleApplySearchedCoupon}>
               <Text style={styles.applySearchButtonText}>Apply</Text>
             </TouchableOpacity>
-          )}
+          )} */}
         </View>
       </View>
 
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}>
-        {(!showSearchResults || filteredTopCoupons.length > 0) && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Top Coupons for You</Text>
-            {(showSearchResults ? filteredTopCoupons : topCoupons).map(
-              coupon => (
-                <CouponCard
-                  key={coupon.couponCode}
-                  coupon={coupon}
-                  onApply={handleApplyCoupon}
-                  onRemove={handleRemoveCoupon}
-                />
-              ),
-            )}
+        {!loading && (error || hasNoCoupons) && !showSearchResults && (
+          <View style={styles.noCouponsContainer}>
+            <Text style={styles.noCouponsText}>
+              No coupons are available for you currently
+            </Text>
+            <Text style={styles.noCouponsSubText}>
+              Check back later for new offers and discounts
+            </Text>
           </View>
         )}
 
-        {(!showSearchResults || filteredMoreCoupons.length > 0) && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>More Coupons</Text>
-            {(showSearchResults ? filteredMoreCoupons : moreCoupons).map(
-              coupon => (
-                <CouponCard
-                  key={coupon.couponCode}
-                  coupon={coupon}
-                  onApply={handleApplyCoupon}
-                  onRemove={handleRemoveCoupon}
-                />
-              ),
+        {!loading && !error && !hasNoCoupons && (
+          <>
+            {(!showSearchResults || filteredTopCoupons.length > 0) && (
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Top Coupons for You</Text>
+                {(showSearchResults ? filteredTopCoupons : topCoupons).map(
+                  coupon => (
+                    <CouponCard
+                      key={coupon.coupon_name}
+                      coupon={coupon}
+                      onApply={handleApplyCoupon}
+                      onRemove={handleRemoveCoupon}
+                    />
+                  ),
+                )}
+              </View>
             )}
-          </View>
+
+            {(!showSearchResults || filteredMoreCoupons.length > 0) && (
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>More Coupons</Text>
+                {(showSearchResults ? filteredMoreCoupons : moreCoupons).map(
+                  coupon => (
+                    <CouponCard
+                      key={coupon.coupon_name}
+                      coupon={coupon}
+                      onApply={handleApplyCoupon}
+                      onRemove={handleRemoveCoupon}
+                    />
+                  ),
+                )}
+              </View>
+            )}
+          </>
         )}
 
         {showSearchResults &&
@@ -202,7 +252,7 @@ const ApplyCouponScreen = () => {
           filteredMoreCoupons.length === 0 && (
             <View style={styles.noResultsContainer}>
               <Text style={styles.noResultsText}>
-                No coupons found matching "{searchQuery}"
+                No coupons found matching "{searchQuery.trim()}"
               </Text>
               <Text style={styles.noResultsSubText}>
                 Try searching with a different coupon code

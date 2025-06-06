@@ -26,7 +26,7 @@ const CouponCard: React.FC<CouponCardProps> = ({
   const selectedCoupon = customer_id
     ? getSelectedCoupon(String(customer_id))
     : null;
-  const isApplied = selectedCoupon?.couponCode === coupon.couponCode;
+  const isApplied = selectedCoupon?.coupon_code === coupon.coupon_code;
 
   const handleApply = () => {
     if (customer_id !== null && customer_id !== undefined) {
@@ -46,8 +46,8 @@ const CouponCard: React.FC<CouponCardProps> = ({
     <View style={[styles.container, isApplied && styles.appliedContainer]}>
       <View style={styles.content}>
         <View style={styles.leftSection}>
-          <Text style={styles.couponCode}>{coupon.couponCode}</Text>
-          <Text style={styles.title}>{coupon.title}</Text>
+          <Text style={styles.couponCode}>{coupon.coupon_code}</Text>
+          <Text style={styles.title}>{coupon.coupon_name}</Text>
           <Text style={styles.description}>{coupon.description}</Text>
         </View>
 
