@@ -7,9 +7,9 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform,
   PermissionsAndroid,
   Alert,
+  Platform,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
@@ -31,52 +31,48 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  async function requestNotificationPermission() {
-    if (Platform.OS === 'android' && Platform.Version >= 33) {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
-    }
-  }
-  async function getFCMToken() {
-    try {
-      // Register device (required for iOS, optional for Android)
-      await messaging().registerDeviceForRemoteMessages();
-
-      // Get token
-      const token = await messaging().getToken();
-      console.log('FCM Token:', token);
-      return token;
-    } catch (error) {
-      console.error('FCM Token Error:', error);
-      return null;
-    }
-  }
-
-  // Usage in useEffect
   useEffect(() => {
-    const setupFCM = async () => {
-      await requestNotificationPermission();
-      const token = await getFCMToken();
-      if (token) {
-        console.log('FCM Token Ready:', token);
+    const setupNotifications = async () => {
+      try {
+        await requestNotificationPermissions();
+
+        const token = await messaging().getToken();
+        console.log('FCM Token:', token);
+
+        // const unsubscribe = messaging().onMessage(async remoteMessage => {
+        //   Alert.alert(
+        //     'New Message',
+        //     remoteMessage.notification?.body || 'You have a new notification',
+        //   );
+        // });
+
+        // return unsubscribe;
+      } catch (error) {
+        console.error('Notification setup error:', error);
       }
     };
 
-    // Add the foreground message handler
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('Foreground message:', remoteMessage);
-      Alert.alert(
-        remoteMessage.notification?.title || 'New Message',
-        remoteMessage.notification?.body || 'You have a new notification',
-      );
-    });
-
-    setupFCM();
-
-    // Cleanup function to unsubscribe
-    return () => unsubscribe();
+    setupNotifications();
   }, []);
+
+  const requestNotificationPermissions = async () => {
+    if (Platform.OS === 'android') {
+      if (Platform.Version >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+
+      return true;
+    }
+
+    const authStatus = await messaging().requestPermission();
+    return (
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

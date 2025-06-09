@@ -25,6 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const productId = parseInt(product.id, 10);
   const customer_id = useAuthStore(state => state.customer_id);
+
   const quantity = useCartStore(state =>
     state.getProductQuantity(customer_id?.toString() ?? '', productId),
   );
@@ -125,14 +126,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Text style={styles.deliveryText}>{product.delivery}</Text>
         </View>
 
-        <View style={styles.discountContainer}>
-          <Text style={styles.originalPrice}>₹{product.originalPrice}</Text>
+        {/* <View style={styles.discountContainer}>
+          <Text style={styles.originalPrice}>₹{product.discountedPrice}</Text>
           <Text style={styles.discountPercentage}>
             {product.discountPercentage}% off
           </Text>
+        </View> */}
+        <View style={styles.discountContainer}>
+          <Text style={styles.originalPrice}>₹{product.discountedPrice}</Text>
+          <Text style={styles.discountPercentage}>
+            {Math.round(
+              ((product.discountedPrice - product.originalPrice) /
+                product.discountedPrice) *
+                100,
+            )}
+            % off
+          </Text>
         </View>
 
-        <Text style={styles.currentPrice}>₹ {product.discountedPrice}</Text>
+        <Text style={styles.currentPrice}>₹{product.originalPrice}</Text>
       </View>
 
       {quantity > 0 ? (

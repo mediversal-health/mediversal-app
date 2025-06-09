@@ -17,7 +17,7 @@ import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen'
 import OrdersScreen from '../Screens/OrdersScreen';
 import PrescribedScreen from '../Screens/PrescribedScreen';
 import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
-import Layout from '../Layout';
+import Layout from '../layout';
 
 export type RootStackParamList = {
   Login: undefined;

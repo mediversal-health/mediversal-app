@@ -156,8 +156,8 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               name={product?.ProductName}
               packInfo={`Strip of 10 ${product?.quantity} Tablets`}
               saltComposition={product?.Composition}
-              currentPrice={`₹ ${product?.DiscountedPrice}`}
-              originalPrice={product?.CostPrice}
+              currentPrice={`₹ ${product?.CostPrice}`}
+              originalPrice={product?.SellingPrice}
               discount={product?.DiscountedPercentage + '% Off'}
               deliveryTime="Get by 9pm, Tomorrow"
               onAddToCart={handleAddToCart}

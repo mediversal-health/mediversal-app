@@ -13,16 +13,15 @@ export const openRazorpayCheckout = () => {
       contact: '9565441245',
       name: 'Sushant',
     },
-    theme: { color: '#F37254' },
+    theme: {color: '#F37254'},
   };
 
   RazorpayCheckout.open(options)
-    .then((data) => {
-      // handle success
-      console.log(`Success: ${data.razorpay_payment_id}`);
+    .then(data => {
+      console.log(`Success: ${JSON.stringify(data)}`);
     })
-    .catch((error) => {
-      // handle failure
-      console.log(`Error: ${error.code} | ${error.description}`);
+    .catch(error => {
+      console.log(`Error: ${JSON.stringify(error)}`);
+      console.log(error.stack); // Check for stack trace
     });
 };
