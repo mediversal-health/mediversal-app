@@ -33,6 +33,7 @@ import {useCallback} from 'react';
 import {getCartItems} from '../../Services/cart';
 import {useCouponStore} from '../../store/couponStore';
 import {useCartStore} from '../../store/cartStore';
+import {openRazorpayCheckout} from '../../components/payments/RazorpayCheckout';
 
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -367,7 +368,11 @@ const CartPage = () => {
             {formattedAddress !==
             'undefined - undefined, undefined, undefined' ? (
               <TouchableOpacity style={styles.addressButton}>
-                <Text style={styles.addressButtonText}>Checkout</Text>
+                <Text
+                  style={styles.addressButtonText}
+                  onPress={openRazorpayCheckout}>
+                  Checkout
+                </Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
