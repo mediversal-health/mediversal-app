@@ -71,7 +71,7 @@ export interface Product {
   SimilarProducts: string;
   GST: string;
   Coupons: string | null;
-  AvailableInInventory: number;
+  StockAvailableInInventory: number;
   InventoryUpdated: string;
   InventoryUpdatedBy: number;
   DiscountedPercentage: string;

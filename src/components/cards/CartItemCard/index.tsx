@@ -48,7 +48,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   const {getOriginalProduct} = useProductStore();
   const originalProduct = getOriginalProduct(productId.toString());
   const {setSelectedCoupon} = useCouponStore();
-  const availableInventory = originalProduct?.AvailableInInventory || 0;
+  const availableInventory = originalProduct?.StockAvailableInInventory || 0;
   const isOutOfStock = availableInventory === 0;
   const canIncreaseQuantity = quantity < availableInventory;
 
