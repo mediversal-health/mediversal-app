@@ -191,7 +191,7 @@ const PrescriptionVerification = () => {
           onPress: async () => {
             try {
               const response = await deletePrescription(
-                customer_id,
+                String(customer_id),
                 prescriptionId,
               );
 

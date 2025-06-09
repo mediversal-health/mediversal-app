@@ -112,10 +112,27 @@ export interface PrescribedOrder {
   amount: string;
   status: PrescribedOrderStatus;
 }
+
 export interface Coupon {
-  couponCode: string;
-  title: string;
-  discountType?: 'Fixed' | 'Percentage';
-  discountNumber: string;
+  id: number;
+  coupon_name: string;
+  coupon_code: string;
+  discount_type: 'percentage' | 'fixed';
+  discount_value: string;
+  minimum_order_value: string;
+  start_date: string;
+  expiry_date: string;
+  uses_limit: number | null;
+  category: string;
   description: string;
+  status: 'active' | 'inactive';
+  is_for_first_time_user: 0 | 1;
+  is_for_comeback_user: 0 | 1;
+  is_for_loyal_user: 0 | 1;
+  is_for_birthday_user: 0 | 1;
+  is_general_coupon: 0 | 1;
+  is_for_new_customer: 0 | 1;
+  is_for_existing_customer: 0 | 1;
+  created_at: string;
+  updated_at: string;
 }

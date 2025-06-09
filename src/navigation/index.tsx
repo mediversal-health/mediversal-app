@@ -51,7 +51,7 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   OrdersScreen: undefined;
   PrescribedScreen: undefined;
-  ApplyCouponScreen: undefined;
+  ApplyCouponScreen: {cartTotal: number};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

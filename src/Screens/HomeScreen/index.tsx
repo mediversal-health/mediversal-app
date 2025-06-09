@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,6 +7,9 @@ import {
   View,
   Text,
   TouchableOpacity,
+  PermissionsAndroid,
+  Alert,
+  Platform,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
@@ -22,13 +25,54 @@ import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import PriceCard from '../../components/cards/PriceCard';
 import OrderNowCard from '../../components/cards/OrderCard';
-
+import messaging from '@react-native-firebase/messaging';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  useEffect(() => {
+    const setupNotifications = async () => {
+      try {
+        await requestNotificationPermissions();
 
+        const token = await messaging().getToken();
+        console.log('FCM Token:', token);
+
+        // const unsubscribe = messaging().onMessage(async remoteMessage => {
+        //   Alert.alert(
+        //     'New Message',
+        //     remoteMessage.notification?.body || 'You have a new notification',
+        //   );
+        // });
+
+        // return unsubscribe;
+      } catch (error) {
+        console.error('Notification setup error:', error);
+      }
+    };
+
+    setupNotifications();
+  }, []);
+
+  const requestNotificationPermissions = async () => {
+    if (Platform.OS === 'android') {
+      if (Platform.Version >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+
+      return true;
+    }
+
+    const authStatus = await messaging().requestPermission();
+    return (
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

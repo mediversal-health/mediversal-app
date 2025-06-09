@@ -1,3 +1,5 @@
+/* eslint-disable no-catch-shadow */
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
@@ -7,6 +9,8 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  Alert,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -33,14 +37,17 @@ import {useCallback} from 'react';
 import {getCartItems} from '../../Services/cart';
 import {useCouponStore} from '../../store/couponStore';
 import {useCartStore} from '../../store/cartStore';
-
+import RazorpayCheckout from 'react-native-razorpay';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
+  const RAZORPAY_KEY = process.env.RAZORPAY_KEY;
 
   const formData = route.params?.formData;
   const customer_id = useAuthStore(state => state.customer_id);
+
   const pincode = formData?.PinCode;
   const area = formData?.Area_details;
   const City = formData?.City;
@@ -121,20 +128,49 @@ const CartPage = () => {
       customer_id?.toString() ?? '',
       item.productId,
     );
-    return total + item.CostPrice * qty;
+    console.log('ABCD', qty);
+    return total + item.SellingPrice * qty;
   }, 0);
 
   let couponDiscount = 0;
   if (selectedCoupon) {
-    const discountValue = parseFloat(selectedCoupon.discountNumber || '0');
-    if (selectedCoupon.discountType === 'Fixed') {
+    const discountValue = parseFloat(selectedCoupon.discount_value || '0');
+    if (selectedCoupon.discount_type === 'fixed') {
       couponDiscount = discountValue;
-    } else if (selectedCoupon.discountType === 'Percentage') {
+    } else if (selectedCoupon.discount_type === 'percentage') {
       couponDiscount = Math.round((cartTotal * discountValue) / 100);
     }
   }
 
   const [selectedRadio, setSelectedRadio] = useState(false);
+  const handleCheckout = async () => {
+    if (!RAZORPAY_KEY) {
+      Alert.alert('Payment Error', 'Razorpay key is missing.');
+      return;
+    }
+
+    setIsProcessingPayment(true);
+
+    try {
+      const options = {
+        description: 'Test Payment',
+        image: Image.resolveAssetSource(require('../../assests/svgs/Logo.svg'))
+          .uri,
+        currency: 'INR',
+        key: RAZORPAY_KEY as string,
+        amount: (cartTotal - couponDiscount + 5 + 40) * 100,
+        name: 'Mediversal APP',
+        theme: {color: '#0088B1'},
+      };
+
+      const data = await RazorpayCheckout.open(options);
+      Alert.alert(`Success: ${data.razorpay_payment_id}`);
+    } catch (error: any) {
+      Alert.alert(`Error: ${error.code} | ${error.description}`);
+    } finally {
+      setIsProcessingPayment(false); // Stop loading
+    }
+  };
 
   if (loading) {
     return (
@@ -190,7 +226,7 @@ const CartPage = () => {
           </View>
         </View>
       </SafeAreaView>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {formattedAddress !==
             'undefined - undefined, undefined, undefined' && (
@@ -242,7 +278,11 @@ const CartPage = () => {
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <TouchableOpacity
-                onPress={() => navigation.navigate('ApplyCouponScreen')}>
+                onPress={() =>
+                  navigation.navigate('ApplyCouponScreen', {
+                    cartTotal: cartTotal,
+                  })
+                }>
                 <LinearGradient
                   colors={['#F8F8F8', '#FE90E2']}
                   start={{x: 1, y: 0}}
@@ -270,7 +310,7 @@ const CartPage = () => {
                       Coupon Applied:
                     </Text>
                     <Text style={styles.appliedCouponCode}>
-                      {selectedCoupon?.couponCode}
+                      {selectedCoupon?.coupon_code}
                     </Text>
                   </View>
                 </View>
@@ -362,8 +402,15 @@ const CartPage = () => {
             </View>
             {formattedAddress !==
             'undefined - undefined, undefined, undefined' ? (
-              <TouchableOpacity style={styles.addressButton}>
-                <Text style={styles.addressButtonText}>Checkout</Text>
+              <TouchableOpacity
+                style={styles.addressButton}
+                onPress={handleCheckout}
+                disabled={isProcessingPayment}>
+                {isProcessingPayment ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.addressButtonText}>Checkout</Text>
+                )}
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -376,7 +423,7 @@ const CartPage = () => {
             )}
           </View>
         )}
-      </View>
+      </SafeAreaView>
 
       <LocationModal
         isVisible={isLocationModalVisible}

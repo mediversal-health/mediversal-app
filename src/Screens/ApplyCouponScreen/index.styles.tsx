@@ -123,5 +123,24 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     marginBottom: 16,
   },
+  noCouponsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+  },
+  noCouponsText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  noCouponsSubText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+  },
 });
 export default styles;

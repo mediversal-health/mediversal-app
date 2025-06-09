@@ -37,6 +37,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   onQuantityChange,
 }) => {
   const customer_id = useAuthStore(state => state.customer_id);
+
   const quantity = useCartStore(state =>
     state.getProductQuantity(customer_id?.toString() ?? '', productId),
   );
@@ -127,8 +128,8 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
           <View style={styles.priceRow}>
-            <Text style={styles.actualPrice}>₹{price}</Text>
-            <Text style={styles.mrp}>₹{mrp}</Text>
+            <Text style={styles.actualPrice}>₹{mrp}</Text>
+            <Text style={styles.mrp}>₹{price}</Text>
           </View>
         </View>
 

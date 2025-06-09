@@ -20,7 +20,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
       quantity: `Available: ${product.AvailableInInventory}`,
       delivery: 'Delivery in 2-3 days',
       originalPrice: parseFloat(product.SellingPrice),
-      discountedPrice: parseFloat(product.DiscountedPrice),
+      discountedPrice: parseFloat(product.CostPrice),
       discountPercentage: parseFloat(product.DiscountedPercentage),
       image: product.images?.[0] || '',
       // Store reference to original product
