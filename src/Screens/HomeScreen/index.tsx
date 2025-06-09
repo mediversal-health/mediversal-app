@@ -8,7 +8,6 @@ import {
   Text,
   TouchableOpacity,
   PermissionsAndroid,
-  Alert,
   Platform,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';

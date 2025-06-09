@@ -184,7 +184,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       id: product.productId.toString(),
       name: product.ProductName,
       description: product.ProductInformation || 'No description available',
-      quantity: `Available: ${product.AvailableInInventory}`,
+      quantity: `Available: ${product.StockAvailableInInventory}`,
       delivery: 'Delivery in 2-3 days',
       originalPrice: parseFloat(product.SellingPrice),
       discountedPrice: parseFloat(product.DiscountedPrice),
