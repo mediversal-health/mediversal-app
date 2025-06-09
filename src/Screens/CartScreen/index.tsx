@@ -23,6 +23,7 @@ import {
   ChevronLeft,
   ShoppingBag,
 } from 'lucide-react-native';
+
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
@@ -164,11 +165,22 @@ const CartPage = () => {
       };
 
       const data = await RazorpayCheckout.open(options);
-      Alert.alert(`Success: ${data.razorpay_payment_id}`);
+
+      if (data.razorpay_payment_id) {
+        navigation.navigate('PaymentSuccessScreen', {
+          paymentId: data.razorpay_payment_id,
+          amount: cartTotal - couponDiscount + 5 + 40,
+        });
+      }
     } catch (error: any) {
-      Alert.alert(`Error: ${error.code} | ${error.description}`);
+      if (error.code !== 0) {
+        Alert.alert(
+          'Payment Failed',
+          'There was an issue processing your payment. Please try again.',
+        );
+      }
     } finally {
-      setIsProcessingPayment(false); // Stop loading
+      setIsProcessingPayment(false);
     }
   };
 

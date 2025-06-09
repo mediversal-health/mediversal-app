@@ -18,6 +18,7 @@ import OrdersScreen from '../Screens/OrdersScreen';
 import PrescribedScreen from '../Screens/PrescribedScreen';
 import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
 import Layout from '../layout';
+import PaymentSuccessScreen from '../components/payments/PaymentSuccessScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -52,6 +53,7 @@ export type RootStackParamList = {
   OrdersScreen: undefined;
   PrescribedScreen: undefined;
   ApplyCouponScreen: {cartTotal: number};
+  PaymentSuccessScreen: {paymentId: string; amount: number};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -93,6 +95,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="ApplyCouponScreen"
               component={ApplyCouponScreen}
+            />
+            <Stack.Screen
+              name="PaymentSuccessScreen"
+              component={PaymentSuccessScreen}
             />
           </>
         ) : (
