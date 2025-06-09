@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "375064255052",
+    "project_id": "mediversal-6130d",
+    "storage_bucket": "mediversal-6130d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375064255052:android:d6a0d953bb64702eca72e9",
+        "android_client_info": {
+          "package_name": "com.mediversal_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6AE5EPR8H__Wifa_MAXndP2KGl5DhWHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

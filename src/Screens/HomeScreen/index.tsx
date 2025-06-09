@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,6 +7,9 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
+  PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
@@ -22,13 +25,58 @@ import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import PriceCard from '../../components/cards/PriceCard';
 import OrderNowCard from '../../components/cards/OrderCard';
-
+import messaging from '@react-native-firebase/messaging';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  async function requestNotificationPermission() {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+    }
+  }
+  async function getFCMToken() {
+    try {
+      // Register device (required for iOS, optional for Android)
+      await messaging().registerDeviceForRemoteMessages();
 
+      // Get token
+      const token = await messaging().getToken();
+      console.log('FCM Token:', token);
+      return token;
+    } catch (error) {
+      console.error('FCM Token Error:', error);
+      return null;
+    }
+  }
+
+  // Usage in useEffect
+  useEffect(() => {
+    const setupFCM = async () => {
+      await requestNotificationPermission();
+      const token = await getFCMToken();
+      if (token) {
+        console.log('FCM Token Ready:', token);
+      }
+    };
+
+    // Add the foreground message handler
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('Foreground message:', remoteMessage);
+      Alert.alert(
+        remoteMessage.notification?.title || 'New Message',
+        remoteMessage.notification?.body || 'You have a new notification',
+      );
+    });
+
+    setupFCM();
+
+    // Cleanup function to unsubscribe
+    return () => unsubscribe();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
