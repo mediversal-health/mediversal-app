@@ -46,8 +46,8 @@ const ApplyCouponScreen = () => {
       try {
         setLoading(true);
         setError(false);
-        const response = await fetchCoupons(customer_id, cartTotal);
-
+        const response = await fetchCoupons();
+        console.log(response);
         // Check if response is null, undefined, or failed
         if (!response) {
           setError(true);

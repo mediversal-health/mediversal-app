@@ -27,9 +27,11 @@ import OrderNowCard from '../../components/cards/OrderCard';
 import messaging from '@react-native-firebase/messaging';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useToastStore} from '../../store/toastStore';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const showToast = useToastStore(state => state.showToast);
   useEffect(() => {
     const setupNotifications = async () => {
       try {
@@ -37,6 +39,8 @@ const HomeScreen = () => {
 
         const token = await messaging().getToken();
         console.log('FCM Token:', token);
+
+        showToast('Welcome to Mediversal!', 'success');
 
         // const unsubscribe = messaging().onMessage(async remoteMessage => {
         //   Alert.alert(
@@ -48,6 +52,7 @@ const HomeScreen = () => {
         // return unsubscribe;
       } catch (error) {
         console.error('Notification setup error:', error);
+        showToast('Failed to setup notifications', 'error');
       }
     };
 
@@ -72,8 +77,11 @@ const HomeScreen = () => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL
     );
   };
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Render the ToastComponent at the top of your screen */}
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
 
@@ -91,6 +99,7 @@ const HomeScreen = () => {
           </View>
         </View>
 
+        {/* Rest of your existing HomeScreen code... */}
         <ScrollView
           horizontal
           style={styles.horizontalScroll}

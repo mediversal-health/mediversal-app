@@ -9,7 +9,6 @@ import {
   ScrollView,
   FlatList,
   RefreshControl,
-  Alert,
   Platform,
 } from 'react-native';
 
@@ -53,6 +52,7 @@ import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
 import {Fonts} from '../../styles/fonts';
 import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
+import { useToastStore } from '../../store/toastStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -61,6 +61,8 @@ const PharmacyScreen = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
+ const showToast = useToastStore(state => state.showToast);
+
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -113,16 +115,10 @@ const PharmacyScreen = () => {
       const cartResponse = await addToCart(customer_id, productData);
       console.log('Product added to cart successfully:', cartResponse);
 
-      Alert.alert(
-        'Success',
-        `${productData.name || 'Product'} has been added to your cart!`,
-        [{text: 'OK'}],
-      );
+      showToast(`${productData.name || 'Product'} added to cart!`, 'success', 3000, true);
     } catch (error) {
       console.error('Error adding product to cart:', error);
-      Alert.alert('Error', 'Failed to add product to cart. Please try again.', [
-        {text: 'OK'},
-      ]);
+      showToast('Failed to add product to cart', 'error');
     } finally {
       setAddingToCart(null);
     }
