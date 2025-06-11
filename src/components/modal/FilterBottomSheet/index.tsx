@@ -189,6 +189,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       originalPrice: parseFloat(product.SellingPrice),
       discountedPrice: parseFloat(product.DiscountedPrice),
       discountPercentage: parseFloat(product.DiscountedPercentage),
+      Category: String(product.Category || ''),
       image: product.images?.[0] || '',
       _originalProduct: product,
     }));

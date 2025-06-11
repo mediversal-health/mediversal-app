@@ -35,7 +35,7 @@ const PaymentSuccessScreen = ({route}: any) => {
     const handleCreateOrder = async () => {
       if (orderCreated || isCreatingOrder) {
         return;
-      } // Prevent duplicate calls
+      }
 
       setIsCreatingOrder(true);
 
@@ -56,11 +56,13 @@ const PaymentSuccessScreen = ({route}: any) => {
               transactionId: paymentId || '',
             },
           },
+
           products:
             cartItems?.map((item: any) => ({
               productId: item.productId || item.id,
               quantity: item.quantity || 1,
             })) || [],
+          totalOrderAmount: amount,
         };
 
         console.log('Creating order with data:', orderData);
@@ -69,7 +71,6 @@ const PaymentSuccessScreen = ({route}: any) => {
 
         console.log('Order created successfully:', response);
 
-        // Remove purchased items from cart after successful order creation
         const productIds = cartItems.map(
           (item: any) => item.productId || item.id,
         );

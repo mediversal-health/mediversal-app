@@ -3,32 +3,28 @@ import {API_URL} from '@env';
 
 const IP_ADDR = API_URL;
 
-// export const fetchCoupons = async (userId: any, cartTotal: number) => {
-//   try {
-//     const response = await axios.post(
-//       'http://192.168.1.29:5001/admin/customers/coupons/eligible',
-//       {
-//         userId,
-//         cartTotal,
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       },
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error adding to cart:', error);
-//     throw error;
-//   }
-// };
-export const fetchCoupons = async () => {
+export const fetchCoupons = async (
+  userId: any,
+  cartTotal: number,
+  birthday: string,
+) => {
   try {
-    const response = await axios.get(`${IP_ADDR}/admin/coupons`);
+    const response = await axios.post(
+      `${IP_ADDR}/admin/customers/coupons/eligible`,
+      {
+        userId,
+        cartTotal,
+        birthday: birthday || '',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
     return response.data;
   } catch (error) {
-    console.error('Error adding to cart:', error);
+    console.error('Error fetching coupons:', error);
     throw error;
   }
 };

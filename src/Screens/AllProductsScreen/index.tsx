@@ -18,6 +18,10 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import useProductStore from '../../store/productsStore';
 import FilterBottomSheet from '../../components/modal/FilterBottomSheet';
+import {getProductsById} from '../../Services/pharmacy';
+import {addToCart} from '../../Services/cart';
+import {useAuthStore} from '../../store/authStore';
+import {useToastStore} from '../../store/toastStore';
 
 interface Category {
   id: string;
@@ -27,6 +31,7 @@ interface Category {
 
 const AllProductsScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [filteredProducts, setFilteredProducts] = useState<
@@ -36,12 +41,45 @@ const AllProductsScreen: React.FC = () => {
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
 
   const {cardProducts, getOriginalProduct} = useProductStore();
+  const customer_id = useAuthStore(state => state.customer_id);
+  const showToast = useToastStore(state => state.showToast);
+  console.log('card', cardProducts);
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
     navigation.navigate('UploadScreen', {
       product: originalProduct,
     });
   };
+
+  // Add the handleAddToCart function from PharmacyScreen
+  const handleAddToCart = async (productId: string, quantity: number) => {
+    try {
+      setAddingToCart(productId);
+      const numericProductId = parseInt(productId, 10);
+
+      const productResponse = await getProductsById(numericProductId);
+      const productData = {
+        ...productResponse.data,
+        quantity: quantity || 1,
+      };
+
+      const cartResponse = await addToCart(customer_id, productData);
+      console.log('Product added to cart successfully:', cartResponse);
+
+      showToast(
+        `${productData.name || 'Product'} added to cart!`,
+        'success',
+        3000,
+        true,
+      );
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      showToast('Failed to add product to cart', 'error');
+    } finally {
+      setAddingToCart(null);
+    }
+  };
+
   console.log(cardProducts);
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const categories: Category[] = [
@@ -86,12 +124,12 @@ const AllProductsScreen: React.FC = () => {
         borderColor={'#2D9CDB'}
         buttonColor={'#2D9CDB'}
         backgroundColor={'#E8F4F7'}
-        onAddToCart={(id: string, quantity: number) => {
-          console.log(`Product ${id} added to cart: ${quantity} items`);
-        }}
+        onAddToCart={handleAddToCart}
+        addingToCart={addingToCart === item.id}
       />
     </TouchableOpacity>
   );
+
   const renderCategory = ({item}: {item: Category}) => (
     <TouchableOpacity
       style={[
@@ -109,15 +147,16 @@ const AllProductsScreen: React.FC = () => {
       </Text>
     </TouchableOpacity>
   );
+
   const sortProducts = (option: string) => {
     const sorted = [...cardProducts];
 
     switch (option) {
       case 'Price: Low to High':
-        sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
+        sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
         break;
       case 'Price: High to Low':
-        sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
+        sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
         break;
       case 'Relevance':
       default:
@@ -128,6 +167,7 @@ const AllProductsScreen: React.FC = () => {
 
     useProductStore.setState({cardProducts: sorted});
   };
+
   return (
     <>
       <View style={styles.container}>
@@ -140,7 +180,9 @@ const AllProductsScreen: React.FC = () => {
             </TouchableOpacity>
             <Text style={styles.headerText}>All Products</Text>
           </View>
-          <ShoppingBag size={20} />
+          <TouchableOpacity onPress={() => navigation.navigate('CartPage', {})}>
+            <ShoppingBag size={20} />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.mainContent}>

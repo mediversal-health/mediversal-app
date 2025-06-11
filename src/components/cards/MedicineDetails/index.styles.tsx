@@ -89,6 +89,16 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
   },
+  emptyImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E8E8E8',
+  },
+  emptyImageText: {
+    color: '#888888',
+    fontFamily: Fonts.JakartaMedium,
+    fontSize: 16,
+  },
   disabledButton: {
     backgroundColor: '#787a79',
     paddingVertical: 12,

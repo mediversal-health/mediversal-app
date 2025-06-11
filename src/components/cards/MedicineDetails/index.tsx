@@ -25,12 +25,12 @@ interface MedicineDetailProps {
   originalPrice: string | undefined;
   discount: string;
   deliveryTime: string;
-  onAddToCart?: () => void; // Add this prop
-  isAddingToCart?: boolean; // Add this prop
+  onAddToCart?: () => void;
+  isAddingToCart?: boolean;
 }
 
 const MedicineDetail: React.FC<MedicineDetailProps> = ({
-  images,
+  images = [],
   productId,
   rating = 4.5,
   name = 'Dolo 650mg Tablet',
@@ -52,10 +52,18 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   );
 
   const isInCart = quantity > 0;
-  console.log(images);
+
+  // Safe image handling
+  const safeImages = Array.isArray(images) ? images.filter(img => img) : [];
+  const hasMultipleImages = safeImages.length > 1;
+
   useEffect(() => {
+    if (!hasMultipleImages) {
+      return;
+    }
+
     const interval = setInterval(() => {
-      const nextIndex = (activeIndex + 1) % images.length;
+      const nextIndex = (activeIndex + 1) % safeImages.length;
       setActiveIndex(nextIndex);
       flatListRef.current?.scrollToIndex({
         index: nextIndex,
@@ -64,7 +72,68 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [activeIndex, images.length]);
+  }, [activeIndex, safeImages.length, hasMultipleImages]);
+
+  const handleScrollEnd = (event: any) => {
+    if (safeImages.length === 0) {
+      return;
+    }
+
+    const contentOffset = event.nativeEvent.contentOffset.x;
+    const newIndex = Math.round(contentOffset / screenWidth);
+
+    if (newIndex >= 0 && newIndex < safeImages.length) {
+      setActiveIndex(newIndex);
+    }
+  };
+
+  const renderImageItem = ({item}: {item: string}) => (
+    <Image
+      source={typeof item === 'string' ? {uri: item} : item}
+      style={[styles.image, {width: screenWidth, height: 300}]}
+      resizeMode="contain"
+      onError={() => console.log('Image failed to load')}
+    />
+  );
+
+  const renderImageSection = () => {
+    if (safeImages.length === 0) {
+      return (
+        <View style={[styles.imageContainer, styles.emptyImageContainer]}>
+          <Text style={styles.emptyImageText}>No images available</Text>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.imageContainer}>
+        <FlatList
+          ref={flatListRef}
+          data={safeImages}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={renderImageItem}
+          onMomentumScrollEnd={handleScrollEnd}
+          getItemLayout={(_, index) => ({
+            length: screenWidth,
+            offset: screenWidth * index,
+            index,
+          })}
+          onScrollToIndexFailed={({index}) => {
+            flatListRef.current?.scrollToOffset({
+              offset: index * screenWidth,
+              animated: false,
+            });
+            setTimeout(() => {
+              flatListRef.current?.scrollToIndex({index, animated: false});
+            }, 100);
+          }}
+        />
+      </View>
+    );
+  };
 
   const renderStars = () => {
     const stars = [];
@@ -93,53 +162,25 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
 
   return (
     <View style={styles.container}>
-      {/* Auto-scrolling images */}
-      <View style={styles.imageContainer}>
-        <FlatList
-          ref={flatListRef}
-          data={images}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
-            <Image
-              source={typeof item === 'string' ? {uri: item} : item}
-              style={[styles.image, {width: screenWidth, height: 300}]}
-              resizeMode="contain"
-              onError={e =>
-                console.log('Image loading error:', e.nativeEvent.error)
-              }
-            />
-          )}
-          onMomentumScrollEnd={event => {
-            const index = Math.round(
-              event.nativeEvent.contentOffset.x / screenWidth,
-            );
-            setActiveIndex(index);
-          }}
-          getItemLayout={(data, index) => ({
-            length: screenWidth,
-            offset: screenWidth * index,
-            index,
-          })}
-        />
-      </View>
+      {/* Image Section */}
+      {renderImageSection()}
 
       {/* Rating and dot indicators */}
       <View style={styles.ratingContainer}>
         {renderStars()}
-        <View style={styles.dotIndicatorContainer}>
-          {images.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.dot,
-                index === activeIndex ? styles.activeDot : null,
-              ]}
-            />
-          ))}
-        </View>
+        {hasMultipleImages && (
+          <View style={styles.dotIndicatorContainer}>
+            {safeImages.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.dot,
+                  index === activeIndex ? styles.activeDot : null,
+                ]}
+              />
+            ))}
+          </View>
+        )}
       </View>
 
       {/* Medicine name and pack info */}
@@ -156,7 +197,15 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
       <View style={styles.priceContainer}>
         <Text style={styles.currentPrice}>{currentPrice}</Text>
         <Text style={styles.originalPrice}>{originalPrice}</Text>
-        <Text style={styles.discount}>{discount}</Text>
+        <Text style={styles.discount}>
+          {(() => {
+            const orig = Number((originalPrice || '').replace(/[^\d.]/g, ''));
+            const curr = Number((currentPrice || '').replace(/[^\d.]/g, ''));
+            return orig && curr
+              ? `${Math.round(((orig - curr) / orig) * 100)}% OFF`
+              : discount;
+          })()}
+        </Text>
       </View>
 
       {/* Stock and delivery info */}

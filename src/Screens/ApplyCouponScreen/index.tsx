@@ -46,7 +46,8 @@ const ApplyCouponScreen = () => {
       try {
         setLoading(true);
         setError(false);
-        const response = await fetchCoupons();
+        console.log(customer_id, cartTotal);
+        const response = await fetchCoupons(customer_id, cartTotal, '');
         console.log(response);
         // Check if response is null, undefined, or failed
         if (!response) {
@@ -229,7 +230,7 @@ const ApplyCouponScreen = () => {
               </View>
             )}
 
-            {(!showSearchResults || filteredMoreCoupons.length > 0) && (
+            {!showSearchResults && moreCoupons.length > 0 && (
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>More Coupons</Text>
                 {(showSearchResults ? filteredMoreCoupons : moreCoupons).map(

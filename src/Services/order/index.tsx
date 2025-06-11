@@ -31,6 +31,7 @@ interface OrderData {
   customer: Customer;
   payment: Payment;
   products: ProductItem[];
+  totalOrderAmount: number;
 }
 
 export const createOrder = async (orderData: OrderData) => {
@@ -42,7 +43,18 @@ export const createOrder = async (orderData: OrderData) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error creating order:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Order creation failed:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        headers: error.response?.headers,
+      });
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
+};
+export const getOrders = async (customerId: string) => {
+  return axios.get(`${IP_ADDR}/api/order/CustomerId/${customerId}`);
 };

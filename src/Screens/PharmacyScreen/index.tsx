@@ -52,7 +52,7 @@ import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
 import {Fonts} from '../../styles/fonts';
 import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
-import { useToastStore } from '../../store/toastStore';
+import {useToastStore} from '../../store/toastStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -61,7 +61,7 @@ const PharmacyScreen = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
- const showToast = useToastStore(state => state.showToast);
+  const showToast = useToastStore(state => state.showToast);
 
   const fetchProducts = useCallback(() => {
     setLoading(true);
@@ -115,7 +115,12 @@ const PharmacyScreen = () => {
       const cartResponse = await addToCart(customer_id, productData);
       console.log('Product added to cart successfully:', cartResponse);
 
-      showToast(`${productData.name || 'Product'} added to cart!`, 'success', 3000, true);
+      showToast(
+        `${productData.name || 'Product'} added to cart!`,
+        'success',
+        3000,
+        true,
+      );
     } catch (error) {
       console.error('Error adding product to cart:', error);
       showToast('Failed to add product to cart', 'error');
@@ -262,7 +267,7 @@ const PharmacyScreen = () => {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                flex: 1,
                 gap: 5,
                 marginTop: 10,
                 marginHorizontal: Platform.OS === 'android' ? 0 : 10,
@@ -291,7 +296,7 @@ const PharmacyScreen = () => {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                flex: 1,
                 gap: 5,
                 marginTop: 10,
                 marginBottom: 10,
@@ -376,13 +381,12 @@ const PharmacyScreen = () => {
               <CircleCard logo={SunDrop} size={110} />
               <CircleCard logo={SunDrop} size={110} />
             </View>
-
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('AllProducts')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AllProducts')}>
+              <View style={styles.buttonContainer}>
                 <Text style={styles.buttonText}>View all Medicines</Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
             <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
               <Text
                 style={{
@@ -398,10 +402,10 @@ const PharmacyScreen = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
-              flex: 1,
+              // flex: 1,
               flexDirection: 'row',
               justifyContent: 'space-between',
-              // gap: Platform.OS === 'ios' ? 0 : 10,
+              gap: Platform.OS === 'ios' ? 0 : 10,
               paddingHorizontal: Platform.OS === 'ios' ? 10 : 10,
               marginBottom: 5,
             }}>
