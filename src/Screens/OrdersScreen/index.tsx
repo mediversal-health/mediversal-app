@@ -55,8 +55,8 @@ const OrdersScreen: React.FC = () => {
       const response = await getOrders(customer_id.toString());
 
       const mappedOrders: Order[] = response.data.map((item: any) => {
-        const rawStatus = item.paymentStatus?.toUpperCase?.() || 'ON GOING';
-        const mappedStatus = rawStatus === 'PAID' ? 'ON GOING' : rawStatus;
+        const rawStatus = item.deliveryStatus?.toUpperCase?.() || 'ON GOING';
+        const mappedStatus = rawStatus;
 
         return {
           name: item.customerName || 'Guest',

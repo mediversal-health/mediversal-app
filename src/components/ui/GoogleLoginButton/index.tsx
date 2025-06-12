@@ -5,6 +5,7 @@ import {SvgXml} from 'react-native-svg';
 import styles from './index.styles';
 
 import {useAuthStore} from '../../../store/authStore';
+import {googleSignIn} from '../../../Services/auth';
 
 GoogleSignin.configure({
   webClientId:
@@ -41,9 +42,11 @@ const GoogleLoginButton = () => {
       console.log('Google userInfo:', userInfo);
       console.log('Google tokens:', tokens);
 
+      const response = await googleSignIn(userInfo.data?.user.email);
+
       setAuthentication({
         token: tokens?.idToken ?? null,
-        customer_id: userInfo.data?.user.id,
+        customer_id: response.data.customer_id,
         email: userInfo.data?.user.email,
       });
     } catch (error: any) {

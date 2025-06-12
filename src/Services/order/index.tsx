@@ -32,6 +32,7 @@ interface OrderData {
   payment: Payment;
   products: ProductItem[];
   totalOrderAmount: number;
+  deliveryStatus: String;
 }
 
 export const createOrder = async (orderData: OrderData) => {

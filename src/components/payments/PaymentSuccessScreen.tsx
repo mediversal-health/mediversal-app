@@ -49,7 +49,7 @@ const PaymentSuccessScreen = ({route}: any) => {
             email: email || '',
           },
           payment: {
-            status: 'completed',
+            status: 'PAID',
             method: 'UPI',
             time: new Date().toISOString(),
             details: {
@@ -63,6 +63,7 @@ const PaymentSuccessScreen = ({route}: any) => {
               quantity: item.quantity || 1,
             })) || [],
           totalOrderAmount: amount,
+          deliveryStatus: 'ON GOING',
         };
 
         console.log('Creating order with data:', orderData);
