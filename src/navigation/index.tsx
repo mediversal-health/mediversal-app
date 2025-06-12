@@ -53,7 +53,18 @@ export type RootStackParamList = {
   OrdersScreen: undefined;
   PrescribedScreen: undefined;
   ApplyCouponScreen: {cartTotal: number};
-  PaymentSuccessScreen: {paymentId: string; amount: number};
+  PaymentSuccessScreen: {
+    paymentId: string;
+    amount: number;
+    address: string;
+    cartItems: Array<{
+      productId: string;
+      name: string;
+      price: number;
+      quantity: number;
+      imageUrl: string;
+    }>;
+  };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

@@ -77,8 +77,8 @@ export const verifyRegisterUser = async (
   });
 };
 
-export const googleSignIn = async (idToken: string) => {
-  return axios.post(`${IP_ADDR}/api/Auth/auth/google`, {
-    idToken,
+export const googleSignIn = async (email: string | undefined) => {
+  return axios.post(`${IP_ADDR}/api/Auth/google-login`, {
+    email,
   });
 };

@@ -10,14 +10,14 @@ import {
   MoreVertical,
 } from 'lucide-react-native';
 
+import type {ReactElement} from 'react';
+import {Order, OrderStatus} from '../../../types';
+import styles from './index.styles';
+
 interface OrderCardProps {
   order: Order;
 }
 
-import type {ReactElement} from 'react';
-
-import {Order, OrderStatus} from '../../../types';
-import styles from './index.styles';
 interface StatusConfig {
   icon: ReactElement;
   bgColor: string;
@@ -25,35 +25,41 @@ interface StatusConfig {
 }
 
 const STATUS_CONFIG: Record<OrderStatus, StatusConfig> = {
-  Completed: {
+  COMPLETED: {
     icon: <Check size={20} color="#10b981" />,
     bgColor: '#D1FAE5',
     statusColor: '#10b981',
   },
-  'On Going': {
+  'ON GOING': {
     icon: <Clock size={20} color="#000" />,
     bgColor: '#D3D7D8',
     statusColor: '#000',
   },
-  'Clarification Needed': {
+  'CLARIFICATION NEEDED': {
     icon: <AlertCircle size={20} color="#F2994A" />,
     bgColor: '#FFD2AB',
     statusColor: '#F2994A',
   },
-  Shipped: {
+  SHIPPED: {
     icon: <Truck size={20} color="#3b82f6" />,
     bgColor: '#DBEAFE',
     statusColor: '#3b82f6',
   },
-  Cancelled: {
+  CANCELLED: {
     icon: <X size={20} color="#EB5757" />,
     bgColor: '#FFD3D3',
     statusColor: '#EB5757',
   },
 };
 
+const DEFAULT_CONFIG: StatusConfig = {
+  icon: <Clock size={20} color="#6b7280" />,
+  bgColor: '#E5E7EB',
+  statusColor: '#6b7280',
+};
+
 const OrderCard: React.FC<OrderCardProps> = ({order}) => {
-  const config = STATUS_CONFIG[order.status];
+  const config = STATUS_CONFIG[order.status as OrderStatus] || DEFAULT_CONFIG;
 
   return (
     <View style={styles.card}>

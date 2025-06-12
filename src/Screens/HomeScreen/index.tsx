@@ -30,6 +30,8 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Render the ToastComponent at the top of your screen */}
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
 
@@ -47,6 +49,7 @@ const HomeScreen = () => {
           </View>
         </View>
 
+        {/* Rest of your existing HomeScreen code... */}
         <ScrollView
           horizontal
           style={styles.horizontalScroll}

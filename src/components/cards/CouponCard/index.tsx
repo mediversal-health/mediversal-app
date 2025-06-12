@@ -5,6 +5,8 @@ import {useCouponStore} from '../../../store/couponStore';
 import {Coupon} from '../../../types';
 import styles from './index.styles';
 import {useAuthStore} from '../../../store/authStore';
+import {useToastStore} from '../../../store/toastStore';
+
 interface CouponCardProps {
   coupon: Coupon;
   applyButtonText?: string;
@@ -22,7 +24,7 @@ const CouponCard: React.FC<CouponCardProps> = ({
 }) => {
   const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
   const customer_id = useAuthStore(state => state.customer_id);
-
+  const showToast = useToastStore(state => state.showToast);
   const selectedCoupon = customer_id
     ? getSelectedCoupon(String(customer_id))
     : null;
@@ -31,6 +33,7 @@ const CouponCard: React.FC<CouponCardProps> = ({
   const handleApply = () => {
     if (customer_id !== null && customer_id !== undefined) {
       setSelectedCoupon(String(customer_id), coupon);
+      showToast('Coupon Applied', 'success', 3000, true);
       onApply?.(coupon);
     }
   };
@@ -38,6 +41,7 @@ const CouponCard: React.FC<CouponCardProps> = ({
   const handleRemove = () => {
     if (customer_id !== null && customer_id !== undefined) {
       setSelectedCoupon(String(customer_id), null);
+
       onRemove?.(coupon);
     }
   };

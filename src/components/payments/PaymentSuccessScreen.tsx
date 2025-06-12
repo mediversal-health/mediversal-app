@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,12 +13,85 @@ import {RootStackParamList} from '../../navigation';
 import {CheckCircle, Download, Share2} from 'lucide-react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {styles} from './PaymentSuccessScreen.styles';
+import {useAuthStore} from '../../store/authStore';
+import {createOrder} from '../../Services/order';
+import {DeleteFromCart} from '../../Services/cart'; // Import the DeleteFromCart function
+
+import {useCartStore} from '../../store/cartStore';
+import {useToastStore} from '../../store/toastStore';
 
 Dimensions.get('window');
 
 const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const {paymentId, amount} = route.params;
+  const {customer_id, email, phoneNumber} = useAuthStore();
+  const {paymentId, amount, cartItems, address} = route.params;
+
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false);
+  const [orderCreated, setOrderCreated] = useState(false);
+  const showToast = useToastStore(state => state.showToast);
+  const setProductQuantity = useCartStore(state => state.setProductQuantity);
+  useEffect(() => {
+    const handleCreateOrder = async () => {
+      if (orderCreated || isCreatingOrder) {
+        return;
+      }
+
+      setIsCreatingOrder(true);
+
+      try {
+        const orderData = {
+          customer: {
+            customerId: parseInt(String(customer_id ?? ''), 10),
+            name: 'Guest',
+            address: address || '',
+            phone: phoneNumber || '',
+            email: email || '',
+          },
+          payment: {
+            status: 'PAID',
+            method: 'UPI',
+            time: new Date().toISOString(),
+            details: {
+              transactionId: paymentId || '',
+            },
+          },
+
+          products:
+            cartItems?.map((item: any) => ({
+              productId: item.productId || item.id,
+              quantity: item.quantity || 1,
+            })) || [],
+          totalOrderAmount: amount,
+          deliveryStatus: 'ON GOING',
+        };
+
+        console.log('Creating order with data:', orderData);
+
+        const response = await createOrder(orderData);
+
+        console.log('Order created successfully:', response);
+
+        const productIds = cartItems.map(
+          (item: any) => item.productId || item.id,
+        );
+        await DeleteFromCart(customer_id, productIds);
+        cartItems.forEach((item: any) => {
+          setProductQuantity(customer_id?.toString() ?? '', item.productId, 0);
+        });
+
+        showToast('Your Order is Created', 'success');
+        setOrderCreated(true);
+      } catch (error) {
+        console.error('Failed to create order or remove from cart:', error);
+        showToast('Failed to complete order process', 'error');
+      } finally {
+        setIsCreatingOrder(false);
+      }
+    };
+
+    handleCreateOrder();
+  }, []);
 
   const handleDownloadReceipt = () => {
     // Add download receipt functionality
@@ -52,6 +126,7 @@ const PaymentSuccessScreen = ({route}: any) => {
           <Text style={styles.title}>Payment Successful!</Text>
           <Text style={styles.subtitle}>
             Your transaction has been completed successfully
+            {isCreatingOrder && '\nProcessing your order...'}
           </Text>
 
           {/* Payment Details Card */}
@@ -94,6 +169,27 @@ const PaymentSuccessScreen = ({route}: any) => {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
+              </Text>
+            </View>
+
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Order Status</Text>
+              <Text
+                style={[
+                  styles.detailValue,
+                  {
+                    color: orderCreated
+                      ? '#4CAF50'
+                      : isCreatingOrder
+                      ? '#FF9800'
+                      : '#F44336',
+                  },
+                ]}>
+                {orderCreated
+                  ? 'Created'
+                  : isCreatingOrder
+                  ? 'Processing...'
+                  : 'Pending'}
               </Text>
             </View>
           </View>

@@ -25,6 +25,7 @@ export interface ProductCardProps {
     originalPrice: number;
     discountedPrice: number;
     discountPercentage: number;
+    Category: string;
     image: string;
   };
   onAddToCart?: (id: string, quantity: number) => void;
@@ -77,6 +78,8 @@ export interface Product {
   DiscountedPercentage: string;
   updated_by: number;
   archivedProduct: number;
+  Category: String;
+  subCategory: string;
   images: string[];
   quantity?: number;
 }
@@ -90,11 +93,11 @@ export interface UploadPickerHandle {
   openDocumentPicker: () => void;
 }
 export type OrderStatus =
-  | 'Completed'
-  | 'On Going'
-  | 'Clarification Needed'
-  | 'Shipped'
-  | 'Cancelled';
+  | 'COMPLETED'
+  | 'ON GOING'
+  | 'CLARIFICATION NEEDED'
+  | 'SHIPPED'
+  | 'CANCELLED';
 
 export interface Order {
   name: string;
