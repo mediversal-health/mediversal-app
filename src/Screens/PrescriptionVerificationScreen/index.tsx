@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-catch-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
@@ -30,6 +32,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Whatsapp from './assets/svgs/Whatsapp.svg';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
+import {useToastStore} from '../../store/toastStore';
 
 interface PrescriptionItem {
   sno: number;
@@ -46,6 +49,7 @@ const PrescriptionVerification = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const showToast = useToastStore(state => state.showToast);
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
@@ -54,6 +58,7 @@ const PrescriptionVerification = () => {
 
         if (!customer_id) {
           setError('Customer ID not found');
+
           setLoading(false);
           return;
         }
@@ -87,9 +92,11 @@ const PrescriptionVerification = () => {
           setPrescriptions(sortedPrescriptions);
         } else {
           setError('Failed to fetch prescriptions');
+          showToast('Failed to fetch prescriptions', 'error');
         }
       } catch (err) {
         setError('Failed to fetch prescriptions');
+        showToast('Failed to fetch prescriptions', 'error');
         console.error('Error fetching prescriptions:', err);
       } finally {
         setLoading(false);
@@ -97,14 +104,54 @@ const PrescriptionVerification = () => {
     };
 
     fetchPrescriptions();
-  }, [customer_id]);
+  }, []);
 
   const handleOpenPDF = (url: string) => {
-    Linking.openURL(url).catch(err =>
-      console.error('Failed to open PDF:', err),
+    Linking.openURL(url).catch(err => {
+      console.error('Failed to open PDF:', err);
+      showToast('Failed to open PDF', 'error');
+    });
+  };
+
+  const handleDeletePrescription = async (prescriptionId: string) => {
+    Alert.alert(
+      'Delete Prescription',
+      'Are you sure you want to delete this prescription?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const response = await deletePrescription(
+                String(customer_id),
+                prescriptionId,
+              );
+
+              if (response.status === 200) {
+                setPrescriptions(prev =>
+                  prev.filter(item => item.prescription_id !== prescriptionId),
+                );
+
+                showToast('Prescription deleted successfully', 'error');
+              } else {
+                showToast('Failed to delete prescription', 'error');
+              }
+            } catch (error) {
+              console.error('Error deleting prescription:', error);
+              // Use toast instead of Alert for error
+              showToast('Failed to delete prescription', 'error');
+            }
+          },
+        },
+      ],
     );
   };
-  console.log(prescriptions);
+
   const renderPrescriptionItem = (item: PrescriptionItem, index: number) => {
     return (
       <TouchableOpacity
@@ -137,7 +184,6 @@ const PrescriptionVerification = () => {
             position: 'absolute',
             top: 5,
             right: 5,
-
             padding: 5,
           }}
           onPress={() => handleDeletePrescription(item.prescription_id)}>
@@ -176,43 +222,7 @@ const PrescriptionVerification = () => {
       </SafeAreaView>
     );
   }
-  const handleDeletePrescription = async (prescriptionId: string) => {
-    Alert.alert(
-      'Delete Prescription',
-      'Are you sure you want to delete this prescription?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const response = await deletePrescription(
-                String(customer_id),
-                prescriptionId,
-              );
 
-              if (response.status === 200) {
-                setPrescriptions(prev =>
-                  prev.filter(item => item.prescription_id !== prescriptionId),
-                );
-                Alert.alert('Success', 'Prescription deleted successfully');
-              } else {
-                Alert.alert('Error', 'Failed to delete prescription');
-              }
-              // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
-            } catch (error) {
-              console.error('Error deleting prescription:', error);
-              Alert.alert('Error', 'Failed to delete prescription');
-            }
-          },
-        },
-      ],
-    );
-  };
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.headerWrapper}>
@@ -282,7 +292,11 @@ const PrescriptionVerification = () => {
             <Text style={styles.noDataText}>No prescriptions found</Text>
           </View>
         )}
-        <TouchableOpacity style={styles.uploadMoreButton}>
+        <TouchableOpacity
+          style={styles.uploadMoreButton}
+          onPress={() => {
+            navigation.navigate('UploadPrescription');
+          }}>
           <Text style={styles.uploadMoreText}>Upload more prescriptions</Text>
         </TouchableOpacity>
       </ScrollView>

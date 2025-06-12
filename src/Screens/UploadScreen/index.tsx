@@ -5,7 +5,6 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
@@ -26,6 +25,7 @@ import {useAuthStore} from '../../store/authStore';
 import {Product} from '../../types';
 import {useCartStore} from '../../store/cartStore';
 import useProductStore from '../../store/productsStore';
+import {useToastStore} from '../../store/toastStore';
 
 type UploadScreenRouteProp = RouteProp<RootStackParamList, 'UploadScreen'>;
 
@@ -38,7 +38,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
   // const [loading, setLoading] = useState<boolean>(false);
   // const [relatedProductsLoading, setRelatedProductsLoading] =
   //   useState<boolean>(false); // For related products
-
+  const showToast = useToastStore(state => state.showToast);
   const handleAddToCart = async () => {
     try {
       setAddingToCart(product?.productId?.toString() ?? null);
@@ -67,18 +67,13 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
           newQuantity,
         );
 
-      Alert.alert(
-        'Success',
-        `${
-          productData.ProductName || 'Product'
-        } has been added to your cart! (Quantity: ${newQuantity})`,
-        [{text: 'OK'}],
+      showToast(
+        `${product?.ProductName || 'Product'} added to cart!`,
+        'success',
       );
     } catch (error) {
       console.error('Error adding product to cart:', error);
-      Alert.alert('Error', 'Failed to add product to cart. Please try again.', [
-        {text: 'OK'},
-      ]);
+      showToast('Failed to add product to cart', 'error');
     } finally {
       setAddingToCart(null);
     }
@@ -156,8 +151,8 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               name={product?.ProductName}
               packInfo={`Strip of 10 ${product?.quantity} Tablets`}
               saltComposition={product?.Composition}
-              currentPrice={`₹ ${product?.CostPrice}`}
-              originalPrice={product?.SellingPrice}
+              currentPrice={`₹ ${product?.SellingPrice}`}
+              originalPrice={product?.CostPrice}
               discount={product?.DiscountedPercentage + '% Off'}
               deliveryTime="Get by 9pm, Tomorrow"
               onAddToCart={handleAddToCart}

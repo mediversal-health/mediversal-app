@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,6 +7,8 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
@@ -24,12 +26,62 @@ import PriceCard from '../../components/cards/PriceCard';
 import OrderNowCard from '../../components/cards/OrderCard';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useToastStore} from '../../store/toastStore';
+import messaging from '@react-native-firebase/messaging';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const showToast = useToastStore(state => state.showToast);
+  useEffect(() => {
+    const setupNotifications = async () => {
+      try {
+        await requestNotificationPermissions();
+
+        const token = await messaging().getToken();
+        console.log('FCM Token:', token);
+
+        showToast('Welcome to Mediversal!', 'success');
+
+        // const unsubscribe = messaging().onMessage(async remoteMessage => {
+        //   Alert.alert(
+        //     'New Message',
+        //     remoteMessage.notification?.body || 'You have a new notification',
+        //   );
+        // });
+
+        // return unsubscribe;
+      } catch (error) {
+        console.error('Notification setup error:', error);
+        showToast('Failed to setup notifications', 'error');
+      }
+    };
+
+    setupNotifications();
+  }, []);
+
+  const requestNotificationPermissions = async () => {
+    if (Platform.OS === 'android') {
+      if (Platform.Version >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+
+      return true;
+    }
+
+    const authStatus = await messaging().requestPermission();
+    return (
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Render the ToastComponent at the top of your screen */}
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
 
@@ -47,6 +99,7 @@ const HomeScreen = () => {
           </View>
         </View>
 
+        {/* Rest of your existing HomeScreen code... */}
         <ScrollView
           horizontal
           style={styles.horizontalScroll}

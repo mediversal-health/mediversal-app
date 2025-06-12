@@ -163,13 +163,24 @@ const CartPage = () => {
         name: 'Mediversal APP',
         theme: {color: '#0088B1'},
       };
-
+      const cartItems = apiProductDetails.map(item => ({
+        productId: item.productId,
+        name: item.ProductName,
+        price: item.SellingPrice,
+        quantity: getProductQuantity(
+          customer_id?.toString() ?? '',
+          item.productId,
+        ),
+        imageUrl: item.imageUrl,
+      }));
       const data = await RazorpayCheckout.open(options);
 
       if (data.razorpay_payment_id) {
         navigation.navigate('PaymentSuccessScreen', {
           paymentId: data.razorpay_payment_id,
           amount: cartTotal - couponDiscount + 5 + 40,
+          cartItems: cartItems,
+          address: formattedAddress,
         });
       }
     } catch (error: any) {

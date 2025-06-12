@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     height: 230,
-    width: 130,
+    // width: 130,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,

@@ -14,6 +14,7 @@ import {DeleteFromCart} from '../../../Services/cart';
 import {useAuthStore} from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
 import {useCouponStore} from '../../../store/couponStore';
+import {useToastStore} from '../../../store/toastStore';
 
 type CartItemCardProps = {
   productId: number;
@@ -42,7 +43,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     state.getProductQuantity(customer_id?.toString() ?? '', productId),
   );
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
-
+  const showToast = useToastStore(state => state.showToast);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const {getOriginalProduct} = useProductStore();
@@ -101,6 +102,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       await DeleteFromCart(customer_id, [productId]);
       setProductQuantity(customer_id?.toString() ?? '', productId, 0);
       setSelectedCoupon(String(customer_id), null);
+      showToast(`${name} removed from cart`, 'error', 3000, true);
       if (onRemove) {
         onRemove();
       }
