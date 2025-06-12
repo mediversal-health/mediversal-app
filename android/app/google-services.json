@@ -1,8 +1,13 @@
 {
+  "project_info": {
+    "project_number": "187612393521",
+    "project_id": "mediversal-notification",
+    "storage_bucket": "mediversal-notification.firebasestorage.app"
+  },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:375064255052:android:d6a0d953bb64702eca72e9",
+        "mobilesdk_app_id": "1:187612393521:android:9e3dca39e27a468ad3a510",
         "android_client_info": {
           "package_name": "com.mediversal_app"
         }
@@ -10,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA6AE5EPR8H__Wifa_MAXndP2KGl5DhWHY"
+          "current_key": "AIzaSyAn-vcJ_ZRHo6y4C_TVdkRL3BPYdW6GaAw"
         }
       ],
       "services": {
