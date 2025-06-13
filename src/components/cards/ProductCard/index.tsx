@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,15 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {Clock, Minus, Plus} from 'lucide-react-native';
+import io from 'socket.io-client';
 import styles from './index.styles';
 import {ProductCardProps} from '../../../types';
 import {useCartStore} from '../../../store/cartStore';
-import {DeleteFromCart} from '../../../Services/cart'; // Import your delete function
+import {DeleteFromCart} from '../../../Services/cart';
 import {useAuthStore} from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
+
+const SOCKET_URL = 'http://3.110.218.39:3001';
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
@@ -34,9 +37,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const {getOriginalProduct} = useProductStore();
   const originalProduct = getOriginalProduct(productId.toString());
-  const availableInventory = originalProduct?.StockAvailableInInventory || 0;
+  const [availableInventory, setAvailableInventory] = useState(
+    originalProduct?.StockAvailableInInventory || 0,
+  );
   const isOutOfStock = availableInventory === 0;
   const canIncreaseQuantity = quantity < availableInventory;
+
+  useEffect(() => {
+    const socket = io(SOCKET_URL);
+
+    socket.on('stockUpdate', (data: {productId: number; stock: number}) => {
+      if (data.productId === productId) {
+        setAvailableInventory(data.stock);
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [productId]);
+
   const handleAddItem = async () => {
     if (isLoading) {
       return;
@@ -60,7 +80,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     if (isLoading || !canIncreaseQuantity) {
       return;
     }
-
     setProductQuantity(customer_id?.toString() ?? '', productId, quantity + 1);
   };
 
@@ -73,18 +92,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
     try {
       setIsLoading(true);
-
       if (newQuantity === 0) {
         const res = await DeleteFromCart(customer_id?.toString() ?? '', [
           productId,
         ]);
         console.log('deleted', res);
       }
-
       setProductQuantity(customer_id?.toString() ?? '', productId, newQuantity);
     } catch (error) {
       console.error('Delete from cart error:', error);
-
       setProductQuantity(customer_id?.toString() ?? '', productId, quantity);
     } finally {
       setIsLoading(false);
@@ -118,7 +134,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </Text>
 
         <View style={styles.quantityContainer}>
-          <Text style={styles.quantityText}>{product.quantity}</Text>
+          <Text style={styles.quantityText}>
+            Available:{availableInventory}
+          </Text>
         </View>
 
         <View style={styles.deliveryContainer}>
@@ -126,12 +144,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Text style={styles.deliveryText}>{product.delivery}</Text>
         </View>
 
-        {/* <View style={styles.discountContainer}>
-          <Text style={styles.originalPrice}>₹{product.discountedPrice}</Text>
-          <Text style={styles.discountPercentage}>
-            {product.discountPercentage}% off
-          </Text>
-        </View> */}
         <View style={styles.discountContainer}>
           <Text style={styles.originalPrice}>₹{product.discountedPrice}</Text>
           <Text style={styles.discountPercentage}>
@@ -161,6 +173,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </TouchableOpacity>
 
           <Text style={styles.counterText}>{quantity}</Text>
+
           <TouchableOpacity
             style={styles.counterButton}
             onPress={handleIncrement}

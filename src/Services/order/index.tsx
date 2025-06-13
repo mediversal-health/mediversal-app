@@ -1,7 +1,5 @@
 import axios from 'axios';
-import {API_URL} from '@env';
-
-const IP_ADDR = API_URL;
+const IP_ADDR = process.env.API_URL;
 
 interface Customer {
   customerId: number;

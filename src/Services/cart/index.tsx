@@ -1,8 +1,7 @@
 import axios from 'axios';
-import {API_URL} from '@env';
+const IP_ADDR = process.env.API_URL;
 import {Product} from '../../types';
 
-const IP_ADDR = API_URL;
 export const getCartItems = async (customerId: any) => {
   try {
     const response = await axios.get(`${IP_ADDR}/api/cart/${customerId}`);

@@ -271,6 +271,7 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginHorizontal: Platform.OS === 'android' ? 0 : 10,
+                justifyContent: 'space-between',
               }}>
               <CategoryCard
                 SvgImage={Sneezing}
@@ -301,6 +302,7 @@ const PharmacyScreen = () => {
                 marginTop: 10,
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'android' ? 0 : 10,
+                justifyContent: 'space-between',
               }}>
               <CategoryCard
                 SvgImage={Dehydration}

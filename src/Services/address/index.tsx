@@ -1,8 +1,8 @@
 import axios from 'axios';
-import {API_URL} from '@env';
+
 import {AddressBookTypes} from '../../types';
 
-const IP_ADDR = API_URL;
+const IP_ADDR = process.env.API_URL;
 
 export const saveCustomerAddress = async (
   customerId: string,
