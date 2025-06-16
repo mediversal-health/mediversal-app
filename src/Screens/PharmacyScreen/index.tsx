@@ -53,6 +53,7 @@ import {Fonts} from '../../styles/fonts';
 import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
+import {useCartStore} from '../../store/cartStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -62,7 +63,7 @@ const PharmacyScreen = () => {
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
-
+  const {setUserCart} = useCartStore.getState();
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -114,6 +115,9 @@ const PharmacyScreen = () => {
 
       const cartResponse = await addToCart(customer_id, productData);
       console.log('Product added to cart successfully:', cartResponse);
+      if (cartResponse.success && cartResponse.cart) {
+        setUserCart(customer_id?.toString() ?? '', cartResponse.cart);
+      }
 
       showToast(
         `${productData.name || 'Product'} added to cart!`,

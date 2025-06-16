@@ -19,6 +19,7 @@ import PrescribedScreen from '../Screens/PrescribedScreen';
 import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
 import Layout from '../layout';
 import PaymentSuccessScreen from '../components/payments/PaymentSuccessScreen';
+import ProfileScreen from '../Screens/ProfileScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -65,6 +66,7 @@ export type RootStackParamList = {
       imageUrl: string;
     }>;
   };
+  ProfileScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -111,6 +113,7 @@ const AppNavigator = () => {
               name="PaymentSuccessScreen"
               component={PaymentSuccessScreen}
             />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           </>
         ) : (
           <>

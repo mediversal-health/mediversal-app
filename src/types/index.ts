@@ -139,3 +139,65 @@ export interface Coupon {
   created_at: string;
   updated_at: string;
 }
+export interface CartItem {
+  GST: string;
+  SKU: string;
+  Type: string;
+  Coupons: string;
+  Category: string | null;
+  HSN_Code: string;
+  quantity: number;
+  ColdChain: string;
+  CostPrice: string;
+  productId: number;
+  updated_by: number;
+  Composition: string;
+  ProductName: string;
+  Subcategory: string | null;
+  Substitutes: string;
+  SellingPrice: string;
+  SafetyAdvices: string;
+  DiscountedPrice: string;
+  SimilarProducts: string;
+  archivedProduct: number;
+  InventoryUpdated: string;
+  ManufacturerName: string;
+  InventoryUpdatedBy: number;
+  ProductInformation: string;
+  StorageInstructions: string;
+  DiscountedPercentage: string;
+  PrescriptionRequired: string;
+  StockAvailableInInventory: number;
+}
+
+interface Customer {
+  customerId: number;
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
+
+interface PaymentDetails {
+  transactionId: string;
+}
+
+interface Payment {
+  status: string;
+  method: string;
+  time: string;
+  details: PaymentDetails;
+}
+
+interface ProductItem {
+  productId: number;
+  quantity: number;
+}
+
+export interface OrderData {
+  customer: Customer;
+  payment: Payment;
+  products: ProductItem[];
+  totalOrderAmount: number;
+  deliveryStatus: String;
+}

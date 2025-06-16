@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const productId = parseInt(product.id, 10);
   const customer_id = useAuthStore(state => state.customer_id);
-
+  const {removeFromCart} = useCartStore.getState();
   const quantity = useCartStore(state =>
     state.getProductQuantity(customer_id?.toString() ?? '', productId),
   );
@@ -96,6 +96,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         const res = await DeleteFromCart(customer_id?.toString() ?? '', [
           productId,
         ]);
+        removeFromCart(customer_id?.toString() ?? '', productId);
         console.log('deleted', res);
       }
       setProductQuantity(customer_id?.toString() ?? '', productId, newQuantity);

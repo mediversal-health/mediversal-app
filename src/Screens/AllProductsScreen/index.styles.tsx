@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   categoryText: {
-    fontSize: 10,
+    fontSize: 8,
     color: '#333',
     textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,

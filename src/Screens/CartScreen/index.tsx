@@ -19,9 +19,7 @@ import {
   ChevronRight,
   Truck,
   Wallet,
-  Search,
   ChevronLeft,
-  ShoppingBag,
 } from 'lucide-react-native';
 
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
@@ -39,6 +37,9 @@ import {getCartItems} from '../../Services/cart';
 import {useCouponStore} from '../../store/couponStore';
 import {useCartStore} from '../../store/cartStore';
 import RazorpayCheckout from 'react-native-razorpay';
+import useProductStore from '../../store/productsStore';
+import {getProducts} from '../../Services/pharmacy';
+import {useToastStore} from '../../store/toastStore';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
@@ -61,29 +62,63 @@ const CartPage = () => {
   const [error, setError] = useState<string | null>(null);
   const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
   const selectedCoupon = getSelectedCoupon(String(customer_id));
-
+  const {originalProducts, setProducts} = useProductStore();
+  const [hasOutOfStockItems, setHasOutOfStockItems] = useState(false);
+  const showToast = useToastStore(state => state.showToast);
   const handleCouponRemove = () => {
     setSelectedCoupon(String(customer_id), null);
   };
-  const fetchProductDetails = useCallback(async () => {
+  const checkOutOfStockItems = (items: any[]) => {
+    return items.some((item: any) => item.StockAvailableInInventory === 0);
+  };
+  const fetchProducts = useCallback(() => {
+    getProducts()
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  }, [setProducts]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  const fetchProductDetails = async () => {
     try {
       setLoading(true);
-
       const apiItems = await getCartItems(customer_id);
-      setApiProductDetails(Array.isArray(apiItems) ? apiItems : []);
+      console.log(apiItems);
+      const mergedItems = apiItems.map((cartItem: any) => {
+        const matchedProduct = originalProducts.find(
+          (prod: any) => prod.productId === cartItem.productId,
+        );
+        console.log(matchedProduct?.ProductName);
+        return {
+          ...cartItem,
+          StockAvailableInInventory:
+            matchedProduct?.StockAvailableInInventory ?? 0,
+        };
+      });
+      console.log('Merged Items:', mergedItems);
+
+      setApiProductDetails(mergedItems);
+      setHasOutOfStockItems(checkOutOfStockItems(mergedItems));
+
+      console.log(customer_id);
     } catch (err) {
       setError('Failed to load product details. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [customer_id]);
-
+  };
+  console.log('hasOutOfStockItems', hasOutOfStockItems);
   useEffect(() => {
     if (customer_id) {
       fetchProductDetails();
     }
-  }, [customer_id, fetchProductDetails]);
+  }, []);
 
   console.log('API product details:', apiProductDetails);
 
@@ -129,7 +164,7 @@ const CartPage = () => {
       customer_id?.toString() ?? '',
       item.productId,
     );
-    console.log('ABCD', qty);
+    // console.log('ABCD', qty);
     return total + item.SellingPrice * qty;
   }, 0);
 
@@ -144,9 +179,20 @@ const CartPage = () => {
   }
 
   const [selectedRadio, setSelectedRadio] = useState(false);
+
   const handleCheckout = async () => {
     if (!RAZORPAY_KEY) {
       Alert.alert('Payment Error', 'Razorpay key is missing.');
+      return;
+    }
+
+    if (hasOutOfStockItems) {
+      showToast(
+        'Remove out-of-stock items from your cart before proceeding.',
+        'warning',
+        3000,
+        true,
+      );
       return;
     }
 
@@ -239,14 +285,14 @@ const CartPage = () => {
             onPress={() => navigation.goBack()}>
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
-          <View style={styles.headerRightIcons}>
+          {/* <View style={styles.headerRightIcons}>
             <TouchableOpacity style={styles.iconSpacing}>
               <Search size={20} color="#161D1F" />
             </TouchableOpacity>
             <TouchableOpacity>
               <ShoppingBag size={20} color="#161D1F" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
       <SafeAreaView style={styles.container}>
@@ -358,7 +404,12 @@ const CartPage = () => {
                 name={item.ProductName}
                 mrp={item.SellingPrice}
                 price={item.CostPrice}
-                onRemove={fetchProductDetails}
+                onRemove={async () => {
+                  // First update the product details
+                  await fetchProductDetails();
+                  // The fetchProductDetails function should automatically update hasOutOfStockItems
+                  // But let's make sure by calling it explicitly after the state update
+                }}
                 onQuantityChange={handleQuantityChange}
               />
             ))

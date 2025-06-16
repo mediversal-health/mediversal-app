@@ -52,10 +52,10 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   const availableInventory = originalProduct?.StockAvailableInInventory || 0;
   const isOutOfStock = availableInventory === 0;
   const canIncreaseQuantity = quantity < availableInventory;
-
-  console.log('Available Inventory:', availableInventory);
-  console.log('Current Quantity:', quantity);
-  console.log('Can Increase:', canIncreaseQuantity);
+  const {removeFromCart} = useCartStore.getState();
+  // console.log('Available Inventory:', availableInventory);
+  // console.log('Current Quantity:', quantity);
+  // console.log('Can Increase:', canIncreaseQuantity);
 
   const increaseQty = async () => {
     if (isLoading || !canIncreaseQuantity) {
@@ -102,6 +102,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       await DeleteFromCart(customer_id, [productId]);
       setProductQuantity(customer_id?.toString() ?? '', productId, 0);
       setSelectedCoupon(String(customer_id), null);
+      removeFromCart(customer_id?.toString() ?? '', productId);
       showToast(`${name} removed from cart`, 'error', 3000, true);
       if (onRemove) {
         onRemove();

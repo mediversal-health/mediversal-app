@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Bell, ChevronDown, ShoppingBag} from 'lucide-react-native';
+import {Bell, ChevronDown} from 'lucide-react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
@@ -21,6 +21,8 @@ import {Fonts} from './styles/fonts';
 import {getProducts} from './Services/pharmacy';
 import useProductStore from './store/productsStore';
 
+import CartIconWithBadge from './components/ui/CartIconWithBadge';
+
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -41,6 +43,7 @@ const Layout = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
       <StatusBar
@@ -58,8 +61,6 @@ const Layout = () => {
               paddingHorizontal: 20,
               paddingBottom: 0,
               marginBottom: 10,
-              // paddingTop:
-              //   Platform.OS === 'ios' ? 40 : StatusBar.currentHeight || 20,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
@@ -105,10 +106,7 @@ const Layout = () => {
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
                     <Bell size={20} />
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('CartPage', {})}>
-                      <ShoppingBag size={20} />
-                    </TouchableOpacity>
+                    <CartIconWithBadge />
                   </View>
                 </View>
               </View>
@@ -137,7 +135,6 @@ const Layout = () => {
                   <Text
                     style={{
                       fontSize: 12,
-
                       textDecorationLine: 'underline',
                       fontFamily: Fonts.JakartaBold,
                     }}>
@@ -166,16 +163,14 @@ const Layout = () => {
               alignItems: 'center',
               paddingHorizontal: 20,
               paddingBottom: 10,
+              marginTop: 20,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
               <Text style={{fontSize: 16, fontFamily: Fonts.JakartaSemiBold}}>
                 Pharmacy
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('CartPage', {})}>
-              <ShoppingBag size={20} />
-            </TouchableOpacity>
+            <CartIconWithBadge />
           </View>
           <View style={{paddingHorizontal: 20, marginBottom: 5}}>
             <SearchBar />
