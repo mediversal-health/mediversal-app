@@ -39,7 +39,12 @@ import Burn from './assests/svgs/Burn.svg';
 import BlockedNose from './assests/svgs/Burn.svg';
 import JointPain from './assests/svgs/Pain in joints.svg';
 import CircleCard from '../../components/cards/CircularCards';
-import SunDrop from './assests/svgs/Card 1.svg';
+import Cipla from './assests/svgs/cipla-logo.svg';
+import SunPharma from './assests/svgs/sun-pharma-logo.svg';
+import Abbott from './assests/svgs/Abbott_idDajMz5s8_0.svg';
+import Himalaya from './assests/svgs/Himalaya Wellness_idvGyWOzTG_1.svg';
+import Dabur from './assests/svgs/Dabur-Logo.wine.svg';
+import Mankind from './assests/svgs/MANKIND.NS_BIG.svg';
 import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -53,6 +58,7 @@ import {Fonts} from '../../styles/fonts';
 import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
+import {useCartStore} from '../../store/cartStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -62,7 +68,7 @@ const PharmacyScreen = () => {
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
-
+  const {setUserCart} = useCartStore.getState();
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -114,6 +120,9 @@ const PharmacyScreen = () => {
 
       const cartResponse = await addToCart(customer_id, productData);
       console.log('Product added to cart successfully:', cartResponse);
+      if (cartResponse.success && cartResponse.cart) {
+        setUserCart(customer_id?.toString() ?? '', cartResponse.cart);
+      }
 
       showToast(
         `${productData.name || 'Product'} added to cart!`,
@@ -271,6 +280,7 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginHorizontal: Platform.OS === 'android' ? 0 : 10,
+                justifyContent: 'space-between',
               }}>
               <CategoryCard
                 SvgImage={Sneezing}
@@ -301,6 +311,7 @@ const PharmacyScreen = () => {
                 marginTop: 10,
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'android' ? 0 : 10,
+                justifyContent: 'space-between',
               }}>
               <CategoryCard
                 SvgImage={Dehydration}
@@ -364,9 +375,9 @@ const PharmacyScreen = () => {
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={Cipla} size={110} />
+              <CircleCard logo={SunPharma} size={110} />
+              <CircleCard logo={Abbott} size={110} />
             </View>
             <View
               style={{
@@ -377,9 +388,9 @@ const PharmacyScreen = () => {
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={Himalaya} size={110} />
+              <CircleCard logo={Dabur} size={110} />
+              <CircleCard logo={Mankind} size={110} />
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('AllProducts')}>

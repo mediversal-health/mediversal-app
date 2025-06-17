@@ -15,7 +15,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {styles} from './PaymentSuccessScreen.styles';
 import {useAuthStore} from '../../store/authStore';
 import {createOrder} from '../../Services/order';
-import {DeleteFromCart} from '../../Services/cart'; // Import the DeleteFromCart function
+import {DeleteFromCart} from '../../Services/cart';
 
 import {useCartStore} from '../../store/cartStore';
 import {useToastStore} from '../../store/toastStore';
@@ -26,7 +26,7 @@ const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const {customer_id, email, phoneNumber} = useAuthStore();
   const {paymentId, amount, cartItems, address} = route.params;
-
+  const {removeFromCart} = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderCreated, setOrderCreated] = useState(false);
   const showToast = useToastStore(state => state.showToast);
@@ -49,7 +49,7 @@ const PaymentSuccessScreen = ({route}: any) => {
             email: email || '',
           },
           payment: {
-            status: 'PAID',
+            status: 'Paid',
             method: 'UPI',
             time: new Date().toISOString(),
             details: {
@@ -76,6 +76,10 @@ const PaymentSuccessScreen = ({route}: any) => {
           (item: any) => item.productId || item.id,
         );
         await DeleteFromCart(customer_id, productIds);
+        productIds.map((productId: number) => {
+          removeFromCart(customer_id?.toString() ?? '', productId);
+        });
+
         cartItems.forEach((item: any) => {
           setProductQuantity(customer_id?.toString() ?? '', item.productId, 0);
         });

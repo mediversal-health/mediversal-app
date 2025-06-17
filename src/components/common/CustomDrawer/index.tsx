@@ -31,7 +31,7 @@ const {width} = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3;
 
 const CustomDrawer = ({onClose}: {onClose: () => void}) => {
-  const clearAuthentication = useAuthStore(state => state.clearAuthentication);
+  // const clearAuthentication = useAuthStore(state => state.clearAuthentication);
   const {email, phoneNumber} = useAuthStore();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const translateX = useSharedValue(-width);
@@ -42,10 +42,10 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
       transform: [{translateX: translateX.value}],
     };
   });
-  const handleLogout = () => {
-    clearAuthentication();
-    onClose();
-  };
+  // const handleLogout = () => {
+  //   clearAuthentication();
+  //   onClose();
+  // };
 
   const handleClose = () => {
     translateX.value = withTiming(
@@ -114,12 +114,14 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                   <Text style={styles.greeting}>
                     {`${email || phoneNumber || 'Guest'}`}
                   </Text>
-                  <View style={styles.profileProgress}>
+                  <TouchableOpacity
+                    style={styles.profileProgress}
+                    onPress={() => navigation.navigate('ProfileScreen')}>
                     <Text style={styles.completeText}>
                       Complete your profile (29% Done)
                     </Text>
                     <ChevronRight size={20} color={'#0088B1'} />
-                  </View>
+                  </TouchableOpacity>
                   <Text style={styles.percentComplete}>29% Completed</Text>
                 </View>
               </View>
@@ -189,12 +191,12 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OtherOptionsItem title="About Mediversal App" />
             <OtherOptionsItem title="Terms & Conditions" />
             <OtherOptionsItem title="Privacy Policy" />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={handleLogout}
               style={styles.logoutButton}
               activeOpacity={0.7}>
               <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         </Animated.View>
       </View>

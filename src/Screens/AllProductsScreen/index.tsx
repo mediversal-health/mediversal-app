@@ -4,7 +4,6 @@ import React, {useState} from 'react';
 import {
   ChevronLeft,
   Filter,
-  ShoppingBag,
   ChevronDown,
   Lock,
   ArrowUpDown,
@@ -22,6 +21,8 @@ import {getProductsById} from '../../Services/pharmacy';
 import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
+import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
+import {useCartStore} from '../../store/cartStore';
 
 interface Category {
   id: string;
@@ -39,7 +40,7 @@ const AllProductsScreen: React.FC = () => {
   >(null);
   const [sortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
-
+  const {setUserCart} = useCartStore.getState();
   const {cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
@@ -65,7 +66,9 @@ const AllProductsScreen: React.FC = () => {
 
       const cartResponse = await addToCart(customer_id, productData);
       console.log('Product added to cart successfully:', cartResponse);
-
+      if (cartResponse.success && cartResponse.cart) {
+        setUserCart(customer_id?.toString() ?? '', cartResponse.cart);
+      }
       showToast(
         `${productData.name || 'Product'} added to cart!`,
         'success',
@@ -90,27 +93,62 @@ const AllProductsScreen: React.FC = () => {
     },
     {
       id: '2',
-      name: 'Cold & Cough',
+      name: 'OTC',
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
     {
       id: '3',
-      name: 'Acidity',
+      name: 'PRESCRIPTION (Rx)',
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
     {
       id: '4',
-      name: 'Muscle Cramps',
+      name: 'VITAMINS, MINERALS & DIETARY SUPPLEMENTS',
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
     {
       id: '5',
-      name: 'Dehydration',
+      name: 'MEDICAL DEVICES',
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
     {
       id: '6',
-      name: 'Burn Care',
+      name: 'SURGICAL, HOSPITAL & INFECTION CONTROL',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '7',
+      name: 'VACCINES ',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '8',
+      name: 'PERSONAL CARE & HYGIENE',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '9',
+      name: 'SEXUAL & REPRODUCTIVE HEALTH',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '10',
+      name: 'MOTHER, BABY & CHILD',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '11',
+      name: 'SENIOR & ASSISTED LIVING',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '12',
+      name: 'SENIOR & ASSISTED LIVING',
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+    },
+    {
+      id: '13',
+      name: 'SEASONAL, HOME & EMERGENCY ESSENTIALS',
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
   ];
@@ -180,9 +218,7 @@ const AllProductsScreen: React.FC = () => {
             </TouchableOpacity>
             <Text style={styles.headerText}>All Products</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('CartPage', {})}>
-            <ShoppingBag size={20} />
-          </TouchableOpacity>
+          <CartIconWithBadge />
         </View>
 
         <View style={styles.mainContent}>

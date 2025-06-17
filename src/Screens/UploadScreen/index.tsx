@@ -10,7 +10,7 @@ import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
 import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
-import {Clock, Search, ChevronLeft, ShoppingBag} from 'lucide-react-native';
+import {Clock, Search, ChevronLeft} from 'lucide-react-native';
 import {styles} from './index.style';
 import ProductCard from '../../components/cards/ProductCard';
 
@@ -26,6 +26,7 @@ import {Product} from '../../types';
 import {useCartStore} from '../../store/cartStore';
 import useProductStore from '../../store/productsStore';
 import {useToastStore} from '../../store/toastStore';
+import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
 
 type UploadScreenRouteProp = RouteProp<RootStackParamList, 'UploadScreen'>;
 
@@ -35,6 +36,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
   const {cardProducts} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
+  const {setUserCart} = useCartStore.getState();
   // const [loading, setLoading] = useState<boolean>(false);
   // const [relatedProductsLoading, setRelatedProductsLoading] =
   //   useState<boolean>(false); // For related products
@@ -57,7 +59,9 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
       };
 
       const cartResponse = await addToCart(customer_id, productData as Product);
-      console.log('Product added to cart successfully:', cartResponse);
+      if (cartResponse.success && cartResponse.cart) {
+        setUserCart(customer_id?.toString() ?? '', cartResponse.cart);
+      }
 
       useCartStore
         .getState()
@@ -131,10 +135,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
             <TouchableOpacity style={styles.iconSpacing}>
               <Search size={20} color="#161D1F" />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('CartPage', {})}>
-              <ShoppingBag size={20} color="#161D1F" />
-            </TouchableOpacity>
+            <CartIconWithBadge />
           </View>
         </View>
       </SafeAreaView>
@@ -208,9 +209,9 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
             <Clock size={18} color="#0088B1" />
             <RNText style={styles.reminderButtonText}>Set Reminder</RNText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buyButton}>
+          {/* <TouchableOpacity style={styles.buyButton}>
             <RNText style={styles.buyButtonText}>Buy Now</RNText>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </SafeAreaView>
     </>
