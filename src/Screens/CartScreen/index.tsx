@@ -155,10 +155,9 @@ const CartPage = () => {
   const [version, setVersion] = useState(0);
   useEffect(() => {}, [version]);
   const handleQuantityChange = () => {
-    // Recalculate cartTotal on any quantity change
-    setVersion(prev => prev + 1); // Triggers re-render
+    setVersion(prev => prev + 1);
   };
-  // Calculate cartTotal and couponDiscount for use in JSX
+
   const cartTotal = apiProductDetails.reduce((total, item) => {
     const qty = getProductQuantity(
       customer_id?.toString() ?? '',
@@ -227,6 +226,11 @@ const CartPage = () => {
           amount: cartTotal - couponDiscount + 5 + 40,
           cartItems: cartItems,
           address: formattedAddress,
+          pincode: formData?.PinCode ?? 0,
+          area: formData?.Area_details ?? '',
+          city: formData?.City,
+          State: formData?.State ?? '',
+          PhoneNumber: Number(formData?.PhoneNumber) || 0,
         });
       }
     } catch (error: any) {

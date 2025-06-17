@@ -65,6 +65,11 @@ export type RootStackParamList = {
       quantity: number;
       imageUrl: string;
     }>;
+    pincode: number;
+    area: string;
+    city: string | undefined;
+    State: string;
+    PhoneNumber: number;
   };
   ProfileScreen: undefined;
 };

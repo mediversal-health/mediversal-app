@@ -39,7 +39,12 @@ import Burn from './assests/svgs/Burn.svg';
 import BlockedNose from './assests/svgs/Burn.svg';
 import JointPain from './assests/svgs/Pain in joints.svg';
 import CircleCard from '../../components/cards/CircularCards';
-import SunDrop from './assests/svgs/Card 1.svg';
+import Cipla from './assests/svgs/cipla-logo.svg';
+import SunPharma from './assests/svgs/sun-pharma-logo.svg';
+import Abbott from './assests/svgs/Abbott_idDajMz5s8_0.svg';
+import Himalaya from './assests/svgs/Himalaya Wellness_idvGyWOzTG_1.svg';
+import Dabur from './assests/svgs/Dabur-Logo.wine.svg';
+import Mankind from './assests/svgs/MANKIND.NS_BIG.svg';
 import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -370,9 +375,9 @@ const PharmacyScreen = () => {
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={Cipla} size={110} />
+              <CircleCard logo={SunPharma} size={110} />
+              <CircleCard logo={Abbott} size={110} />
             </View>
             <View
               style={{
@@ -383,9 +388,9 @@ const PharmacyScreen = () => {
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
-              <CircleCard logo={SunDrop} size={110} />
+              <CircleCard logo={Himalaya} size={110} />
+              <CircleCard logo={Dabur} size={110} />
+              <CircleCard logo={Mankind} size={110} />
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('AllProducts')}>

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
   },
   quantityContainer: {
-    marginTop: 4,
+    marginTop: 2,
   },
   quantityText: {
     fontSize: 8,
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
   deliveryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: 2,
   },
   deliveryText: {
-    fontSize: 10,
+    fontSize: 8,
     color: '#34C759',
     marginLeft: 4,
     fontFamily: Fonts.JakartaRegular,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
   },
   currentPrice: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#000',
     fontFamily: Fonts.JakartaRegular,

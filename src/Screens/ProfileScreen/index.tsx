@@ -17,9 +17,10 @@ import {Fonts} from '../../styles/fonts';
 import {useAuthStore} from '../../store/authStore';
 import {RootStackParamList} from '../../navigation';
 import styles from './index.styles';
+import {useScreenStore} from '../../store/screenSelector';
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
+  const currentScreen = useScreenStore(state => state.currentScreen);
   const clearAuthentication = useAuthStore(state => state.clearAuthentication);
   const handleLogout = () => {
     clearAuthentication();
@@ -27,34 +28,33 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}>
-            <ChevronLeft size={24} color="#0088B1" />
-          </TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: Fonts.JakartaSemiBold,
-              color: '#111827',
-            }}>
-            Profile Page
-          </Text>
-        </View>
-
+        {currentScreen !== 'Profile' && (
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}>
+              <ChevronLeft size={24} color="#0088B1" />
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: Fonts.JakartaSemiBold,
+                color: '#111827',
+              }}>
+              Profile Page
+            </Text>
+          </View>
+        )}
         <View style={styles.profileCard}>
           <View style={styles.profileImageContainer}>
             <Image
-              source={{
-                uri: 'https://media.licdn.com/dms/image/v2/D4D35AQFKFZJBKim9aQ/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1677240001755?e=1750676400&v=beta&t=EfkLAdmamA6Tr7bTIjtaKH7-Xc2SWiRpTJ34fJgLuIw',
-              }}
+              source={require('../../assests/pngs/MainAvatar.png')}
               style={styles.profileImage}
             />
           </View>
 
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>Firoz Ansari</Text>
+            <Text style={styles.profileName}>Guest User</Text>
             <Text style={styles.joinedDate}>Joined: March 8, 2025</Text>
           </View>
 
@@ -66,7 +66,7 @@ export default function ProfileScreen() {
                 <Mail size={20} color="#666" />
                 <Text style={styles.infoLabel}>Email</Text>
               </View>
-              <Text style={styles.infoValue}>firoz.ansari@mediversal.in</Text>
+              <Text style={styles.infoValue}>Guest@mediversal.in</Text>
             </View>
 
             <View style={styles.infoItem}>

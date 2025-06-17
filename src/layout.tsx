@@ -176,6 +176,8 @@ const Layout = () => {
             <SearchBar />
           </View>
         </>
+      ) : currentScreen === 'Profile' ? (
+        <View />
       ) : null}
       <BottomTabNavigator />
       {drawerVisible && (

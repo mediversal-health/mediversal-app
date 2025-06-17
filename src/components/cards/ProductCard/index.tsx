@@ -141,7 +141,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </View>
 
         <View style={styles.deliveryContainer}>
-          <Clock size={12} color="#666" />
+          <Clock size={8} color="#666" />
           <Text style={styles.deliveryText}>{product.delivery}</Text>
         </View>
 

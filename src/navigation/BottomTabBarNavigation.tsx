@@ -10,6 +10,7 @@ import Homecare from './assests/svgs/homecare.svg';
 import PharmacyScreen from '../Screens/PharmacyScreen';
 import {useScreenStore} from '../store/screenSelector';
 import {Fonts} from '../styles/fonts';
+import ProfileScreen from '../Screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -90,7 +91,13 @@ export default function BottomTabNavigator() {
       />
       <Tab.Screen name="Menu" component={EmptyScreen} />
       <Tab.Screen name="Homecare" component={EmptyScreen} />
-      <Tab.Screen name="Profile" component={EmptyScreen} />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        listeners={{
+          focus: () => setcurrentScreen('Profile'),
+        }}
+      />
     </Tab.Navigator>
   );
 }
