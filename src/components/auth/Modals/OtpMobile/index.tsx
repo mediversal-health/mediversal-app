@@ -35,7 +35,6 @@ interface ApiResponse {
 
 const OtpMobileModal: React.FC<OTPModalProps> = ({
   isVisible,
-  onClose,
   onGoBack,
   phoneNumber,
 }) => {
@@ -132,7 +131,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={onClose}
+      onBackdropPress={undefined}
       style={styles.modal}
       swipeDirection={['down']}
       animationOut="slideOutDown"
