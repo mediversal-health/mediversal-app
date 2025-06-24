@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react'; // Import useCallback
 import {
   View,
   Text,
@@ -45,6 +45,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const [error, setError] = useState<string>('');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const setAuthentication = useAuthStore(state => state.setAuthentication);
+
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -66,6 +67,61 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
     };
   }, [isVisible, timer]);
 
+  // IMPORTANT: Wrap handleVerifyOTP in useCallback to prevent re-creation
+  // This is crucial if it's passed as a prop that triggers useEffect in child.
+  const handleVerifyOTP = useCallback(
+    async (fullOtpString?: string) => {
+      // Accept optional string from onOtpComplete
+      try {
+        setVerifying(true);
+        setError('');
+
+        const otpToVerify = fullOtpString || otp.join('');
+        if (otpToVerify.length !== 6) {
+          setError('Please enter a valid 6-digit OTP');
+          return;
+        }
+
+        const response = (await verifyOTP(
+          phoneNumber,
+          otpToVerify, // Use otpToVerify
+          'phone',
+        )) as ApiResponse;
+        console.log(response);
+        console.log(response.data?.user.customer_id);
+
+        if (response.data?.success) {
+          setAuthentication({
+            token: response.data.token as string,
+            customer_id: response.data.user.customer_id,
+            phoneNumber: phoneNumber,
+          });
+          navigation.navigate('Layout');
+          // Optionally, close the modal here if not done by navigation
+          // onClose();
+        } else {
+          setError(response.data?.message || 'Invalid OTP');
+        }
+      } catch (error: any) {
+        setError(error?.response?.data?.message || 'Error verifying OTP');
+      } finally {
+        setVerifying(false);
+      }
+    },
+    [otp, phoneNumber, setAuthentication, navigation],
+  ); // Dependencies for useCallback
+
+  // Callback from CustomOtpInput when OTP is complete
+  const onOtpCompleteHandler = useCallback(
+    (fullOtpCode: string) => {
+      console.log('OTP received via autofill/paste:', fullOtpCode);
+      // setOtp(fullOtpCode.split('')); // CustomOtpInput already handles setting its own state
+      // Trigger verification immediately
+      handleVerifyOTP(fullOtpCode);
+    },
+    [handleVerifyOTP],
+  ); // Dependency on handleVerifyOTP
+
   const handleResendOTP = async () => {
     try {
       setResending(true);
@@ -75,7 +131,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
 
       if (response.data?.success) {
         setTimer(60);
-        setOtp(Array(6).fill(''));
+        setOtp(Array(6).fill('')); // Clear OTP on resend
         Alert.alert('Success', 'OTP sent successfully');
       } else {
         setError(response.data?.message || 'Failed to resend OTP');
@@ -88,50 +144,12 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
     }
   };
 
-  const handleVerifyOTP = async () => {
-    try {
-      setVerifying(true);
-      setError('');
-
-      const otpString = otp.join('');
-      if (otpString.length !== 6) {
-        setError('Please enter a valid 6-digit OTP');
-        return;
-      }
-
-      const response = (await verifyOTP(
-        phoneNumber,
-        otpString,
-        'phone',
-      )) as ApiResponse;
-      console.log(response);
-      console.log(response.data?.user.customer_id);
-
-      if (response.data?.success) {
-        setAuthentication({
-          token: response.data.token as string,
-          customer_id: response.data.user.customer_id,
-          phoneNumber: phoneNumber,
-        });
-        navigation.navigate('Layout');
-      } else {
-        // Alert.alert('Error', response.data?.message || 'Resend failed');
-        setError(response.data?.message || 'Invalid OTP');
-      }
-    } catch (error: any) {
-      setError(error?.response?.data?.message || 'Error verifying OTP');
-      // Alert.alert('Error', error);
-    } finally {
-      setVerifying(false);
-    }
-  };
-
   const isOtpFilled = otp.every(d => d !== '');
 
   return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={undefined}
+      onBackdropPress={undefined} // Or set to onClose if you want it to close on tap outside
       style={styles.modal}
       swipeDirection={['down']}
       animationOut="slideOutDown"
@@ -155,6 +173,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           setOtp={setOtp}
           error={error}
           isVisible={isVisible}
+          otpLength={6} // Explicitly pass the length
+          onOtpComplete={onOtpCompleteHandler} // Pass the new handler
         />
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -185,7 +205,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             verifying ? styles.verifyButtonLoading : null,
             !isOtpFilled ? styles.verifyButtonDisabled : null,
           ]}
-          onPress={handleVerifyOTP}
+          onPress={() => handleVerifyOTP()} // Call without arguments for manual press
           disabled={!isOtpFilled || verifying}
           activeOpacity={0.8}>
           {verifying ? (
