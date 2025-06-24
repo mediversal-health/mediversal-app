@@ -23,6 +23,7 @@ import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
 import {useCartStore} from '../../store/cartStore';
+import {useFilterStore} from '../../store/filterStore';
 
 interface Category {
   id: string;
@@ -33,15 +34,19 @@ interface Category {
 const AllProductsScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [searchText, setSearchText] = useState('');
+  const [priceRange, setPriceRange] = useState({min: '', max: ''});
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [filteredProducts, setFilteredProducts] = useState<
-    ProductCardProps['product'][] | null
-  >(null);
+  // const [filteredProducts, setFilteredProducts] = useState<
+  //   ProductCardProps['product'][] | null
+  // >(null);
   const [sortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
   const {setUserCart} = useCartStore.getState();
   const {cardProducts, getOriginalProduct} = useProductStore();
+  const {filteredProducts, setFilteredProducts} = useFilterStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
   console.log('card', cardProducts);
@@ -167,6 +172,22 @@ const AllProductsScreen: React.FC = () => {
       />
     </TouchableOpacity>
   );
+  const handleCategorySelect = (categoryName: string) => {
+    setSelectedCategory(categoryName);
+    setSelectedFilters({});
+    setSearchText('');
+    setPriceRange({min: '', max: ''});
+
+    if (categoryName === 'All') {
+      setFilteredProducts(null);
+    } else {
+      const filtered = cardProducts.filter(
+        product => product.Category === categoryName,
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+  console.log(filteredProducts, 'filteredProducts all');
 
   const renderCategory = ({item}: {item: Category}) => (
     <TouchableOpacity
@@ -174,7 +195,7 @@ const AllProductsScreen: React.FC = () => {
         styles.categoryItem,
         selectedCategory === item.name && styles.selectedCategory,
       ]}
-      onPress={() => setSelectedCategory(item.name)}>
+      onPress={() => handleCategorySelect(item.name)}>
       <Image source={{uri: item.icon}} style={styles.categoryIcon} />
       <Text
         style={[
@@ -191,15 +212,14 @@ const AllProductsScreen: React.FC = () => {
 
     switch (option) {
       case 'Price: Low to High':
-        sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
+        sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
         break;
       case 'Price: High to Low':
-        sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
+        sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
         break;
       case 'Relevance':
       default:
-        // Use the original order, or you can refetch/reset from store
-        sorted.sort((a, b) => a.id.localeCompare(b.id)); // fallback
+        sorted.sort((a, b) => a.id.localeCompare(b.id));
         break;
     }
 
@@ -309,9 +329,13 @@ const AllProductsScreen: React.FC = () => {
       <FilterBottomSheet
         visible={showFilters}
         onClose={() => setShowFilters(false)}
-        onApply={filtered => {
-          setFilteredProducts(filtered);
-        }}
+        onApply={filtered => setFilteredProducts(filtered)}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
       />
     </>
   );

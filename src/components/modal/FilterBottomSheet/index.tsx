@@ -1,4 +1,3 @@
-// import {Search} from 'lucide-react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
@@ -11,25 +10,35 @@ import {
   Animated,
 } from 'react-native';
 import useProductStore from '../../../store/productsStore';
-
-const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 import styles from './index.styles';
 import {ProductCardProps} from '../../../types';
+import {useFilterStore} from '../../../store/filterStore';
+
+const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 interface FilterBottomSheetProps {
   visible: boolean;
   onClose: () => void;
-  onApply: (filtered: ProductCardProps['product'][]) => void; // Add this
+  onApply: (filtered: ProductCardProps['product'][]) => void;
+  selectedFilters: {[key: string]: boolean};
+  setSelectedFilters: React.Dispatch<
+    React.SetStateAction<{[key: string]: boolean}>
+  >;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  priceRange: {min: string; max: string};
+  setPriceRange: React.Dispatch<
+    React.SetStateAction<{min: string; max: string}>
+  >;
 }
-
 interface CategoryOption {
   key: string;
   label: string;
 }
 
-interface SelectedFilters {
-  [key: string]: boolean;
-}
+// interface SelectedFilters {
+//   [key: string]: boolean;
+// }
 
 type SidebarItem =
   | 'Category'
@@ -44,14 +53,22 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   visible,
   onClose,
   onApply,
+  selectedFilters,
+  setSelectedFilters,
+  searchText,
+  setSearchText,
+  priceRange,
+  setPriceRange,
 }) => {
   const [selectedCategory, setSelectedCategory] =
     useState<SidebarItem>('Category');
-  const [searchText, setSearchText] = useState<string>('');
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({});
+  // const [searchText, setSearchText] = useState<string>('');
+  // const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({});
+  // const [priceRange, setPriceRange] = useState({min: '', max: ''});
 
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const {originalProducts} = useProductStore();
+  const {filteredProducts} = useFilterStore();
 
   useEffect(() => {
     Animated.spring(translateY, {
@@ -64,6 +81,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     'Category',
     'Salt Name',
     'Manufacturer',
+    'Price Range',
     'Availability',
     'Prescription Required',
     'Special Tags',
@@ -99,7 +117,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     Manufacturer: [
       {key: 'cipla', label: 'Cipla'},
       {key: 'sunPharma', label: 'Sun Pharmaceutical'},
-      {key: 'drReddys', label: 'Dr. Reddys Laboratories'},
+      {key: 'drReddys', label: "DrReddy's Laboratories Ltd"},
       {key: 'lupin', label: 'Lupin Pharmaceuticals'},
       {key: 'aurobindo', label: 'Aurobindo Pharma'},
       {key: 'glenmark', label: 'Glenmark Pharmaceuticals'},
@@ -107,7 +125,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       {key: 'cadila', label: 'Zydus Cadila'},
       {key: 'alkem', label: 'Alkem Laboratories'},
       {key: 'biocon', label: 'Biocon'},
-      {key: 'wockhardt', label: 'Wockhardt'},
+      {key: 'roche', label: 'Roche Products India Pvt Ltd'},
     ],
     Availability: [
       {key: 'inStock', label: 'In Stock'},
@@ -131,56 +149,17 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       [key]: !prev[key],
     }));
   };
-
   const hasActiveFilters = (): boolean => {
     return (
       Object.values(selectedFilters).some(filter => filter) ||
-      searchText.trim() !== ''
+      searchText.trim() !== '' ||
+      priceRange.min !== '' ||
+      priceRange.max !== ''
     );
   };
-  const applyFilters = () => {
-    let filtered = originalProducts;
 
-    const activeFilters = Object.keys(selectedFilters).filter(
-      key => selectedFilters[key],
-    );
-
-    if (selectedCategory === 'Salt Name' && activeFilters.length) {
-      filtered = filtered.filter(product =>
-        activeFilters.some(filter =>
-          product.Composition?.toLowerCase().includes(filter.toLowerCase()),
-        ),
-      );
-    }
-    if (selectedCategory === 'Salt Name' && activeFilters.length) {
-      filtered = filtered.filter(product =>
-        activeFilters.some(filter =>
-          product.Composition?.toLowerCase().includes(filter.toLowerCase()),
-        ),
-      );
-    }
-
-    //  if (selectedCategory === 'Category' && activeFilters.length) {
-    //   filtered = filtered.filter(product =>
-    //     activeFilters.some(filter =>
-    //       product.category?.toLowerCase().includes(filter.toLowerCase()),
-    //     ),
-    //   );
-    // }
-
-    if (selectedCategory === 'Manufacturer' && activeFilters.length) {
-      filtered = filtered.filter(product =>
-        activeFilters.some(filter =>
-          product.ManufacturerName?.toLowerCase().includes(
-            filter.toLowerCase(),
-          ),
-        ),
-      );
-    }
-
-    // Add logic for other filters similarly...
-
-    const cardFiltered = filtered.map(product => ({
+  const convertToCardProduct = (product: any): ProductCardProps['product'] => {
+    return {
       id: product.productId.toString(),
       name: product.ProductName,
       description: product.ProductInformation || 'No description available',
@@ -191,30 +170,144 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       discountPercentage: parseFloat(product.DiscountedPercentage),
       Category: String(product.Category || ''),
       image: product.images?.[0] || '',
-      _originalProduct: product,
-    }));
+    };
+  };
+
+  const applyFilters = () => {
+    let productsToFilter = originalProducts;
+
+    if (filteredProducts && filteredProducts.length > 0) {
+      const filteredIds = filteredProducts.map(product => product.id);
+      productsToFilter = originalProducts.filter(product =>
+        filteredIds.includes(product.productId.toString()),
+      );
+    }
+
+    const activeFilters = Object.keys(selectedFilters).filter(
+      key => selectedFilters[key],
+    );
+
+    if (activeFilters.length > 0) {
+      productsToFilter = productsToFilter.filter(product => {
+        if (selectedCategory === 'Category') {
+          return activeFilters.some(filter =>
+            String(product.Category)
+              .toLowerCase()
+              .includes(filter.toLowerCase()),
+          );
+        }
+
+        if (selectedCategory === 'Salt Name') {
+          return activeFilters.some(filter =>
+            product.Composition?.toLowerCase().includes(filter.toLowerCase()),
+          );
+        }
+
+        if (selectedCategory === 'Manufacturer') {
+          return activeFilters.some(filter => {
+            const manufacturerName =
+              product.ManufacturerName?.toLowerCase() || '';
+            return (
+              manufacturerName.includes(filter.toLowerCase()) ||
+              manufacturerName.includes(
+                optionsData.Manufacturer.find(
+                  m => m.key === filter,
+                )?.label.toLowerCase() || '',
+              )
+            );
+          });
+        }
+
+        if (selectedCategory === 'Availability') {
+          const stockAvailable =
+            parseInt(String(product.StockAvailableInInventory), 10) || 0;
+          if (activeFilters.includes('inStock')) {
+            return stockAvailable > 0;
+          }
+          if (activeFilters.includes('outOfStock')) {
+            return stockAvailable === 0;
+          }
+        }
+
+        if (selectedCategory === 'Prescription Required') {
+          const isPrescriptionRequired =
+            product.PrescriptionRequired === 'true' ||
+            product.Category === 'PRESCRIPTION (Rx)';
+          if (activeFilters.includes('prescriptionRequired')) {
+            return isPrescriptionRequired;
+          }
+          if (activeFilters.includes('noPrescriptionRequired')) {
+            return !isPrescriptionRequired;
+          }
+        }
+
+        // // Special Tags filters (you might need to adjust based on your product structure)
+        // if (selectedCategory === 'Special Tags') {
+        //   // This would depend on how special tags are stored in your product data
+        //   // For now, we'll assume they're in a tags field or similar
+        //   const productTags = product.Tags?.toLowerCase() || product.escription?.toLowerCase() || '';
+        //   return activeFilters.some(filter => {
+        //     switch(filter) {
+        //       case 'sugarFree':
+        //         return productTags.includes('sugar free') || productTags.includes('sugar-free');
+        //       case 'vegetarian':
+        //         return productTags.includes('vegetarian') || productTags.includes('veg');
+        //       case 'lactoseFree':
+        //         return productTags.includes('lactose free') || productTags.includes('lactose-free');
+        //       case 'glutenFree':
+        //         return productTags.includes('gluten free') || productTags.includes('gluten-free');
+        //       default:
+        //         return false;
+        //     }
+        //   });
+        // }
+
+        return true;
+      });
+    }
+
+    if (priceRange.min !== '' || priceRange.max !== '') {
+      productsToFilter = productsToFilter.filter(product => {
+        const price = parseFloat(product.DiscountedPrice);
+        const minPrice = priceRange.min !== '' ? parseFloat(priceRange.min) : 0;
+        const maxPrice =
+          priceRange.max !== '' ? parseFloat(priceRange.max) : Infinity;
+
+        return price >= minPrice && price <= maxPrice;
+      });
+    }
+
+    if (searchText.trim() !== '') {
+      productsToFilter = productsToFilter.filter(
+        product =>
+          product.ProductName?.toLowerCase().includes(
+            searchText.toLowerCase(),
+          ) ||
+          product.ProductInformation?.toLowerCase().includes(
+            searchText.toLowerCase(),
+          ) ||
+          product.Composition?.toLowerCase().includes(searchText.toLowerCase()),
+      );
+    }
+
+    const cardFiltered = productsToFilter.map(convertToCardProduct);
+
+    // console.log('Filtered Products Count:', cardFiltered.length);
+    // console.log('Applied Filters:', selectedFilters);
+    // console.log('Price Range:', priceRange);
+    // console.log('Search Text:', searchText);
 
     onApply(cardFiltered);
     onClose();
   };
+
   const clearFilters = (): void => {
     setSelectedFilters({});
     setSearchText('');
+    setPriceRange({min: '', max: ''});
   };
-
   const renderSearchableContent = (options: CategoryOption[]) => (
     <View style={styles.contentContainer}>
-      {/* <View style={styles.searchContainer}>
-        <Search color={'#0088B1'} size={20} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search"
-          value={searchText}
-          onChangeText={setSearchText}
-          placeholderTextColor="#999"
-        />
-      </View> */}
-
       <ScrollView
         style={styles.optionsContainer}
         showsVerticalScrollIndicator={false}>
@@ -260,6 +353,10 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               placeholder="Min"
               placeholderTextColor="#999"
               keyboardType="numeric"
+              value={priceRange.min}
+              onChangeText={text =>
+                setPriceRange(prev => ({...prev, min: text}))
+              }
             />
             <Text style={styles.priceSeparator}>-</Text>
             <TextInput
@@ -267,6 +364,10 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               placeholder="Max"
               placeholderTextColor="#999"
               keyboardType="numeric"
+              value={priceRange.max}
+              onChangeText={text =>
+                setPriceRange(prev => ({...prev, max: text}))
+              }
             />
           </View>
         </View>

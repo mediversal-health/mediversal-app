@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,9 @@ import {
   SafeAreaView,
   StatusBar,
   Alert,
+  RefreshControl,
 } from 'react-native';
-import {ChevronDown, ChevronLeft} from 'lucide-react-native';
+import {ChevronDown, ChevronLeft, Plus} from 'lucide-react-native';
 import {useNavigation, RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import {AddressBookTypes} from '../../types';
@@ -26,6 +27,8 @@ import AddressCard from '../../components/cards/AddressCard';
 import {useAddressBookStore} from '../../store/addressStore';
 import AddressActionModal from '../../components/modal/AddressActionModal';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Fonts} from '../../styles/fonts';
+import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
 
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
@@ -48,6 +51,7 @@ type AddressBookScreenRouteProp = RouteProp<
         };
       };
       fromLocationMap?: boolean;
+      isFromProfile?: boolean;
     };
   },
   'params'
@@ -56,23 +60,29 @@ type AddressBookScreenRouteProp = RouteProp<
 const AddressBookScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<AddressBookScreenRouteProp>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Changed to true for initial load
   const [isUpdating, setIsUpdating] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // Added for pull-to-refresh
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false); // Track initial load
   const locationData = route.params?.location;
   const customer_id = useAuthStore(state => state.customer_id);
   const fromLocationMap = route.params?.fromLocationMap || false;
+  const isFromProfile = route.params?.isFromProfile || false;
+  console.log(isFromProfile, 'isFromProfile');
   const [selectedAddressType, setSelectedAddressType] =
     useState<AddressType>('Home');
   const [focusedField, setFocusedField] = useState<string | null>(null);
-  const {addresses, setAddresses, selectedAddress, setSelectedAddress} =
-    useAddressBookStore();
+  const {
+    addresses,
+    setAddresses,
+    selectedAddress,
+    setSelectedAddress,
+    hasLoadedAddresses, // Get the flag from store
+    setHasLoadedAddresses,
+  } = useAddressBookStore();
 
-  const [isFormVisible, setIsFormVisible] = useState(
-    fromLocationMap || addresses.length === 0,
-  );
-  const [isAddressCardVisible, setIsAddressCardVisible] = useState(
-    !fromLocationMap && addresses.length > 0,
-  );
+  const [isFormVisible, setIsFormVisible] = useState(false); // Changed initial state
+  const [isAddressCardVisible, setIsAddressCardVisible] = useState(false); // Changed initial state
   const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
   const savedFormDataRef = useRef<AddressBookTypes | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -108,21 +118,66 @@ const AddressBookScreen: React.FC = () => {
     }
   }, [selectedAddress, shouldNavigateAfterSave, navigation]);
 
-  useEffect(() => {
-    const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(
+    async (isRefreshing = false) => {
       try {
-        let res;
-        if (customer_id) {
-          res = await getCustomerAddresses(customer_id.toString());
+        if (!hasLoadedAddresses || isRefreshing) {
+          if (!isRefreshing && !initialLoadComplete) {
+            setIsLoading(true);
+          }
+          if (isRefreshing) {
+            setRefreshing(true);
+          }
+
+          let res;
+          if (customer_id) {
+            res = await getCustomerAddresses(customer_id.toString());
+            console.log('abcd');
+          }
+          setAddresses(res?.data || []);
+          setHasLoadedAddresses(true);
+
+          if (!initialLoadComplete) {
+            const hasAddresses = res?.data && res.data.length > 0;
+            setIsFormVisible(fromLocationMap || !hasAddresses);
+            setIsAddressCardVisible(!fromLocationMap && hasAddresses);
+            setInitialLoadComplete(true);
+          }
+        } else {
+          if (fromLocationMap) {
+            setIsFormVisible(true);
+          } else {
+            setIsAddressCardVisible(true);
+          }
         }
-        setAddresses(res?.data);
       } catch (error) {
         console.log('Failed to fetch addresses:', error);
+      } finally {
+        if (!isRefreshing && !initialLoadComplete) {
+          setIsLoading(false);
+        }
+        if (isRefreshing) {
+          setRefreshing(false);
+        }
       }
-    };
+    },
+    [
+      customer_id,
+      setAddresses,
+      fromLocationMap,
+      initialLoadComplete,
+      setHasLoadedAddresses,
+      hasLoadedAddresses,
+    ],
+  );
 
+  const onRefresh = useCallback(() => {
+    fetchAddresses(true);
+  }, [fetchAddresses]);
+
+  useEffect(() => {
     fetchAddresses();
-  }, [customer_id, setAddresses]);
+  }, [fetchAddresses]);
 
   useEffect(() => {
     if (locationData) {
@@ -238,19 +293,33 @@ const AddressBookScreen: React.FC = () => {
     }
 
     try {
+      setIsLoading(true);
+
       await deleteCustomerAddress(
         customer_id.toString(),
         selectedAddress.Customer_Address_id.toString(),
       );
 
-      const res = await getCustomerAddresses(customer_id.toString());
-      setAddresses(res?.data);
+      const updatedAddresses = addresses.filter(
+        addr =>
+          addr.Customer_Address_id !== selectedAddress.Customer_Address_id,
+      );
+      setAddresses(updatedAddresses);
+
+      if (
+        selectedAddress?.Customer_Address_id ===
+        selectedAddress.Customer_Address_id
+      ) {
+        setSelectedAddress(null);
+      }
 
       setModalVisible(false);
       Alert.alert('Success', 'Address deleted successfully');
     } catch (error) {
       console.error('Error deleting address:', error);
       Alert.alert('Error', 'Failed to delete address. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -274,17 +343,17 @@ const AddressBookScreen: React.FC = () => {
           await saveCustomerAddress(customer_id.toString(), formData);
         }
       }
-
-      if (customer_id) {
-        const updatedAddresses = await getCustomerAddresses(
-          customer_id.toString(),
-        );
-        setAddresses(updatedAddresses?.data);
-      }
+      setHasLoadedAddresses(false);
+      await fetchAddresses();
 
       savedFormDataRef.current = formData;
-      setShouldNavigateAfterSave(true);
       setSelectedAddress(formData);
+
+      if (isFromProfile) {
+        setIsFormVisible(false);
+      } else {
+        setShouldNavigateAfterSave(true);
+      }
 
       if (!shouldNavigateAfterSave) {
         resetForm();
@@ -340,6 +409,27 @@ const AddressBookScreen: React.FC = () => {
     setModalVisible(false);
   };
 
+  if (isLoading && !initialLoadComplete) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ChevronLeft size={20} color="#0088B1" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Address Book</Text>
+        </View>
+        <ScrollView style={styles.scrollView}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <AddressCardSkeleton count={3} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -354,13 +444,22 @@ const AddressBookScreen: React.FC = () => {
       </View>
 
       <View style={{justifyContent: 'space-between', flex: 1}}>
-        <ScrollView style={styles.scrollView}>
-          {addresses.length > 0 && (
+        <ScrollView
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={['#0088B1']}
+              tintColor="#0088B1"
+            />
+          }>
+          {!isFromProfile && addresses.length > 0 && (
             <TouchableOpacity
               style={
                 isAddressCardVisible
                   ? styles.dropdownHeaderOpen
-                  : styles.dropdownHeader
+                  : styles.dropdownHeaderTop
               }
               onPress={() => {
                 setIsAddressCardVisible(true);
@@ -388,60 +487,115 @@ const AddressBookScreen: React.FC = () => {
               </View>
             </TouchableOpacity>
           )}
-
-          {isAddressCardVisible && (
+          {!isFromProfile && isAddressCardVisible && (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              {addresses.map((addr, idx) => (
-                <AddressCard
-                  key={idx}
-                  title={addr.Address_type}
-                  address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
-                  phoneNumber={addr.PhoneNumber}
-                  selected={
-                    selectedAddress?.Customer_Address_id ===
-                    addr.Customer_Address_id
-                  }
-                  onPress={() => setSelectedAddress(addr)}
-                  onMorePress={() => {
-                    setSelectedAddress(addr);
-                    setModalVisible(true);
-                  }}
-                />
-              ))}
+              {refreshing ? (
+                <AddressCardSkeleton count={3} />
+              ) : (
+                addresses.map((addr, idx) => (
+                  <AddressCard
+                    key={idx}
+                    title={addr.Address_type}
+                    address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
+                    phoneNumber={addr.PhoneNumber}
+                    selected={
+                      selectedAddress?.Customer_Address_id ===
+                      addr.Customer_Address_id
+                    }
+                    onPress={() => setSelectedAddress(addr)}
+                    onMorePress={() => {
+                      setSelectedAddress(addr);
+                      setModalVisible(true);
+                    }}
+                  />
+                ))
+              )}
             </View>
           )}
-          {addresses.length > 0 && (
-            <TouchableOpacity
-              style={
-                isFormVisible
-                  ? styles.dropdownHeaderOpen
-                  : styles.dropdownHeader
-              }
-              onPress={() => {
-                setIsFormVisible(true);
-                setIsAddressCardVisible(false);
-                setIsEditMode(false);
-                resetForm();
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
+          {addresses.length > 0 &&
+            (isFormVisible && isFromProfile ? null : (
+              <TouchableOpacity
+                style={
+                  isFormVisible
+                    ? styles.dropdownHeaderOpen
+                    : styles.dropdownHeader
+                }
+                onPress={() => {
+                  setIsFormVisible(true);
+                  setIsAddressCardVisible(false);
+                  setIsEditMode(false);
+                  resetForm();
                 }}>
                 <View
-                  style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-                  <Text style={styles.dropdownHeaderText}>Add New Address</Text>
-                </View>
-                <View
                   style={{
-                    transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
                   }}>
-                  <ChevronDown size={20} color="#000" />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      alignItems: 'center',
+                    }}>
+                    {isFromProfile && <Plus size={20} color="#000" />}
+                    <Text style={styles.dropdownHeaderText}>
+                      Add New Address
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
+                    }}>
+                    <ChevronDown size={20} color="#000" />
+                  </View>
                 </View>
+              </TouchableOpacity>
+            ))}
+
+          {isFromProfile && !isFormVisible && (
+            <>
+              {addresses.length > 0 && (
+                <Text
+                  style={{
+                    color: '#899193',
+                    fontFamily: Fonts.JakartaLight,
+                    marginTop: -10,
+                  }}>
+                  {' '}
+                  Your saved addresses
+                </Text>
+              )}
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 20,
+                }}>
+                {refreshing ? (
+                  <AddressCardSkeleton count={3} />
+                ) : (
+                  addresses.map((addr, idx) => (
+                    <AddressCard
+                      key={idx}
+                      title={addr.Address_type}
+                      address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
+                      phoneNumber={addr.PhoneNumber}
+                      selected={
+                        selectedAddress?.Customer_Address_id ===
+                        addr.Customer_Address_id
+                      }
+                      onPress={() => setSelectedAddress(addr)}
+                      onMorePress={() => {
+                        setSelectedAddress(addr);
+                        setModalVisible(true);
+                      }}
+                    />
+                  ))
+                )}
               </View>
-            </TouchableOpacity>
+            </>
           )}
           {isFormVisible && (
             <>
@@ -646,20 +800,21 @@ const AddressBookScreen: React.FC = () => {
             </>
           )}
         </ScrollView>
-
         <View style={{marginHorizontal: 16}}>
           {isAddressCardVisible ? (
-            <TouchableOpacity
-              style={[
-                styles.saveButton,
-                !selectedAddress && styles.disabledButton,
-              ]}
-              onPress={handleProceedWithSelectedAddress}
-              disabled={!selectedAddress}>
-              <Text style={styles.saveButtonText}>
-                Proceed with Selected Address
-              </Text>
-            </TouchableOpacity>
+            !isFromProfile && (
+              <TouchableOpacity
+                style={[
+                  styles.saveButton,
+                  !selectedAddress && styles.disabledButton,
+                ]}
+                onPress={handleProceedWithSelectedAddress}
+                disabled={!selectedAddress}>
+                <Text style={styles.saveButtonText}>
+                  Proceed with Selected Address
+                </Text>
+              </TouchableOpacity>
+            )
           ) : isFormVisible ? (
             <TouchableOpacity
               style={[

@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
     padding: 12,
   },
   saveButtonText: {
@@ -299,6 +299,12 @@ const styles = StyleSheet.create({
     color: '#606060',
   },
   dropdownHeader: {
+    padding: 12,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 30,
+  },
+  dropdownHeaderTop: {
     padding: 12,
     backgroundColor: '#fff',
     borderRadius: 8,
