@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
     height: 50,
   },
   countryCodeBox: {
-    height: '100%', // ✅ fill full height of input row
-    justifyContent: 'center', // ✅ center picker vertically
-    paddingHorizontal: 12, // ⬅ keep padding consistent horizontally
+    height: '100%',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
     backgroundColor: '#f8f8f8',
     borderWidth: 1,
     borderColor: '#e0e0e0',

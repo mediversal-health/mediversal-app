@@ -46,10 +46,12 @@ const MobileLogin = () => {
       'keyboardDidShow',
       () => {
         setKeyboardVisible(true);
-
-        if (scrollViewRef.current) {
-          scrollViewRef.current.scrollToEnd({animated: true});
-        }
+        setTimeout(() => {
+          scrollViewRef.current?.scrollTo({
+            y: 150,
+            animated: true,
+          });
+        }, 100);
       },
     );
     const keyboardDidHideListener = Keyboard.addListener(
@@ -124,9 +126,7 @@ const MobileLogin = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('showOtpModal state changed:', showOtpModal);
-  }, [showOtpModal]);
+  useEffect(() => {}, [showOtpModal]);
 
   const handleCloseModal = () => {
     console.log('Closing OTP modal');
@@ -135,13 +135,14 @@ const MobileLogin = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      style={{flex: 1}}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
       <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={[
           styles.container,
-          {paddingBottom: keyboardVisible ? 120 : 20},
+          {paddingBottom: keyboardVisible ? 210 : 20},
         ]}>
         <View style={styles.inputRow}>
           <View style={styles.countryCodeBox}>
@@ -163,7 +164,15 @@ const MobileLogin = () => {
               onChangeText={handleMobileInputChange}
               maxLength={10}
               placeholderTextColor="#b3b3b3"
-              onFocus={() => setIsMobileFocused(true)}
+              onFocus={() => {
+                setIsMobileFocused(true);
+                setTimeout(() => {
+                  scrollViewRef.current?.scrollTo({
+                    y: 150,
+                    animated: true,
+                  });
+                }, 100);
+              }}
               onBlur={() => setIsMobileFocused(false)}
             />
           </View>

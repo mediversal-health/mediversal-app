@@ -15,6 +15,10 @@ import {RootStackParamList} from '../../navigation';
 import styles from './index.styles';
 import {GOOGLE_API_KEY} from '@env';
 import {Fonts} from '../../styles/fonts';
+import Geolocation from '@react-native-community/geolocation';
+import {requestLocationPermission} from '../../utils/permissions';
+import {useAddressBookStore} from '../../store/addressStore';
+import {AddressBookTypes} from '../../types';
 
 interface PlacePrediction {
   description: string;
@@ -36,6 +40,10 @@ export default function SearchScreen() {
   const [suggestions, setSuggestions] = useState<PlacePrediction[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+  const retryAttemptRef = useRef<number>(0);
+  const maxRetryAttempts = 3;
+  const watchIdRef = useRef<number | null>(null);
 
   const fetchPlaces = async (text: string): Promise<void> => {
     if (text.length > 1) {
@@ -57,6 +65,50 @@ export default function SearchScreen() {
       }
     } else {
       setSuggestions([]);
+    }
+  };
+
+  const fetchAddress = async (latitude: number, longitude: number) => {
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`;
+
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'YourAppName/1.0',
+        },
+      });
+      const data = await response.json();
+
+      if (data && data.address) {
+        const city =
+          data.address.city || data.address.town || data.address.village || '';
+        const pincode = data.address.postcode || '';
+
+        const addressForStore: AddressBookTypes = {
+          Address: data.display_name,
+          Home_Floor_FlatNumber: '',
+          Area_details: data.address.suburb || data.address.neighbourhood || '',
+          LandMark: data.address.road || '',
+          City: city,
+          State: data.address.state || '',
+          Contact_details: '',
+          Recipient_name: '',
+          PhoneNumber: '',
+          PinCode: parseInt(pincode) || 0,
+          Country: 'India',
+          Address_type: 'Current Location',
+        };
+
+        console.log('Setting current location address:', addressForStore);
+
+        useAddressBookStore.getState().setSelectedAddress(addressForStore);
+
+        navigation.goBack();
+      } else {
+        console.warn('Reverse geocode failed: No address');
+      }
+    } catch (error) {
+      console.error('Reverse geocode error:', error);
     }
   };
 
@@ -96,9 +148,73 @@ export default function SearchScreen() {
     debouncedFetchPlaces(text);
   };
 
-  const handleSelectPlace = (place: PlacePrediction): void => {
+  const handleSelectPlace = async (place: PlacePrediction): Promise<void> => {
     setSearchText(place.description);
     setSuggestions([]);
+
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&key=${GOOGLE_API_KEY}`,
+      );
+      const data = await response.json();
+
+      console.log('Google Place Details API result:', data);
+
+      if (data.result) {
+        type AddressComponent = {
+          long_name: string;
+          short_name: string;
+          types: string[];
+        };
+
+        const addressComponents = data.result
+          .address_components as AddressComponent[];
+
+        const cityComponent = addressComponents.find(
+          component =>
+            component.types.includes('locality') ||
+            component.types.includes('administrative_area_level_2'),
+        );
+
+        const stateComponent = addressComponents.find(component =>
+          component.types.includes('administrative_area_level_1'),
+        );
+
+        const localityComponent = addressComponents.find(
+          component =>
+            component.types.includes('sublocality_level_1') ||
+            component.types.includes('neighborhood') ||
+            component.types.includes('route'),
+        );
+
+        const city = cityComponent?.long_name || '';
+        const state = stateComponent?.long_name || '';
+        const locality = localityComponent?.long_name || '';
+
+        const addressForStore: AddressBookTypes = {
+          Address: data.result.formatted_address || place.description,
+          Home_Floor_FlatNumber: '',
+          Area_details: locality,
+          LandMark: '',
+          City: city,
+          State: state,
+          Contact_details: '',
+          Recipient_name: '',
+          PhoneNumber: '',
+          PinCode: '',
+          Country: 'India',
+          Address_type: 'Manual Search',
+        };
+
+        console.log('Setting address from manual search:', addressForStore);
+
+        useAddressBookStore.getState().setSelectedAddress(addressForStore);
+
+        navigation.goBack();
+      }
+    } catch (error) {
+      console.error('Error fetching place details:', error);
+    }
   };
 
   const renderSuggestion = ({
@@ -118,8 +234,98 @@ export default function SearchScreen() {
     </TouchableOpacity>
   );
 
-  const handleUseCurrentLocation = (): void => {
+  const handleUseCurrentLocation = async (): Promise<void> => {
     console.log('Use current location pressed');
+
+    const granted = await requestLocationPermission();
+    if (!granted) {
+      console.warn('Location permission denied');
+      return;
+    }
+
+    setIsLocating(true);
+
+    const getLocationWithHighAccuracy = () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          console.log('Got high accuracy position:', {latitude, longitude});
+          fetchAddress(latitude, longitude);
+          clearLocationWatch();
+          setIsLocating(false);
+        },
+        error => {
+          console.log('High accuracy error:', error.code, error.message);
+          if (retryAttemptRef.current < maxRetryAttempts) {
+            retryAttemptRef.current += 1;
+            setTimeout(getLocationWithLowAccuracy, 1000);
+          } else {
+            startLocationWatch();
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 3000,
+          maximumAge: 10000,
+        },
+      );
+    };
+
+    const getLocationWithLowAccuracy = () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          console.log('Got low accuracy position:', {latitude, longitude});
+          fetchAddress(latitude, longitude);
+          clearLocationWatch();
+          setIsLocating(false);
+        },
+        error => {
+          console.log('Low accuracy error:', error.code, error.message);
+          startLocationWatch();
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 20000,
+          maximumAge: 60000,
+        },
+      );
+    };
+
+    const startLocationWatch = () => {
+      console.log('Starting watch for location...');
+      clearLocationWatch();
+
+      watchIdRef.current = Geolocation.watchPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          console.log('Watch position update:', {latitude, longitude});
+          fetchAddress(latitude, longitude);
+          clearLocationWatch();
+          setIsLocating(false);
+        },
+        error => {
+          console.log('Watch position error:', error.code, error.message);
+          setIsLocating(false);
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 15000,
+          maximumAge: 10000,
+          distanceFilter: 50,
+        },
+      );
+    };
+
+    const clearLocationWatch = () => {
+      if (watchIdRef.current !== null) {
+        Geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+    };
+
+    retryAttemptRef.current = 0;
+    getLocationWithHighAccuracy();
   };
 
   return (
@@ -180,23 +386,42 @@ export default function SearchScreen() {
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
+          alignItems: 'center',
           gap: 10,
           borderBottomWidth: 1,
           borderBottomColor: '#B0B6B8',
           padding: 15,
           marginHorizontal: 20,
         }}>
-        <MapPinned color={'#0088B1'} size={20} />
-        <TouchableOpacity onPress={handleUseCurrentLocation}>
-          <Text
-            style={{
-              color: '#0088B1',
-              fontSize: 14,
-              fontFamily: Fonts.JakartaRegular,
-            }}>
-            Use current Location
-          </Text>
-        </TouchableOpacity>
+        {isLocating ? (
+          <>
+            <ActivityIndicator size="small" color="#0088B1" />
+            <Text
+              style={{
+                color: '#0088B1',
+                fontSize: 14,
+                fontFamily: Fonts.JakartaRegular,
+              }}>
+              Fetching your location...
+            </Text>
+          </>
+        ) : (
+          <>
+            <MapPinned color={'#0088B1'} size={20} />
+            <TouchableOpacity
+              onPress={handleUseCurrentLocation}
+              disabled={isLocating}>
+              <Text
+                style={{
+                  color: '#0088B1',
+                  fontSize: 14,
+                  fontFamily: Fonts.JakartaRegular,
+                }}>
+                Use current Location
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <FlatList
