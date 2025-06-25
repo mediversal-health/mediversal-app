@@ -333,6 +333,7 @@ const CartPage = () => {
                   onPress={() =>
                     navigation.replace('AddressBookScreen', {
                       fromLocationMap: false,
+                      isFromProfile: false,
                     })
                   }>
                   <Text

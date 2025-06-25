@@ -22,7 +22,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
       originalPrice: parseFloat(product.SellingPrice),
       discountedPrice: parseFloat(product.CostPrice),
       discountPercentage: parseFloat(product.DiscountedPercentage),
-      Category: product.Category?.toString() ?? '',
+      Category: product.Type?.toString() ?? '',
       SubCategory: product.subCategory?.toString() ?? '',
       image: product.images?.[0] || '',
 

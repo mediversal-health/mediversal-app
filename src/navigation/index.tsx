@@ -48,6 +48,7 @@ export type RootStackParamList = {
       };
     };
     fromLocationMap?: boolean;
+    isFromProfile?: boolean;
   };
   LocationMapScreen: undefined;
   SearchScreen: undefined;

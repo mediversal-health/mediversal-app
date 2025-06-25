@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     alignItems: 'center',
-    marginBottom: 20,
   },
   profileImage: {
     width: 80,
@@ -72,6 +71,20 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaSemiBold,
     fontWeight: '600',
     color: '#1F2937',
+  },
+  EditTitle: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
+    fontWeight: '600',
+    color: '#0088B1',
+  },
+  editButton: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  infoHeader: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   infoItem: {
     flexDirection: 'row',
@@ -112,12 +125,33 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginTop: 10,
   },
+
   logoutLabel: {
     fontSize: 10,
     fontFamily: Fonts.JakartaSemiBold,
     color: '#FF4444',
     marginLeft: 12,
     fontWeight: '500',
+  },
+  DeleteUserLabel: {
+    fontSize: 10,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#000',
+    marginLeft: 12,
+    fontWeight: '500',
+  },
+  editPhotoOverlay: {
+    backgroundColor: 'rgba(0, 136, 177, 0.7)',
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    marginTop: 10,
+  },
+  editPhotoText: {
+    color: 'white',
+    fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
   },
 });
 export default styles;

@@ -20,7 +20,7 @@ import {RootStackParamList} from './navigation';
 import {Fonts} from './styles/fonts';
 import {getProducts} from './Services/pharmacy';
 import useProductStore from './store/productsStore';
-
+import {useAddressBookStore} from './store/addressStore';
 import CartIconWithBadge from './components/ui/CartIconWithBadge';
 
 const Layout = () => {
@@ -28,6 +28,7 @@ const Layout = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
+  const selectedAddress = useAddressBookStore(state => state.selectedAddress);
 
   const {setProducts} = useProductStore();
   const fetchProducts = useCallback(() => {
@@ -99,7 +100,13 @@ const Layout = () => {
                           fontFamily: Fonts.JakartaRegular,
                           fontSize: 12,
                         }}>
-                        Gandhi Maidan 800024
+                        {selectedAddress
+                          ? `${
+                              selectedAddress.Area_details
+                                ? selectedAddress.Area_details + ', '
+                                : ''
+                            }${selectedAddress.City} - ${selectedAddress.State}`
+                          : 'Select Location'}
                       </Text>
                     </TouchableOpacity>
                     <ChevronDown size={20} />
