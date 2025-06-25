@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0088B1',
   },
   sidebarText: {
-    fontSize: 14,
+    fontSize: 10,
     fontFamily: Fonts.JakartaSemiBold,
     fontWeight: '400',
   },
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   optionText: {
-    fontSize: 15,
+    fontSize: 10,
     color: '#333',
     fontFamily: Fonts.JakartaRegular,
   },

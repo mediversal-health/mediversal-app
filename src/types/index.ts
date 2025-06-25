@@ -2,19 +2,29 @@ import {StyleProp, ViewStyle} from 'react-native';
 
 export type AuthState = {
   token: string | null;
-  customer_id: number | String | null;
+  customer_id: number | string | null;
   email: string | null;
   phoneNumber: string | null;
 
+  fullName?: string | null;
+  profileImage?: string | null;
+  dateOfBirth?: string | null;
+  joinedDate?: string | null;
+
   setAuthentication: (params: {
-    token: string;
-    customer_id?: number | String;
+    token?: string;
+    customer_id?: number | string;
     email?: string;
     phoneNumber?: string;
+    fullName?: string;
+    profileImage?: string;
+    dateOfBirth?: string;
+    joinedDate?: string;
   }) => void;
 
   clearAuthentication: () => void;
 };
+
 export interface ProductCardProps {
   product: {
     id: string;

@@ -18,15 +18,33 @@ export const useAuthStore = create<AuthStore>()(
       customer_id: null,
       email: null,
       phoneNumber: null,
+      fullName: null,
+      profileImage: null,
+      dateOfBirth: null,
+      joinedDate: null,
       rehydrated: false,
 
-      setAuthentication: ({token, customer_id, email, phoneNumber}) =>
-        set({
+      setAuthentication: ({
+        token,
+        customer_id,
+        email,
+        phoneNumber,
+        fullName,
+        profileImage,
+        dateOfBirth,
+        joinedDate,
+      }) =>
+        set(state => ({
+          ...state,
           token,
           customer_id: customer_id || null,
           email: email || null,
           phoneNumber: phoneNumber || null,
-        }),
+          fullName: fullName || state.fullName || null,
+          profileImage: profileImage || state.profileImage || null,
+          dateOfBirth: dateOfBirth || state.dateOfBirth || null,
+          joinedDate: joinedDate || state.joinedDate || null,
+        })),
 
       clearAuthentication: () =>
         set({
@@ -34,6 +52,10 @@ export const useAuthStore = create<AuthStore>()(
           customer_id: null,
           email: null,
           phoneNumber: null,
+          fullName: null,
+          profileImage: null,
+          dateOfBirth: null,
+          joinedDate: null,
         }),
 
       setRehydrated: value => set({rehydrated: value}),
