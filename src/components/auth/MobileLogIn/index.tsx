@@ -137,13 +137,10 @@ const MobileLogin = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
       style={{flex: 1}}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 20}>
       <ScrollView
         ref={scrollViewRef}
-        contentContainerStyle={[
-          styles.container,
-          {paddingBottom: keyboardVisible ? 210 : 20},
-        ]}>
+        contentContainerStyle={[styles.container]}>
         <View style={styles.inputRow}>
           <View style={styles.countryCodeBox}>
             <CountryPickerComponent onSelectCountry={handleCountrySelect} />
