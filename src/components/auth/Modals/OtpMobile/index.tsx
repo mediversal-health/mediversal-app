@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, {useState, useEffect, useCallback} from 'react'; // Import useCallback
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -110,7 +110,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const onOtpCompleteHandler = useCallback(
     (fullOtpCode: string) => {
       console.log('OTP received via autofill/paste:', fullOtpCode);
-      // setOtp(fullOtpCode.split('')); // CustomOtpInput already handles setting its own state
+      // setOtp(fullOtpCode.split(''));
       handleVerifyOTP(fullOtpCode);
     },
     [handleVerifyOTP],
@@ -125,7 +125,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
 
       if (response.data?.success) {
         setTimer(60);
-        setOtp(Array(6).fill('')); // Clear OTP on resend
+        setOtp(Array(6).fill(''));
         Alert.alert('Success', 'OTP sent successfully');
       } else {
         setError(response.data?.message || 'Failed to resend OTP');
