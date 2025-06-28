@@ -74,6 +74,8 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
       showToast(
         `${product?.ProductName || 'Product'} added to cart!`,
         'success',
+        1000,
+        true,
       );
     } catch (error) {
       console.error('Error adding product to cart:', error);

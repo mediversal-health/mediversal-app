@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginBottom: 12,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    gap: 20,
     justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 1},
@@ -28,18 +29,18 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#111827',
+    color: '#0088B1',
     fontFamily: Fonts.JakartaSemiBold,
   },
   rightContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
   amount: {
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: 12,
     color: '#111827',
     marginRight: 6,
+    textAlign: 'center',
   },
   statusBox: {
     paddingVertical: 2,

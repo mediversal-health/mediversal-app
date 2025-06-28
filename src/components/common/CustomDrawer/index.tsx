@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -32,11 +32,12 @@ const SWIPE_THRESHOLD = width * 0.3;
 
 const CustomDrawer = ({onClose}: {onClose: () => void}) => {
   // const clearAuthentication = useAuthStore(state => state.clearAuthentication);
-  const {email, phoneNumber} = useAuthStore();
+  const {first_name, last_name, phoneNumber, email, profileImage} =
+    useAuthStore();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const translateX = useSharedValue(-width);
   const startX = useSharedValue(0);
-
+  const [imageError, setImageError] = useState(false);
   const drawerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateX: translateX.value}],
@@ -106,23 +107,57 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             style={{marginBottom: 60}}>
             <View style={styles.header}>
               <View style={styles.profileRow}>
-                <Image
-                  source={require('../../../assests/pngs/MainAvatar.png')}
-                  style={styles.avatar}
-                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ProfileScreen')}>
+                  {profileImage && !imageError ? (
+                    <Image
+                      source={{
+                        uri:
+                          typeof profileImage === 'string'
+                            ? profileImage
+                            : profileImage?.uri,
+                      }}
+                      style={styles.avatar}
+                      onError={() => setImageError(true)}
+                      defaultSource={require('../../../assests/pngs/MainAvatar.png')}
+                    />
+                  ) : (
+                    <View style={styles.fallbackAvatar}>
+                      <Text style={styles.fallbackText}>
+                        {email ? email.charAt(0).toUpperCase() : 'GU'}
+                      </Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+
                 <View style={{flexDirection: 'column'}}>
                   <Text style={styles.greeting}>
-                    {`${email || phoneNumber || 'Guest'}`}
+                    {(() => {
+                      if (first_name && first_name !== 'Guest') {
+                        if (last_name && last_name !== 'User') {
+                          return `${first_name} ${last_name}`;
+                        }
+                        return first_name;
+                      }
+                      return 'Guest User';
+                    })()}
                   </Text>
+
                   <TouchableOpacity
                     style={styles.profileProgress}
                     onPress={() => navigation.navigate('ProfileScreen')}>
                     <Text style={styles.completeText}>
-                      Complete your profile (29% Done)
+                      Naviagte to your account
                     </Text>
                     <ChevronRight size={20} color={'#0088B1'} />
                   </TouchableOpacity>
-                  <Text style={styles.percentComplete}>29% Completed</Text>
+                  {email != null ? (
+                    <Text style={styles.percentComplete}>Email:{email}</Text>
+                  ) : (
+                    <Text style={styles.percentComplete}>
+                      Phone number: {phoneNumber}
+                    </Text>
+                  )}
                 </View>
               </View>
 

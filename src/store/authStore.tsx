@@ -18,9 +18,10 @@ export const useAuthStore = create<AuthStore>()(
       customer_id: null,
       email: null,
       phoneNumber: null,
-      fullName: null,
+      first_name: null,
+      last_name: null,
       profileImage: null,
-      dateOfBirth: null,
+      birthday: null,
       joinedDate: null,
       rehydrated: false,
 
@@ -29,9 +30,10 @@ export const useAuthStore = create<AuthStore>()(
         customer_id,
         email,
         phoneNumber,
-        fullName,
+        first_name,
+        last_name,
         profileImage,
-        dateOfBirth,
+        birthday,
         joinedDate,
       }) =>
         set(state => ({
@@ -40,9 +42,13 @@ export const useAuthStore = create<AuthStore>()(
           customer_id: customer_id || null,
           email: email || null,
           phoneNumber: phoneNumber || null,
-          fullName: fullName || state.fullName || null,
-          profileImage: profileImage || state.profileImage || null,
-          dateOfBirth: dateOfBirth || state.dateOfBirth || null,
+          first_name: first_name || state.first_name || null,
+          last_name: last_name || state.last_name || null,
+          profileImage:
+            typeof profileImage === 'string'
+              ? profileImage
+              : profileImage?.uri || state.profileImage || null,
+          birthday: birthday || state.birthday || null,
           joinedDate: joinedDate || state.joinedDate || null,
         })),
 
@@ -52,14 +58,16 @@ export const useAuthStore = create<AuthStore>()(
           customer_id: null,
           email: null,
           phoneNumber: null,
-          fullName: null,
-          profileImage: null,
-          dateOfBirth: null,
+          first_name: null,
+          last_name: null,
+          // profileImage: null,
+          // birthday: null,
           joinedDate: null,
         }),
 
       setRehydrated: value => set({rehydrated: value}),
     }),
+
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => AsyncStorage),

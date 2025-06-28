@@ -95,6 +95,11 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             token: response.data.token as string,
             customer_id: response.data.user.customer_id,
             phoneNumber: phoneNumber,
+            first_name: response.data.user.first_name,
+            last_name: response.data.user.last_name,
+            birthday: response.data.user.birthday,
+            joinedDate: response.data.user.registration_date,
+            // profileImage: response.data.user.profileImageUrl,
           });
           navigation.navigate('Layout');
           // Optionally, close the modal here if not done by navigation

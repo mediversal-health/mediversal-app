@@ -6,11 +6,9 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
-  ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
-import {CheckCircle, Download, Share2} from 'lucide-react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {styles} from './PaymentSuccessScreen.styles';
 import {useAuthStore} from '../../store/authStore';
@@ -19,6 +17,8 @@ import {DeleteFromCart} from '../../Services/cart';
 
 import {useCartStore} from '../../store/cartStore';
 import {useToastStore} from '../../store/toastStore';
+import LottieView from 'lottie-react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 
 Dimensions.get('window');
 
@@ -84,7 +84,7 @@ const PaymentSuccessScreen = ({route}: any) => {
           setProductQuantity(customer_id?.toString() ?? '', item.productId, 0);
         });
 
-        showToast('Your Order is Created', 'success');
+        // showToast('Your Order is Created', 'success');
         setOrderCreated(true);
       } catch (error) {
         console.error('Failed to create order or remove from cart:', error);
@@ -97,33 +97,20 @@ const PaymentSuccessScreen = ({route}: any) => {
     handleCreateOrder();
   }, []);
 
-  const handleDownloadReceipt = () => {
-    // Add download receipt functionality
-    console.log('Download receipt');
-  };
-
-  const handleShareReceipt = () => {
-    // Add share receipt functionality
-    console.log('Share receipt');
-  };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-        bounces={false}>
-        {/* Background decoration */}
-        <View style={styles.backgroundDecoration} />
-        <View style={styles.backgroundCircle} />
-
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           {/* Success Icon */}
           <View style={styles.iconContainer}>
-            <View style={styles.iconWrapper}>
-              <CheckCircle width={60} height={60} color="#FFFFFF" />
-            </View>
-            <View style={styles.iconGlow} />
+            <LottieView
+              source={require('./animations/Animation - 1750918868941.json')}
+              autoPlay
+              loop={false}
+              style={styles.lottie}
+            />
           </View>
 
           {/* Success Message */}
@@ -132,13 +119,11 @@ const PaymentSuccessScreen = ({route}: any) => {
             Your transaction has been completed successfully
             {isCreatingOrder && '\nProcessing your order...'}
           </Text>
-
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Transaction Details</Text>
+          </View>
           {/* Payment Details Card */}
           <View style={styles.detailsCard}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>Transaction Details</Text>
-            </View>
-
             <View style={styles.amountSection}>
               <Text style={styles.amountLabel}>Amount Paid</Text>
               <Text style={styles.amountValue}>
@@ -196,23 +181,6 @@ const PaymentSuccessScreen = ({route}: any) => {
                   : 'Pending'}
               </Text>
             </View>
-          </View>
-
-          {/* Action Buttons */}
-          <View style={styles.actionButtons}>
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={handleDownloadReceipt}>
-              <Download width={18} height={18} color="#0088B1" />
-              <Text style={styles.secondaryButtonText}>Download Receipt</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={handleShareReceipt}>
-              <Share2 width={18} height={18} color="#0088B1" />
-              <Text style={styles.secondaryButtonText}>Share</Text>
-            </TouchableOpacity>
           </View>
 
           {/* Primary Action Button */}

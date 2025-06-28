@@ -127,7 +127,7 @@ const PharmacyScreen = () => {
       showToast(
         `${productData.name || 'Product'} added to cart!`,
         'success',
-        3000,
+        1000,
         true,
       );
     } catch (error) {

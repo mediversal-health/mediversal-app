@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, TouchableOpacity, Alert, Text} from 'react-native';
+import {View, TextInput, TouchableOpacity, Text} from 'react-native';
 import {Eye, EyeOff} from 'lucide-react-native';
 import styles from './index.styles';
 import GoogleLoginButton from '../../ui/GoogleLoginButton';
@@ -7,6 +7,7 @@ import {RegisterUser} from '../../../Services/auth';
 import OtpSignUpModal from '../Modals/OtpSIgnUp';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../navigation';
+import {useToastStore} from '../../../store/toastStore'; // Import the toast store
 
 const EmailSignup = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,8 @@ const EmailSignup = () => {
   const [loading, setLoading] = useState(false);
   const [isOTPModalVisible, setOTPModalVisible] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const showToast = useToastStore(state => state.showToast); // Get the showToast function
+
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const isValidEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -29,30 +32,27 @@ const EmailSignup = () => {
 
   const handleSignup = async () => {
     if (!email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      showToast('Please fill in all fields', 'error', 1000, true);
       return;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+      showToast('Please enter a valid email address', 'error', 1000, true);
       return;
     }
 
     if (!isValidPassword(confirmPassword)) {
-      Alert.alert(
-        'Error',
+      showToast(
         'Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.',
+        'error',
+        5000, // Longer duration for complex message
+        true,
       );
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-
-    if (!email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      showToast('Passwords do not match', 'error', 1000, true);
       return;
     }
 
@@ -63,15 +63,21 @@ const EmailSignup = () => {
       setLoading(false);
 
       if (response.status === 200 || response.data?.success) {
+        showToast('Account created successfully!', 'success', 1000, true);
         setOTPModalVisible(true);
       } else {
-        Alert.alert('Error', response.data?.message || 'Signup failed');
+        showToast(
+          response.data?.message || 'Signup failed',
+          'error',
+          1000,
+          true,
+        );
       }
     } catch (error: any) {
       setLoading(false);
       const message =
         (error as any)?.response?.data?.message || 'Something went wrong';
-      Alert.alert('Error', message);
+      showToast(message, 'error', 1000, true);
     }
   };
 

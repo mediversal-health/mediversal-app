@@ -26,16 +26,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#E6F4F8',
     opacity: 0.5,
   },
-  backgroundCircle: {
-    position: 'absolute',
-    top: height * 0.1,
-    left: -width * 0.15,
-    width: width * 0.4,
-    height: width * 0.4,
-    borderRadius: width * 0.2,
-    backgroundColor: '#E6F4F8',
-    opacity: 0.3,
-  },
+
   content: {
     flex: 1,
     paddingHorizontal: 24,
@@ -44,49 +35,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    alignItems: 'center',
-    marginBottom: 32,
-    position: 'relative',
+    marginTop: -80,
+    // alignItems: 'center',
+    // position: 'relative',
   },
-  iconWrapper: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#0088B1',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8,
-    shadowColor: '#0088B1',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    zIndex: 2,
-  },
-  iconGlow: {
-    position: 'absolute',
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: '#0088B1',
-    opacity: 0.2,
-    zIndex: 1,
-  },
+
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: Fonts.JakartaBold,
-    color: '#1A1A1A',
+    color: '#0088B1',
     marginBottom: 8,
     textAlign: 'center',
+    marginTop: -50,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
-    color: '#64748B',
+    color: '#161D1F',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
     lineHeight: 24,
     maxWidth: '80%',
   },
@@ -107,6 +74,7 @@ export const styles = StyleSheet.create({
   },
   cardHeader: {
     marginBottom: 20,
+    justifyContent: 'flex-start',
   },
   cardTitle: {
     fontSize: 18,
@@ -115,8 +83,10 @@ export const styles = StyleSheet.create({
   },
   amountSection: {
     alignItems: 'center',
-    paddingVertical: 20,
-    marginBottom: 16,
+  },
+  lottie: {
+    width: 300,
+    height: 300,
   },
   amountLabel: {
     fontSize: 14,
@@ -125,7 +95,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   amountValue: {
-    fontSize: 32,
+    fontSize: 24,
     fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
   },
@@ -213,8 +183,8 @@ export const styles = StyleSheet.create({
   },
   supportText: {
     fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-    color: '#64748B',
+    fontFamily: Fonts.JakartaBold,
+    color: '#000',
     textDecorationLine: 'underline',
   },
 });

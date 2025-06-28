@@ -189,7 +189,7 @@ const CartPage = () => {
       showToast(
         'Remove out-of-stock items from your cart before proceeding.',
         'warning',
-        3000,
+        1000,
         true,
       );
       return;
@@ -221,16 +221,24 @@ const CartPage = () => {
       const data = await RazorpayCheckout.open(options);
 
       if (data.razorpay_payment_id) {
-        navigation.navigate('PaymentSuccessScreen', {
-          paymentId: data.razorpay_payment_id,
-          amount: cartTotal - couponDiscount + 5 + 40,
-          cartItems: cartItems,
-          address: formattedAddress,
-          pincode: formData?.PinCode ?? 0,
-          area: formData?.Area_details ?? '',
-          city: formData?.City,
-          State: formData?.State ?? '',
-          PhoneNumber: Number(formData?.PhoneNumber) || 0,
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'PaymentSuccessScreen',
+              params: {
+                paymentId: data.razorpay_payment_id,
+                amount: cartTotal - couponDiscount + 5 + 40,
+                cartItems: cartItems,
+                address: formattedAddress,
+                pincode: formData?.PinCode ?? 0,
+                area: formData?.Area_details ?? '',
+                city: formData?.City,
+                State: formData?.State ?? '',
+                PhoneNumber: Number(formData?.PhoneNumber) || 0,
+              },
+            },
+          ],
         });
       }
     } catch (error: any) {
