@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from './src/Screens/SplashScreen';
 import AppNavigator from './src/navigation';
@@ -9,20 +9,20 @@ const App = () => {
   const rehydrated = useAuthStore(state => state.rehydrated);
   const [showSplash, setShowSplash] = useState(true);
 
-  useEffect(() => {
-    if (rehydrated) {
-      const timeout = setTimeout(() => {
-        setShowSplash(false);
-      }, 2000);
+  // useEffect(() => {
+  //   if (rehydrated) {
+  //     const timeout = setTimeout(() => {
+  //       setShowSplash(false);
+  //     }, 1000);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [rehydrated]);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [rehydrated]);
 
   if (showSplash || !rehydrated) {
     return (
       <SafeAreaProvider>
-        <SplashScreen />
+        <SplashScreen onFadeOutComplete={() => setShowSplash(false)} />
       </SafeAreaProvider>
     );
   }

@@ -1,31 +1,38 @@
-import {View, Dimensions} from 'react-native';
-import React, {useRef, useEffect} from 'react';
+import {Dimensions, Animated} from 'react-native';
+import React, {useRef} from 'react';
 import LottieView from 'lottie-react-native';
 import styles from './index.styles';
-export default function SplashScreen() {
+
+type SplashScreenProps = {
+  onFadeOutComplete?: () => void;
+};
+
+export default function SplashScreen({onFadeOutComplete}: SplashScreenProps) {
   const animationRef = useRef<LottieView | null>(null);
-
-  useEffect(() => {
-    if (animationRef.current) {
-      animationRef.current.play();
-    }
-  }, []);
-
+  const fadeAnim = useRef(new Animated.Value(1)).current;
   const {width, height} = Dimensions.get('window');
 
+  const handleAnimationFinish = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500, // duration for smooth fade-out
+      useNativeDriver: true,
+    }).start(() => {
+      onFadeOutComplete?.(); // Notify App.tsx to proceed
+    });
+  };
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
       <LottieView
         ref={animationRef}
         autoPlay
-        loop
-        style={{
-          width: width,
-          height: height,
-        }}
+        loop={false}
+        onAnimationFinish={handleAnimationFinish}
+        style={{width, height}}
         resizeMode="cover"
         source={require('../../assests/lottie/Mediversal Splash Screen - Test - 01.json')}
       />
-    </View>
+    </Animated.View>
   );
 }
