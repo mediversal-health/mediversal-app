@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -14,7 +15,6 @@ import {
   Mail,
   Phone,
   Calendar,
-  UserPlus,
   LogOut,
   ChevronRight,
   MapPinned,
@@ -32,21 +32,68 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useToastStore} from '../../store/toastStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Platform} from 'react-native';
+import {updateProfile} from '../../Services/auth';
+
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
-  const clearAuthentication = useAuthStore(state => state.clearAuthentication);
+  const {
+    first_name,
+    last_name,
+    email,
+    phoneNumber,
+    birthday,
+    joinedDate,
+    customer_id,
+    profileImage,
+
+    setAuthentication,
+    clearAuthentication,
+  } = useAuthStore();
+
   const showToast = useToastStore(state => state.showToast);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [dobDate, setDobDate] = useState(new Date(1995, 1, 25));
+  const [dobDate, setDobDate] = useState(
+    birthday ? new Date(birthday) : new Date(1995, 1, 25),
+  );
+  console.log(dobDate);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
+
+  // Determine which image to display
+  const displayImage =
+    tempImage ||
+    (profileImage
+      ? typeof profileImage === 'string'
+        ? {uri: profileImage}
+        : profileImage
+      : null);
   const [userData, setUserData] = useState({
-    name: 'Guest User',
-    email: 'Guest@mediversal.in',
-    phone: '+91 9512576842',
-    dob: '25 February, 1995',
-    joined: '26 March, 2025',
-    photo: require('../../assests/pngs/MainAvatar.png'),
+    first_name: first_name || 'John',
+    last_name: last_name || 'Doe',
+    email: email || null,
+    phone: phoneNumber || 'Enter your phone number',
+    dob: birthday
+      ? new Date(birthday).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        })
+      : '25 February, 1995',
+    joined: joinedDate
+      ? new Date(joinedDate).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        })
+      : '26 March, 2025',
+    photo: profileImage
+      ? typeof profileImage === 'string'
+        ? {uri: profileImage}
+        : profileImage
+      : require('../../assests/pngs/MainAvatar.png'),
   });
 
   const handleLogout = () => {
@@ -56,10 +103,61 @@ export default function ProfileScreen() {
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
+  console.log(typeof customer_id);
+  if (!userData.photo) {
+    return <ActivityIndicator size="large" />;
+  }
+  const handleSave = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
 
-  const handleSave = () => {
-    showToast('Profile updated successfully', 'success', 500, true);
-    setIsEditMode(false);
+    try {
+      const formattedDob = dobDate.toISOString().split('T')[0];
+      const currentAuthState = useAuthStore.getState();
+
+      // Prepare image data if a new image was selected
+      let imageData;
+      if (tempImage?.uri) {
+        const uriParts = tempImage.uri.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+        imageData = {
+          uri: tempImage.uri,
+          type: `image/${fileType}`,
+          name: `profile.${fileType}`,
+        };
+      }
+
+      await updateProfile(customer_id?.toString() ?? '', {
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        birthday: formattedDob,
+        email: userData.email ?? '',
+        phone_number: userData.phone.replace(/\D/g, ''),
+        image: imageData,
+      });
+
+      // Update auth store with new image if one was selected
+      setAuthentication({
+        ...currentAuthState,
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        email: userData.email,
+        phoneNumber: userData.phone,
+        birthday: formattedDob,
+        profileImage: tempImage?.uri || profileImage,
+      });
+
+      showToast('Profile updated successfully', 'success', 1000, true);
+      setIsEditMode(false);
+      setTempImage(null); // Clear temp image after save
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      showToast('Failed to update profile', 'error', 1000, true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -68,6 +166,7 @@ export default function ProfileScreen() {
       [field]: value,
     }));
   };
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-GB', {
       day: '2-digit',
@@ -75,25 +174,33 @@ export default function ProfileScreen() {
       year: 'numeric',
     });
   };
+
   const selectImage = () => {
     openImagePicker();
   };
+
   const openImagePicker = async () => {
-    const response = await launchImageLibrary({
-      mediaType: 'photo',
-      selectionLimit: 0,
-      quality: 0.8,
-    });
-    if (
-      response.assets &&
-      response.assets.length > 0 &&
-      response.assets[0].uri
-    ) {
-      const source = {uri: response.assets[0].uri};
-      setUserData(prev => ({
-        ...prev,
-        photo: source,
-      }));
+    try {
+      const response = await launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 1,
+        quality: 0.8,
+      });
+
+      if (response.didCancel) {
+        return;
+      }
+      if (response.errorCode) {
+        showToast('Error selecting image', 'error', 1000, true);
+        return;
+      }
+
+      if (response.assets?.[0]?.uri) {
+        setTempImage({uri: response.assets[0].uri});
+      }
+    } catch (error) {
+      console.error('Image picker error:', error);
+      showToast('Failed to select image', 'error', 1000, true);
     }
   };
 
@@ -122,39 +229,52 @@ export default function ProfileScreen() {
             style={styles.profileImageContainer}
             onPress={isEditMode ? selectImage : undefined}
             disabled={!isEditMode}>
-            <Image source={userData.photo} style={styles.profileImage} />
+            {displayImage && !imageError ? (
+              <Image
+                source={displayImage}
+                style={styles.profileImage}
+                onError={() => setImageError(true)}
+                defaultSource={require('../../assests/pngs/MainAvatar.png')}
+              />
+            ) : (
+              <View style={styles.fallbackAvatar}>
+                <Text style={styles.fallbackText}>
+                  {email ? email.charAt(0).toUpperCase() : 'GU'}
+                </Text>
+              </View>
+            )}
             {isEditMode && (
               <View style={styles.editPhotoOverlay}>
                 <Text style={styles.editPhotoText}>Change Photo</Text>
               </View>
             )}
           </TouchableOpacity>
-
-          <View style={styles.profileInfo}>
-            {isEditMode ? (
-              <TextInput
-                style={[
-                  styles.profileName,
-                  {borderBottomWidth: 1, borderColor: '#0088B1'},
-                ]}
-                value={userData.name}
-                onChangeText={text => handleChange('name', text)}
-              />
-            ) : (
-              <Text style={styles.profileName}>{userData.name}</Text>
-            )}
-            <Text style={styles.joinedDate}>Joined: {userData.joined}</Text>
-          </View>
-
+          {!isEditMode && (
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>
+                {userData.first_name}
+                {''}
+                {userData.last_name}
+              </Text>
+              <Text style={styles.joinedDate}>Joined: {userData.joined}</Text>
+            </View>
+          )}
           <View style={styles.infoSection}>
             <View style={styles.infoHeader}>
               <Text style={styles.sectionTitle}>Information</Text>
               {isEditMode ? (
                 <TouchableOpacity
                   style={styles.editButton}
-                  onPress={handleSave}>
-                  <UserCheck size={20} color="#0088B1" />
-                  <Text style={styles.EditTitle}>Update Profile</Text>
+                  onPress={handleSave}
+                  disabled={isLoading}>
+                  {isLoading ? (
+                    <ActivityIndicator color="#0088B1" />
+                  ) : (
+                    <>
+                      <UserCheck size={20} color="#0088B1" />
+                      <Text style={styles.EditTitle}>Update Profile</Text>
+                    </>
+                  )}
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
@@ -165,7 +285,7 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
               )}
             </View>
-
+            {/*
             <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
                 <Mail size={20} color="#666" />
@@ -184,8 +304,47 @@ export default function ProfileScreen() {
               ) : (
                 <Text style={styles.infoValue}>{userData.email}</Text>
               )}
+            </View> */}
+
+            <View style={styles.infoItem}>
+              <View style={styles.infoItemLeft}>
+                <Mail size={20} color="#666" />
+                <Text style={styles.infoLabel}>First Name</Text>
+              </View>
+              {isEditMode ? (
+                <TextInput
+                  style={[
+                    styles.infoValue,
+                    {borderBottomWidth: 1, borderColor: '#0088B1'},
+                  ]}
+                  value={userData.first_name}
+                  onChangeText={text => handleChange('first_name', text)}
+                  keyboardType="default"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userData.first_name}</Text>
+              )}
             </View>
 
+            <View style={styles.infoItem}>
+              <View style={styles.infoItemLeft}>
+                <Mail size={20} color="#666" />
+                <Text style={styles.infoLabel}>Last Name</Text>
+              </View>
+              {isEditMode ? (
+                <TextInput
+                  style={[
+                    styles.infoValue,
+                    {borderBottomWidth: 1, borderColor: '#0088B1'},
+                  ]}
+                  value={userData.last_name}
+                  onChangeText={text => handleChange('last_name', text)}
+                  keyboardType="default"
+                />
+              ) : (
+                <Text style={styles.infoValue}>{userData.last_name}</Text>
+              )}
+            </View>
             <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
                 <Phone size={20} color="#666" />
@@ -224,7 +383,6 @@ export default function ProfileScreen() {
                     style={{
                       textAlign: 'right',
                       width: '100%',
-
                       fontFamily: Fonts.JakartaRegular,
                       fontSize: 10,
                     }}>
@@ -255,13 +413,14 @@ export default function ProfileScreen() {
               />
             )}
 
-            <View style={styles.infoItem}>
+            {/* <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
                 <UserPlus size={20} color="#666" />
                 <Text style={styles.infoLabel}>Joined</Text>
               </View>
               <Text style={styles.infoValue}>{userData.joined}</Text>
-            </View>
+            </View> */}
+
             {!isEditMode && (
               <>
                 <TouchableOpacity
@@ -286,6 +445,7 @@ export default function ProfileScreen() {
                     <Text style={styles.logoutLabel}>Logout</Text>
                   </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={styles.logoutItem}
                   onPress={handleLogout}>

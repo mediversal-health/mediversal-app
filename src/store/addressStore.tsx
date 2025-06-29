@@ -13,7 +13,7 @@ interface AddressBookState {
 export const useAddressBookStore = create<AddressBookState>(set => ({
   addresses: [],
   selectedAddress: null,
-  hasLoadedAddresses: false, // Initialize as false
+  hasLoadedAddresses: false,
   setAddresses: data => set({addresses: data}),
   setSelectedAddress: address => set({selectedAddress: address}),
   setHasLoadedAddresses: loaded => set({hasLoadedAddresses: loaded}),

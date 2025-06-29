@@ -94,7 +94,7 @@ export default function SearchScreen() {
           Contact_details: '',
           Recipient_name: '',
           PhoneNumber: '',
-          PinCode: parseInt(pincode) || 0,
+          PinCode: parseInt(pincode, 10) || 0,
           Country: 'India',
           Address_type: 'Current Location',
         };
@@ -201,7 +201,7 @@ export default function SearchScreen() {
           Contact_details: '',
           Recipient_name: '',
           PhoneNumber: '',
-          PinCode: '',
+          PinCode: 0,
           Country: 'India',
           Address_type: 'Manual Search',
         };

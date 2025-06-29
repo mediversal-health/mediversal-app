@@ -21,6 +21,12 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 16,
     elevation: 10,
   },
+  profileCompleteText: {
+    fontSize: 14,
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaMedium,
+    marginTop: 4,
+  },
   header: {
     borderBottomWidth: 1,
     borderBottomColor: '#B0B6B8',
@@ -126,6 +132,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '400',
     fontSize: 12,
+  },
+  fallbackAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 18,
+    marginRight: 10,
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  fallbackText: {
+    fontSize: 18,
+    color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;

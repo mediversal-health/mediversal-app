@@ -103,7 +103,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       setProductQuantity(customer_id?.toString() ?? '', productId, 0);
       setSelectedCoupon(String(customer_id), null);
       removeFromCart(customer_id?.toString() ?? '', productId);
-      showToast(`${name} removed from cart`, 'error', 3000, true);
+      showToast(`${name} removed from cart`, 'error', 1000, true);
       if (onRemove) {
         onRemove();
       }

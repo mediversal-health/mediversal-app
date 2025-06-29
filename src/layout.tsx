@@ -22,6 +22,7 @@ import {getProducts} from './Services/pharmacy';
 import useProductStore from './store/productsStore';
 import {useAddressBookStore} from './store/addressStore';
 import CartIconWithBadge from './components/ui/CartIconWithBadge';
+import {useAuthStore} from './store/authStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -29,7 +30,9 @@ const Layout = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
   const selectedAddress = useAddressBookStore(state => state.selectedAddress);
+  const {profileImage, email} = useAuthStore();
 
+  const [imageError, setImageError] = useState(false);
   const {setProducts} = useProductStore();
   const fetchProducts = useCallback(() => {
     getProducts()
@@ -65,17 +68,47 @@ const Layout = () => {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
-                <Image
-                  source={require('./assests/pngs/MainAvatar.png')}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 25,
-                    marginRight: 10,
-                    borderWidth: 2,
-                    borderColor: '#ccc',
-                  }}
-                />
+                {profileImage && !imageError ? (
+                  <Image
+                    source={{
+                      uri:
+                        typeof profileImage === 'string'
+                          ? profileImage
+                          : profileImage?.uri,
+                    }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 25,
+                      marginRight: 10,
+                      borderWidth: 2,
+                      borderColor: '#ccc',
+                    }}
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 25,
+                      marginRight: 10,
+                      borderWidth: 2,
+                      borderColor: '#ccc',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: '#ccc',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: Fonts.JakartaRegular,
+                        fontSize: 18,
+                        color: '#fff',
+                      }}>
+                      {email ? email.charAt(0).toUpperCase() : 'GU'}
+                    </Text>
+                  </View>
+                )}
               </TouchableWithoutFeedback>
 
               <View style={{flexDirection: 'column'}}>

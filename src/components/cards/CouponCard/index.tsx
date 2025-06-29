@@ -33,7 +33,7 @@ const CouponCard: React.FC<CouponCardProps> = ({
   const handleApply = () => {
     if (customer_id !== null && customer_id !== undefined) {
       setSelectedCoupon(String(customer_id), coupon);
-      showToast('Coupon Applied', 'success', 3000, true);
+      showToast('Coupon Applied', 'success', 1000, true);
       onApply?.(coupon);
     }
   };

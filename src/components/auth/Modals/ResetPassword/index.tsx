@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Eye, EyeOff} from 'lucide-react-native';
@@ -13,6 +12,8 @@ import {ResetPassword} from '../../../../Services/auth';
 import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../../navigation';
+import {useToastStore} from '../../../../store/toastStore'; // Import the toast store
+
 interface ResetPasswordModalProps {
   isVisible: boolean;
   onClose: () => void;
@@ -31,14 +32,16 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const showToast = useToastStore(state => state.showToast); // Get the showToast function
+
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in both fields.');
+      showToast('Please fill in both fields', 'error', 1000, true);
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
+      showToast('Passwords do not match', 'error', 1000, true);
       return;
     }
 
@@ -48,21 +51,25 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
       setLoading(false);
 
       if (response.data?.success === true) {
-        Alert.alert('Success', 'Password updated successfully!', [
-          {text: 'OK', onPress: onClose},
-        ]);
+        showToast('Password updated successfully!', 'success', 1000, true);
+        onClose();
         navigation.reset({
           index: 0,
           routes: [{name: 'Login'}],
         });
       } else {
-        Alert.alert('Error', response.data?.message || 'Update failed');
+        showToast(
+          response.data?.message || 'Password update failed',
+          'error',
+          1000,
+          true,
+        );
       }
     } catch (error: unknown) {
       setLoading(false);
       const errorMessage =
-        (error as any)?.response?.data?.message || 'Something went wrong.';
-      Alert.alert('Error', errorMessage);
+        (error as any)?.response?.data?.message || 'Something went wrong';
+      showToast(errorMessage, 'error', 1000, true);
     }
   };
 
