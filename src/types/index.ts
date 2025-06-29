@@ -6,9 +6,10 @@ export type AuthState = {
   email: string | null;
   phoneNumber: string | null;
 
-  fullName?: string | null;
-  profileImage?: string | null;
-  dateOfBirth?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+  profileImage: string | {uri: string} | null;
+  birthday?: string | null;
   joinedDate?: string | null;
 
   setAuthentication: (params: {
@@ -16,9 +17,10 @@ export type AuthState = {
     customer_id?: number | string;
     email?: string;
     phoneNumber?: string;
-    fullName?: string;
+    first_name?: string;
+    last_name?: string;
     profileImage?: string;
-    dateOfBirth?: string;
+    birthday?: string;
     joinedDate?: string;
   }) => void;
 

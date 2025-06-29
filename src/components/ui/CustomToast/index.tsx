@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     paddingHorizontal: 20,
-    paddingVertical: 12,
+    // paddingVertical: 12,
     borderRadius: 12,
     zIndex: 1000,
     elevation: 5,

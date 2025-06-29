@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, {useState, useEffect, useCallback} from 'react'; // Import useCallback
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -67,11 +67,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
     };
   }, [isVisible, timer]);
 
-  // IMPORTANT: Wrap handleVerifyOTP in useCallback to prevent re-creation
-  // This is crucial if it's passed as a prop that triggers useEffect in child.
   const handleVerifyOTP = useCallback(
     async (fullOtpString?: string) => {
-      // Accept optional string from onOtpComplete
       try {
         setVerifying(true);
         setError('');
@@ -84,7 +81,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
 
         const response = (await verifyOTP(
           phoneNumber,
-          otpToVerify, // Use otpToVerify
+          otpToVerify,
           'phone',
         )) as ApiResponse;
         console.log(response);
@@ -95,9 +92,13 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             token: response.data.token as string,
             customer_id: response.data.user.customer_id,
             phoneNumber: phoneNumber,
+            first_name: response.data.user.first_name,
+            last_name: response.data.user.last_name,
+            birthday: response.data.user.birthday,
+            joinedDate: response.data.user.registration_date,
+            // profileImage: response.data.user.profileImageUrl,
           });
           navigation.navigate('Layout');
-          // Optionally, close the modal here if not done by navigation
           // onClose();
         } else {
           setError(response.data?.message || 'Invalid OTP');
@@ -109,18 +110,16 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       }
     },
     [otp, phoneNumber, setAuthentication, navigation],
-  ); // Dependencies for useCallback
+  );
 
-  // Callback from CustomOtpInput when OTP is complete
   const onOtpCompleteHandler = useCallback(
     (fullOtpCode: string) => {
       console.log('OTP received via autofill/paste:', fullOtpCode);
-      // setOtp(fullOtpCode.split('')); // CustomOtpInput already handles setting its own state
-      // Trigger verification immediately
+      // setOtp(fullOtpCode.split(''));
       handleVerifyOTP(fullOtpCode);
     },
     [handleVerifyOTP],
-  ); // Dependency on handleVerifyOTP
+  );
 
   const handleResendOTP = async () => {
     try {
@@ -131,7 +130,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
 
       if (response.data?.success) {
         setTimer(60);
-        setOtp(Array(6).fill('')); // Clear OTP on resend
+        setOtp(Array(6).fill(''));
         Alert.alert('Success', 'OTP sent successfully');
       } else {
         setError(response.data?.message || 'Failed to resend OTP');
@@ -149,7 +148,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={undefined} // Or set to onClose if you want it to close on tap outside
+      onBackdropPress={undefined}
       style={styles.modal}
       swipeDirection={['down']}
       animationOut="slideOutDown"
@@ -173,8 +172,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           setOtp={setOtp}
           error={error}
           isVisible={isVisible}
-          otpLength={6} // Explicitly pass the length
-          onOtpComplete={onOtpCompleteHandler} // Pass the new handler
+          otpLength={6}
+          onOtpComplete={onOtpCompleteHandler}
         />
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -205,7 +204,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             verifying ? styles.verifyButtonLoading : null,
             !isOtpFilled ? styles.verifyButtonDisabled : null,
           ]}
-          onPress={() => handleVerifyOTP()} // Call without arguments for manual press
+          onPress={() => handleVerifyOTP()}
           disabled={!isOtpFilled || verifying}
           activeOpacity={0.8}>
           {verifying ? (

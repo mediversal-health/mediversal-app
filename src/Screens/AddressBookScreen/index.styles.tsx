@@ -304,6 +304,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 30,
   },
+  inputError: {
+    borderColor: '#FF4444',
+  },
   dropdownHeaderTop: {
     padding: 12,
     backgroundColor: '#fff',

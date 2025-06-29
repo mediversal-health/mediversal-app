@@ -176,8 +176,11 @@ const AddressBookScreen: React.FC = () => {
   }, [fetchAddresses]);
 
   useEffect(() => {
+    if (addresses.length === 0) {
+      setIsFormVisible(true);
+    }
     fetchAddresses();
-  }, [fetchAddresses]);
+  }, [fetchAddresses, addresses.length]);
 
   useEffect(() => {
     if (locationData) {
@@ -237,6 +240,24 @@ const AddressBookScreen: React.FC = () => {
       newErrors.Home_Floor_FlatNumber = 'House number is required';
     }
 
+    if (!formData.Area_details.trim()) {
+      newErrors.Area_details = 'Area Details is required';
+    }
+
+    if (!formData.PinCode) {
+      newErrors.PinCode = 'Pincode is required';
+    } else if (!/^\d{6}$/.test(String(formData.PinCode))) {
+      newErrors.PinCode = 'Enter a valid 6-digit pincode';
+    }
+
+    if (!formData.City.trim()) {
+      newErrors.City = 'City is required';
+    }
+
+    if (!formData.State.trim()) {
+      newErrors.State = 'State is required';
+    }
+
     if (!formData.Recipient_name.trim()) {
       newErrors.Recipient_name = 'Recipient name is required';
     }
@@ -250,7 +271,6 @@ const AddressBookScreen: React.FC = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleEditAddress = (address: AddressBookTypes | null) => {
     if (!address) {
       return;
@@ -512,48 +532,44 @@ const AddressBookScreen: React.FC = () => {
               )}
             </View>
           )}
-          {addresses.length > 0 &&
-            (isFormVisible && isFromProfile ? null : (
-              <TouchableOpacity
-                style={
-                  isFormVisible
-                    ? styles.dropdownHeaderOpen
-                    : styles.dropdownHeader
-                }
-                onPress={() => {
-                  setIsFormVisible(true);
-                  setIsAddressCardVisible(false);
-                  setIsEditMode(false);
-                  resetForm();
+          {isFormVisible && isFromProfile ? null : (
+            <TouchableOpacity
+              style={
+                isFormVisible
+                  ? styles.dropdownHeaderOpen
+                  : styles.dropdownHeader
+              }
+              onPress={() => {
+                setIsFormVisible(true);
+                setIsAddressCardVisible(false);
+                setIsEditMode(false);
+                resetForm();
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
                 }}>
                 <View
                   style={{
                     flexDirection: 'row',
+                    gap: 10,
                     alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: '100%',
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      gap: 10,
-                      alignItems: 'center',
-                    }}>
-                    {isFromProfile && <Plus size={20} color="#000" />}
-                    <Text style={styles.dropdownHeaderText}>
-                      Add New Address
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
-                    }}>
-                    <ChevronDown size={20} color="#000" />
-                  </View>
+                  {isFromProfile && <Plus size={20} color="#000" />}
+                  <Text style={styles.dropdownHeaderText}>Add New Address</Text>
                 </View>
-              </TouchableOpacity>
-            ))}
-
+                <View
+                  style={{
+                    transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
+                  }}>
+                  <ChevronDown size={20} color="#000" />
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
           {isFromProfile && !isFormVisible && (
             <>
               {addresses.length > 0 && (
@@ -628,19 +644,24 @@ const AddressBookScreen: React.FC = () => {
               </View>
 
               <View style={styles.formGroup}>
-                <Text style={styles.inputLabel}>Area Details</Text>
+                <Text style={styles.inputLabel}>
+                  Area Details <Text style={styles.required}>*</Text>
+                </Text>
                 <TextInput
                   style={[
                     styles.input,
                     focusedField === 'Area_details' && styles.inputFocused,
                     formData.Area_details !== '' && styles.inputFilled,
                   ]}
-                  value={formData.Area_details}
+                  value={formData.Home_Floor_FlatNumber}
                   onChangeText={text => handleInputChange('Area_details', text)}
                   placeholder="Area Details"
                   onFocus={() => setFocusedField('Area_details')}
                   onBlur={() => setFocusedField(null)}
                 />
+                {errors.Area_details && (
+                  <Text style={styles.errorText}>{errors.Area_details}</Text>
+                )}
               </View>
 
               <View style={styles.formGroup}>
@@ -661,7 +682,9 @@ const AddressBookScreen: React.FC = () => {
 
               <View style={styles.formRow}>
                 <View style={[styles.formGroup, styles.halfWidth]}>
-                  <Text style={styles.inputLabel}>Pincode</Text>
+                  <Text style={styles.inputLabel}>
+                    Pincode <Text style={styles.required}>*</Text>
+                  </Text>
                   <TextInput
                     style={[
                       styles.input,
@@ -677,10 +700,15 @@ const AddressBookScreen: React.FC = () => {
                     onFocus={() => setFocusedField('PinCode')}
                     onBlur={() => setFocusedField(null)}
                   />
+                  {errors.PinCode && (
+                    <Text style={styles.errorText}>{errors.PinCode}</Text>
+                  )}
                 </View>
 
                 <View style={[styles.formGroup, styles.halfWidth]}>
-                  <Text style={styles.inputLabel}>City</Text>
+                  <Text style={styles.inputLabel}>
+                    City<Text style={styles.required}>*</Text>
+                  </Text>
                   <TextInput
                     style={[
                       styles.input,
@@ -693,11 +721,16 @@ const AddressBookScreen: React.FC = () => {
                     onFocus={() => setFocusedField('City')}
                     onBlur={() => setFocusedField(null)}
                   />
+                  {errors.City && (
+                    <Text style={styles.errorText}>{errors.City}</Text>
+                  )}
                 </View>
               </View>
 
               <View style={styles.formGroup}>
-                <Text style={styles.inputLabel}>State</Text>
+                <Text style={styles.inputLabel}>
+                  State <Text style={styles.required}>*</Text>
+                </Text>
                 <TextInput
                   style={[
                     styles.input,
@@ -710,6 +743,9 @@ const AddressBookScreen: React.FC = () => {
                   onFocus={() => setFocusedField('State')}
                   onBlur={() => setFocusedField(null)}
                 />
+                {errors.State && (
+                  <Text style={styles.errorText}>{errors.State}</Text>
+                )}
               </View>
 
               <Text style={[styles.sectionTitle, styles.contactTitle]}>
@@ -801,21 +837,21 @@ const AddressBookScreen: React.FC = () => {
           )}
         </ScrollView>
         <View style={{marginHorizontal: 16}}>
-          {isAddressCardVisible ? (
-            !isFromProfile && (
-              <TouchableOpacity
-                style={[
-                  styles.saveButton,
-                  !selectedAddress && styles.disabledButton,
-                ]}
-                onPress={handleProceedWithSelectedAddress}
-                disabled={!selectedAddress}>
-                <Text style={styles.saveButtonText}>
-                  Proceed with Selected Address
-                </Text>
-              </TouchableOpacity>
-            )
-          ) : isFormVisible ? (
+          {isAddressCardVisible && !isFromProfile && !isFormVisible && (
+            <TouchableOpacity
+              style={[
+                styles.saveButton,
+                !selectedAddress && styles.disabledButton,
+              ]}
+              onPress={handleProceedWithSelectedAddress}
+              disabled={!selectedAddress}>
+              <Text style={styles.saveButtonText}>
+                Proceed with Selected Address
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          {isFormVisible && (
             <TouchableOpacity
               style={[
                 styles.saveButton,
@@ -833,7 +869,7 @@ const AddressBookScreen: React.FC = () => {
                   : 'Save & Proceed'}
               </Text>
             </TouchableOpacity>
-          ) : null}
+          )}
         </View>
       </View>
 

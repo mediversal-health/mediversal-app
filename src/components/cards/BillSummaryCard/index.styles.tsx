@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
 
   detailsHeading: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaSemiBold,
     marginVertical: 6,
     color: '#161D1F',
   },
@@ -77,15 +77,17 @@ export const styles = StyleSheet.create({
   },
   leftText: {
     fontSize: 13,
+    fontFamily: Fonts.JakartaRegular,
     color: '#333',
   },
   rightText: {
     fontSize: 13,
     color: '#333',
+    fontFamily: Fonts.JakartaRegular,
   },
   totalToPay: {
     fontSize: 14,
-    fontWeight: '700',
+    fontFamily: Fonts.JakartaRegular,
     color: '#161D1F',
     marginBottom: 2,
   },

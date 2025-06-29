@@ -7,12 +7,16 @@ import {
   AlertCircle,
   Clock,
   Truck,
-  MoreVertical,
+  ChevronRight,
+  BadgeIndianRupee,
+  Package,
+  Boxes,
 } from 'lucide-react-native';
 
 import type {ReactElement} from 'react';
 import {Order, OrderStatus} from '../../../types';
 import styles from './index.styles';
+import {Fonts} from '../../../styles/fonts';
 
 interface OrderCardProps {
   order: Order;
@@ -63,29 +67,83 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
 
   return (
     <View style={styles.card}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-        <View style={[styles.iconWrapper, {backgroundColor: config.bgColor}]}>
-          {config.icon}
-        </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          justifyContent: 'space-between',
+        }}>
         <View>
-          <Text style={styles.orderId}>
-            {order.orderId} - {order.date} - {order.items}
-          </Text>
-          <Text style={styles.name}>{order.name}</Text>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View
+              style={[styles.iconWrapper, {backgroundColor: config.bgColor}]}>
+              <Truck />
+            </View>
+            <View style={{flexDirection: 'column'}}>
+              <Text style={styles.name}>{order.status}</Text>
+              <Text style={styles.orderId}>{order.orderId}</Text>
+            </View>
+          </View>
         </View>
+
+        <ChevronRight />
       </View>
-      <View style={styles.rightContent}>
-        <Text style={styles.amount}>{order.amount}</Text>
-        <View style={[styles.statusBox, {backgroundColor: config.bgColor}]}>
-          <Text
-            style={[styles.statusText, {color: config.statusColor}]}
-            numberOfLines={2}>
-            {order.status.length > 10
-              ? order.status.slice(0, 10) + '\n' + order.status.slice(10)
-              : order.status}
-          </Text>
+      <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+        <View style={styles.rightContent}>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Package size={20} />
+            </View>
+            <View style={{flexDirection: 'column', gap: 2}}>
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaRegular,
+                  fontSize: 8,
+                  color: '#899193',
+                }}>
+                Delivery Date
+              </Text>
+              <Text style={styles.amount}>25 Jun 2025</Text>
+            </View>
+          </View>
         </View>
-        <MoreVertical size={16} color="#6b7280" style={{marginLeft: 8}} />
+        <View style={styles.rightContent}>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Boxes size={20} />
+            </View>
+            <View style={{flexDirection: 'column', gap: 2}}>
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaRegular,
+                  fontSize: 8,
+                  color: '#899193',
+                }}>
+                Order Items
+              </Text>
+              <Text style={styles.amount}>{order.amount}</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.rightContent}>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <BadgeIndianRupee size={20} />
+            </View>
+            <View style={{flexDirection: 'column', gap: 2}}>
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaRegular,
+                  fontSize: 8,
+                  color: '#899193',
+                }}>
+                Order Value
+              </Text>
+              <Text style={styles.amount}>{order.amount}</Text>
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   );

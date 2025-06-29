@@ -147,11 +147,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 20,
     marginTop: 10,
+    marginBottom: 20,
   },
   editPhotoText: {
     color: 'white',
     fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 16,
+  },
+  loadingAvatar: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+  },
+  fallbackAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  fallbackText: {
+    fontSize: 18,
+    color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
   },
 });
 export default styles;
