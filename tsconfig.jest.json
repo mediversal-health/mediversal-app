@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react", // Or "react-native" depending on your setup
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "types": ["jest", "node"]
+  },
+  "include": ["src", "declaration.d.ts", "jest-setup.ts", "__tests__"], // Adjust as per your project structure
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
+}

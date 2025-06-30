@@ -92,7 +92,7 @@ const EmailSignup = () => {
     <>
       <TextInput
         style={styles.input}
-        placeholder="monish.ranjan@mediversal.in"
+        placeholder="name@mediversal.com"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -156,14 +156,14 @@ const EmailSignup = () => {
       <View style={styles.helpContainer}>
         <TouchableOpacity onPress={handleNavigate}>
           <Text style={styles.helpText}>
-            Already have an account?{' '}
+            Already have an account?
             <Text style={styles.haveAccountText}>Login</Text>
           </Text>
         </TouchableOpacity>
       </View>
 
       <Text style={styles.termsText}>
-        By logging in, you agree to our{' '}
+        By logging in, you agree to our
         <Text style={styles.termsHighlight}>Terms & Conditions</Text>
       </Text>
 
