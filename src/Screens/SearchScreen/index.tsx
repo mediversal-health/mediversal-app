@@ -321,35 +321,36 @@ export default function SearchScreen() {
               <Text style={localStyles.errorText}>{pincodeError}</Text>
             )}
           </View>
-
-          <View style={localStyles.addressCardContainer}>
-            <Text style={localStyles.sectionTitle}>Saved Addresses</Text>
-            {isLoading && !refreshing ? (
-              <AddressCardSkeleton count={3} />
-            ) : (
-              <View style={{alignItems: 'center'}}>
-                {addresses.map((addr, idx) => (
-                  <AddressCard
-                    key={idx}
-                    title={addr.Address_type}
-                    address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
-                    phoneNumber={addr.PhoneNumber}
-                    onPress={() => handleAddressSelect(addr)}
-                    selected={
-                      selectedAddress?.Customer_Address_id ===
-                        addr.Customer_Address_id ||
-                      currentCustomerAddress?.Customer_Address_id ===
-                        addr.Customer_Address_id
-                    }
-                    onMorePress={() => {
-                      setSelectedAddress(addr);
-                    }}
-                    isFromLayout={true}
-                  />
-                ))}
-              </View>
-            )}
-          </View>
+          {addresses.length > 0 && (
+            <View style={localStyles.addressCardContainer}>
+              <Text style={localStyles.sectionTitle}>Saved Addresses</Text>
+              {isLoading && !refreshing ? (
+                <AddressCardSkeleton count={3} />
+              ) : (
+                <View style={{alignItems: 'center'}}>
+                  {addresses.map((addr, idx) => (
+                    <AddressCard
+                      key={idx}
+                      title={addr.Address_type}
+                      address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
+                      phoneNumber={addr.PhoneNumber}
+                      onPress={() => handleAddressSelect(addr)}
+                      selected={
+                        selectedAddress?.Customer_Address_id ===
+                          addr.Customer_Address_id ||
+                        currentCustomerAddress?.Customer_Address_id ===
+                          addr.Customer_Address_id
+                      }
+                      onMorePress={() => {
+                        setSelectedAddress(addr);
+                      }}
+                      isFromLayout={true}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
         </ScrollView>
 
         <View style={localStyles.currentLocationContainer}>

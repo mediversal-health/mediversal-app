@@ -659,7 +659,7 @@ const AddressBookScreen: React.FC = () => {
                     focusedField === 'Area_details' && styles.inputFocused,
                     formData.Area_details !== '' && styles.inputFilled,
                   ]}
-                  value={formData.Home_Floor_FlatNumber}
+                  value={formData.Area_details}
                   onChangeText={text => handleInputChange('Area_details', text)}
                   placeholder="Area Details"
                   onFocus={() => setFocusedField('Area_details')}
