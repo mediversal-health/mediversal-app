@@ -4,7 +4,7 @@ import {Fonts} from '../../../styles/fonts';
 const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 60 : 50,
+    top: Platform.OS === 'ios' ? 50 : 30,
     left: 0,
     height: '100%',
     width: '100%',
@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
     width: '85%',
     backgroundColor: '#fff',
     padding: 10,
-    borderTopRightRadius: 16,
-    borderBottomRightRadius: 16,
-    elevation: 10,
+    // borderTopRightRadius: 16,
+    // borderBottomRightRadius: 16,
+    // elevation: 10,
   },
   profileCompleteText: {
     fontSize: 14,

@@ -29,7 +29,12 @@ const Layout = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
-  const selectedAddress = useAddressBookStore(state => state.selectedAddress);
+  const {customerAddressMap} = useAddressBookStore();
+  const customer_id = useAuthStore(state => state.customer_id);
+  const currentCustomerAddress = customer_id
+    ? customerAddressMap[customer_id]
+    : null;
+
   const {profileImage, email} = useAuthStore();
 
   const [imageError, setImageError] = useState(false);
@@ -133,12 +138,14 @@ const Layout = () => {
                           fontFamily: Fonts.JakartaRegular,
                           fontSize: 12,
                         }}>
-                        {selectedAddress
+                        {currentCustomerAddress
                           ? `${
-                              selectedAddress.Area_details
-                                ? selectedAddress.Area_details + ', '
+                              currentCustomerAddress.Area_details
+                                ? currentCustomerAddress.Area_details + ', '
                                 : ''
-                            }${selectedAddress.City} - ${selectedAddress.State}`
+                            }${currentCustomerAddress.City} - ${
+                              currentCustomerAddress.State
+                            }`
                           : 'Select Location'}
                       </Text>
                     </TouchableOpacity>

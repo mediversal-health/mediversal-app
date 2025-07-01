@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthStore>()(
           phoneNumber: null,
           first_name: null,
           last_name: null,
-          // profileImage: null,
+          profileImage: null,
           // birthday: null,
           joinedDate: null,
         }),

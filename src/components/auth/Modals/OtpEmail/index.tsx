@@ -86,10 +86,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           last_name: response.data.user.last_name,
           birthday: response.data.user.birthday,
           joinedDate: response.data.user.registration_date,
-          profileImage:
-            typeof response.data.user.profileImageUrl === 'string'
-              ? response.data.user.profileImageUrl
-              : response.data.user.profileImageUrl?.uri || null,
+          profileImage: response.data.user.profileImageUrl || null,
         });
         navigation.navigate('Layout');
       } else {

@@ -1,73 +1,116 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef} from 'react';
-import {ChevronLeft, MapPinned, Search} from 'lucide-react-native';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
+import {ChevronLeft, MapPinned} from 'lucide-react-native';
 import {
   Text,
   TouchableOpacity,
   View,
   TextInput,
-  FlatList,
   ActivityIndicator,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
+  RefreshControl,
+  Platform,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import styles from './index.styles';
-import {GOOGLE_API_KEY} from '@env';
 import {Fonts} from '../../styles/fonts';
 import Geolocation from '@react-native-community/geolocation';
 import {requestLocationPermission} from '../../utils/permissions';
 import {useAddressBookStore} from '../../store/addressStore';
 import {AddressBookTypes} from '../../types';
-
-interface PlacePrediction {
-  description: string;
-  place_id: string;
-  structured_formatting: {
-    main_text: string;
-    secondary_text: string;
-  };
-}
-
-interface PlaceAutocompleteResponse {
-  predictions: PlacePrediction[];
-  status: string;
-}
+import AddressCard from '../../components/cards/AddressCard';
+import {getCustomerAddresses} from '../../Services/address';
+import {useAuthStore} from '../../store/authStore';
+import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
 
 export default function SearchScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [searchText, setSearchText] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<PlacePrediction[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const customer_id = useAuthStore(state => state.customer_id);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLocating, setIsLocating] = useState<boolean>(false);
+  const [pincode, setPincode] = useState<string>('');
+  const [pincodeError, setPincodeError] = useState<string>('');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const {
+    addresses,
+    setAddresses,
+    selectedAddress,
+    setSelectedAddress,
+    hasLoadedAddresses,
+    setHasLoadedAddresses,
+    customerAddressMap,
+    updateCustomerAddressMap,
+  } = useAddressBookStore();
+
   const retryAttemptRef = useRef<number>(0);
   const maxRetryAttempts = 3;
   const watchIdRef = useRef<number | null>(null);
 
-  const fetchPlaces = async (text: string): Promise<void> => {
-    if (text.length > 1) {
-      setIsLoading(true);
+  const fetchAddresses = useCallback(
+    async (isRefreshing = false) => {
       try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-            text,
-          )}&key=${GOOGLE_API_KEY}&types=geocode`,
-        );
-        const data: PlaceAutocompleteResponse = await response.json();
-        if (data.predictions) {
-          setSuggestions(data.predictions);
+        if (!hasLoadedAddresses || isRefreshing) {
+          if (isRefreshing) {
+            setRefreshing(true);
+          } else {
+            setIsLoading(true);
+          }
+
+          let res;
+          if (customer_id) {
+            res = await getCustomerAddresses(customer_id.toString());
+          }
+          setAddresses(res?.data || []);
+          setHasLoadedAddresses(true);
         }
       } catch (error) {
-        console.error('Error fetching places:', error);
+        console.log('Failed to fetch addresses:', error);
       } finally {
-        setIsLoading(false);
+        if (!isRefreshing) {
+          setIsLoading(false);
+        } else {
+          setRefreshing(false);
+        }
       }
-    } else {
-      setSuggestions([]);
-    }
-  };
+    },
+    [customer_id, hasLoadedAddresses, setAddresses, setHasLoadedAddresses],
+  );
 
+  const onRefresh = useCallback(() => {
+    fetchAddresses(true);
+  }, [fetchAddresses]);
+
+  useEffect(() => {
+    fetchAddresses();
+  }, [fetchAddresses]);
+  //  const fetchPlaces = async (text: string): Promise<void> => {
+  //     if (text.length > 1) {
+  //       setIsLoading(true);
+  //       try {
+  //         const response = await fetch(
+  //           `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
+  //             text,
+  //           )}&key=${GOOGLE_API_KEY}&types=geocode`,
+  //         );
+  //         const data: PlaceAutocompleteResponse = await response.json();
+  //         if (data.predictions) {
+  //           setSuggestions(data.predictions);
+  //         }
+  //       } catch (error) {
+  //         console.error('Error fetching places:', error);
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     } else {
+  //       setSuggestions([]);
+  //     }
+  //   };
   const fetchAddress = async (latitude: number, longitude: number) => {
     try {
       const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`;
@@ -99,10 +142,10 @@ export default function SearchScreen() {
           Address_type: 'Current Location',
         };
 
-        console.log('Setting current location address:', addressForStore);
-
         useAddressBookStore.getState().setSelectedAddress(addressForStore);
-
+        if (customer_id) {
+          updateCustomerAddressMap(customer_id.toString(), addressForStore);
+        }
         navigation.goBack();
       } else {
         console.warn('Reverse geocode failed: No address');
@@ -112,131 +155,7 @@ export default function SearchScreen() {
     }
   };
 
-  // Proper debouncing implementation
-  const debouncedFetchPlaces = (text: string): void => {
-    // Clear any existing timeout to cancel previous pending searches
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // Only set a new timeout if the search text is meaningful
-    if (text.length > 1) {
-      // Set loading state immediately to show feedback to user
-      setIsLoading(true);
-
-      // Schedule new search after debounce delay
-      timeoutRef.current = setTimeout(() => {
-        fetchPlaces(text);
-      }, 3000); // 300ms debounce delay
-    } else {
-      setIsLoading(false);
-      setSuggestions([]);
-    }
-  };
-
-  // Cleanup timeout on component unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleSearch = (text: string): void => {
-    setSearchText(text);
-    debouncedFetchPlaces(text);
-  };
-
-  const handleSelectPlace = async (place: PlacePrediction): Promise<void> => {
-    setSearchText(place.description);
-    setSuggestions([]);
-
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&key=${GOOGLE_API_KEY}`,
-      );
-      const data = await response.json();
-
-      console.log('Google Place Details API result:', data);
-
-      if (data.result) {
-        type AddressComponent = {
-          long_name: string;
-          short_name: string;
-          types: string[];
-        };
-
-        const addressComponents = data.result
-          .address_components as AddressComponent[];
-
-        const cityComponent = addressComponents.find(
-          component =>
-            component.types.includes('locality') ||
-            component.types.includes('administrative_area_level_2'),
-        );
-
-        const stateComponent = addressComponents.find(component =>
-          component.types.includes('administrative_area_level_1'),
-        );
-
-        const localityComponent = addressComponents.find(
-          component =>
-            component.types.includes('sublocality_level_1') ||
-            component.types.includes('neighborhood') ||
-            component.types.includes('route'),
-        );
-
-        const city = cityComponent?.long_name || '';
-        const state = stateComponent?.long_name || '';
-        const locality = localityComponent?.long_name || '';
-
-        const addressForStore: AddressBookTypes = {
-          Address: data.result.formatted_address || place.description,
-          Home_Floor_FlatNumber: '',
-          Area_details: locality,
-          LandMark: '',
-          City: city,
-          State: state,
-          Contact_details: '',
-          Recipient_name: '',
-          PhoneNumber: '',
-          PinCode: 0,
-          Country: 'India',
-          Address_type: 'Manual Search',
-        };
-
-        console.log('Setting address from manual search:', addressForStore);
-
-        useAddressBookStore.getState().setSelectedAddress(addressForStore);
-
-        navigation.goBack();
-      }
-    } catch (error) {
-      console.error('Error fetching place details:', error);
-    }
-  };
-
-  const renderSuggestion = ({
-    item,
-  }: {
-    item: PlacePrediction;
-  }): React.ReactElement => (
-    <TouchableOpacity
-      style={{
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EFEFEF',
-      }}
-      onPress={() => handleSelectPlace(item)}>
-      <Text style={{fontSize: 14}}>{item.description}</Text>
-    </TouchableOpacity>
-  );
-
   const handleUseCurrentLocation = async (): Promise<void> => {
-    console.log('Use current location pressed');
-
     const granted = await requestLocationPermission();
     if (!granted) {
       console.warn('Location permission denied');
@@ -249,7 +168,6 @@ export default function SearchScreen() {
       Geolocation.getCurrentPosition(
         position => {
           const {latitude, longitude} = position.coords;
-          console.log('Got high accuracy position:', {latitude, longitude});
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
@@ -275,7 +193,6 @@ export default function SearchScreen() {
       Geolocation.getCurrentPosition(
         position => {
           const {latitude, longitude} = position.coords;
-          console.log('Got low accuracy position:', {latitude, longitude});
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
@@ -293,13 +210,11 @@ export default function SearchScreen() {
     };
 
     const startLocationWatch = () => {
-      console.log('Starting watch for location...');
       clearLocationWatch();
 
       watchIdRef.current = Geolocation.watchPosition(
         position => {
           const {latitude, longitude} = position.coords;
-          console.log('Watch position update:', {latitude, longitude});
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
@@ -327,110 +242,228 @@ export default function SearchScreen() {
     retryAttemptRef.current = 0;
     getLocationWithHighAccuracy();
   };
+  const handleAddressSelect = (addr: AddressBookTypes) => {
+    setSelectedAddress(addr);
+    if (customer_id) {
+      updateCustomerAddressMap(customer_id.toString(), addr);
+    }
+  };
+
+  // Get the current customer's selected address
+  const currentCustomerAddress = customer_id
+    ? customerAddressMap[customer_id]
+    : null;
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: '#fff',
-        height: '100%',
-        width: '100%',
-      }}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}>
-          <ChevronLeft size={20} color="#0088B1" />
-        </TouchableOpacity>
-
-        <Text
-          style={{
-            fontSize: 16,
-            marginLeft: 10,
-            fontFamily: Fonts.JakartaBold,
-          }}>
-          Select Delivery Location
-        </Text>
-      </View>
-
-      <View style={{paddingHorizontal: 16, marginBottom: 8}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: '#E8F4F7',
-            borderRadius: 8,
-            paddingHorizontal: 12,
-            height: 44,
-            marginTop: 10,
-          }}>
-          <Search size={20} color="#999" />
-          <TextInput
-            style={{
-              flex: 1,
-              marginLeft: 8,
-              fontSize: 14,
-              color: '#333',
-              fontFamily: Fonts.JakartaRegular,
-            }}
-            placeholder="Search for building, society, location..."
-            placeholderTextColor={'#899193'}
-            value={searchText}
-            onChangeText={handleSearch}
-            autoFocus
-          />
-          {isLoading && <ActivityIndicator size="small" color="#0088B1" />}
+    <View style={localStyles.safeAreaContainer}>
+      <SafeAreaView style={localStyles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ChevronLeft size={20} color="#0088B1" />
+          </TouchableOpacity>
+          <Text style={localStyles.headerTitle}>Select Delivery Location</Text>
         </View>
-      </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 10,
-          borderBottomWidth: 1,
-          borderBottomColor: '#B0B6B8',
-          padding: 15,
-          marginHorizontal: 20,
-        }}>
-        {isLocating ? (
-          <>
-            <ActivityIndicator size="small" color="#0088B1" />
-            <Text
-              style={{
-                color: '#0088B1',
-                fontSize: 14,
-                fontFamily: Fonts.JakartaRegular,
-              }}>
-              Fetching your location...
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={['#0088B1']}
+              tintColor="#0088B1"
+            />
+          }>
+          {/* Pincode Search Section */}
+          <View
+            style={{
+              paddingHorizontal: 16,
+              marginBottom: 8,
+              marginTop: 10,
+              borderBottomWidth: 1,
+              paddingBottom: 20,
+              borderColor: '#B0B6B8',
+            }}>
+            <Text style={localStyles.sectionTitle}>
+              Use pincode to check delivery info
             </Text>
-          </>
-        ) : (
-          <>
-            <MapPinned color={'#0088B1'} size={20} />
-            <TouchableOpacity
-              onPress={handleUseCurrentLocation}
-              disabled={isLocating}>
-              <Text
-                style={{
-                  color: '#0088B1',
-                  fontSize: 14,
-                  fontFamily: Fonts.JakartaRegular,
-                }}>
-                Use current Location
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
+            <View style={localStyles.pincodeContainer}>
+              <TextInput
+                style={[
+                  localStyles.pincodeInput,
+                  pincodeError ? localStyles.inputError : null,
+                ]}
+                placeholder="Enter pincode"
+                placeholderTextColor={'#899193'}
+                value={pincode}
+                onChangeText={text => {
+                  setPincode(text);
+                  if (pincodeError) {
+                    setPincodeError('');
+                  }
+                }}
+                keyboardType="number-pad"
+                maxLength={6}
+              />
+              <TouchableOpacity
+                style={localStyles.searchButton}
+                disabled={isLoading}>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <Text style={localStyles.searchButtonText}>Submit</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+            {pincodeError && (
+              <Text style={localStyles.errorText}>{pincodeError}</Text>
+            )}
+          </View>
 
-      <FlatList
-        data={suggestions}
-        renderItem={renderSuggestion}
-        keyExtractor={item => item.place_id}
-        style={{flex: 1}}
-        keyboardShouldPersistTaps="handled"
-      />
-    </SafeAreaView>
+          <View style={localStyles.addressCardContainer}>
+            <Text style={localStyles.sectionTitle}>Saved Addresses</Text>
+            {isLoading && !refreshing ? (
+              <AddressCardSkeleton count={3} />
+            ) : (
+              <View style={{alignItems: 'center'}}>
+                {addresses.map((addr, idx) => (
+                  <AddressCard
+                    key={idx}
+                    title={addr.Address_type}
+                    address={`${addr.Recipient_name}, ${addr.Home_Floor_FlatNumber}, ${addr.Area_details}, ${addr.City},${addr.State} ${addr.PinCode}`}
+                    phoneNumber={addr.PhoneNumber}
+                    onPress={() => handleAddressSelect(addr)}
+                    selected={
+                      selectedAddress?.Customer_Address_id ===
+                        addr.Customer_Address_id ||
+                      currentCustomerAddress?.Customer_Address_id ===
+                        addr.Customer_Address_id
+                    }
+                    onMorePress={() => {
+                      setSelectedAddress(addr);
+                    }}
+                    isFromLayout={true}
+                  />
+                ))}
+              </View>
+            )}
+          </View>
+        </ScrollView>
+
+        <View style={localStyles.currentLocationContainer}>
+          {isLocating ? (
+            <>
+              <ActivityIndicator size="small" color="#0088B1" />
+              <Text style={localStyles.locatingText}>
+                Fetching your location...
+              </Text>
+            </>
+          ) : (
+            <>
+              <MapPinned color={'#0088B1'} size={20} />
+              <TouchableOpacity
+                onPress={handleUseCurrentLocation}
+                disabled={isLocating}>
+                <Text style={localStyles.currentLocationText}>
+                  Use current Location
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
+
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    marginBottom: 30,
+  },
+  safeAreaContainer: {
+    backgroundColor: '#fff',
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  headerTitle: {
+    fontSize: 16,
+    marginLeft: 10,
+    fontFamily: Fonts.JakartaBold,
+  },
+  sectionTitle: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
+    marginBottom: 8,
+    color: '#333',
+  },
+  pincodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  pincodeInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#B0B6B8',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 44,
+    fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  inputError: {
+    borderColor: '#FF3B30',
+  },
+  searchButton: {
+    marginLeft: 8,
+    backgroundColor: '#0088B1',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 80,
+  },
+  searchButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+  },
+  errorText: {
+    color: '#FF3B30',
+    fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
+    marginBottom: 8,
+  },
+  currentLocationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderColor: '#0088B1',
+    padding: 15,
+    backgroundColor: '#E8F4F7',
+    borderRadius: 12,
+    marginHorizontal: 20,
+  },
+  currentLocationText: {
+    color: '#0088B1',
+    fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  locatingText: {
+    color: '#0088B1',
+    fontSize: 14,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  addressCardContainer: {
+    paddingHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 20,
+  },
+});
