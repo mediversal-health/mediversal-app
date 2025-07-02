@@ -61,7 +61,7 @@ export const useAuthStore = create<AuthStore>()(
           first_name: null,
           last_name: null,
           profileImage: null,
-          // birthday: null,
+          birthday: null,
           joinedDate: null,
         }),
 

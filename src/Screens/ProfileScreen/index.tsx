@@ -61,6 +61,7 @@ export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
+  const isBirthdayLocked = !!birthday;
 
   // Determine which image to display
   const displayImage =
@@ -108,16 +109,14 @@ export default function ProfileScreen() {
     return <ActivityIndicator size="large" />;
   }
   const handleSave = async () => {
-    if (isLoading) {
-      return;
-    }
+    if (isLoading) return;
+
     setIsLoading(true);
 
     try {
       const formattedDob = dobDate.toISOString().split('T')[0];
       const currentAuthState = useAuthStore.getState();
 
-      // Prepare image data if a new image was selected
       let imageData;
       if (tempImage?.uri) {
         const uriParts = tempImage.uri.split('.');
@@ -129,32 +128,50 @@ export default function ProfileScreen() {
         };
       }
 
-      await updateProfile(customer_id?.toString() ?? '', {
+      const payload: Record<string, any> = {
         first_name: userData.first_name,
         last_name: userData.last_name,
-        birthday: formattedDob,
         email: userData.email ?? '',
         phone_number: userData.phone.replace(/\D/g, ''),
         image: imageData,
-      });
+      };
 
-      // Update auth store with new image if one was selected
+      // ✅ Only add birthday if it’s not locked
+      if (!isBirthdayLocked) {
+        payload.birthday = formattedDob;
+      }
+
+      await updateProfile(customer_id?.toString() ?? '', payload);
+
       setAuthentication({
         ...currentAuthState,
         first_name: userData.first_name,
         last_name: userData.last_name,
         email: userData.email,
         phoneNumber: userData.phone,
-        birthday: formattedDob,
+        birthday: isBirthdayLocked ? birthday : formattedDob,
         profileImage: tempImage?.uri || profileImage,
       });
 
       showToast('Profile updated successfully', 'success', 1000, true);
       setIsEditMode(false);
-      setTempImage(null); // Clear temp image after save
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      showToast('Failed to update profile', 'error', 1000, true);
+      setTempImage(null);
+    } catch (error: any) {
+      console.error('Error updating profile:', error?.response?.data);
+      const errorMsg = error?.response?.data?.message;
+
+      if (errorMsg === 'Birthday can only be updated once.') {
+        showToast(
+          'You can only update your birthday once.',
+          'error',
+          1500,
+          true,
+        );
+      } else if (errorMsg) {
+        showToast(errorMsg, 'error', 1500, true);
+      } else {
+        showToast('Failed to update profile', 'error', 1500, true);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -372,13 +389,17 @@ export default function ProfileScreen() {
               </View>
               {isEditMode ? (
                 <TouchableOpacity
+                  disabled={isBirthdayLocked}
                   style={[
                     styles.infoValue,
                     {
                       alignItems: 'flex-end',
+                      opacity: isBirthdayLocked ? 0.4 : 1,
                     },
                   ]}
-                  onPress={() => setShowDatePicker(true)}>
+                  onPress={() => {
+                    if (!isBirthdayLocked) setShowDatePicker(true);
+                  }}>
                   <Text
                     style={{
                       textAlign: 'right',
@@ -395,6 +416,11 @@ export default function ProfileScreen() {
                 </Text>
               )}
             </View>
+            {isBirthdayLocked && isEditMode && (
+              <Text style={{color: '#888', fontSize: 10, marginTop: 4}}>
+                Birthday is locked and cannot be changed again.
+              </Text>
+            )}
 
             {showDatePicker && (
               <DateTimePicker

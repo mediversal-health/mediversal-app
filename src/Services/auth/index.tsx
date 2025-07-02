@@ -86,7 +86,7 @@ export const updateProfile = async (
   formData: {
     first_name: string | undefined;
     last_name: string | undefined;
-    birthday: string;
+    birthday?: string; // ✅ optional now
     email: string;
     phone_number: string;
     image?: {
@@ -98,11 +98,15 @@ export const updateProfile = async (
 ) => {
   const data = new FormData();
 
-  data.append('first_name', formData.first_name);
-  data.append('last_name', formData.last_name);
-  data.append('dateof_birth', formData.birthday);
-  data.append('email', formData.email);
-  data.append('phone_number', formData.phone_number);
+  data.append('first_name', formData.first_name ?? '');
+  data.append('last_name', formData.last_name ?? '');
+  data.append('email', formData.email ?? '');
+  data.append('phone_number', formData.phone_number ?? '');
+
+  // ✅ Conditionally add birthday
+  if (formData.birthday) {
+    data.append('birthday', formData.birthday);
+  }
 
   if (formData.image) {
     data.append('images', {
@@ -111,6 +115,12 @@ export const updateProfile = async (
       name: formData.image.name || 'profile.jpg',
     });
   }
+
+  // Debug output — works in React Native
+  console.log('FormData Payload:');
+  (data as any)._parts.forEach(([key, value]: [string, any]) => {
+    console.log(`${key}:`, value);
+  });
 
   return axios.put(`${IP_ADDR}/api/Auth/update-profile/${customer_id}`, data, {
     headers: {
