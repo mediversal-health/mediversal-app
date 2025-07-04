@@ -84,14 +84,18 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaSemiBold,
   },
   infoCard: {
+    width: '100%',
     paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     borderRadius: 12,
     marginBottom: 24,
+    height: 160,
   },
+
   infoCardText: {
-    fontSize: 12,
+    fontSize: Platform.OS === 'ios' ? 10 : 12,
     marginBottom: 12,
+    marginRight: 16,
     color: '#fff',
     fontFamily: Fonts.JakartaRegular,
   },
