@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Run Tests
+    name: PR Test Pipeline
     runs-on: ubuntu-latest
 
     steps:
