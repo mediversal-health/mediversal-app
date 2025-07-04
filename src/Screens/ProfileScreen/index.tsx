@@ -21,6 +21,7 @@ import {
   UserRoundXIcon,
   UserPen,
   UserCheck,
+  X,
 } from 'lucide-react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {Fonts} from '../../styles/fonts';
@@ -109,7 +110,9 @@ export default function ProfileScreen() {
     return <ActivityIndicator size="large" />;
   }
   const handleSave = async () => {
-    if (isLoading) return;
+    if (isLoading) {
+      return;
+    }
 
     setIsLoading(true);
 
@@ -128,18 +131,21 @@ export default function ProfileScreen() {
         };
       }
 
-      const payload: Record<string, any> = {
+      const payload: {
+        first_name: string | undefined;
+        last_name: string | undefined;
+        email: string;
+        phone_number: string;
+        image?: {uri: string; type: string; name: string} | undefined;
+        birthday?: string;
+      } = {
         first_name: userData.first_name,
         last_name: userData.last_name,
         email: userData.email ?? '',
         phone_number: userData.phone.replace(/\D/g, ''),
         image: imageData,
+        ...(!isBirthdayLocked ? {birthday: formattedDob} : {}),
       };
-
-      // ✅ Only add birthday if it’s not locked
-      if (!isBirthdayLocked) {
-        payload.birthday = formattedDob;
-      }
 
       await updateProfile(customer_id?.toString() ?? '', payload);
 
@@ -270,7 +276,6 @@ export default function ProfileScreen() {
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>
                 {userData.first_name}
-                {''}
                 {userData.last_name}
               </Text>
               <Text style={styles.joinedDate}>Joined: {userData.joined}</Text>
@@ -288,8 +293,16 @@ export default function ProfileScreen() {
                     <ActivityIndicator color="#0088B1" />
                   ) : (
                     <>
-                      <UserCheck size={20} color="#0088B1" />
-                      <Text style={styles.EditTitle}>Update Profile</Text>
+                      <View style={{flexDirection: 'row', gap: 5}}>
+                        <UserCheck size={20} color="#0088B1" />
+                        <Text style={styles.EditTitle}>Update Profile</Text>
+                      </View>
+                      <TouchableOpacity
+                        style={{flexDirection: 'row', gap: 2}}
+                        onPress={() => setIsEditMode(false)}>
+                        <X size={20} color="#EB5757" />
+                        <Text style={styles.CancelTitle}> Cancel </Text>
+                      </TouchableOpacity>
                     </>
                   )}
                 </TouchableOpacity>
@@ -398,7 +411,9 @@ export default function ProfileScreen() {
                     },
                   ]}
                   onPress={() => {
-                    if (!isBirthdayLocked) setShowDatePicker(true);
+                    if (!isBirthdayLocked) {
+                      setShowDatePicker(true);
+                    }
                   }}>
                   <Text
                     style={{

@@ -18,7 +18,7 @@ const EmailSignup = () => {
   const [loading, setLoading] = useState(false);
   const [isOTPModalVisible, setOTPModalVisible] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const showToast = useToastStore(state => state.showToast); // Get the showToast function
+  const showToast = useToastStore(state => state.showToast);
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const isValidEmail = (email: string) =>

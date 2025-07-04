@@ -20,6 +20,7 @@ import ApplyCouponScreen from '../Screens/ApplyCouponScreen';
 import Layout from '../layout';
 import PaymentSuccessScreen from '../components/payments/PaymentSuccessScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
+import PrescriptionsScreen from '../Screens/PrescriptionsScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -31,6 +32,7 @@ export type RootStackParamList = {
   UploadScreen: {product?: Product};
   AllProducts: undefined;
   UploadPrescription: undefined;
+  PrescriptionScreen: undefined;
   CartPage: {
     formData?: AddressBookTypes;
   };
@@ -120,6 +122,10 @@ const AppNavigator = () => {
               component={PaymentSuccessScreen}
             />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen
+              name="PrescriptionScreen"
+              component={PrescriptionsScreen}
+            />
           </>
         ) : (
           <>

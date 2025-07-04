@@ -78,6 +78,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#0088B1',
   },
+
+  CancelTitle: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
+    fontWeight: '600',
+    color: '#EB5757',
+  },
+
   editButton: {
     flexDirection: 'row',
     gap: 5,

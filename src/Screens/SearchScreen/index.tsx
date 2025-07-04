@@ -1,24 +1,21 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {ChevronLeft, MapPinned} from 'lucide-react-native';
+import {CheckCircle, ChevronLeft, MapPinned} from 'lucide-react-native';
 import {
   Text,
   TouchableOpacity,
   View,
   TextInput,
   ActivityIndicator,
-  StyleSheet,
   SafeAreaView,
-  StatusBar,
   ScrollView,
   RefreshControl,
-  Platform,
 } from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import styles from './index.styles';
-import {Fonts} from '../../styles/fonts';
+
 import Geolocation from '@react-native-community/geolocation';
 import {requestLocationPermission} from '../../utils/permissions';
 import {useAddressBookStore} from '../../store/addressStore';
@@ -27,7 +24,7 @@ import AddressCard from '../../components/cards/AddressCard';
 import {getCustomerAddresses} from '../../Services/address';
 import {useAuthStore} from '../../store/authStore';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
-
+import {RAPID_SHYP_ACCESS_TOKEN} from '@env';
 export default function SearchScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const customer_id = useAuthStore(state => state.customer_id);
@@ -36,7 +33,10 @@ export default function SearchScreen() {
   const [pincode, setPincode] = useState<string>('');
   const [pincodeError, setPincodeError] = useState<string>('');
   const [refreshing, setRefreshing] = useState(false);
-
+  const [serviceabilityData, setServiceabilityData] = useState<any>(null);
+  const [isCheckingServiceability, setIsCheckingServiceability] =
+    useState(false);
+  const [serviceabilityError, setServiceabilityError] = useState('');
   const {
     addresses,
     setAddresses,
@@ -254,16 +254,61 @@ export default function SearchScreen() {
     ? customerAddressMap[customer_id]
     : null;
 
+  const checkServiceability = async () => {
+    if (!pincode || pincode.length !== 6) {
+      setPincodeError('Please enter a valid 6-digit pincode');
+      return;
+    }
+
+    try {
+      setIsCheckingServiceability(true);
+      setServiceabilityError('');
+      setServiceabilityData(null);
+
+      const response = await fetch(
+        'https://api.rapidshyp.com/rapidshyp/apis/v1/serviceabilty_check',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'rapidshyp-token': RAPID_SHYP_ACCESS_TOKEN,
+          },
+          body: JSON.stringify({
+            Pickup_pincode: '110068',
+            Delivery_pincode: pincode,
+            cod: true,
+            total_order_value: 0,
+            weight: 1,
+          }),
+        },
+      );
+
+      const data = await response.json();
+      console.log(response);
+      if (data.status) {
+        setServiceabilityData(data);
+      } else {
+        setServiceabilityError('Delivery not available for this pincode');
+      }
+    } catch (error) {
+      console.error('Serviceability check failed:', error);
+      setServiceabilityError(
+        'Failed to check serviceability. Please try again.',
+      );
+    } finally {
+      setIsCheckingServiceability(false);
+    }
+  };
   return (
-    <View style={localStyles.safeAreaContainer}>
-      <SafeAreaView style={localStyles.container}>
+    <View style={styles.safeAreaContainer}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}>
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
-          <Text style={localStyles.headerTitle}>Select Delivery Location</Text>
+          <Text style={styles.headerTitle}>Select Delivery Location</Text>
         </View>
 
         <ScrollView
@@ -286,14 +331,14 @@ export default function SearchScreen() {
               paddingBottom: 20,
               borderColor: '#B0B6B8',
             }}>
-            <Text style={localStyles.sectionTitle}>
+            <Text style={styles.sectionTitle}>
               Use pincode to check delivery info
             </Text>
-            <View style={localStyles.pincodeContainer}>
+            <View style={styles.pincodeContainer}>
               <TextInput
                 style={[
-                  localStyles.pincodeInput,
-                  pincodeError ? localStyles.inputError : null,
+                  styles.pincodeInput,
+                  pincodeError ? styles.inputError : null,
                 ]}
                 placeholder="Enter pincode"
                 placeholderTextColor={'#899193'}
@@ -303,27 +348,47 @@ export default function SearchScreen() {
                   if (pincodeError) {
                     setPincodeError('');
                   }
+                  // Clear serviceability data when pincode changes
+                  if (serviceabilityData || serviceabilityError) {
+                    setServiceabilityData(null);
+                    setServiceabilityError('');
+                  }
                 }}
                 keyboardType="number-pad"
                 maxLength={6}
               />
               <TouchableOpacity
-                style={localStyles.searchButton}
-                disabled={isLoading}>
-                {isLoading ? (
+                style={styles.searchButton}
+                onPress={checkServiceability}
+                disabled={isCheckingServiceability}>
+                {isCheckingServiceability ? (
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
-                  <Text style={localStyles.searchButtonText}>Submit</Text>
+                  <Text style={styles.searchButtonText}>Submit</Text>
                 )}
               </TouchableOpacity>
             </View>
             {pincodeError && (
-              <Text style={localStyles.errorText}>{pincodeError}</Text>
+              <Text style={styles.errorText}>{pincodeError}</Text>
+            )}
+
+            {/* Serviceability response */}
+            {serviceabilityData && (
+              <View style={styles.serviceabilityContainer}>
+                <View style={styles.successContainer}>
+                  <CheckCircle color="#4BB543" size={20} />
+                  <Text style={styles.successText}>Delivery available</Text>
+                </View>
+              </View>
+            )}
+
+            {serviceabilityError && (
+              <Text style={styles.errorText}>{serviceabilityError}</Text>
             )}
           </View>
           {addresses.length > 0 && (
-            <View style={localStyles.addressCardContainer}>
-              <Text style={localStyles.sectionTitle}>Saved Addresses</Text>
+            <View style={styles.addressCardContainer}>
+              <Text style={styles.sectionTitle}>Saved Addresses</Text>
               {isLoading && !refreshing ? (
                 <AddressCardSkeleton count={3} />
               ) : (
@@ -353,13 +418,11 @@ export default function SearchScreen() {
           )}
         </ScrollView>
 
-        <View style={localStyles.currentLocationContainer}>
+        <View style={styles.currentLocationContainer}>
           {isLocating ? (
             <>
               <ActivityIndicator size="small" color="#0088B1" />
-              <Text style={localStyles.locatingText}>
-                Fetching your location...
-              </Text>
+              <Text style={styles.locatingText}>Fetching your location...</Text>
             </>
           ) : (
             <>
@@ -367,7 +430,7 @@ export default function SearchScreen() {
               <TouchableOpacity
                 onPress={handleUseCurrentLocation}
                 disabled={isLocating}>
-                <Text style={localStyles.currentLocationText}>
+                <Text style={styles.currentLocationText}>
                   Use current Location
                 </Text>
               </TouchableOpacity>
@@ -378,93 +441,3 @@ export default function SearchScreen() {
     </View>
   );
 }
-
-const localStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginBottom: 30,
-  },
-  safeAreaContainer: {
-    backgroundColor: '#fff',
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
-  headerTitle: {
-    fontSize: 16,
-    marginLeft: 10,
-    fontFamily: Fonts.JakartaBold,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
-    marginBottom: 8,
-    color: '#333',
-  },
-  pincodeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  pincodeInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#B0B6B8',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    height: 44,
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  inputError: {
-    borderColor: '#FF3B30',
-  },
-  searchButton: {
-    marginLeft: 8,
-    backgroundColor: '#0088B1',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-    minWidth: 80,
-  },
-  searchButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
-  },
-  errorText: {
-    color: '#FF3B30',
-    fontSize: 12,
-    fontFamily: Fonts.JakartaRegular,
-    marginBottom: 8,
-  },
-  currentLocationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    borderWidth: 1,
-    borderColor: '#0088B1',
-    padding: 15,
-    backgroundColor: '#E8F4F7',
-    borderRadius: 12,
-    marginHorizontal: 20,
-  },
-  currentLocationText: {
-    color: '#0088B1',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  locatingText: {
-    color: '#0088B1',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  addressCardContainer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 20,
-  },
-});

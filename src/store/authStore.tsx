@@ -1,10 +1,11 @@
-// authStore.ts
 import {create} from 'zustand';
 import {persist, createJSONStorage} from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthState} from '../types';
 
 interface AuthStore extends AuthState {
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
   setAuthentication: (data: Partial<AuthState>) => void;
   clearAuthentication: () => void;
   rehydrated: boolean;
@@ -24,6 +25,10 @@ export const useAuthStore = create<AuthStore>()(
       birthday: null,
       joinedDate: null,
       rehydrated: false,
+      isAuthenticated: false,
+
+      // Add setIsAuthenticated action
+      setIsAuthenticated: (value: boolean) => set({isAuthenticated: value}),
 
       setAuthentication: ({
         token,
@@ -67,12 +72,15 @@ export const useAuthStore = create<AuthStore>()(
 
       setRehydrated: value => set({rehydrated: value}),
     }),
-
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: () => state => {
         state?.setRehydrated(true);
+        // After rehydration, set isAuthenticated based on token presence
+        if (state) {
+          state.setIsAuthenticated(!!state.token);
+        }
       },
     },
   ),

@@ -23,6 +23,8 @@ import useProductStore from './store/productsStore';
 import {useAddressBookStore} from './store/addressStore';
 import CartIconWithBadge from './components/ui/CartIconWithBadge';
 import {useAuthStore} from './store/authStore';
+import {requestLocationPermission} from './utils/permissions';
+import {useToastStore} from './store/toastStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -34,11 +36,29 @@ const Layout = () => {
   const currentCustomerAddress = customer_id
     ? customerAddressMap[customer_id]
     : null;
-
-  const {profileImage, email} = useAuthStore();
+  const showToast = useToastStore(state => state.showToast);
+  const {profileImage, email, isAuthenticated, setIsAuthenticated} =
+    useAuthStore();
 
   const [imageError, setImageError] = useState(false);
   const {setProducts} = useProductStore();
+  useEffect(() => {
+    if (isAuthenticated) {
+      showToast('Welcome to Mediversal!', 'success', 5000, true);
+    }
+    setIsAuthenticated(false);
+  }, []);
+  useEffect(() => {
+    const initLocationServices = async () => {
+      try {
+        await requestLocationPermission();
+      } catch (err) {
+        console.error('Location setup error:', err);
+      }
+    };
+
+    initLocationServices();
+  }, []);
   const fetchProducts = useCallback(() => {
     getProducts()
       .then(response => {

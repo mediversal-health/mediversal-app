@@ -64,7 +64,7 @@ const PrescribedScreen = () => {
             onPress={() => navigation.goBack()}>
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>ORD-123457</Text>
+          <Text style={styles.headerTitle}>RX-2023-001</Text>
         </View>
       </View>
       <ScrollView

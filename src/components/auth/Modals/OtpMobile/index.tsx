@@ -45,7 +45,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const [error, setError] = useState<string>('');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const setAuthentication = useAuthStore(state => state.setAuthentication);
-
+  const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
   useEffect(() => {
     if (isVisible) {
       setOtp(Array(6).fill(''));
@@ -98,6 +98,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             joinedDate: response.data.user.registration_date,
             profileImage: response.data.user.profileImageUrl,
           });
+          setIsAuthenticated(true);
           navigation.navigate('Layout');
           // onClose();
         } else {
@@ -109,7 +110,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
         setVerifying(false);
       }
     },
-    [otp, phoneNumber, setAuthentication, navigation],
+    [otp, phoneNumber, setAuthentication, navigation, setIsAuthenticated],
   );
 
   const onOtpCompleteHandler = useCallback(

@@ -34,7 +34,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
   const [timer, setTimer] = useState(60);
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState<string>('');
-
+  const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const setAuthentication = useAuthStore(state => state.setAuthentication);
   useEffect(() => {
@@ -88,6 +88,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           joinedDate: response.data.user.registration_date,
           profileImage: response.data.user.profileImageUrl,
         });
+        setIsAuthenticated(true);
         navigation.navigate('Layout');
       } else {
         // Alert.alert('Error', response.data?.message || 'Resend failed');

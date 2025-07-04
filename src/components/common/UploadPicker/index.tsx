@@ -7,7 +7,6 @@ import {
   Modal,
   ActivityIndicator,
   Image,
-  Alert,
 } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {pick} from '@react-native-documents/picker';
@@ -18,6 +17,7 @@ import {UploadPickerHandle, UploadType} from '../../../types';
 // Import the upload function and AuthContext (assuming you have one)
 import {uploadPrescriptions} from '../../../Services/prescription';
 import {useAuthStore} from '../../../store/authStore';
+import {useToastStore} from '../../../store/toastStore';
 // Adjust path as needed
 
 interface UploadPickerProps {
@@ -42,6 +42,7 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const customer_id = useAuthStore(state => state.customer_id);
     console.log(customer_id);
+    const showToast = useToastStore(state => state.showToast);
     // Common handler for all picker types
     const openPicker = async (type: UploadType) => {
       setFileType(type);
@@ -151,13 +152,30 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
     const handleProceed = async () => {
       if (!customer_id) {
-        Alert.alert('Error', 'User ID not found. Please login again.');
+        showToast(
+          'User ID not found. Please login again.',
+          'error',
+          1000,
+          true,
+        );
+        return;
+      }
+
+      // Check if more than 5 files are selected
+      const fileCount = fileType === 'pdf' ? pdfs.length : images.length;
+      if (fileCount > 5) {
+        showToast(
+          'You can only upload up to 5 files at a time',
+          'error',
+          1000,
+          true,
+        );
         return;
       }
 
       setIsUploading(true);
       try {
-        // Prepare files for upload - Fixed to handle PDF and images separately
+        // Prepare files for upload
         const files =
           fileType === 'pdf'
             ? pdfs.map(pdfObj => ({
@@ -171,26 +189,20 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
                 name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
               }));
 
-        // Call the API
         const response = await uploadPrescriptions(
           customer_id.toString(),
           files,
         );
-
         console.log('Upload successful:', response.data);
-
-        // Fixed navigation - pass only the relevant data based on file type
-        if (fileType === 'pdf') {
-          navigation.navigate('PrescriptionVerification');
-        } else {
-          navigation.navigate('PrescriptionVerification');
-        }
+        navigation.navigate('PrescriptionVerification');
       } catch (error) {
-        console.error('Upload failed:', error);
-        Alert.alert(
-          'Upload Failed',
-          'There was a problem uploading your prescription. Please try again.',
-        );
+        if (error instanceof Error) {
+          console.log('Upload failed:', error.message);
+          showToast('Upload failed: ' + error.message, 'error', 1000, true);
+        } else {
+          console.log('Upload failed:', error);
+          showToast('Upload failed', 'error', 1000, true);
+        }
       } finally {
         setIsUploading(false);
       }
@@ -213,7 +225,20 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
       setShowModal(false);
       onCancel?.();
     };
-
+    const handleRemoveImage = (index: number) => {
+      setImages(prev => {
+        const newImages = [...prev];
+        newImages.splice(index, 1);
+        return newImages;
+      });
+    };
+    const handleRemovePdf = (index: number) => {
+      setPdfs(prev => {
+        const newPdfs = [...prev];
+        newPdfs.splice(index, 1);
+        return newPdfs;
+      });
+    };
     const confirmRemove = () => {
       handleClose();
     };
@@ -244,19 +269,32 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
             <Text style={styles.previewTitle}>
               Selected Prescription {fileType === 'pdf' ? 'PDF' : 'Images'}:
             </Text>
-
             {fileType === 'pdf' ? (
-              <Text style={styles.fileName}>
-                {pdfs[0]?.name || pdfs[0]?.uri}
-              </Text>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
+                {pdfs.map((pdf, index) => (
+                  <View key={index} style={styles.imageContainer}>
+                    <Text style={styles.fileName}>
+                      {pdf.name || pdf.uri?.split('/').pop()}
+                    </Text>
+                    <TouchableOpacity
+                      style={styles.closeButton}
+                      onPress={() => handleRemovePdf(index)}>
+                      <Text style={styles.closeButtonText}>×</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
             ) : (
               <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
                 {images.map((uri, index) => (
-                  <Image
-                    key={index}
-                    source={{uri}}
-                    style={styles.uploadedImage}
-                  />
+                  <View key={index} style={styles.imageContainer}>
+                    <Image source={{uri}} style={styles.uploadedImage} />
+                    <TouchableOpacity
+                      style={styles.closeButton}
+                      onPress={() => handleRemoveImage(index)}>
+                      <Text style={styles.closeButtonText}>×</Text>
+                    </TouchableOpacity>
+                  </View>
                 ))}
               </View>
             )}
@@ -268,7 +306,6 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
                 Upload more {fileType === 'pdf' ? 'PDFs' : 'images'}
               </Text>
             </TouchableOpacity>
-
             <View style={styles.footerButtonsColumn}>
               <TouchableOpacity style={styles.proceed} onPress={handleProceed}>
                 <Text style={styles.proceedText}>Proceed to next step</Text>
