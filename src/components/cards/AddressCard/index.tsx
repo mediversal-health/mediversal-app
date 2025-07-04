@@ -14,6 +14,7 @@ interface AddressCardProps {
   onPress?: () => void;
   selected?: boolean;
   onMorePress?: () => void;
+  isFromLayout?: boolean;
 }
 
 const AddressCard: React.FC<AddressCardProps> = ({
@@ -23,6 +24,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
   onPress,
   selected = false,
   onMorePress,
+  isFromLayout,
 }) => {
   const getIcon = () => {
     switch (title.toLowerCase()) {
@@ -62,20 +64,22 @@ const AddressCard: React.FC<AddressCardProps> = ({
               <Text style={styles.phoneLabel}>Phone Number: </Text>
               <Text style={styles.phoneNumber}>{phoneNumber}</Text>
             </View>
-            <TouchableOpacity
-              onPress={e => {
-                e.stopPropagation();
-                onMorePress?.();
-              }}
-              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-              style={{
-                width: 30,
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <MoreHorizontal size={30} color="#0088B1" />
-            </TouchableOpacity>
+            {!isFromLayout && (
+              <TouchableOpacity
+                onPress={e => {
+                  e.stopPropagation();
+                  onMorePress?.();
+                }}
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                style={{
+                  width: 30,
+                  height: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MoreHorizontal size={30} color="#0088B1" />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>

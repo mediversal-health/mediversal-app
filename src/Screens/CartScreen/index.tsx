@@ -181,7 +181,7 @@ const CartPage = () => {
 
   const handleCheckout = async () => {
     if (!RAZORPAY_KEY) {
-      Alert.alert('Payment Error', 'Razorpay key is missing.');
+      showToast('Razorpay key is missing.', 'error', 1000, true);
       return;
     }
 

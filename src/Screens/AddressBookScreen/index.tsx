@@ -8,7 +8,6 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
-  Alert,
   RefreshControl,
 } from 'react-native';
 import {ChevronDown, ChevronLeft, Plus} from 'lucide-react-native';
@@ -29,6 +28,7 @@ import AddressActionModal from '../../components/modal/AddressActionModal';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Fonts} from '../../styles/fonts';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
+import {useToastStore} from '../../store/toastStore';
 
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
@@ -87,7 +87,7 @@ const AddressBookScreen: React.FC = () => {
   const savedFormDataRef = useRef<AddressBookTypes | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-
+  const showToast = useToastStore(state => state.showToast);
   const [formData, setFormData] = useState<AddressBookTypes>({
     Address: '',
     Home_Floor_FlatNumber: '',
@@ -334,10 +334,15 @@ const AddressBookScreen: React.FC = () => {
       }
 
       setModalVisible(false);
-      Alert.alert('Success', 'Address deleted successfully');
+      showToast('Address deleted successfully', 'success', 1000, true);
     } catch (error) {
       console.error('Error deleting address:', error);
-      Alert.alert('Error', 'Failed to delete address. Please try again.');
+      showToast(
+        'Failed to delete address. Please try again.',
+        'error',
+        1000,
+        true,
+      );
     } finally {
       setIsLoading(false);
     }
@@ -382,11 +387,11 @@ const AddressBookScreen: React.FC = () => {
       console.error('Error saving address:', error);
       setShouldNavigateAfterSave(false);
       savedFormDataRef.current = null;
-      Alert.alert(
-        'Error',
+      showToast(
         'Failed to save address. Please try again.',
-        [{text: 'OK'}],
-        {cancelable: false},
+        'error',
+        1000,
+        true,
       );
     } finally {
       setIsLoading(false);
@@ -419,7 +424,8 @@ const AddressBookScreen: React.FC = () => {
 
   const handleProceedWithSelectedAddress = (): void => {
     if (!selectedAddress) {
-      Alert.alert('Error', 'Please select an address', [{text: 'OK'}]);
+      showToast('Please select an address', 'error', 1000, true);
+
       return;
     }
     navigation.replace('CartPage', {formData: selectedAddress});
@@ -653,7 +659,7 @@ const AddressBookScreen: React.FC = () => {
                     focusedField === 'Area_details' && styles.inputFocused,
                     formData.Area_details !== '' && styles.inputFilled,
                   ]}
-                  value={formData.Home_Floor_FlatNumber}
+                  value={formData.Area_details}
                   onChangeText={text => handleInputChange('Area_details', text)}
                   placeholder="Area Details"
                   onFocus={() => setFocusedField('Area_details')}

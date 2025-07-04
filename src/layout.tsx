@@ -23,17 +23,42 @@ import useProductStore from './store/productsStore';
 import {useAddressBookStore} from './store/addressStore';
 import CartIconWithBadge from './components/ui/CartIconWithBadge';
 import {useAuthStore} from './store/authStore';
+import {requestLocationPermission} from './utils/permissions';
+import {useToastStore} from './store/toastStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
-  const selectedAddress = useAddressBookStore(state => state.selectedAddress);
-  const {profileImage, email} = useAuthStore();
+  const {customerAddressMap} = useAddressBookStore();
+  const customer_id = useAuthStore(state => state.customer_id);
+  const currentCustomerAddress = customer_id
+    ? customerAddressMap[customer_id]
+    : null;
+  const showToast = useToastStore(state => state.showToast);
+  const {profileImage, email, isAuthenticated, setIsAuthenticated} =
+    useAuthStore();
 
   const [imageError, setImageError] = useState(false);
   const {setProducts} = useProductStore();
+  useEffect(() => {
+    if (isAuthenticated) {
+      showToast('Welcome to Mediversal!', 'success', 3000, true);
+    }
+    setIsAuthenticated(false);
+  }, []);
+  useEffect(() => {
+    const initLocationServices = async () => {
+      try {
+        await requestLocationPermission();
+      } catch (err) {
+        console.error('Location setup error:', err);
+      }
+    };
+
+    initLocationServices();
+  }, []);
   const fetchProducts = useCallback(() => {
     getProducts()
       .then(response => {
@@ -133,12 +158,14 @@ const Layout = () => {
                           fontFamily: Fonts.JakartaRegular,
                           fontSize: 12,
                         }}>
-                        {selectedAddress
+                        {currentCustomerAddress
                           ? `${
-                              selectedAddress.Area_details
-                                ? selectedAddress.Area_details + ', '
+                              currentCustomerAddress.Area_details
+                                ? currentCustomerAddress.Area_details + ', '
                                 : ''
-                            }${selectedAddress.City} - ${selectedAddress.State}`
+                            }${currentCustomerAddress.City} - ${
+                              currentCustomerAddress.State
+                            }`
                           : 'Select Location'}
                       </Text>
                     </TouchableOpacity>

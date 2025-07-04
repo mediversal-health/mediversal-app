@@ -218,6 +218,12 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 navigation.navigate('OrdersScreen');
               }}
             />
+            <OtherOptionsItem
+              title="My Prescriptions"
+              onPress={() => {
+                navigation.navigate('PrescriptionScreen');
+              }}
+            />
             <OtherOptionsItem title="Health Reports" />
             <OtherOptionsItem title="Bill & Invoice" />
 

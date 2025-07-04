@@ -200,4 +200,25 @@ export default StyleSheet.create({
     color: '#555',
     marginBottom: 12,
   },
+  imageContainer: {
+    position: 'relative',
+    margin: 4,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: 'red',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
 });

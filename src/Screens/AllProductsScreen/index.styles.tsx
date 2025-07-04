@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     gap: 5,
     backgroundColor: '#f2f2f2',
     width: 80,
-    height: 100,
+    height: 120,
   },
   selectedCategory: {
     backgroundColor: '#0088B1',

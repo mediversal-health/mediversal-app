@@ -61,7 +61,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   setPriceRange,
 }) => {
   const [selectedCategory, setSelectedCategory] =
-    useState<SidebarItem>('Category');
+    useState<SidebarItem>('Salt Name');
   // const [searchText, setSearchText] = useState<string>('');
   // const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({});
   // const [priceRange, setPriceRange] = useState({min: '', max: ''});
@@ -78,25 +78,25 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   }, [visible, translateY]);
 
   const sidebarItems: SidebarItem[] = [
-    'Category',
+    // 'Category',
     'Salt Name',
     'Manufacturer',
-    'Price Range',
+    // 'Price Range',
     'Availability',
     'Prescription Required',
-    'Special Tags',
+    // 'Special Tags',
   ];
 
   const optionsData = {
-    Category: [
-      {key: 'ayurveda', label: 'Ayurveda'},
-      {key: 'acupuncture', label: 'Acupuncture'},
-      {key: 'homeopathy', label: 'Homeopathy'},
-      {key: 'chiropractic', label: 'Chiropractic'},
-      {key: 'naturopathy', label: 'Naturopathy'},
-      {key: 'reiki', label: 'Reiki'},
-      {key: 'massageTherapy', label: 'Massage Therapy'},
-    ],
+    // Category: [
+    //   {key: 'ayurveda', label: 'Ayurveda'},
+    //   {key: 'acupuncture', label: 'Acupuncture'},
+    //   {key: 'homeopathy', label: 'Homeopathy'},
+    //   {key: 'chiropractic', label: 'Chiropractic'},
+    //   {key: 'naturopathy', label: 'Naturopathy'},
+    //   {key: 'reiki', label: 'Reiki'},
+    //   {key: 'massageTherapy', label: 'Massage Therapy'},
+    // ],
     'Salt Name': [
       {key: 'paracetamol', label: 'Paracetamol'},
       {key: 'ibuprofen', label: 'Ibuprofen'},
@@ -135,12 +135,12 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       {key: 'prescriptionRequired', label: 'Prescription Required'},
       {key: 'noPrescriptionRequired', label: 'No Prescription Required'},
     ],
-    'Special Tags': [
-      {key: 'sugarFree', label: 'Sugar - Free'},
-      {key: 'vegetarian', label: 'Vegetarian'},
-      {key: 'lactoseFree', label: 'Lactose - Free'},
-      {key: 'glutenFree', label: 'Gluten - Free'},
-    ],
+    // 'Special Tags': [
+    //   {key: 'sugarFree', label: 'Sugar - Free'},
+    //   {key: 'vegetarian', label: 'Vegetarian'},
+    //   {key: 'lactoseFree', label: 'Lactose - Free'},
+    //   {key: 'glutenFree', label: 'Gluten - Free'},
+    // ],
   };
 
   const toggleFilter = (key: string): void => {

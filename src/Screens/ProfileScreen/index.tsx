@@ -21,6 +21,7 @@ import {
   UserRoundXIcon,
   UserPen,
   UserCheck,
+  X,
 } from 'lucide-react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {Fonts} from '../../styles/fonts';
@@ -61,6 +62,7 @@ export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
+  const isBirthdayLocked = !!birthday;
 
   // Determine which image to display
   const displayImage =
@@ -111,13 +113,13 @@ export default function ProfileScreen() {
     if (isLoading) {
       return;
     }
+
     setIsLoading(true);
 
     try {
       const formattedDob = dobDate.toISOString().split('T')[0];
       const currentAuthState = useAuthStore.getState();
 
-      // Prepare image data if a new image was selected
       let imageData;
       if (tempImage?.uri) {
         const uriParts = tempImage.uri.split('.');
@@ -129,32 +131,53 @@ export default function ProfileScreen() {
         };
       }
 
-      await updateProfile(customer_id?.toString() ?? '', {
+      const payload: {
+        first_name: string | undefined;
+        last_name: string | undefined;
+        email: string;
+        phone_number: string;
+        image?: {uri: string; type: string; name: string} | undefined;
+        birthday?: string;
+      } = {
         first_name: userData.first_name,
         last_name: userData.last_name,
-        birthday: formattedDob,
         email: userData.email ?? '',
         phone_number: userData.phone.replace(/\D/g, ''),
         image: imageData,
-      });
+        ...(!isBirthdayLocked ? {birthday: formattedDob} : {}),
+      };
 
-      // Update auth store with new image if one was selected
+      await updateProfile(customer_id?.toString() ?? '', payload);
+
       setAuthentication({
         ...currentAuthState,
         first_name: userData.first_name,
         last_name: userData.last_name,
         email: userData.email,
         phoneNumber: userData.phone,
-        birthday: formattedDob,
+        birthday: isBirthdayLocked ? birthday : formattedDob,
         profileImage: tempImage?.uri || profileImage,
       });
 
       showToast('Profile updated successfully', 'success', 1000, true);
       setIsEditMode(false);
-      setTempImage(null); // Clear temp image after save
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      showToast('Failed to update profile', 'error', 1000, true);
+      setTempImage(null);
+    } catch (error: any) {
+      console.error('Error updating profile:', error?.response?.data);
+      const errorMsg = error?.response?.data?.message;
+
+      if (errorMsg === 'Birthday can only be updated once.') {
+        showToast(
+          'You can only update your birthday once.',
+          'error',
+          1500,
+          true,
+        );
+      } else if (errorMsg) {
+        showToast(errorMsg, 'error', 1500, true);
+      } else {
+        showToast('Failed to update profile', 'error', 1500, true);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -253,7 +276,6 @@ export default function ProfileScreen() {
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>
                 {userData.first_name}
-                {''}
                 {userData.last_name}
               </Text>
               <Text style={styles.joinedDate}>Joined: {userData.joined}</Text>
@@ -271,8 +293,16 @@ export default function ProfileScreen() {
                     <ActivityIndicator color="#0088B1" />
                   ) : (
                     <>
-                      <UserCheck size={20} color="#0088B1" />
-                      <Text style={styles.EditTitle}>Update Profile</Text>
+                      <View style={{flexDirection: 'row', gap: 5}}>
+                        <UserCheck size={20} color="#0088B1" />
+                        <Text style={styles.EditTitle}>Update Profile</Text>
+                      </View>
+                      <TouchableOpacity
+                        style={{flexDirection: 'row', gap: 2}}
+                        onPress={() => setIsEditMode(false)}>
+                        <X size={20} color="#EB5757" />
+                        <Text style={styles.CancelTitle}> Cancel </Text>
+                      </TouchableOpacity>
                     </>
                   )}
                 </TouchableOpacity>
@@ -372,13 +402,19 @@ export default function ProfileScreen() {
               </View>
               {isEditMode ? (
                 <TouchableOpacity
+                  disabled={isBirthdayLocked}
                   style={[
                     styles.infoValue,
                     {
                       alignItems: 'flex-end',
+                      opacity: isBirthdayLocked ? 0.4 : 1,
                     },
                   ]}
-                  onPress={() => setShowDatePicker(true)}>
+                  onPress={() => {
+                    if (!isBirthdayLocked) {
+                      setShowDatePicker(true);
+                    }
+                  }}>
                   <Text
                     style={{
                       textAlign: 'right',
@@ -395,6 +431,11 @@ export default function ProfileScreen() {
                 </Text>
               )}
             </View>
+            {isBirthdayLocked && isEditMode && (
+              <Text style={{color: '#888', fontSize: 10, marginTop: 4}}>
+                Birthday is locked and cannot be changed again.
+              </Text>
+            )}
 
             {showDatePicker && (
               <DateTimePicker
