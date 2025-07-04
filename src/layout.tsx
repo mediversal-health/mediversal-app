@@ -44,7 +44,7 @@ const Layout = () => {
   const {setProducts} = useProductStore();
   useEffect(() => {
     if (isAuthenticated) {
-      showToast('Welcome to Mediversal!', 'success', 5000, true);
+      showToast('Welcome to Mediversal!', 'success', 3000, true);
     }
     setIsAuthenticated(false);
   }, []);
