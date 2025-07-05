@@ -8,7 +8,6 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
-  Keyboard,
   Platform,
   ScrollView,
 } from 'react-native';
@@ -34,6 +33,7 @@ import Dehydration from '../PharmacyScreen/assests/svgs/Dehydration.svg';
 import Burn from '../PharmacyScreen/assests/svgs/Burn.svg';
 import BlockedNose from '../PharmacyScreen/assests/svgs/Burn.svg';
 import JointPain from '../PharmacyScreen/assests/svgs/Pain in joints.svg';
+import {useAuthStore} from '../../store/authStore';
 
 const GlobalSearchScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -41,8 +41,16 @@ const GlobalSearchScreen = () => {
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const {originalProducts, getOriginalProduct} = useProductStore();
-  const {searches, addSearch, clearSearches, removeSearch} =
+  const customerId = useAuthStore(state => state.customer_id);
+  const {searches, addSearch, clearSearches, removeSearch, hydrate} =
     useRecentSearchStore();
+
+  // Hydrate recent searches for current customer
+  useEffect(() => {
+    if (customerId) {
+      hydrate(customerId.toString());
+    }
+  }, [customerId, hydrate]);
 
   // Get last 5 searches
   const lastFiveSearches = searches.slice(0, 5);
@@ -80,8 +88,8 @@ const GlobalSearchScreen = () => {
   }, [searchTerm, searchProducts]);
 
   const handleSearchSubmit = () => {
-    if (searchTerm.trim()) {
-      addSearch(searchTerm);
+    if (searchTerm.trim() && customerId) {
+      addSearch(searchTerm, customerId.toString());
     }
   };
 
@@ -96,8 +104,8 @@ const GlobalSearchScreen = () => {
 
   const handleProductPress = (itemId: number) => {
     const originalProduct = getOriginalProduct(itemId.toString());
-    if (originalProduct) {
-      addSearch(originalProduct.ProductName);
+    if (originalProduct && customerId) {
+      addSearch(originalProduct.ProductName, customerId.toString());
     }
     navigation.navigate('UploadScreen', {
       product: originalProduct,
@@ -138,7 +146,10 @@ const GlobalSearchScreen = () => {
         </View>
         <Text style={styles.recentSearchText}>{item}</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => removeSearch(index)}>
+      <TouchableOpacity
+        onPress={() =>
+          customerId && removeSearch(index, customerId.toString())
+        }>
         <X color="#999" size={16} />
       </TouchableOpacity>
     </View>
@@ -152,7 +163,8 @@ const GlobalSearchScreen = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingHorizontal: 20,
-          paddingBottom: 10,
+          paddingTop: Platform.OS === 'android' ? 10 : 0,
+          //paddingBottom: 10,
         }}>
         <View style={styles.headerWrapper}>
           <View style={styles.headerLeft}>
@@ -225,7 +237,10 @@ const GlobalSearchScreen = () => {
                   <Text style={styles.recentSearchesTitle}>
                     Recent Searches
                   </Text>
-                  <TouchableOpacity onPress={clearSearches}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      customerId && clearSearches(customerId.toString())
+                    }>
                     <Text style={styles.clearButton}>Clear All</Text>
                   </TouchableOpacity>
                 </View>

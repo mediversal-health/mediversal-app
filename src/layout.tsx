@@ -230,7 +230,7 @@ const Layout = () => {
               alignItems: 'center',
               paddingHorizontal: 20,
               paddingBottom: 10,
-              marginTop: 20,
+              marginTop: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
               <Text style={{fontSize: 16, fontFamily: Fonts.JakartaSemiBold}}>
