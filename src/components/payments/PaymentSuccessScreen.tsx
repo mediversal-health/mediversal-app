@@ -32,6 +32,7 @@ const PaymentSuccessScreen = ({route}: any) => {
   const [orderCreated, setOrderCreated] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
+  console.log(cartItems);
   useEffect(() => {
     const handleCreateOrder = async () => {
       if (orderCreated || isCreatingOrder) {
@@ -51,7 +52,7 @@ const PaymentSuccessScreen = ({route}: any) => {
           },
           payment: {
             status: 'Paid',
-            method: 'UPI',
+            method: 'Prepaid',
             time: new Date().toISOString(),
             details: {
               transactionId: paymentId || '',
@@ -61,6 +62,10 @@ const PaymentSuccessScreen = ({route}: any) => {
           products:
             cartItems?.map((item: any) => ({
               productId: item.productId || item.id,
+              productName: item.name,
+              sku: item.sku,
+              sellingPrice: parseInt(item.price),
+              tax: item.tax,
               quantity: item.quantity || 1,
             })) || [],
           totalOrderAmount: amount,

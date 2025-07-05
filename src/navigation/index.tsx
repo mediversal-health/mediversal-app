@@ -21,6 +21,7 @@ import Layout from '../layout';
 import PaymentSuccessScreen from '../components/payments/PaymentSuccessScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import PrescriptionsScreen from '../Screens/PrescriptionsScreen';
+import GlobalSearchScreen from '../Screens/GlobalSearchScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -75,6 +76,7 @@ export type RootStackParamList = {
     PhoneNumber: number;
   };
   ProfileScreen: undefined;
+  GlobalSearchScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -125,6 +127,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="PrescriptionScreen"
               component={PrescriptionsScreen}
+            />
+            <Stack.Screen
+              name="GlobalSearchScreen"
+              component={GlobalSearchScreen}
             />
           </>
         ) : (

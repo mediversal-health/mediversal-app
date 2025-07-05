@@ -334,7 +334,11 @@ const PharmacyScreen = () => {
                 placement="bottom"
               />
             </View>
-            <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
+            <View
+              style={{
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
+                marginLeft: 10,
+              }}>
               <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
                 Trending Medicines
               </Text>
@@ -361,7 +365,11 @@ const PharmacyScreen = () => {
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
               />
             )}
-            <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
+            <View
+              style={{
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
+                marginLeft: 10,
+              }}>
               <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
                 Featured Brands
               </Text>
@@ -398,12 +406,15 @@ const PharmacyScreen = () => {
                 <Text style={styles.buttonText}>View all Medicines</Text>
               </View>
             </TouchableOpacity>
-            <View style={{marginHorizontal: Platform.OS === 'ios' ? 10 : 0}}>
+            <View
+              style={{
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
+                marginLeft: 10,
+              }}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
                   fontSize: 12,
-                  marginBottom: 10,
                 }}>
                 Stay Informed, Stay Healthy
               </Text>

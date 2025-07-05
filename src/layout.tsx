@@ -217,9 +217,9 @@ const Layout = () => {
               thumbColor={isEnabled ? '#0088B1' : '#ccc'}
             />
           </View>
-          <View style={{paddingHorizontal: 20}}>
+          <TouchableOpacity style={{paddingHorizontal: 20}}>
             <SearchBar />
-          </View>
+          </TouchableOpacity>
         </>
       ) : currentScreen === 'Pharmacy' ? (
         <>
