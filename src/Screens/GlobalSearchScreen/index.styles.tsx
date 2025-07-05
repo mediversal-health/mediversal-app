@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     justifyContent: 'space-between',
+    paddingVertical: Platform.OS === 'ios' ? 10 : 0,
   },
   textWrapper: {
     flexDirection: 'row',
