@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, ViewStyle} from 'react-native';
+import {View, Text, ViewStyle, Platform} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import styles from './index.styles';
 interface CategoryCardProps {
@@ -22,8 +22,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   title,
   placement = 'center',
   style = {},
-  imageWidth = 50,
-  imageHeight = 50,
+  imageWidth = Platform.OS === 'ios' ? 40 : 45,
+  imageHeight = 40,
 }) => {
   const getImageAlignment = () => {
     switch (placement) {

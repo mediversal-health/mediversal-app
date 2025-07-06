@@ -212,6 +212,8 @@ const CartPage = () => {
         productId: item.productId,
         name: item.ProductName,
         price: item.SellingPrice,
+        sku: item.SKU,
+        tax: item.tax,
         quantity: getProductQuantity(
           customer_id?.toString() ?? '',
           item.productId,

@@ -73,8 +73,8 @@ export default function ProfileScreen() {
         : profileImage
       : null);
   const [userData, setUserData] = useState({
-    first_name: first_name || 'John',
-    last_name: last_name || 'Doe',
+    first_name: first_name || 'Guest ',
+    last_name: last_name || 'User',
     email: email || null,
     phone: phoneNumber || 'Enter your phone number',
     dob: birthday
