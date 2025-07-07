@@ -1,3 +1,20 @@
+/**
+ *
+ * What we are testing here:
+ *
+ * This test suite verifies the rendering behavior of the <MobileLogin /> component.
+ * It ensures that the essential UI elements are present and correct during the initial render.
+ *
+ * The test uses mocked:
+ *   - `sendOTP` function from the auth service
+ *
+ * Covered in this test:
+ * 1. Renders the mobile number input field with the correct placeholder.
+ * 2. Displays the "Send OTP" button.
+ * 3. Renders the terms and conditions text including the link.
+ * 4. Validates that no error messages are shown initially.
+ */
+
 import React from 'react';
 import {render, screen, waitFor} from '@testing-library/react-native';
 import MobileLogin from '../src/components/auth/MobileLogIn';
