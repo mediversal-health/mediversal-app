@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     marginRight: 12,
+    backgroundColor: '#E8F4F7',
   },
   searchItemTextContainer: {
     flex: 1,
@@ -128,6 +129,11 @@ const styles = StyleSheet.create({
   searchItemSalt: {
     fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
+    color: '#666',
+  },
+  searchItemtManufacturer: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaBold,
     color: '#666',
   },
   recentSearchesContainer: {

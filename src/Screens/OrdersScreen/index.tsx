@@ -53,7 +53,7 @@ const OrdersScreen: React.FC = () => {
       setLoading(true);
 
       const response = await getOrders(customer_id.toString());
-
+      console.log(response);
       const mappedOrders: Order[] = response.data.map((item: any) => {
         const rawStatus = item.deliveryStatus?.toUpperCase?.() || 'ON GOING';
         const mappedStatus = rawStatus;
@@ -68,6 +68,7 @@ const OrdersScreen: React.FC = () => {
           items: `${item.items?.length || 0} Items`,
           amount: `₹${item.TotalOrderAmount || '0.00'}`,
           status: mappedStatus,
+          rapidshypAwb: item.rapidshypAwb,
         };
       });
 
@@ -78,7 +79,7 @@ const OrdersScreen: React.FC = () => {
       setLoading(false);
     }
   };
-
+  console.log(allOrders);
   useEffect(() => {
     getOrder();
   }, []);
@@ -86,9 +87,7 @@ const OrdersScreen: React.FC = () => {
   const filteredOrders = allOrders.filter(order => {
     const matchesStatus =
       selectedStatus === 'ALL' || order.status === selectedStatus;
-    const matchesSearch =
-      order.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.orderId.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = order.orderId;
     return matchesStatus && matchesSearch;
   });
 
@@ -153,7 +152,14 @@ const OrdersScreen: React.FC = () => {
           <ActivityIndicator size="large" color="#0088B1" />
         ) : filteredOrders.length > 0 ? (
           filteredOrders.map((order, index) => (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity
+              key={index}
+              onPress={() =>
+                navigation.navigate('OrdersDetailsScreen', {
+                  order_id: Number(order.orderId.replace('ORD-', '')),
+                  awb: order.rapidshypAwb,
+                })
+              }>
               <OrderCard order={order} />
             </TouchableOpacity>
           ))

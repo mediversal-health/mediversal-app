@@ -117,12 +117,17 @@ const GlobalSearchScreen = () => {
       style={styles.searchItem}
       onPress={() => handleProductPress(item.productId)}>
       <Image
-        source={{uri: item.images?.[0] || 'https://via.placeholder.com/50'}}
+        source={{uri: item.images?.[0]}}
         style={styles.searchItemImage}
         resizeMode="contain"
       />
       <View style={styles.searchItemTextContainer}>
         <Text style={styles.searchItemName}>{item.ProductName}</Text>
+        {item.ManufacturerName && (
+          <Text style={styles.searchItemtManufacturer}>
+            {item.ManufacturerName}
+          </Text>
+        )}
         {item.Composition && (
           <Text style={styles.searchItemSalt}>{item.Composition}</Text>
         )}

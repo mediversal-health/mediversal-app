@@ -102,9 +102,9 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
                   fontSize: 8,
                   color: '#899193',
                 }}>
-                Delivery Date
+                Order Date
               </Text>
-              <Text style={styles.amount}>25 Jun 2025</Text>
+              <Text style={styles.amount}>{order.date}</Text>
             </View>
           </View>
         </View>
@@ -122,7 +122,7 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
                 }}>
                 Order Items
               </Text>
-              <Text style={styles.amount}>{order.amount}</Text>
+              <Text style={styles.amount}>{order.items}</Text>
             </View>
           </View>
         </View>

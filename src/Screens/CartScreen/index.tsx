@@ -221,7 +221,7 @@ const CartPage = () => {
         imageUrl: item.imageUrl,
       }));
       const data = await RazorpayCheckout.open(options);
-
+      console.log(data);
       if (data.razorpay_payment_id) {
         navigation.reset({
           index: 0,

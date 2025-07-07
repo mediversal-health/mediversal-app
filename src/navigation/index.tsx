@@ -22,6 +22,7 @@ import PaymentSuccessScreen from '../components/payments/PaymentSuccessScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import PrescriptionsScreen from '../Screens/PrescriptionsScreen';
 import GlobalSearchScreen from '../Screens/GlobalSearchScreen';
+import OrdersDetailsScreen from '../Screens/OrderDetailsScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -77,6 +78,10 @@ export type RootStackParamList = {
   };
   ProfileScreen: undefined;
   GlobalSearchScreen: undefined;
+  OrdersDetailsScreen: {
+    order_id: number;
+    awb: string;
+  };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -131,6 +136,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="GlobalSearchScreen"
               component={GlobalSearchScreen}
+            />
+            <Stack.Screen
+              name="OrdersDetailsScreen"
+              component={OrdersDetailsScreen}
             />
           </>
         ) : (
