@@ -1,7 +1,6 @@
 /**
- * 📄 AddressBookScreen.test.tsx
  *
- * ✅ What we are testing here:
+ * What we are testing here:
  *
  * This test suite ensures that the `AddressBookScreen`:
  * - Renders correctly with expected UI components like header and address sections.
@@ -10,14 +9,13 @@
  * - Shows the "Add New Address" button and responds to its press.
  * - Does not crash when required route params are missing.
  *
- * 🔧 Mocks:
+ *  Mocks:
  * - Navigation (goBack)
  * - Zustand stores: authStore, addressStore, toastStore
  * - Service methods: getCustomerAddresses
  * - Components: AddressCard, AddressCardSkeleton, AddressActionModal
  */
 
-import React from 'react';
 import {render, waitFor, fireEvent} from '@testing-library/react-native';
 import AddressBookScreen from '../src/Screens/AddressBookScreen';
 
