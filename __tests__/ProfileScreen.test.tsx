@@ -1,5 +1,24 @@
+/**
+ *
+ * What we are testing here:
+ *
+ * This test suite verifies the rendering behavior of the <ProfileScreen /> component.
+ * It focuses on checking whether the screen correctly displays user information and UI elements.
+ *
+ * The test uses mocked:
+ *   - Zustand stores (authStore, screenSelector, toastStore)
+ *   - Navigation hooks
+ *   - `updateProfile` API call from the auth service
+ *
+ * Covered in this test:
+ * 1. Displays user full name, contact number, and profile metadata.
+ * 2. Renders key action buttons: Edit Info, Address Book, Logout, and Delete User.
+ */
+
 import {render} from '@testing-library/react-native';
 import ProfileScreen from '../src/Screens/ProfileScreen';
+
+jest.spyOn(console, 'log').mockImplementation(() => {});
 
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
@@ -49,7 +68,6 @@ describe('ProfileScreen', () => {
     expect(getByText('Address Book')).toBeTruthy();
     expect(getByText('Logout')).toBeTruthy();
     expect(getByText('Delete User')).toBeTruthy();
-
     expect(getByText('1234567890')).toBeTruthy();
   });
 });
