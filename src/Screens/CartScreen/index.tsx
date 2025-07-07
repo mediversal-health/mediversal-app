@@ -258,7 +258,11 @@ const CartPage = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0088B1" />
+        <ActivityIndicator
+          testID="ActivityIndicator"
+          size="large"
+          color="#0088B1"
+        />
       </View>
     );
   }
@@ -266,7 +270,9 @@ const CartPage = () => {
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{error}</Text>
+        <Text testID="error-text" style={styles.errorText}>
+          {error}
+        </Text>
         <TouchableOpacity
           style={styles.retryButton}
           onPress={() => {
