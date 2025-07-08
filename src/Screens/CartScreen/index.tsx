@@ -432,6 +432,7 @@ const CartPage = () => {
                   // But let's make sure by calling it explicitly after the state update
                 }}
                 onQuantityChange={handleQuantityChange}
+                fromOrderDesc={false}
               />
             ))
           ) : (

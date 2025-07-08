@@ -119,6 +119,7 @@ export interface Order {
   amount: string;
   status: OrderStatus;
   rapidshypAwb: string;
+  orderData: OrderItem[];
 }
 export type PrescribedOrderStatus = 'Approved' | 'Clarification Needed';
 export interface PrescribedOrder {
@@ -183,7 +184,7 @@ export interface CartItem {
   StockAvailableInInventory: number;
 }
 
-type OrderItem = {
+export type OrderItem = {
   orderItemId: number;
   orderId: number;
   productId: number;
@@ -218,3 +219,10 @@ export type OrderData = {
   manifestUrl: string | null;
   items: OrderItem[];
 };
+
+export interface TrackScan {
+  rapidshyp_status_code: string;
+  scan: string;
+  scan_datetime: string;
+  scan_location: string;
+}

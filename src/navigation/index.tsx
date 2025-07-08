@@ -10,7 +10,7 @@ import UploadPrescription from '../Screens/UploadPrescription';
 import AddressBookScreen from '../Screens/AddressBookScreen';
 import CartPage from '../Screens/CartScreen';
 import LocationMapScreen from '../Screens/LocationMapScreen';
-import {AddressBookTypes, Product} from '../types';
+import {AddressBookTypes, OrderData, Product} from '../types';
 import SearchScreen from '../Screens/SearchScreen';
 import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
 import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen';
@@ -81,6 +81,7 @@ export type RootStackParamList = {
   OrdersDetailsScreen: {
     order_id: number;
     awb: string;
+    order_data: OrderData;
   };
 };
 

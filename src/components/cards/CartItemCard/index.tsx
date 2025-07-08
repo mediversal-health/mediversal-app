@@ -25,6 +25,7 @@ type CartItemCardProps = {
   onRemove?: () => void;
   removing?: boolean;
   onQuantityChange?: () => void;
+  fromOrderDesc: boolean;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -36,6 +37,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   onRemove,
   removing = false,
   onQuantityChange,
+  fromOrderDesc,
 }) => {
   const customer_id = useAuthStore(state => state.customer_id);
 
@@ -125,52 +127,61 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       <View style={styles.card}>
         {/* Left Image */}
         <Image source={{uri: imageUrl}} style={styles.image} />
-
         {/* Middle Details */}
         <View style={styles.middleContent}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
-          <View style={styles.priceRow}>
+          {!fromOrderDesc ? (
+            <View style={styles.priceRow}>
+              <Text style={styles.actualPrice}>₹{mrp}</Text>
+              <Text style={styles.mrp}>₹{price}</Text>
+            </View>
+          ) : (
+            <Text style={styles.mrpBig}>Quantity : {quantity}</Text>
+          )}
+        </View>
+        {/* Right Side Delete & Controls */}
+        {fromOrderDesc ? (
+          <View style={{flexDirection: 'column'}}>
             <Text style={styles.actualPrice}>₹{mrp}</Text>
             <Text style={styles.mrp}>₹{price}</Text>
           </View>
-        </View>
-
-        {/* Right Side Delete & Controls */}
-        <View style={styles.rightControls}>
-          <TouchableOpacity
-            style={styles.deleteIcon}
-            onPress={handleRemove}
-            disabled={showLoading}>
-            {isDeleting ? (
-              <ActivityIndicator size="small" color="#EB5757" />
-            ) : (
-              <Trash2 size={20} color="#EB5757" />
-            )}
-          </TouchableOpacity>
-
-          <View style={styles.counterContainer}>
+        ) : (
+          <View style={styles.rightControls}>
             <TouchableOpacity
-              onPress={decreaseQty}
-              disabled={showLoading || quantity <= 1}>
-              <SquareMinus
-                size={20}
-                color={showLoading || quantity <= 1 ? '#cccccc' : '#0088B1'}
-              />
+              style={styles.deleteIcon}
+              onPress={handleRemove}
+              disabled={showLoading}>
+              {isDeleting ? (
+                <ActivityIndicator size="small" color="#EB5757" />
+              ) : (
+                <Trash2 size={20} color="#EB5757" />
+              )}
             </TouchableOpacity>
-            <Text style={styles.counterText}>{quantity}</Text>
-            <TouchableOpacity
-              onPress={increaseQty}
-              disabled={showLoading || !canIncreaseQuantity}>
-              <SquarePlus
-                size={20}
-                color={
-                  showLoading || !canIncreaseQuantity ? '#cccccc' : '#0088B1'
-                }
-              />
-            </TouchableOpacity>
+
+            <View style={styles.counterContainer}>
+              <TouchableOpacity
+                onPress={decreaseQty}
+                disabled={showLoading || quantity <= 1}>
+                <SquareMinus
+                  size={20}
+                  color={showLoading || quantity <= 1 ? '#cccccc' : '#0088B1'}
+                />
+              </TouchableOpacity>
+              <Text style={styles.counterText}>{quantity}</Text>
+              <TouchableOpacity
+                onPress={increaseQty}
+                disabled={showLoading || !canIncreaseQuantity}>
+                <SquarePlus
+                  size={20}
+                  color={
+                    showLoading || !canIncreaseQuantity ? '#cccccc' : '#0088B1'
+                  }
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        )}
       </View>
       <View style={{paddingHorizontal: 30}}>
         {isOutOfStock && (

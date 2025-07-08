@@ -11,7 +11,7 @@ import OrderCard from '../../components/cards/AllOrdersCard';
 import {ChevronLeft, Search} from 'lucide-react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
-import {Order} from '../../types';
+import {Order, OrderData} from '../../types';
 import styles from './index.styles';
 import {useAuthStore} from '../../store/authStore';
 import {getOrders} from '../../Services/order';
@@ -69,6 +69,7 @@ const OrdersScreen: React.FC = () => {
           amount: `₹${item.TotalOrderAmount || '0.00'}`,
           status: mappedStatus,
           rapidshypAwb: item.rapidshypAwb,
+          orderData: item as OrderData,
         };
       });
 
@@ -84,12 +85,16 @@ const OrdersScreen: React.FC = () => {
     getOrder();
   }, []);
 
-  const filteredOrders = allOrders.filter(order => {
-    const matchesStatus =
-      selectedStatus === 'ALL' || order.status === selectedStatus;
-    const matchesSearch = order.orderId;
-    return matchesStatus && matchesSearch;
-  });
+  const filteredOrders = allOrders
+    .filter(order => {
+      const matchesStatus =
+        selectedStatus === 'ALL' || order.status === selectedStatus;
+      const matchesSearch = order.orderId
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      return matchesStatus && matchesSearch;
+    })
+    .reverse();
 
   return (
     <ScrollView style={styles.container}>
@@ -157,8 +162,7 @@ const OrdersScreen: React.FC = () => {
               key={index}
               onPress={() =>
                 navigation.navigate('OrdersDetailsScreen', {
-                  order_id: Number(order.orderId.replace('ORD-', '')),
-                  awb: order.rapidshypAwb,
+                  order_data: order.orderData,
                 })
               }>
               <OrderCard order={order} />

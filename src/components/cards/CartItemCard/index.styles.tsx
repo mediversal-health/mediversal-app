@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     color: '#0088B1',
   },
   quantity: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#6D7578',
     fontFamily: Fonts.JakartaRegular,
   },
@@ -49,6 +49,12 @@ export const styles = StyleSheet.create({
     fontSize: 8,
     color: '#6D7578',
     textDecorationLine: 'line-through',
+    fontFamily: Fonts.JakartaSemiBold,
+  },
+  mrpBig: {
+    fontSize: 10,
+    color: '#6D7578',
+
     fontFamily: Fonts.JakartaSemiBold,
   },
   actualPrice: {
