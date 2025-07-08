@@ -11,7 +11,7 @@ import OrderCard from '../../components/cards/AllOrdersCard';
 import {ChevronLeft, Search} from 'lucide-react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
-import {Order} from '../../types';
+import {Order, OrderData} from '../../types';
 import styles from './index.styles';
 import {useAuthStore} from '../../store/authStore';
 import {getOrders} from '../../Services/order';
@@ -53,7 +53,7 @@ const OrdersScreen: React.FC = () => {
       setLoading(true);
 
       const response = await getOrders(customer_id.toString());
-
+      console.log(response);
       const mappedOrders: Order[] = response.data.map((item: any) => {
         const rawStatus = item.deliveryStatus?.toUpperCase?.() || 'ON GOING';
         const mappedStatus = rawStatus;
@@ -68,6 +68,8 @@ const OrdersScreen: React.FC = () => {
           items: `${item.items?.length || 0} Items`,
           amount: `₹${item.TotalOrderAmount || '0.00'}`,
           status: mappedStatus,
+          rapidshypAwb: item.rapidshypAwb,
+          orderData: item as OrderData,
         };
       });
 
@@ -78,19 +80,21 @@ const OrdersScreen: React.FC = () => {
       setLoading(false);
     }
   };
-
+  console.log(allOrders);
   useEffect(() => {
     getOrder();
   }, []);
 
-  const filteredOrders = allOrders.filter(order => {
-    const matchesStatus =
-      selectedStatus === 'ALL' || order.status === selectedStatus;
-    const matchesSearch =
-      order.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.orderId.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
+  const filteredOrders = allOrders
+    .filter(order => {
+      const matchesStatus =
+        selectedStatus === 'ALL' || order.status === selectedStatus;
+      const matchesSearch = order.orderId
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      return matchesStatus && matchesSearch;
+    })
+    .reverse();
 
   return (
     <ScrollView style={styles.container}>
@@ -154,7 +158,13 @@ const OrdersScreen: React.FC = () => {
           <ActivityIndicator size="large" color="#0088B1" />
         ) : filteredOrders.length > 0 ? (
           filteredOrders.map((order, index) => (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity
+              key={index}
+              onPress={() =>
+                navigation.navigate('OrdersDetailsScreen', {
+                  order_data: order.orderData,
+                })
+              }>
               <OrderCard order={order} />
             </TouchableOpacity>
           ))

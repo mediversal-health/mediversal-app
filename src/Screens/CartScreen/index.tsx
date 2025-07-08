@@ -221,7 +221,7 @@ const CartPage = () => {
         imageUrl: item.imageUrl,
       }));
       const data = await RazorpayCheckout.open(options);
-
+      console.log(data);
       if (data.razorpay_payment_id) {
         navigation.reset({
           index: 0,
@@ -432,6 +432,7 @@ const CartPage = () => {
                   // But let's make sure by calling it explicitly after the state update
                 }}
                 onQuantityChange={handleQuantityChange}
+                fromOrderDesc={false}
               />
             ))
           ) : (

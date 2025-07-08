@@ -118,6 +118,8 @@ export interface Order {
   items: string;
   amount: string;
   status: OrderStatus;
+  rapidshypAwb: string;
+  orderData: OrderItem[];
 }
 export type PrescribedOrderStatus = 'Approved' | 'Clarification Needed';
 export interface PrescribedOrder {
@@ -182,34 +184,45 @@ export interface CartItem {
   StockAvailableInInventory: number;
 }
 
-interface Customer {
-  customerId: number;
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-}
-
-interface PaymentDetails {
-  transactionId: string;
-}
-
-interface Payment {
-  status: string;
-  method: string;
-  time: string;
-  details: PaymentDetails;
-}
-
-interface ProductItem {
+export type OrderItem = {
+  orderItemId: number;
+  orderId: number;
   productId: number;
   quantity: number;
-}
+  sellingPrice: number | null;
+  sku: string | null;
+  tax: number | null;
+  productLength: number | null;
+  productBreadth: number | null;
+  productHeight: number | null;
+  productWeight: number | null;
+  productName: string;
+};
 
-export interface OrderData {
-  customer: Customer;
-  payment: Payment;
-  products: ProductItem[];
-  totalOrderAmount: number;
-  deliveryStatus: String;
+export type OrderData = {
+  orderId: number;
+  customerId: number;
+  customerName: string;
+  customerAddress: string;
+  customerPhone: string;
+  customerEmail: string;
+  paymentStatus: 'Paid' | 'Unpaid' | string;
+  paymentMethod: 'UPI' | 'Cash' | 'Card' | string;
+  paymentTime: string;
+  transactionId: string;
+  createdAt: string;
+  TotalOrderAmount: string;
+  deliverystatus: 'ON GOING' | 'DELIVERED' | 'PENDING' | string;
+  rapidshypShipmentId: number | null;
+  rapidshypAwb: string | null;
+  labelUrl: string | null;
+  manifestUrl: string | null;
+  items: OrderItem[];
+};
+
+export interface TrackScan {
+  rapidshyp_status_code: string;
+  scan: string;
+  scan_datetime: string;
+  scan_location: string;
 }
