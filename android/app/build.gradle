@@ -85,7 +85,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         resConfigs "en", "hi"  
-        versionName "2.0"
+        versionName "1.0.4"   // We need to Update this version every time we release a new version
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.mediversal_app' 
