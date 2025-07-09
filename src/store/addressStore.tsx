@@ -1,7 +1,7 @@
-import {create} from 'zustand';
-import {persist, createJSONStorage} from 'zustand/middleware';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AddressBookTypes} from '../types';
+import { AddressBookTypes } from '../types';
 
 interface AddressBookState {
   addresses: AddressBookTypes[];
@@ -19,16 +19,16 @@ interface AddressBookState {
 
 export const useAddressBookStore = create<AddressBookState>()(
   persist(
-    set => ({
+    (set) => ({
       addresses: [],
       selectedAddress: null,
       hasLoadedAddresses: false,
       customerAddressMap: {},
-      setAddresses: data => set({addresses: data}),
-      setSelectedAddress: address => set({selectedAddress: address}),
-      setHasLoadedAddresses: loaded => set({hasLoadedAddresses: loaded}),
+      setAddresses: (data) => set({ addresses: data }),
+      setSelectedAddress: (address) => set({ selectedAddress: address }),
+      setHasLoadedAddresses: (loaded) => set({ hasLoadedAddresses: loaded }),
       updateCustomerAddressMap: (customerId, address) =>
-        set(state => ({
+        set((state) => ({
           customerAddressMap: {
             ...state.customerAddressMap,
             [customerId]: address,
@@ -38,7 +38,7 @@ export const useAddressBookStore = create<AddressBookState>()(
     {
       name: 'address-book-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: state => ({
+      partialize: (state) => ({
         selectedAddress: state.selectedAddress,
         customerAddressMap: state.customerAddressMap,
       }),

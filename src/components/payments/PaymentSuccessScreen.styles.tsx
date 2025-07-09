@@ -1,69 +1,88 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { StyleSheet, Dimensions } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#F7F7F7',
+  actionButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'space-between',
+    marginBottom: 24,
+    width: '100%',
   },
-  scrollContainer: {
-    flexGrow: 1,
-    paddingBottom: 40,
+  amountLabel: {
+    color: '#64748B',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+    marginBottom: 8,
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#F7F7F7',
-  },
-  backgroundDecoration: {
-    position: 'absolute',
-    top: -height * 0.15,
-    right: -width * 0.2,
-    width: width * 0.6,
-    height: width * 0.6,
-    borderRadius: width * 0.3,
-    backgroundColor: '#E6F4F8',
-    opacity: 0.5,
-  },
-
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: height * 0.1,
-    paddingBottom: 40,
+  amountSection: {
     alignItems: 'center',
   },
-  iconContainer: {
-    marginTop: -80,
-    // alignItems: 'center',
-    // position: 'relative',
+  amountValue: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 24,
   },
 
-  title: {
-    fontSize: 24,
-    fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
-    marginBottom: 8,
-    textAlign: 'center',
-    marginTop: -50,
+  backgroundDecoration: {
+    backgroundColor: '#E6F4F8',
+    borderRadius: width * 0.3,
+    height: width * 0.6,
+    opacity: 0.5,
+    position: 'absolute',
+    right: -width * 0.2,
+    top: -height * 0.15,
+    width: width * 0.6,
   },
-  subtitle: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaRegular,
-    color: '#161D1F',
-    textAlign: 'center',
+  cardHeader: {
+    justifyContent: 'flex-start',
     marginBottom: 20,
-    lineHeight: 24,
-    maxWidth: '80%',
+  },
+
+  cardTitle: {
+    color: '#1A1A1A',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 18,
+  },
+  container: {
+    backgroundColor: '#F7F7F7',
+    flex: 1,
+  },
+  content: {
+    alignItems: 'center',
+    flex: 1,
+    paddingBottom: 40,
+    paddingHorizontal: 24,
+    paddingTop: height * 0.1,
+  },
+  detailLabel: {
+    color: '#475569',
+    flex: 1,
+    fontFamily: Fonts.JakartaMedium,
+    fontSize: 14,
+  },
+  detailRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+  },
+  detailValue: {
+    color: '#1A1A1A',
+    flex: 1,
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
+    marginLeft: 16,
+    textAlign: 'right',
   },
   detailsCard: {
-    width: '100%',
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
-    padding: 24,
-    marginBottom: 24,
     elevation: 4,
+    marginBottom: 24,
+    padding: 24,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -71,79 +90,59 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 8,
+    width: '100%',
   },
-  cardHeader: {
-    marginBottom: 20,
-    justifyContent: 'flex-start',
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#1A1A1A',
-  },
-  amountSection: {
-    alignItems: 'center',
+  iconContainer: {
+    marginTop: -80,
+    // alignItems: 'center',
+    // position: 'relative',
   },
   lottie: {
-    width: 300,
     height: 300,
+    width: 300,
   },
-  amountLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-    color: '#64748B',
-    marginBottom: 8,
-  },
-  amountValue: {
-    fontSize: 24,
-    fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#E2E8F0',
-    marginVertical: 16,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  primaryButton: {
     alignItems: 'center',
-    paddingVertical: 12,
-  },
-  detailLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaMedium,
-    color: '#475569',
-    flex: 1,
-  },
-  detailValue: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#1A1A1A',
-    textAlign: 'right',
-    flex: 1,
-    marginLeft: 16,
-  },
-  actionButtons: {
-    flexDirection: 'row',
+    backgroundColor: '#0088B1',
+    borderRadius: 12,
+    elevation: 4,
+    marginBottom: 20,
+    paddingVertical: 16,
+    shadowColor: '#0088B1',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
     width: '100%',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-    gap: 12,
+  },
+  primaryButtonText: {
+    color: '#FFFFFF',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 16,
+  },
+  safeArea: {
+    backgroundColor: '#F7F7F7',
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 40,
   },
   secondaryButton: {
-    flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    borderWidth: 1.5,
     borderColor: '#0088B1',
     borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    gap: 8,
+    borderWidth: 1.5,
     elevation: 2,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -153,38 +152,39 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   secondaryButtonText: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
     color: '#0088B1',
-  },
-  primaryButton: {
-    width: '100%',
-    backgroundColor: '#0088B1',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-    elevation: 4,
-    shadowColor: '#0088B1',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    marginBottom: 20,
-  },
-  primaryButtonText: {
-    fontSize: 16,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#FFFFFF',
+    fontSize: 14,
+  },
+  separator: {
+    backgroundColor: '#E2E8F0',
+    height: 1,
+    marginVertical: 16,
+  },
+  subtitle: {
+    color: '#161D1F',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    lineHeight: 24,
+    marginBottom: 20,
+    maxWidth: '80%',
+    textAlign: 'center',
   },
   supportLink: {
     paddingVertical: 8,
   },
   supportText: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaBold,
     color: '#000',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
     textDecorationLine: 'underline',
+  },
+  title: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 24,
+    marginBottom: 8,
+    marginTop: -50,
+    textAlign: 'center',
   },
 });

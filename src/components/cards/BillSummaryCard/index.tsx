@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {ChevronDown, ChevronUp, Percent, FileText} from 'lucide-react-native';
-import {styles} from './index.styles';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { ChevronDown, ChevronUp, Percent, FileText } from 'lucide-react-native';
+import { styles } from './index.styles';
 
 type BillDetails = {
   cartTotal: number;
@@ -32,11 +32,12 @@ const BillSummaryCard: React.FC<Props> = ({
     <View>
       {/* Main Card */}
       <TouchableOpacity
-        style={[styles.card, expanded ? {height: 60} : {height: 60}]}
-        onPress={toggleExpand}>
+        style={[styles.card, expanded ? { height: 60 } : { height: 60 }]}
+        onPress={toggleExpand}
+      >
         <View style={styles.cardContent}>
           <FileText color="#161D1F" size={20} />
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.billTitle}>Total Bill</Text>
             <Text style={styles.inclCharges}>Incl. charges</Text>
           </View>

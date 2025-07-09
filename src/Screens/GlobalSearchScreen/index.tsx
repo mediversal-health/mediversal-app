@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -11,20 +11,20 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
-import {ChevronLeft, Search, X} from 'lucide-react-native';
+import { ChevronLeft, Search, X } from 'lucide-react-native';
 import styles from './index.styles';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../navigation';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation';
 import PriscriptionSVG from '../HomeScreen/assets/svgs/priscription-icon.svg';
 import useProductStore from '../../store/productsStore';
 import useRecentSearchStore from '../../store/recentSearchStore';
-import {Product} from '../../types';
+import { Product } from '../../types';
 import OrderNowCard from '../../components/cards/OrderCard';
 import CategoryCard from '../../components/cards/CategoryCard';
-import {Fonts} from '../../styles/fonts';
+import { Fonts } from '../../styles/fonts';
 import Sneezing from '../PharmacyScreen/assests/svgs/Sneezing.svg';
 import Acitdity from '../PharmacyScreen/assests/svgs/Gastric.svg';
 import Headache from '../PharmacyScreen/assests/svgs/Dizzy.svg';
@@ -33,16 +33,16 @@ import Dehydration from '../PharmacyScreen/assests/svgs/Dehydration.svg';
 import Burn from '../PharmacyScreen/assests/svgs/Burn.svg';
 import BlockedNose from '../PharmacyScreen/assests/svgs/Burn.svg';
 import JointPain from '../PharmacyScreen/assests/svgs/Pain in joints.svg';
-import {useAuthStore} from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 
 const GlobalSearchScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const {originalProducts, getOriginalProduct} = useProductStore();
-  const customerId = useAuthStore(state => state.customer_id);
-  const {searches, addSearch, clearSearches, removeSearch, hydrate} =
+  const { originalProducts, getOriginalProduct } = useProductStore();
+  const customerId = useAuthStore((state) => state.customer_id);
+  const { searches, addSearch, clearSearches, removeSearch, hydrate } =
     useRecentSearchStore();
 
   // Hydrate recent searches for current customer
@@ -67,7 +67,7 @@ const GlobalSearchScreen = () => {
 
       const lowerCaseTerm = term.toLowerCase();
 
-      const results = originalProducts.filter(product => {
+      const results = originalProducts.filter((product) => {
         return (
           product.ProductName.toLowerCase().startsWith(lowerCaseTerm) ||
           (product.Composition &&
@@ -112,12 +112,13 @@ const GlobalSearchScreen = () => {
     });
   };
 
-  const renderSearchItem = ({item}: {item: Product}) => (
+  const renderSearchItem = ({ item }: { item: Product }) => (
     <TouchableOpacity
       style={styles.searchItem}
-      onPress={() => handleProductPress(item.productId)}>
+      onPress={() => handleProductPress(item.productId)}
+    >
       <Image
-        source={{uri: item.images?.[0]}}
+        source={{ uri: item.images?.[0] }}
         style={styles.searchItemImage}
         resizeMode="contain"
       />
@@ -145,23 +146,25 @@ const GlobalSearchScreen = () => {
     <View style={styles.recentSearchItem}>
       <TouchableOpacity
         style={styles.recentSearchTextWrapper}
-        onPress={() => handleRecentSearchPress(item)}>
-        <View style={{backgroundColor: '#D3D7D8', padding: 3, borderRadius: 5}}>
+        onPress={() => handleRecentSearchPress(item)}
+      >
+        <View
+          style={{ backgroundColor: '#D3D7D8', padding: 3, borderRadius: 5 }}
+        >
           <Search color="#999" size={16} />
         </View>
         <Text style={styles.recentSearchText}>{item}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() =>
-          customerId && removeSearch(index, customerId.toString())
-        }>
+        onPress={() => customerId && removeSearch(index, customerId.toString())}
+      >
         <X color="#999" size={16} />
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top']}>
       <View
         style={{
           flexDirection: 'row',
@@ -170,21 +173,23 @@ const GlobalSearchScreen = () => {
           paddingHorizontal: 20,
           paddingTop: Platform.OS === 'android' ? 10 : 0,
           //paddingBottom: 10,
-        }}>
+        }}
+      >
         <View style={styles.headerWrapper}>
           <View style={styles.headerLeft}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+            >
               <ChevronLeft size={20} color="#0088B1" />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }} />
         <CartIconWithBadge />
       </View>
 
-      <View style={{paddingHorizontal: 20, marginBottom: 5, flex: 1}}>
+      <View style={{ paddingHorizontal: 20, marginBottom: 5, flex: 1 }}>
         <View style={styles.wrapper}>
           <View style={styles.container}>
             <View style={styles.textWrapper}>
@@ -216,7 +221,7 @@ const GlobalSearchScreen = () => {
           <FlatList
             data={searchResults}
             renderItem={renderSearchItem}
-            keyExtractor={item => item.productId.toString()}
+            keyExtractor={(item) => item.productId.toString()}
             contentContainerStyle={styles.searchResultsContainer}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
@@ -231,7 +236,8 @@ const GlobalSearchScreen = () => {
               </Text>
               <TouchableOpacity
                 style={styles.uploadButton}
-                onPress={() => navigation.navigate('UploadPrescription')}>
+                onPress={() => navigation.navigate('UploadPrescription')}
+              >
                 <Text style={styles.uploadButtonText}>Upload Now</Text>
               </TouchableOpacity>
             </View>
@@ -245,7 +251,8 @@ const GlobalSearchScreen = () => {
                   <TouchableOpacity
                     onPress={() =>
                       customerId && clearSearches(customerId.toString())
-                    }>
+                    }
+                  >
                     <Text style={styles.clearButton}>Clear All</Text>
                   </TouchableOpacity>
                 </View>
@@ -254,20 +261,21 @@ const GlobalSearchScreen = () => {
                   renderItem={renderRecentSearchItem}
                   keyExtractor={(item, index) => index.toString()}
                   scrollEnabled={false}
-                  contentContainerStyle={{paddingBottom: 20}}
+                  contentContainerStyle={{ paddingBottom: 20 }}
                 />
               </View>
             )}
 
             <OrderNowCard />
 
-            <View style={{marginTop: 10}}>
+            <View style={{ marginTop: 10 }}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
                   fontSize: 12,
                   marginLeft: 10,
-                }}>
+                }}
+              >
                 Browse by Category
               </Text>
               <View
@@ -278,7 +286,8 @@ const GlobalSearchScreen = () => {
                   marginTop: 10,
                   marginHorizontal: Platform.OS === 'android' ? 0 : 10,
                   justifyContent: 'space-between',
-                }}>
+                }}
+              >
                 <CategoryCard
                   SvgImage={Sneezing}
                   title="Cold & Cough"
@@ -309,7 +318,8 @@ const GlobalSearchScreen = () => {
                   marginBottom: 10,
                   marginHorizontal: Platform.OS === 'android' ? 0 : 10,
                   justifyContent: 'space-between',
-                }}>
+                }}
+              >
                 <CategoryCard
                   SvgImage={Dehydration}
                   title="Dehydration"

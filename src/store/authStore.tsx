@@ -1,7 +1,7 @@
-import {create} from 'zustand';
-import {persist, createJSONStorage} from 'zustand/middleware';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthState} from '../types';
+import { AuthState } from '../types';
 
 interface AuthStore extends AuthState {
   isAuthenticated: boolean;
@@ -14,7 +14,7 @@ interface AuthStore extends AuthState {
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    set => ({
+    (set) => ({
       token: null,
       customer_id: null,
       email: null,
@@ -28,7 +28,7 @@ export const useAuthStore = create<AuthStore>()(
       isAuthenticated: false,
 
       // Add setIsAuthenticated action
-      setIsAuthenticated: (value: boolean) => set({isAuthenticated: value}),
+      setIsAuthenticated: (value: boolean) => set({ isAuthenticated: value }),
 
       setAuthentication: ({
         token,
@@ -41,7 +41,7 @@ export const useAuthStore = create<AuthStore>()(
         birthday,
         joinedDate,
       }) =>
-        set(state => ({
+        set((state) => ({
           ...state,
           token,
           customer_id: customer_id || null,
@@ -70,12 +70,12 @@ export const useAuthStore = create<AuthStore>()(
           joinedDate: null,
         }),
 
-      setRehydrated: value => set({rehydrated: value}),
+      setRehydrated: (value) => set({ rehydrated: value }),
     }),
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      onRehydrateStorage: () => state => {
+      onRehydrateStorage: () => (state) => {
         state?.setRehydrated(true);
         // After rehydration, set isAuthenticated based on token presence
         if (state) {

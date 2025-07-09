@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,12 @@ import {
   StatusBar,
   RefreshControl,
 } from 'react-native';
-import {ChevronDown, ChevronLeft, Plus} from 'lucide-react-native';
-import {useNavigation, RouteProp, useRoute} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
-import {AddressBookTypes} from '../../types';
+import { ChevronDown, ChevronLeft, Plus } from 'lucide-react-native';
+import { useNavigation, RouteProp, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { AddressBookTypes } from '../../types';
 import styles from './index.styles';
-import {useAuthStore} from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import {
   getCustomerAddresses,
   saveCustomerAddress,
@@ -23,12 +23,12 @@ import {
   deleteCustomerAddress,
 } from '../../Services/address';
 import AddressCard from '../../components/cards/AddressCard';
-import {useAddressBookStore} from '../../store/addressStore';
+import { useAddressBookStore } from '../../store/addressStore';
 import AddressActionModal from '../../components/modal/AddressActionModal';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Fonts} from '../../styles/fonts';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Fonts } from '../../styles/fonts';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
-import {useToastStore} from '../../store/toastStore';
+import { useToastStore } from '../../store/toastStore';
 
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
@@ -65,7 +65,7 @@ const AddressBookScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false); // Added for pull-to-refresh
   const [initialLoadComplete, setInitialLoadComplete] = useState(false); // Track initial load
   const locationData = route.params?.location;
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
   const fromLocationMap = route.params?.fromLocationMap || false;
   const isFromProfile = route.params?.isFromProfile || false;
   console.log(isFromProfile, 'isFromProfile');
@@ -87,7 +87,7 @@ const AddressBookScreen: React.FC = () => {
   const savedFormDataRef = useRef<AddressBookTypes | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const showToast = useToastStore(state => state.showToast);
+  const showToast = useToastStore((state) => state.showToast);
   const [formData, setFormData] = useState<AddressBookTypes>({
     Address: '',
     Home_Floor_FlatNumber: '',
@@ -113,7 +113,7 @@ const AddressBookScreen: React.FC = () => {
       savedFormDataRef.current
     ) {
       setShouldNavigateAfterSave(false);
-      navigation.replace('CartPage', {formData: savedFormDataRef.current});
+      navigation.replace('CartPage', { formData: savedFormDataRef.current });
       savedFormDataRef.current = null;
     }
   }, [selectedAddress, shouldNavigateAfterSave, navigation]);
@@ -185,7 +185,7 @@ const AddressBookScreen: React.FC = () => {
   useEffect(() => {
     if (locationData) {
       if (locationData.formattedAddress) {
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
           Home_Floor_FlatNumber: '',
           LandMark: '',
@@ -198,7 +198,7 @@ const AddressBookScreen: React.FC = () => {
       } else {
         const addressParts = locationData.address
           .split(',')
-          .map(part => part.trim());
+          .map((part) => part.trim());
 
         const city =
           addressParts.length >= 3 ? addressParts[addressParts.length - 3] : '';
@@ -207,7 +207,7 @@ const AddressBookScreen: React.FC = () => {
         const pincodeMatch = locationData.address.match(/\b\d{5,6}\b/);
         const pincode = pincodeMatch ? pincodeMatch[0] : '';
 
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
           houseNo: '',
           landmark: '',
@@ -224,8 +224,8 @@ const AddressBookScreen: React.FC = () => {
     field: keyof AddressBookTypes,
     value: string,
   ): void => {
-    setFormData({...formData, [field]: value});
-    setErrors(prev => ({...prev, [field]: undefined}));
+    setFormData({ ...formData, [field]: value });
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   const handleAddressTypeSelect = (type: AddressType): void => {
@@ -279,7 +279,7 @@ const AddressBookScreen: React.FC = () => {
     setSelectedAddress(address);
     setIsEditMode(true);
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       Customer_Address_id: address.Customer_Address_id,
       Home_Floor_FlatNumber: address.Home_Floor_FlatNumber || '',
@@ -321,7 +321,7 @@ const AddressBookScreen: React.FC = () => {
       );
 
       const updatedAddresses = addresses.filter(
-        addr =>
+        (addr) =>
           addr.Customer_Address_id !== selectedAddress.Customer_Address_id,
       );
       setAddresses(updatedAddresses);
@@ -428,7 +428,7 @@ const AddressBookScreen: React.FC = () => {
 
       return;
     }
-    navigation.replace('CartPage', {formData: selectedAddress});
+    navigation.replace('CartPage', { formData: selectedAddress });
   };
 
   const handleModalClose = () => {
@@ -442,13 +442,14 @@ const AddressBookScreen: React.FC = () => {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Address Book</Text>
         </View>
         <ScrollView style={styles.scrollView}>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <AddressCardSkeleton count={3} />
           </View>
         </ScrollView>
@@ -463,13 +464,14 @@ const AddressBookScreen: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.goBack()}
+        >
           <ChevronLeft size={20} color="#0088B1" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Address Book</Text>
       </View>
 
-      <View style={{justifyContent: 'space-between', flex: 1}}>
+      <View style={{ justifyContent: 'space-between', flex: 1 }}>
         <ScrollView
           style={styles.scrollView}
           refreshControl={
@@ -479,7 +481,8 @@ const AddressBookScreen: React.FC = () => {
               colors={['#0088B1']}
               tintColor="#0088B1"
             />
-          }>
+          }
+        >
           {!isFromProfile && addresses.length > 0 && (
             <TouchableOpacity
               style={
@@ -490,31 +493,39 @@ const AddressBookScreen: React.FC = () => {
               onPress={() => {
                 setIsAddressCardVisible(true);
                 setIsFormVisible(false);
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   width: '100%',
-                }}>
+                }}
+              >
                 <View
-                  style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center',
+                  }}
+                >
                   <Text style={styles.dropdownHeaderText}>Select Address</Text>
                 </View>
                 <View
                   style={{
                     transform: [
-                      {rotate: isAddressCardVisible ? '180deg' : '0deg'},
+                      { rotate: isAddressCardVisible ? '180deg' : '0deg' },
                     ],
-                  }}>
+                  }}
+                >
                   <ChevronDown size={20} color="#000" />
                 </View>
               </View>
             </TouchableOpacity>
           )}
           {!isFromProfile && isAddressCardVisible && (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               {refreshing ? (
                 <AddressCardSkeleton count={3} />
               ) : (
@@ -550,27 +561,31 @@ const AddressBookScreen: React.FC = () => {
                 setIsAddressCardVisible(false);
                 setIsEditMode(false);
                 resetForm();
-              }}>
+              }}
+            >
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   width: '100%',
-                }}>
+                }}
+              >
                 <View
                   style={{
                     flexDirection: 'row',
                     gap: 10,
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   {isFromProfile && <Plus size={20} color="#000" />}
                   <Text style={styles.dropdownHeaderText}>Add New Address</Text>
                 </View>
                 <View
                   style={{
-                    transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
-                  }}>
+                    transform: [{ rotate: isFormVisible ? '180deg' : '0deg' }],
+                  }}
+                >
                   <ChevronDown size={20} color="#000" />
                 </View>
               </View>
@@ -584,7 +599,8 @@ const AddressBookScreen: React.FC = () => {
                     color: '#899193',
                     fontFamily: Fonts.JakartaLight,
                     marginTop: -10,
-                  }}>
+                  }}
+                >
                   {' '}
                   Your saved addresses
                 </Text>
@@ -594,7 +610,8 @@ const AddressBookScreen: React.FC = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginBottom: 20,
-                }}>
+                }}
+              >
                 {refreshing ? (
                   <AddressCardSkeleton count={3} />
                 ) : (
@@ -635,7 +652,7 @@ const AddressBookScreen: React.FC = () => {
                     formData.Home_Floor_FlatNumber !== '' && styles.inputFilled,
                   ]}
                   value={formData.Home_Floor_FlatNumber}
-                  onChangeText={text =>
+                  onChangeText={(text) =>
                     handleInputChange('Home_Floor_FlatNumber', text)
                   }
                   placeholder="House/Floor/Flat Number"
@@ -660,7 +677,9 @@ const AddressBookScreen: React.FC = () => {
                     formData.Area_details !== '' && styles.inputFilled,
                   ]}
                   value={formData.Area_details}
-                  onChangeText={text => handleInputChange('Area_details', text)}
+                  onChangeText={(text) =>
+                    handleInputChange('Area_details', text)
+                  }
                   placeholder="Area Details"
                   onFocus={() => setFocusedField('Area_details')}
                   onBlur={() => setFocusedField(null)}
@@ -679,7 +698,7 @@ const AddressBookScreen: React.FC = () => {
                     formData.LandMark !== '' && styles.inputFilled,
                   ]}
                   value={formData.LandMark}
-                  onChangeText={text => handleInputChange('LandMark', text)}
+                  onChangeText={(text) => handleInputChange('LandMark', text)}
                   placeholder="Landmark"
                   onFocus={() => setFocusedField('LandMark')}
                   onBlur={() => setFocusedField(null)}
@@ -700,7 +719,7 @@ const AddressBookScreen: React.FC = () => {
                     value={
                       formData.PinCode === 0 ? '' : String(formData.PinCode)
                     }
-                    onChangeText={text => handleInputChange('PinCode', text)}
+                    onChangeText={(text) => handleInputChange('PinCode', text)}
                     placeholder="Pincode"
                     keyboardType="number-pad"
                     onFocus={() => setFocusedField('PinCode')}
@@ -722,7 +741,7 @@ const AddressBookScreen: React.FC = () => {
                       formData.City !== '' && styles.inputFilled,
                     ]}
                     value={formData.City}
-                    onChangeText={text => handleInputChange('City', text)}
+                    onChangeText={(text) => handleInputChange('City', text)}
                     placeholder="City"
                     onFocus={() => setFocusedField('City')}
                     onBlur={() => setFocusedField(null)}
@@ -744,7 +763,7 @@ const AddressBookScreen: React.FC = () => {
                     formData.State !== '' && styles.inputFilled,
                   ]}
                   value={formData.State}
-                  onChangeText={text => handleInputChange('State', text)}
+                  onChangeText={(text) => handleInputChange('State', text)}
                   placeholder="State"
                   onFocus={() => setFocusedField('State')}
                   onBlur={() => setFocusedField(null)}
@@ -768,7 +787,7 @@ const AddressBookScreen: React.FC = () => {
                       'Family & Friends',
                       'Other',
                     ] as AddressType[]
-                  ).map(type => (
+                  ).map((type) => (
                     <TouchableOpacity
                       key={type}
                       style={[
@@ -776,13 +795,15 @@ const AddressBookScreen: React.FC = () => {
                         selectedAddressType === type &&
                           styles.selectedAddressType,
                       ]}
-                      onPress={() => handleAddressTypeSelect(type)}>
+                      onPress={() => handleAddressTypeSelect(type)}
+                    >
                       <Text
                         style={[
                           styles.addressTypeText,
                           selectedAddressType === type &&
                             styles.selectedAddressTypeText,
-                        ]}>
+                        ]}
+                      >
                         {type}
                       </Text>
                     </TouchableOpacity>
@@ -801,7 +822,7 @@ const AddressBookScreen: React.FC = () => {
                     formData.Recipient_name !== '' && styles.inputFilled,
                   ]}
                   value={formData.Recipient_name}
-                  onChangeText={text =>
+                  onChangeText={(text) =>
                     handleInputChange('Recipient_name', text)
                   }
                   placeholder="Recipient Name"
@@ -824,7 +845,9 @@ const AddressBookScreen: React.FC = () => {
                     formData.PhoneNumber !== '' && styles.inputFilled,
                   ]}
                   value={formData.PhoneNumber}
-                  onChangeText={text => handleInputChange('PhoneNumber', text)}
+                  onChangeText={(text) =>
+                    handleInputChange('PhoneNumber', text)
+                  }
                   placeholder="Phone Number"
                   keyboardType="phone-pad"
                   onFocus={() => setFocusedField('phoneNumber')}
@@ -842,7 +865,7 @@ const AddressBookScreen: React.FC = () => {
             </>
           )}
         </ScrollView>
-        <View style={{marginHorizontal: 16}}>
+        <View style={{ marginHorizontal: 16 }}>
           {isAddressCardVisible && !isFromProfile && !isFormVisible && (
             <TouchableOpacity
               style={[
@@ -850,7 +873,8 @@ const AddressBookScreen: React.FC = () => {
                 !selectedAddress && styles.disabledButton,
               ]}
               onPress={handleProceedWithSelectedAddress}
-              disabled={!selectedAddress}>
+              disabled={!selectedAddress}
+            >
               <Text style={styles.saveButtonText}>
                 Proceed with Selected Address
               </Text>
@@ -864,7 +888,8 @@ const AddressBookScreen: React.FC = () => {
                 (isLoading || isUpdating) && styles.disabledButton,
               ]}
               onPress={handleSaveAndProceed}
-              disabled={isLoading || isUpdating}>
+              disabled={isLoading || isUpdating}
+            >
               <Text style={styles.saveButtonText}>
                 {isUpdating
                   ? 'Updating...'

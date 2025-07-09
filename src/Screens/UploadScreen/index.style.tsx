@@ -1,31 +1,15 @@
-import {StyleSheet} from 'react-native';
-import {Platform, StatusBar} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  scrollContainer: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    marginTop: 42,
-  },
-  content: {
-    flex: 1,
-    paddingBottom: 80, // Add padding to ensure content doesn't get hidden behind buttons
-  },
-
-  guaranteeSection: {
-    marginTop: 8, // Small margin between medicine details and guarantee cards
-    paddingBottom: 16, // Add some padding at the bottom
-  },
-  cheaperAlternativeContainer: {
-    flex: 1,
-    marginTop: 8, // Small margin between guarantee cards and cheaper alternatives
-    paddingBottom: 16,
-    marginBottom: 8, // Add some padding at the bottom
+  backButton: {
+    alignItems: 'center',
+    backgroundColor: '#e8f4f7',
+    borderRadius: 16,
+    height: 32,
+    justifyContent: 'center',
+    width: 32,
   },
   buttonContainer: {
     position: 'absolute',
@@ -40,92 +24,108 @@ export const styles = StyleSheet.create({
     borderTopColor: '#E0E0E0',
     elevation: 5, // Android shadow
     shadowColor: '#000000', // iOS shadow
-    shadowOffset: {width: 0, height: -2},
+    shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  reminderButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E8F4F7',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#0088B1',
-    marginRight: 8,
-  },
-  reminderButtonText: {
-    color: '#0088B1',
-    fontFamily: Fonts.JakartaSemiBold,
-    marginLeft: 8,
-    fontSize: 10,
-  },
   buyButton: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#0088B1',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
     borderRadius: 8,
+    flex: 1,
+    justifyContent: 'center',
     marginLeft: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
+
   buyButtonText: {
     color: '#FFFFFF',
+    fontFamily: Fonts.JakartaSemiBold,
     fontSize: 10,
-    fontFamily: Fonts.JakartaSemiBold,
   },
-  productCardsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
+  cheaperAlternativeContainer: {
+    flex: 1,
+    marginTop: 8, // Small margin between guarantee cards and cheaper alternatives
+    paddingBottom: 16,
+    marginBottom: 8, // Add some padding at the bottom
   },
-  productCard: {
-    width: 'auto',
-    marginRight: 1,
-    marginBottom: 24,
+  container: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
   },
-
-  relatedProductsHeading: {
-    fontSize: 18,
-    fontFamily: Fonts.JakartaSemiBold,
-    marginBottom: 12,
-    paddingHorizontal: 16,
-    color: '#000',
+  content: {
+    flex: 1,
+    paddingBottom: 80, // Add padding to ensure content doesn't get hidden behind buttons
   },
-  relatedProductsContainer: {
-    marginTop: 2,
-    marginBottom: 24,
+  guaranteeSection: {
+    marginTop: 8, // Small margin between medicine details and guarantee cards
+    paddingBottom: 16, // Add some padding at the bottom
   },
   header: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingBottom: 8,
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 8,
-    backgroundColor: '#fff',
   },
-
   headerRightIcons: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  backButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#e8f4f7',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   iconSpacing: {
     marginRight: 16,
   },
+  productCard: {
+    marginBottom: 24,
+    marginRight: 1,
+    width: 'auto',
+  },
+
+  productCardsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+  },
+  relatedProductsContainer: {
+    marginBottom: 24,
+    marginTop: 2,
+  },
+  relatedProductsHeading: {
+    color: '#000',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 18,
+    marginBottom: 12,
+    paddingHorizontal: 16,
+  },
+
+  reminderButton: {
+    alignItems: 'center',
+    backgroundColor: '#E8F4F7',
+    borderColor: '#0088B1',
+    borderRadius: 8,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginRight: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  reminderButtonText: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 10,
+    marginLeft: 8,
+  },
   safeHeader: {
     backgroundColor: '#fff',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  scrollContainer: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+    marginTop: 42,
   },
 });

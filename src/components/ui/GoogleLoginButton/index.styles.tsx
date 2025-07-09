@@ -1,17 +1,17 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   button: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
     backgroundColor: '#E8F4F7',
+    borderColor: '#0088B1',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#0088B1',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 
   disabledButton: {
@@ -19,37 +19,37 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    width: 24,
     height: 24,
     resizeMode: 'contain',
-  },
-
-  separator: {
-    width: 1,
-    height: 24,
-    backgroundColor: '#ccc',
-    marginHorizontal: 12,
-  },
-
-  text: {
-    fontSize: 16,
-    color: '#000',
-    fontFamily: Fonts.JakartaRegular,
+    width: 24,
   },
 
   loadingContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 4,
     paddingHorizontal: 8,
+    paddingVertical: 4,
   },
 
   loadingText: {
-    marginLeft: 8,
-    fontSize: 16,
     color: '#4285F4',
-    fontFamily: Fonts.JakartaMedium, // if available; otherwise use JakartaRegular
+    fontFamily: Fonts.JakartaMedium,
+    fontSize: 16,
+    marginLeft: 8, // if available; otherwise use JakartaRegular
+  },
+
+  separator: {
+    backgroundColor: '#ccc',
+    height: 24,
+    marginHorizontal: 12,
+    width: 1,
+  },
+
+  text: {
+    color: '#000',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
   },
 });
 

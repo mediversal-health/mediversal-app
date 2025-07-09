@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {MoveDown} from 'lucide-react-native';
+import { View, StyleSheet } from 'react-native';
+import { MoveDown } from 'lucide-react-native';
 
 interface ArrowPatternProps {
   backgroundColor?: string;
@@ -31,7 +31,8 @@ const ArrowPattern: React.FC<ArrowPatternProps> = ({
               opacity,
               width: 84,
             },
-          ]}>
+          ]}
+        >
           <MoveDown size={size} color="#D9D9D9" />
         </View>,
       );
@@ -41,22 +42,24 @@ const ArrowPattern: React.FC<ArrowPatternProps> = ({
   };
 
   return (
-    <View style={[styles.container, {backgroundColor}]}>{createArrows()}</View>
+    <View style={[styles.container, { backgroundColor }]}>
+      {createArrows()}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    overflow: 'hidden',
-    zIndex: 0,
-  },
   arrowContainer: {
     position: 'absolute',
+  },
+  container: {
+    bottom: 0,
+    left: 0,
+    overflow: 'hidden',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
   },
 });
 

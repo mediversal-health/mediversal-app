@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {CheckCircle, ChevronLeft, MapPinned} from 'lucide-react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { CheckCircle, ChevronLeft, MapPinned } from 'lucide-react-native';
 import {
   Text,
   TouchableOpacity,
@@ -12,22 +12,22 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import styles from './index.styles';
 
 import Geolocation from '@react-native-community/geolocation';
-import {requestLocationPermission} from '../../utils/permissions';
-import {useAddressBookStore} from '../../store/addressStore';
-import {AddressBookTypes} from '../../types';
+import { requestLocationPermission } from '../../utils/permissions';
+import { useAddressBookStore } from '../../store/addressStore';
+import { AddressBookTypes } from '../../types';
 import AddressCard from '../../components/cards/AddressCard';
-import {getCustomerAddresses} from '../../Services/address';
-import {useAuthStore} from '../../store/authStore';
+import { getCustomerAddresses } from '../../Services/address';
+import { useAuthStore } from '../../store/authStore';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
-import {RAPID_SHYP_ACCESS_TOKEN} from '@env';
+import { RAPID_SHYP_ACCESS_TOKEN } from '@env';
 export default function SearchScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [pincode, setPincode] = useState<string>('');
@@ -166,13 +166,13 @@ export default function SearchScreen() {
 
     const getLocationWithHighAccuracy = () => {
       Geolocation.getCurrentPosition(
-        position => {
-          const {latitude, longitude} = position.coords;
+        (position) => {
+          const { latitude, longitude } = position.coords;
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
         },
-        error => {
+        (error) => {
           console.log('High accuracy error:', error.code, error.message);
           if (retryAttemptRef.current < maxRetryAttempts) {
             retryAttemptRef.current += 1;
@@ -191,13 +191,13 @@ export default function SearchScreen() {
 
     const getLocationWithLowAccuracy = () => {
       Geolocation.getCurrentPosition(
-        position => {
-          const {latitude, longitude} = position.coords;
+        (position) => {
+          const { latitude, longitude } = position.coords;
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
         },
-        error => {
+        (error) => {
           console.log('Low accuracy error:', error.code, error.message);
           startLocationWatch();
         },
@@ -213,13 +213,13 @@ export default function SearchScreen() {
       clearLocationWatch();
 
       watchIdRef.current = Geolocation.watchPosition(
-        position => {
-          const {latitude, longitude} = position.coords;
+        (position) => {
+          const { latitude, longitude } = position.coords;
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
         },
-        error => {
+        (error) => {
           console.log('Watch position error:', error.code, error.message);
           setIsLocating(false);
         },
@@ -305,14 +305,15 @@ export default function SearchScreen() {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Select Delivery Location</Text>
         </View>
 
         <ScrollView
-          contentContainerStyle={{flexGrow: 1}}
+          contentContainerStyle={{ flexGrow: 1 }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -320,7 +321,8 @@ export default function SearchScreen() {
               colors={['#0088B1']}
               tintColor="#0088B1"
             />
-          }>
+          }
+        >
           {/* Pincode Search Section */}
           <View
             style={{
@@ -330,7 +332,8 @@ export default function SearchScreen() {
               borderBottomWidth: 1,
               paddingBottom: 20,
               borderColor: '#B0B6B8',
-            }}>
+            }}
+          >
             <Text style={styles.sectionTitle}>
               Use pincode to check delivery info
             </Text>
@@ -343,7 +346,7 @@ export default function SearchScreen() {
                 placeholder="Enter pincode"
                 placeholderTextColor={'#899193'}
                 value={pincode}
-                onChangeText={text => {
+                onChangeText={(text) => {
                   setPincode(text);
                   if (pincodeError) {
                     setPincodeError('');
@@ -360,7 +363,8 @@ export default function SearchScreen() {
               <TouchableOpacity
                 style={styles.searchButton}
                 onPress={checkServiceability}
-                disabled={isCheckingServiceability}>
+                disabled={isCheckingServiceability}
+              >
                 {isCheckingServiceability ? (
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
@@ -392,7 +396,7 @@ export default function SearchScreen() {
               {isLoading && !refreshing ? (
                 <AddressCardSkeleton count={3} />
               ) : (
-                <View style={{alignItems: 'center'}}>
+                <View style={{ alignItems: 'center' }}>
                   {addresses.map((addr, idx) => (
                     <AddressCard
                       key={idx}
@@ -429,7 +433,8 @@ export default function SearchScreen() {
               <MapPinned color={'#0088B1'} size={20} />
               <TouchableOpacity
                 onPress={handleUseCurrentLocation}
-                disabled={isLocating}>
+                disabled={isLocating}
+              >
                 <Text style={styles.currentLocationText}>
                   Use current Location
                 </Text>

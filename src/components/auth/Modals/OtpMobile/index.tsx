@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
-import {verifyOTP, sendOTP} from '../../../../Services/auth';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../../navigation';
-import {useAuthStore} from '../../../../store/authStore';
+import { verifyOTP, sendOTP } from '../../../../Services/auth';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../../navigation';
+import { useAuthStore } from '../../../../store/authStore';
 import {
   CodeField,
   Cursor,
@@ -51,10 +51,10 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const [resending, setResending] = useState(false);
   const [error, setError] = useState<string>('');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const setAuthentication = useAuthStore(state => state.setAuthentication);
-  const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
+  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
 
-  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value: otpValue, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otpValue,
     setValue: setOtpValue,
@@ -72,7 +72,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
     let interval: NodeJS.Timeout | null = null;
     if (isVisible && timer > 0) {
       interval = setInterval(() => {
-        setTimer(prev => (prev > 0 ? prev - 1 : 0));
+        setTimer((prev) => (prev > 0 ? prev - 1 : 0));
       }, 1000);
     }
     return () => {
@@ -157,7 +157,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       style={styles.modal}
       swipeDirection={['down']}
       animationOut="slideOutDown"
-      animationOutTiming={250}>
+      animationOutTiming={250}
+    >
       <View style={styles.container}>
         <Text style={styles.title}>6-digit OTP</Text>
         <Text style={styles.subtitle}>
@@ -182,7 +183,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           autoComplete="sms-otp"
-          renderCell={({index, symbol, isFocused}) => (
+          renderCell={({ index, symbol, isFocused }) => (
             <View
               key={index}
               style={[
@@ -195,7 +196,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
                     : '#d3d3d3',
                 },
               ]}
-              onLayout={getCellOnLayoutHandler(index)}>
+              onLayout={getCellOnLayoutHandler(index)}
+            >
               <Text style={styles.otpText}>
                 {symbol || (isFocused ? <Cursor /> : '')}
               </Text>
@@ -215,7 +217,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             <TouchableOpacity
               onPress={handleResendOTP}
               disabled={resending}
-              style={styles.resendButton}>
+              style={styles.resendButton}
+            >
               {resending ? (
                 <ActivityIndicator size="small" color="#0088B1" />
               ) : (
@@ -233,7 +236,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           ]}
           onPress={() => handleVerifyOTP()}
           disabled={otpValue.length !== CELL_COUNT || verifying}
-          activeOpacity={0.8}>
+          activeOpacity={0.8}
+        >
           {verifying ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
@@ -241,7 +245,8 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
               style={[
                 styles.verifyButtonText,
                 otpValue.length !== CELL_COUNT && styles.disabledText,
-              ]}>
+              ]}
+            >
               Verify & Continue
             </Text>
           )}

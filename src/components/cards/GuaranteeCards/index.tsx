@@ -1,11 +1,9 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {Shield} from 'lucide-react-native';
-import {styles} from './index.style';
+import { View, Text, ScrollView } from 'react-native';
+import { Shield } from 'lucide-react-native';
+import { styles } from './index.style';
 
-interface GuaranteeCardsProps {
-  // You can add any additional props here if needed
-}
+type GuaranteeCardsProps = Record<string, never>;
 
 const GuaranteeCards: React.FC<GuaranteeCardsProps> = () => {
   return (
@@ -13,7 +11,8 @@ const GuaranteeCards: React.FC<GuaranteeCardsProps> = () => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}>
+        contentContainerStyle={styles.scrollContainer}
+      >
         {/* Authenticity Guarantee Card */}
         <View style={styles.guaranteeCard}>
           <View style={styles.verifiedBadge}>

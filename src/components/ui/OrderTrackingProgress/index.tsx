@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
-import {TrackScan} from '../../../types';
+import { View, Text } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
+import { TrackScan } from '../../../types';
 
 interface OrderTrackingProgressProps {
   trackingData: TrackScan[];
@@ -67,8 +67,8 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
   const trackScans = trackingData;
 
   return (
-    <View style={{marginHorizontal: 10, marginVertical: 20, padding: 20}}>
-      <View style={{position: 'relative', height: 60}}>
+    <View style={{ marginHorizontal: 10, marginVertical: 20, padding: 20 }}>
+      <View style={{ position: 'relative', height: 60 }}>
         <View
           style={{
             position: 'absolute',
@@ -98,7 +98,8 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
             justifyContent: 'space-between',
             position: 'relative',
             zIndex: 3,
-          }}>
+          }}
+        >
           {trackScans.map((step, index) => (
             <View
               key={step.rapidshyp_status_code + index}
@@ -109,7 +110,8 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
                     : index === trackScans.length - 1
                     ? 'flex-end'
                     : 'center',
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontSize: 12,
@@ -122,7 +124,8 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
                       : index === trackScans.length - 1
                       ? 'right'
                       : 'center',
-                }}>
+                }}
+              >
                 {getDisplayText(step.scan)}
               </Text>
 
@@ -152,7 +155,8 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
                       ? 'right'
                       : 'center',
                   width: 60,
-                }}>
+                }}
+              >
                 {formatDateTime(step.scan_datetime)}
               </Text>
             </View>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   ScrollView,
@@ -7,9 +7,9 @@ import {
   TextInput,
 } from 'react-native';
 
-import {ChevronLeft, Search} from 'lucide-react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { ChevronLeft, Search } from 'lucide-react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import styles from './index.styles';
 import PrescriptionsCard from '../../components/cards/PrescriptionsCard';
 import PendingPrescriptionsCard from '../../components/cards/PendingPrescriptionsCard';
@@ -44,7 +44,8 @@ const PrescriptionsScreen: React.FC = () => {
         <View style={styles.headerLeft}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>My Prescriptions</Text>
@@ -60,7 +61,7 @@ const PrescriptionsScreen: React.FC = () => {
               placeholder="Search for orders, items or services"
               placeholderTextColor="#999"
               value={searchQuery}
-              onChangeText={text => setSearchQuery(text)}
+              onChangeText={(text) => setSearchQuery(text)}
             />
           </View>
         </View>
@@ -69,8 +70,9 @@ const PrescriptionsScreen: React.FC = () => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filterChipsWrapper}>
-        {statusOptions.map(status => (
+        contentContainerStyle={styles.filterChipsWrapper}
+      >
+        {statusOptions.map((status) => (
           <TouchableOpacity
             key={status}
             style={[
@@ -80,12 +82,14 @@ const PrescriptionsScreen: React.FC = () => {
                 backgroundColor: statusColors[status] || '#0088B1',
               },
             ]}
-            onPress={() => setSelectedStatus(status)}>
+            onPress={() => setSelectedStatus(status)}
+          >
             <Text
               style={[
                 styles.chipText,
                 selectedStatus === status && styles.activeChipText,
-              ]}>
+              ]}
+            >
               {status}
             </Text>
           </TouchableOpacity>
@@ -97,14 +101,16 @@ const PrescriptionsScreen: React.FC = () => {
       <Text style={styles.text}>Pending Prescriptions</Text>
       <View style={styles.orderList}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('PrescriptionVerification')}>
+          onPress={() => navigation.navigate('PrescriptionVerification')}
+        >
           <PendingPrescriptionsCard />
         </TouchableOpacity>
       </View>
       <Text style={styles.text}>Verified Prescriptions</Text>
       <View style={styles.orderList}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('PrescribedScreen')}>
+          onPress={() => navigation.navigate('PrescribedScreen')}
+        >
           <PrescriptionsCard />
         </TouchableOpacity>
       </View>

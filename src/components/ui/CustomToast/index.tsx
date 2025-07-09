@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Text, StyleSheet, Animated, View} from 'react-native';
-import {CheckCircle, XCircle} from 'lucide-react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Text, StyleSheet, Animated, View } from 'react-native';
+import { CheckCircle, XCircle } from 'lucide-react-native';
 
 // Import your SVG components - replace these with your actual imports
 import SvgIcon from './assets/svgs/Vector (1).svg';
@@ -29,6 +29,13 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
+  const toastTypeStyles: Record<ToastType, object> = {
+    success: styles.success,
+    error: styles.error,
+    warning: styles.warning,
+    info: styles.info,
+  };
+
   useEffect(() => {
     // Clear any existing timeout and animation
     if (timeoutRef.current) {
@@ -56,7 +63,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
         }),
       ]);
 
-      animationRef.current.start(finished => {
+      animationRef.current.start((finished) => {
         if (finished) {
           // Use setTimeout to defer the state update
           timeoutRef.current = setTimeout(() => {
@@ -89,9 +96,10 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     <Animated.View
       style={[
         styles.toast,
-        styles[type],
-        {transform: [{translateY: slideAnim}]},
-      ]}>
+        toastTypeStyles[type],
+        { transform: [{ translateY: slideAnim }] },
+      ]}
+    >
       <View style={styles.toastContent}>
         {type === 'success' && showIcon && (
           <CheckCircle size={20} color="white" style={styles.statusIcon} />
@@ -114,6 +122,30 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
 };
 
 const styles = StyleSheet.create({
+  error: {
+    backgroundColor: '#F44336',
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  info: {
+    backgroundColor: '#2196F3',
+  },
+  overlayIconContainer: {
+    alignItems: 'center',
+    bottom: 2,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: -2,
+  },
+  statusIcon: {
+    marginRight: 8,
+  },
+  success: {
+    backgroundColor: '#4CAF50',
+  },
   toast: {
     position: 'absolute',
     top: 50,
@@ -133,55 +165,18 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   toastContent: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  statusIcon: {
-    marginRight: 8,
-  },
-  overlayIconContainer: {
-    position: 'absolute',
-    bottom: 2,
-    right: -2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  placeholderIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  placeholderText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  success: {
-    backgroundColor: '#4CAF50',
-  },
-  error: {
-    backgroundColor: '#F44336',
-  },
-  warning: {
-    backgroundColor: '#FF9800',
-  },
-  info: {
-    backgroundColor: '#2196F3',
   },
   toastText: {
     color: 'white',
+    flex: 1,
     fontSize: 14,
     fontWeight: '600',
-    flex: 1,
+  },
+  warning: {
+    backgroundColor: '#FF9800',
   },
 });
 

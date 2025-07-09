@@ -1,6 +1,6 @@
-import {CircleDot, User, UserCheck} from 'lucide-react-native';
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { CircleDot, User, UserCheck } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './index.styles';
 interface PharmacistCardProps {
   name: string;
@@ -18,7 +18,8 @@ const PharmacistCard: React.FC<PharmacistCardProps> = ({
   return (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => setExpanded(!expanded)}>
+      onPress={() => setExpanded(!expanded)}
+    >
       <View style={styles.cardContent}>
         <View style={styles.avatarContainer}>
           <User size={25} color="#000000" />

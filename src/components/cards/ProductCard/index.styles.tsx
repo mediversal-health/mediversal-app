@@ -1,7 +1,28 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  addButton: {
+    alignItems: 'center',
+    borderTopLeftRadius: 8,
+    bottom: 0,
+    height: 24,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    width: 24,
+  },
+  addButtonForOutofStock: {
+    alignItems: 'center',
+    borderTopLeftRadius: 8,
+    bottom: 0,
+    height: 24,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    width: 54,
+  },
+
   cardContainer: {
     flex: 1,
     height: 230,
@@ -21,127 +42,106 @@ const styles = StyleSheet.create({
     elevation: 2,
     overflow: 'hidden',
   },
-  imageContainer: {
-    height: 100,
-
+  counterButton: {
     alignItems: 'center',
+    height: 24,
     justifyContent: 'center',
-    paddingVertical: 10,
+    width: 16,
+  },
+  counterContainer: {
+    alignItems: 'center',
+    borderTopLeftRadius: 8,
+    bottom: 0,
+    flexDirection: 'row',
+    height: 24,
+    justifyContent: 'space-between',
+    paddingHorizontal: 4,
+    position: 'absolute',
+    right: 0,
+    width: 64,
+  },
+  counterText: {
+    color: '#FFF',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    fontWeight: 'bold',
+    paddingHorizontal: 6,
+  },
+  currentPrice: {
+    color: '#000',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  deliveryContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 2,
+  },
+  deliveryText: {
+    color: '#34C759',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
+    marginLeft: 4,
+  },
+  discountContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  discountPercentage: {
+    color: '#00A86B',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
+  },
+  imageContainer: {
+    alignItems: 'center',
+
     backgroundColor: '#FFF',
     borderRadius: 8,
+    height: 100,
+    justifyContent: 'center',
     overflow: 'hidden',
-  },
-
-  productImage: {
-    height: 90,
-    width: '100%',
-    resizeMode: 'contain',
+    paddingVertical: 10,
   },
   infoContainer: {
     flex: 1,
   },
-  productName: {
-    marginTop: 4,
-    fontSize: 10,
-    color: '#000',
+  originalPrice: {
+    color: '#666',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 10,
+    marginRight: 4,
+    textDecorationLine: 'line-through',
+  },
+  outOfStockButtonText: {
+    color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
   },
   productDescription: {
-    fontSize: 12,
     color: '#000',
-    marginTop: 2,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    marginTop: 2,
+  },
+  productImage: {
+    height: 90,
+    resizeMode: 'contain',
+    width: '100%',
+  },
+  productName: {
+    color: '#000',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 10,
+    marginTop: 4,
   },
   quantityContainer: {
     marginTop: 2,
   },
   quantityText: {
-    fontSize: 8,
     color: '#666',
     fontFamily: Fonts.JakartaRegular,
-  },
-  deliveryContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 2,
-  },
-  deliveryText: {
     fontSize: 8,
-    color: '#34C759',
-    marginLeft: 4,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  discountContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  originalPrice: {
-    fontSize: 10,
-    color: '#666',
-    textDecorationLine: 'line-through',
-    marginRight: 4,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  discountPercentage: {
-    fontSize: 8,
-    color: '#00A86B',
-    fontFamily: Fonts.JakartaRegular,
-  },
-  currentPrice: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#000',
-    fontFamily: Fonts.JakartaRegular,
-  },
-  addButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 24,
-    height: 24,
-    borderTopLeftRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addButtonForOutofStock: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 54,
-    height: 24,
-    borderTopLeftRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  counterContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 64,
-    height: 24,
-    borderTopLeftRadius: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 4,
-  },
-  counterButton: {
-    width: 16,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  counterText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    fontSize: 12,
-    paddingHorizontal: 6,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  outOfStockButtonText: {
-    fontSize: 8,
-    fontFamily: Fonts.JakartaRegular,
-    color: '#fff',
   },
 });
 export default styles;

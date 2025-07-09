@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -21,7 +21,7 @@ interface ToastStore {
   hideToast: () => void;
 }
 
-export const useToastStore = create<ToastStore>(set => ({
+export const useToastStore = create<ToastStore>((set) => ({
   toast: {
     visible: false,
     message: '',
@@ -45,7 +45,7 @@ export const useToastStore = create<ToastStore>(set => ({
       },
     })),
   hideToast: () =>
-    set(state => ({
-      toast: {...state.toast, visible: false},
+    set((state) => ({
+      toast: { ...state.toast, visible: false },
     })),
 }));

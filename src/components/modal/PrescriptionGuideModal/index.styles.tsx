@@ -1,13 +1,56 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { Platform, StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    margin: 0, // ensure no margin at the bottom
-    padding: 0,
+  arrowIcon: {
+    position: 'absolute',
+    right: 16,
+    top: '50%',
+    transform: [{ translateY: -12 }],
+  },
+  caption: {
+    color: '#161D1F',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+
+  captionContainer: {
+    marginTop: 20,
+  },
+  closeButton: {
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#0088B1',
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: Platform.OS === 'ios' ? 26 : 0,
+    marginTop: 16,
+    paddingVertical: 12,
+  },
+  closeButtonText: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
+  },
+  description: {
+    color: '#899193',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    marginBottom: 20,
+    paddingHorizontal: 8,
+    textAlign: 'center',
+  },
+  guideImage: {
+    height: 140,
+    resizeMode: 'contain',
+    width: 240,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 12,
+    position: 'relative',
   },
   modalContainer: {
     backgroundColor: '#FFFFFF',
@@ -20,63 +63,20 @@ const styles = StyleSheet.create({
     marginBottom: 0, // prevent any bottom margin
     paddingBottom: 0, // remove padding from bottom
   },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    margin: 0, // ensure no margin at the bottom
+    padding: 0,
+  },
 
   modalTitle: {
-    textAlign: 'center',
-    fontSize: 16,
+    color: '#0088B1',
     fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
+    fontSize: 16,
     marginBottom: 16,
-  },
-  imageContainer: {
-    position: 'relative',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  guideImage: {
-    width: 240,
-    height: 140,
-    resizeMode: 'contain',
-  },
-  arrowIcon: {
-    position: 'absolute',
-    right: 16,
-    top: '50%',
-    transform: [{translateY: -12}],
-  },
-  caption: {
     textAlign: 'center',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#161D1F',
-    marginBottom: 4,
-  },
-  description: {
-    textAlign: 'center',
-    fontSize: 12,
-    color: '#899193',
-    marginBottom: 20,
-    paddingHorizontal: 8,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  closeButton: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#0088B1',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 12,
-    alignItems: 'center',
-    marginTop: 16,
-    marginBottom: Platform.OS === 'ios' ? 26 : 0,
-  },
-  captionContainer: {
-    marginTop: 20,
-  },
-
-  closeButtonText: {
-    color: '#0088B1',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
   },
 });
 

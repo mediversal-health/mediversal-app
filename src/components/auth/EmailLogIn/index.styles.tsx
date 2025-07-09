@@ -1,46 +1,44 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     backgroundColor: '#fff',
+    padding: 20,
   },
-  input: {
-    padding: 14,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 12,
-    marginTop: 12,
-    color: '#000',
-    fontFamily: Fonts.JakartaRegular,
+  dividerLine: {
+    backgroundColor: '#ccc',
+    flex: 1,
+    height: 1,
   },
-  focusedInput: {
-    borderColor: '#0088b1',
-    fontFamily: Fonts.JakartaRegular,
+  dividerRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: 24,
   },
-  errorText: {
-    color: 'red',
-    fontSize: 13,
-    marginTop: 4,
+  dividerText: {
+    color: '#999',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+    marginHorizontal: 12,
   },
   errorBorder: {
     borderColor: 'red',
   },
-  passwordContainer: {
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  passwordInput: {
-    paddingRight: 45,
+  errorText: {
+    color: 'red',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 13,
+    marginTop: 4,
   },
   eyeIcon: {
     position: 'absolute',
     right: 12,
     top: 26,
+  },
+  focusedInput: {
+    borderColor: '#0088b1',
+    fontFamily: Fonts.JakartaRegular,
   },
   forgotContainer: {
     alignItems: 'flex-end',
@@ -48,56 +46,58 @@ const styles = StyleSheet.create({
   },
   forgotText: {
     color: '#0088b1',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  loginButton: {
-    backgroundColor: '#0088B1',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  loginText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#ccc',
-  },
-  dividerText: {
-    marginHorizontal: 12,
-    color: '#999',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
   },
   googleButton: {
-    padding: 14,
-    borderRadius: 10,
-    borderColor: '#ccc',
-    borderWidth: 1,
     alignItems: 'center',
+    borderColor: '#ccc',
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 14,
   },
   googleText: {
     color: '#333',
     fontSize: 15,
   },
   helpContainer: {
-    marginTop: 32,
     alignItems: 'center',
+    marginTop: 32,
   },
   helpText: {
-    fontSize: 14,
     color: '#333',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+  },
+  input: {
+    borderColor: '#ccc',
+    borderRadius: 12,
+    borderWidth: 1,
+    color: '#000',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+    marginTop: 12,
+    padding: 14,
+  },
+  loginButton: {
+    alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 12,
+    marginTop: 16,
+    paddingVertical: 16,
+  },
+  loginText: {
+    color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+  },
+  passwordContainer: {
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  passwordInput: {
+    fontFamily: Fonts.JakartaRegular,
+    paddingRight: 45,
   },
 });
 export default styles;

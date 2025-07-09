@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {View, Text, ScrollView, SafeAreaView} from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import {
   ShieldCheck,
   File,
@@ -9,7 +9,7 @@ import {
   Stethoscope,
   ChevronLeft,
 } from 'lucide-react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styles from './index.style';
 import RecentPrescriptionCard from '../../components/cards/RecentPrescriptionCard';
 import PrescriptionGuideModal from '../../components/modal/PrescriptionGuideModal';
@@ -17,9 +17,9 @@ import Expert from './assets/experts.svg';
 import Secure from './assets/secure.svg';
 import Upload from './assets/uploaded.svg';
 import UploadPicker from '../../components/common/UploadPicker';
-import {UploadPickerHandle} from '../../types/index';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { UploadPickerHandle } from '../../types/index';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 const UploadPrescription: React.FC = () => {
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(true);
@@ -102,7 +102,8 @@ const UploadPrescription: React.FC = () => {
         <View style={styles.headerLeft}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Upload Prescription</Text>
@@ -110,7 +111,8 @@ const UploadPrescription: React.FC = () => {
       </View>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.container}>
           <View style={styles.progressCircle}>
             <File color="#6D7578" size={24} />
@@ -222,12 +224,12 @@ const UploadPrescription: React.FC = () => {
                     <Stethoscope color="#0088B1" size={26} />
                   </View>
                   <Text style={styles.noPrescriptionText}>
-                    Don't have a prescription?
+                    Don&apos;t have a prescription?
                   </Text>
                 </View>
 
                 <View style={styles.consultRow}>
-                  {consultCards.map(card => (
+                  {consultCards.map((card) => (
                     <View key={card.id} style={styles.consultCard}>
                       <View style={styles.consultIconWrapper}>{card.icon}</View>
                       <Text style={styles.consultTitle}>{card.title}</Text>

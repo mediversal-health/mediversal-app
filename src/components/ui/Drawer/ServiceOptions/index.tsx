@@ -1,19 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Bell, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Bell, ChevronRight } from 'lucide-react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
   description: string;
 };
 
-const OptiionsItem = ({title, description}: OptionsItemProps) => {
+const OptiionsItem = ({ title, description }: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.leftSection}>
-        <View style={{marginTop: 5}}>
+        <View style={{ marginTop: 5 }}>
           <Bell size={24} color="#B0B6B8" />
         </View>
 
@@ -29,32 +29,32 @@ const OptiionsItem = ({title, description}: OptionsItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
     paddingHorizontal: 16,
-  },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    flex: 1,
-  },
-  textContainer: {
-    flexShrink: 1,
-    color: '#0088B1',
-  },
-  title: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
+    paddingVertical: 12,
   },
   description: {
-    fontSize: 10,
     color: '#666',
-    marginTop: 2,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 10,
+    marginTop: 2,
+  },
+  leftSection: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    flex: 1,
+    gap: 12,
+  },
+  textContainer: {
+    color: '#0088B1',
+    flexShrink: 1,
+  },
+  title: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
   },
 });
 

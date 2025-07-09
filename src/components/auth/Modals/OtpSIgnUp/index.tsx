@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
   TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {verifyRegisterUser, RegisterUser} from '../../../../Services/auth';
-import {RootStackParamList} from '../../../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { verifyRegisterUser, RegisterUser } from '../../../../Services/auth';
+import { RootStackParamList } from '../../../../navigation';
 import styles from './index.styles';
 import {
   CodeField,
@@ -44,7 +44,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value: otpValue, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otpValue,
     setValue: setOtpValue,
@@ -62,7 +62,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
     let interval: NodeJS.Timeout | null = null;
     if (isVisible && timer > 0) {
       interval = setInterval(() => {
-        setTimer(prev => (prev > 0 ? prev - 1 : 0));
+        setTimer((prev) => (prev > 0 ? prev - 1 : 0));
       }, 1000);
     }
     return () => {
@@ -87,7 +87,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
         onClose();
         navigation.reset({
           index: 0,
-          routes: [{name: 'Login'}],
+          routes: [{ name: 'Login' }],
         });
       } else {
         setError(res.data?.message || 'Invalid OTP');
@@ -133,7 +133,8 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
       swipeDirection={['down']}
       animationOut="slideOutDown"
       animationOutTiming={250}
-      onBackdropPress={undefined}>
+      onBackdropPress={undefined}
+    >
       <View style={styles.modalContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Email Verification</Text>
@@ -171,7 +172,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           autoComplete="sms-otp"
-          renderCell={({index, symbol, isFocused}) => (
+          renderCell={({ index, symbol, isFocused }) => (
             <View
               key={index}
               style={[
@@ -184,7 +185,8 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
                     : '#d3d3d3',
                 },
               ]}
-              onLayout={getCellOnLayoutHandler(index)}>
+              onLayout={getCellOnLayoutHandler(index)}
+            >
               <Text style={styles.signUpOtpText}>
                 {symbol || (isFocused ? <Cursor /> : '')}
               </Text>
@@ -203,7 +205,8 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
           ) : (
             <TouchableOpacity
               onPress={handleResendOTP}
-              disabled={resendLoading}>
+              disabled={resendLoading}
+            >
               {resendLoading ? (
                 <ActivityIndicator size="small" color="#0088B1" />
               ) : (
@@ -221,7 +224,8 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
           ]}
           onPress={handleVerifyOTP}
           disabled={!isOtpFilled || loading}
-          activeOpacity={0.8}>
+          activeOpacity={0.8}
+        >
           {loading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
@@ -229,7 +233,8 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
               style={[
                 styles.verifyButtonText,
                 !isOtpFilled && styles.disabledText,
-              ]}>
+              ]}
+            >
               Verify & Continue
             </Text>
           )}

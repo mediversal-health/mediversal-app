@@ -1,6 +1,6 @@
-import React, {useRef, useEffect} from 'react';
-import {View, TextInput, StyleSheet, Keyboard} from 'react-native'; // Import Keyboard
-import {Fonts} from '../../../styles/fonts';
+import React, { useRef, useEffect } from 'react';
+import { View, TextInput, StyleSheet, Keyboard } from 'react-native'; // Import Keyboard
+import { Fonts } from '../../../styles/fonts';
 
 interface CustomOtpInputProps {
   otp: string[];
@@ -36,7 +36,7 @@ const CustomOtpInput: React.FC<CustomOtpInputProps> = ({
         onOtpComplete(fullOtp);
       }
     } else {
-      const firstEmptyIndex = otp.findIndex(char => char === '');
+      const firstEmptyIndex = otp.findIndex((char) => char === '');
       if (firstEmptyIndex !== -1) {
         inputRefs.current[firstEmptyIndex]?.focus();
       }
@@ -97,7 +97,7 @@ const CustomOtpInput: React.FC<CustomOtpInputProps> = ({
         .map((_, index) => (
           <TextInput
             key={index}
-            ref={ref => (inputRefs.current[index] = ref)}
+            ref={(ref) => (inputRefs.current[index] = ref)}
             style={[
               styles.otpInput,
               otp[index] ? styles.otpInputFilled : styles.otpInputEmpty,
@@ -106,8 +106,8 @@ const CustomOtpInput: React.FC<CustomOtpInputProps> = ({
             keyboardType="number-pad"
             maxLength={6} // Allow pasting longer strings
             value={otp[index]}
-            onChangeText={value => handleOTPChange(value, index)}
-            onKeyPress={e => handleKeyPress(e, index)}
+            onChangeText={(value) => handleOTPChange(value, index)}
+            onKeyPress={(e) => handleKeyPress(e, index)}
             autoFocus={index === 0 && isVisible}
             textContentType="oneTimeCode"
             autoComplete="sms-otp"
@@ -118,25 +118,15 @@ const CustomOtpInput: React.FC<CustomOtpInputProps> = ({
 };
 
 const styles = StyleSheet.create({
-  otpRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 20,
-    justifyContent: 'center', // Center the OTP inputs
-  },
   otpInput: {
-    width: 48,
-    height: 48,
     borderRadius: 8,
-    textAlign: 'center',
+    color: '#333',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 18,
     fontWeight: 'bold',
-    fontFamily: Fonts.JakartaRegular,
-    color: '#333', // Ensure text color is visible
-  },
-  otpInputFilled: {
-    borderColor: '#0088B1',
-    borderWidth: 1.5,
+    height: 48,
+    textAlign: 'center',
+    width: 48, // Ensure text color is visible
   },
   otpInputEmpty: {
     borderColor: '#d3d3d3',
@@ -144,6 +134,16 @@ const styles = StyleSheet.create({
   },
   otpInputError: {
     borderColor: '#ff3b30',
+  },
+  otpInputFilled: {
+    borderColor: '#0088B1',
+    borderWidth: 1.5,
+  },
+  otpRow: {
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+    marginTop: 20, // Center the OTP inputs
   },
 });
 

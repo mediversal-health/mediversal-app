@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
   TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {sendOTP, verifyOTP} from '../../../../Services/auth';
-import {RootStackParamList} from '../../../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { sendOTP, verifyOTP } from '../../../../Services/auth';
+import { RootStackParamList } from '../../../../navigation';
 import styles from './index.styles';
-import {useAuthStore} from '../../../../store/authStore';
+import { useAuthStore } from '../../../../store/authStore';
 import {
   CodeField,
   Cursor,
@@ -42,11 +42,11 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState<string>('');
-  const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
-  const setAuthentication = useAuthStore(state => state.setAuthentication);
+  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value: otpValue, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otpValue,
     setValue: setOtpValue,
@@ -64,7 +64,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
     let interval: NodeJS.Timeout | null = null;
     if (isVisible && timer > 0) {
       interval = setInterval(() => {
-        setTimer(prev => (prev > 0 ? prev - 1 : 0));
+        setTimer((prev) => (prev > 0 ? prev - 1 : 0));
       }, 1000);
     }
     return () => {
@@ -143,7 +143,8 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
       onSwipeComplete={onClose}
       swipeDirection={['down']}
       animationOut="slideOutDown"
-      animationOutTiming={250}>
+      animationOutTiming={250}
+    >
       <View style={styles.modalContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Email Verification</Text>
@@ -181,7 +182,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           autoComplete="sms-otp"
-          renderCell={({index, symbol, isFocused}) => (
+          renderCell={({ index, symbol, isFocused }) => (
             <View
               key={index}
               style={[
@@ -194,7 +195,8 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
                     : '#d3d3d3',
                 },
               ]}
-              onLayout={getCellOnLayoutHandler(index)}>
+              onLayout={getCellOnLayoutHandler(index)}
+            >
               <Text style={styles.emailOtpText}>
                 {symbol || (isFocused ? <Cursor /> : '')}
               </Text>
@@ -213,7 +215,8 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           ) : (
             <TouchableOpacity
               onPress={handleResendOTP}
-              disabled={resendLoading}>
+              disabled={resendLoading}
+            >
               {resendLoading ? (
                 <ActivityIndicator size="small" color="#0088B1" />
               ) : (
@@ -231,7 +234,8 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           ]}
           onPress={handleVerifyOTP}
           disabled={!isOtpFilled || loading}
-          activeOpacity={0.8}>
+          activeOpacity={0.8}
+        >
           {loading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
@@ -239,7 +243,8 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
               style={[
                 styles.verifyButtonText,
                 !isOtpFilled && styles.disabledText,
-              ]}>
+              ]}
+            >
               Verify & Continue
             </Text>
           )}

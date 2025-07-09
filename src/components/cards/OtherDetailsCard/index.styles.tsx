@@ -1,40 +1,40 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
-    height: 52,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#E5E8E9',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E5E8E9',
-    marginHorizontal: 12,
-    paddingHorizontal: 12,
     flexDirection: 'row',
-    alignItems: 'center',
+    height: 52,
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
+    marginHorizontal: 12,
     marginTop: 12,
-  },
-  title: {
-    fontSize: 14,
-    color: '#161D1F',
-    fontFamily: Fonts.JakartaSemiBold,
+    paddingHorizontal: 12,
   },
   expandedContent: {
-    marginHorizontal: 12,
     backgroundColor: '#fff',
-    padding: 10,
-    marginVertical: 4,
     borderRadius: 8,
+    marginHorizontal: 12,
+    marginVertical: 4,
+    padding: 10,
   },
   expandedText: {
-    fontSize: 13,
     color: '#333',
-    lineHeight: 18,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 13,
+    lineHeight: 18,
   },
   terms: {
     color: 'green',
     fontWeight: '600',
+  },
+  title: {
+    color: '#161D1F',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
   },
 });

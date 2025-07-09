@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef, useMemo} from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,14 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {ChevronLeft, LocateFixed, MapPin} from 'lucide-react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { ChevronLeft, LocateFixed, MapPin } from 'lucide-react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 
 import styles from './index.styles';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import {requestLocationPermission} from '../../utils/permissions'; // Assuming you have a utility for permissions
+import { requestLocationPermission } from '../../utils/permissions'; // Assuming you have a utility for permissions
 
 const LocationMapScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -56,7 +56,7 @@ const LocationMapScreen: React.FC = () => {
     try {
       const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`;
 
-      console.log('Fetching address for:', {latitude, longitude});
+      console.log('Fetching address for:', { latitude, longitude });
       const response = await fetch(url, {
         headers: {
           'User-Agent': 'YourAppName/1.0',
@@ -103,16 +103,16 @@ const LocationMapScreen: React.FC = () => {
   const getLocationWithHighAccuracy = () => {
     setLocationStatus('Getting your location...');
     Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        console.log('Got high accuracy position:', {latitude, longitude});
-        setCurrentLocation({latitude, longitude});
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log('Got high accuracy position:', { latitude, longitude });
+        setCurrentLocation({ latitude, longitude });
         setLocationStatus('');
         setIsLoading(false);
         fetchAddress(latitude, longitude);
         clearLocationWatch();
       },
-      error => {
+      (error) => {
         console.log('High accuracy error:', error.code, error.message);
         // If high accuracy fails, try low accuracy
         if (retryAttemptRef.current < maxRetryAttempts) {
@@ -134,10 +134,10 @@ const LocationMapScreen: React.FC = () => {
   const getLocationWithLowAccuracy = () => {
     setLocationStatus('Getting approximate location...');
     Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        console.log('Got low accuracy position:', {latitude, longitude});
-        setCurrentLocation({latitude, longitude});
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log('Got low accuracy position:', { latitude, longitude });
+        setCurrentLocation({ latitude, longitude });
         setLocationStatus('');
         setIsLoading(false);
         // Fetch address from coordinates
@@ -145,7 +145,7 @@ const LocationMapScreen: React.FC = () => {
         // Clear any ongoing watch
         clearLocationWatch();
       },
-      error => {
+      (error) => {
         console.log('Low accuracy error:', error.code, error.message);
         startLocationWatch(); // If low accuracy also fails, start watching
       },
@@ -164,10 +164,10 @@ const LocationMapScreen: React.FC = () => {
 
     // Start a new watch
     watchIdRef.current = Geolocation.watchPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        console.log('Watch position update:', {latitude, longitude});
-        setCurrentLocation({latitude, longitude});
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log('Watch position update:', { latitude, longitude });
+        setCurrentLocation({ latitude, longitude });
         setLocationStatus('');
         setIsLoading(false);
         // Fetch address from coordinates
@@ -176,7 +176,7 @@ const LocationMapScreen: React.FC = () => {
         // Once we have a location, we can stop watching
         clearLocationWatch();
       },
-      error => {
+      (error) => {
         console.log('Watch position error:', error.code, error.message);
         setLocationStatus(
           'Unable to determine your location. Please check your device settings.',
@@ -207,7 +207,7 @@ const LocationMapScreen: React.FC = () => {
           Alert.alert(
             'Location Permission Denied',
             'Please enable location services to use this feature.',
-            [{text: 'OK'}],
+            [{ text: 'OK' }],
           );
           setLocationStatus('Location permission denied');
           setIsLoading(false);
@@ -301,7 +301,8 @@ const LocationMapScreen: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.goBack()}
+        >
           <ChevronLeft size={20} color="#0088B1" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Add Address</Text>
@@ -310,14 +311,16 @@ const LocationMapScreen: React.FC = () => {
       <View style={styles.content}>
         {currentLocation && (
           <MapView
-            ref={ref => setMapRef(ref)}
+            ref={(ref) => setMapRef(ref)}
             provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
             style={styles.map}
-            initialRegion={initialRegion}>
+            initialRegion={initialRegion}
+          >
             <Marker
               coordinate={currentLocation}
               title={locationTitle}
-              description={locationAddress || 'Fetching current address...'}>
+              description={locationAddress || 'Fetching current address...'}
+            >
               <View style={styles.markerContainer}>
                 <View style={styles.pinWrapper}>
                   <MapPin size={25} color="#ffffff" />
@@ -330,7 +333,8 @@ const LocationMapScreen: React.FC = () => {
 
         <TouchableOpacity
           style={styles.recenterButton}
-          onPress={handleRecenterMap}>
+          onPress={handleRecenterMap}
+        >
           <LocateFixed size={24} color="#0088B1" />
         </TouchableOpacity>
 
@@ -346,7 +350,8 @@ const LocationMapScreen: React.FC = () => {
                 <Text style={styles.retryText}>{locationStatus}</Text>
                 <TouchableOpacity
                   style={styles.retryButton}
-                  onPress={handleRetryLocation}>
+                  onPress={handleRetryLocation}
+                >
                   <Text style={styles.retryButtonText}>
                     Retry Getting Location
                   </Text>
@@ -360,7 +365,7 @@ const LocationMapScreen: React.FC = () => {
       {currentLocation && (
         <View style={styles.locationDetailsContainer}>
           <View style={styles.locationInfoBox}>
-            <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{ flexDirection: 'row', gap: 5 }}>
               <MapPin size={20} color={'#161D1F'} />
               <Text style={styles.locationTitle}>{locationTitle}</Text>
             </View>
@@ -371,7 +376,8 @@ const LocationMapScreen: React.FC = () => {
 
           <TouchableOpacity
             style={styles.proceedButton}
-            onPress={handleProceed}>
+            onPress={handleProceed}
+          >
             <Text style={styles.proceedButtonText}>Proceed</Text>
           </TouchableOpacity>
         </View>

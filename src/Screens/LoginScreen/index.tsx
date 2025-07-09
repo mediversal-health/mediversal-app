@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect} from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -46,8 +46,8 @@ const LoginScreen = () => {
       }
 
       Alert.alert('Exit App', 'Are you sure you want to exit?', [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Exit', onPress: () => BackHandler.exitApp()},
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Exit', onPress: () => BackHandler.exitApp() },
       ]);
 
       return true;
@@ -65,7 +65,8 @@ const LoginScreen = () => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}>
+        contentContainerStyle={styles.scrollViewContent}
+      >
         <View style={styles.topSection}>
           {(isMobile || isSignup) && (
             <View style={styles.carouselContainer}>
@@ -99,13 +100,14 @@ const LoginScreen = () => {
               {!isMobile && (
                 <View style={styles.createAccountContainer}>
                   <Text style={styles.noAccountText}>
-                    Don't have an Account?
+                    Don&apos;t have an Account?
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
                       setIsSignup(true);
                       setIsMobile(false);
-                    }}>
+                    }}
+                  >
                     <Text style={styles.createOneText}> Create One</Text>
                   </TouchableOpacity>
                 </View>

@@ -1,40 +1,39 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { Platform, StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    height: 108,
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  topHalf: {
-    height: 54,
-    paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
-    paddingTop: 8,
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
   bottomHalf: {
-    height: 54,
+    alignItems: 'center',
     backgroundColor: '#E8F4F7',
     flexDirection: 'row',
+    height: 54,
     justifyContent: 'space-between',
-    alignItems: 'center',
     paddingHorizontal: 10,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#017DA2',
+    borderRadius: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  buttonText: {
+    color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
+  },
+  card: {
+    borderRadius: 12,
+    flex: 1,
+    height: 108,
+    overflow: 'hidden',
   },
   heading: {
     color: '#fff',
     fontFamily: Fonts.JakartaBold,
     fontSize: 12,
-    paddingLeft: Platform.OS === 'android' ? 0 : 4,
-  },
-  subHeading: {
-    color: '#fff',
-    fontSize: 8,
-    fontFamily: Fonts.JakartaRegular,
     paddingLeft: Platform.OS === 'android' ? 0 : 4,
   },
   offer: {
@@ -44,29 +43,30 @@ const styles = StyleSheet.create({
   },
   price: {
     color: '#888',
-    fontSize: 10,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 10,
   },
   strikePrice: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 10,
-    textDecorationLine: 'line-through',
     marginLeft: 6,
-    fontFamily: Fonts.JakartaRegular,
+    textDecorationLine: 'line-through',
   },
-  button: {
-    backgroundColor: '#017DA2',
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-    borderRadius: 16,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
+  subHeading: {
     color: '#fff',
-    fontSize: 8,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
+    paddingLeft: Platform.OS === 'android' ? 0 : 4,
+  },
+  topHalf: {
+    backgroundColor: 'transparent',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    height: 54,
+    justifyContent: 'center',
+    paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
+    paddingTop: 8,
   },
 });
 export default styles;

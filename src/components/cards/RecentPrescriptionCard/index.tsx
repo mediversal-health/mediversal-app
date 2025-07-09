@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import {
   CheckCircle,
   AlertTriangle,
@@ -44,7 +44,7 @@ const RecentPrescriptionCard: React.FC<Props> = ({
   return (
     <View style={styles.card}>
       <View style={styles.leftContent}>
-        <FileText size={23} color="#161D1F" style={{marginRight: 8}} />
+        <FileText size={23} color="#161D1F" style={{ marginRight: 8 }} />
         <View>
           <Text style={styles.doctorText}>{doctorName}</Text>
           <Text style={styles.uploadedText}>Uploaded on {uploadDate}</Text>
@@ -52,7 +52,7 @@ const RecentPrescriptionCard: React.FC<Props> = ({
       </View>
 
       <View style={styles.rightContent}>
-        <View style={[styles.badge, {backgroundColor: badge.color}]}>
+        <View style={[styles.badge, { backgroundColor: badge.color }]}>
           {badge.icon}
           <Text style={styles.badgeText}>{status}</Text>
         </View>

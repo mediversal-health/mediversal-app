@@ -1,180 +1,180 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { Platform, StyleSheet } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
-  headerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
   backButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#e8f4f7',
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#e8f4f7',
+    borderRadius: 16,
+    height: 32,
+    justifyContent: 'center',
+    width: 32,
   },
-  headerTitle: {
-    fontSize: 16,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#111827',
-  },
-  wrapper: {
-    paddingTop: 10,
-  },
-  gradientBox: {
-    width: '100%',
-    borderRadius: 12,
-    paddingVertical: 0,
-    paddingHorizontal: Platform.OS === 'ios' ? 0 : 10,
-
-    marginBottom: 20,
+  clearButton: {
+    color: '#EB5757',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
   },
   container: {
-    backgroundColor: '#e8f4f7',
-    borderRadius: 12,
-
-    paddingHorizontal: 20,
-    flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    backgroundColor: '#e8f4f7',
+
     borderColor: '#ccc',
+    borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 20,
     paddingVertical: Platform.OS === 'ios' ? 10 : 0,
   },
-  textWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
+  gradientBox: {
+    borderRadius: 12,
+    marginBottom: 20,
+    paddingHorizontal: Platform.OS === 'ios' ? 0 : 10,
+    paddingVertical: 0,
+
+    width: '100%',
   },
-  placeholderText: {
-    color: '#999',
-    fontFamily: Fonts.JakartaRegular,
+  headerLeft: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+  },
+  headerTitle: {
+    color: '#111827',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 16,
+  },
+  headerWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   highlight: {
     color: '#0088B1',
     fontFamily: Fonts.JakartaRegular,
   },
+  loadingContainer: {
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  placeholderText: {
+    color: '#999',
+    fontFamily: Fonts.JakartaRegular,
+  },
   priscriptionContainer: {
-    width: '100%',
+    alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: '#0088B1',
     borderRadius: 12,
+    flexDirection: 'row',
+    gap: 5,
+    justifyContent: 'space-between',
+    marginVertical: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 5,
-    marginVertical: 20,
+    width: '100%',
   },
   priscriptionText: {
-    fontSize: 12,
-    flex: 1,
     color: '#fff',
-    fontFamily: Fonts.JakartaRegular,
-  },
-  uploadButton: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  uploadButtonText: {
-    fontWeight: '600',
-    color: '#000',
-    fontSize: 8,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  searchInput: {
     flex: 1,
-    color: '#111827',
     fontFamily: Fonts.JakartaRegular,
-    paddingHorizontal: 10,
+    fontSize: 12,
   },
-  searchResultsContainer: {
-    paddingTop: 10,
-  },
-  searchItem: {
+  recentSearchItem: {
+    alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
-  searchItemImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-    marginRight: 12,
-    backgroundColor: '#E8F4F7',
-  },
-  searchItemTextContainer: {
-    flex: 1,
-  },
-  searchItemName: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
+  recentSearchText: {
     color: '#111827',
-    marginBottom: 4,
-  },
-  searchItemSalt: {
-    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
-    color: '#666',
+    fontSize: 14,
+    marginLeft: 10,
   },
-  searchItemtManufacturer: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaBold,
-    color: '#666',
+  recentSearchTextWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
   },
   recentSearchesContainer: {
     marginTop: 20,
   },
   recentSearchesHeader: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: 10,
   },
   recentSearchesTitle: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
     color: '#111827',
-  },
-  clearButton: {
-    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
-    color: '#EB5757',
+    fontSize: 14,
   },
-  recentSearchItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  searchInput: {
+    color: '#111827',
+    flex: 1,
+    fontFamily: Fonts.JakartaRegular,
+    paddingHorizontal: 10,
+  },
+  searchItem: {
     alignItems: 'center',
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     paddingVertical: 12,
   },
-  recentSearchTextWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  searchItemImage: {
+    backgroundColor: '#E8F4F7',
+    borderRadius: 5,
+    height: 50,
+    marginRight: 12,
+    width: 50,
+  },
+  searchItemName: {
+    color: '#111827',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  searchItemSalt: {
+    color: '#666',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+  },
+  searchItemTextContainer: {
     flex: 1,
   },
-  recentSearchText: {
-    marginLeft: 10,
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-    color: '#111827',
+  searchItemtManufacturer: {
+    color: '#666',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 12,
   },
-  loadingContainer: {
-    paddingVertical: 20,
+  searchResultsContainer: {
+    paddingTop: 10,
+  },
+  textWrapper: {
     alignItems: 'center',
+    flexDirection: 'row',
+    gap: 5,
+  },
+  uploadButton: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  uploadButtonText: {
+    color: '#000',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
+    fontWeight: '600',
+  },
+  wrapper: {
+    paddingTop: 10,
   },
 });
 

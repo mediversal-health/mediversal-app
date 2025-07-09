@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -8,13 +8,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import OrderCard from '../../components/cards/AllOrdersCard';
-import {ChevronLeft, Search} from 'lucide-react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
-import {Order, OrderData} from '../../types';
+import { ChevronLeft, Search } from 'lucide-react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { Order, OrderData } from '../../types';
 import styles from './index.styles';
-import {useAuthStore} from '../../store/authStore';
-import {getOrders} from '../../Services/order';
+import { useAuthStore } from '../../store/authStore';
+import { getOrders } from '../../Services/order';
 
 const OrdersScreen: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
@@ -41,7 +41,7 @@ const OrdersScreen: React.FC = () => {
   };
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
 
   const getOrder = async () => {
     try {
@@ -86,7 +86,7 @@ const OrdersScreen: React.FC = () => {
   }, []);
 
   const filteredOrders = allOrders
-    .filter(order => {
+    .filter((order) => {
       const matchesStatus =
         selectedStatus === 'ALL' || order.status === selectedStatus;
       const matchesSearch = order.orderId
@@ -103,7 +103,8 @@ const OrdersScreen: React.FC = () => {
           <TouchableOpacity
             testID="back-button"
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>My Orders</Text>
@@ -119,7 +120,7 @@ const OrdersScreen: React.FC = () => {
               placeholder="Search for orders, items or services"
               placeholderTextColor="#999"
               value={searchQuery}
-              onChangeText={text => setSearchQuery(text)}
+              onChangeText={(text) => setSearchQuery(text)}
             />
           </View>
         </View>
@@ -128,8 +129,9 @@ const OrdersScreen: React.FC = () => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filterChipsWrapper}>
-        {statusOptions.map(status => (
+        contentContainerStyle={styles.filterChipsWrapper}
+      >
+        {statusOptions.map((status) => (
           <TouchableOpacity
             key={status}
             style={[
@@ -139,12 +141,14 @@ const OrdersScreen: React.FC = () => {
                 backgroundColor: statusColors[status] || '#0088B1',
               },
             ]}
-            onPress={() => setSelectedStatus(status)}>
+            onPress={() => setSelectedStatus(status)}
+          >
             <Text
               style={[
                 styles.chipText,
                 selectedStatus === status && styles.activeChipText,
-              ]}>
+              ]}
+            >
               {status}
             </Text>
           </TouchableOpacity>
@@ -164,7 +168,8 @@ const OrdersScreen: React.FC = () => {
                 navigation.navigate('OrdersDetailsScreen', {
                   order_data: order.orderData,
                 })
-              }>
+              }
+            >
               <OrderCard order={order} />
             </TouchableOpacity>
           ))

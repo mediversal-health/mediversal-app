@@ -1,19 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Bell, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Bell, ChevronRight } from 'lucide-react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
   onPress?: () => void; // Add onPress prop
 };
 
-const OtherOptionsItem = ({title, onPress}: OptionsItemProps) => {
+const OtherOptionsItem = ({ title, onPress }: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.leftSection}>
-        <View style={{marginTop: 5}}>
+        <View style={{ marginTop: 5 }}>
           <Bell size={24} color="#B0B6B8" />
         </View>
 
@@ -28,33 +28,29 @@ const OtherOptionsItem = ({title, onPress}: OptionsItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
     paddingHorizontal: 16,
+    paddingVertical: 12,
   },
+
   leftSection: {
-    flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 12,
+    flexDirection: 'row',
     flex: 1,
+    gap: 12,
   },
   textContainer: {
-    flexShrink: 1,
     alignItems: 'center',
+    flexShrink: 1,
   },
   title: {
-    fontSize: 12,
-    textAlign: 'center',
     color: '#161D1F',
-    marginTop: 6,
     fontFamily: Fonts.JakartaRegular,
-  },
-  description: {
-    fontSize: 10,
-    color: '#666',
-    marginTop: 2,
+    fontSize: 12,
+    marginTop: 6,
+    textAlign: 'center',
   },
 });
 

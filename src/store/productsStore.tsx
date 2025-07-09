@@ -1,6 +1,6 @@
-import {create} from 'zustand';
-import {ProductCardProps} from '../types';
-import {Product} from '../types';
+import { create } from 'zustand';
+import { ProductCardProps } from '../types';
+import { Product } from '../types';
 interface ProductStore {
   originalProducts: Product[];
   cardProducts: ProductCardProps['product'][];
@@ -12,8 +12,8 @@ const useProductStore = create<ProductStore>((set, get) => ({
   originalProducts: [],
   cardProducts: [],
 
-  setProducts: products => {
-    const cardProducts = products.map(product => ({
+  setProducts: (products) => {
+    const cardProducts = products.map((product) => ({
       id: product.productId.toString(),
       name: product.ProductName,
       description: product.ProductInformation || 'No description available',
@@ -36,9 +36,9 @@ const useProductStore = create<ProductStore>((set, get) => ({
     });
   },
 
-  getOriginalProduct: id => {
+  getOriginalProduct: (id) => {
     return get().originalProducts.find(
-      product => product.productId.toString() === id,
+      (product) => product.productId.toString() === id,
     );
   },
 }));

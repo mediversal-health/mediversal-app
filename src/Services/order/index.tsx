@@ -1,6 +1,6 @@
 import axios from 'axios';
 const IP_ADDR = process.env.API_URL;
-import {OrderData} from '../../types';
+import { OrderData } from '../../types';
 
 export const createOrder = async (orderData: OrderData) => {
   try {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 const IP_ADDR = process.env.API_URL;
-import {Product} from '../../types';
+import { Product } from '../../types';
 
 export const getCartItems = async (customerId: any) => {
   try {
@@ -37,7 +37,7 @@ export const updateCart = async (
   try {
     const response = await axios.post(
       `${IP_ADDR}/api/cart/quantity/${customerId}`,
-      {productId, quantity},
+      { productId, quantity },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const updateCart = async (
 export const DeleteFromCart = async (customerId: any, productIds: number[]) => {
   try {
     const response = await axios.delete(`${IP_ADDR}/api/cart/${customerId}`, {
-      data: {productIds: productIds},
+      data: { productIds: productIds },
       headers: {
         'Content-Type': 'application/json',
       },

@@ -1,49 +1,49 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { Platform, StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height: 104,
-    borderRadius: 12,
-    paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
-    paddingTop: 6,
-    overflow: 'hidden',
-    justifyContent: 'space-between',
-  },
   banner: {
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
     alignSelf: 'center',
-    marginBottom: 4,
-    top: 0,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
+    borderRadius: 6,
+    marginBottom: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     position: 'absolute',
+    top: 0,
   },
   bannerText: {
-    fontSize: Platform.OS === 'android' ? 4 : 6,
-    fontFamily: Fonts.JakartaSemiBold,
     color: '#fff',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: Platform.OS === 'android' ? 4 : 6,
     textAlign: 'center',
+  },
+  container: {
+    borderRadius: 12,
+    flex: 1,
+    height: 104,
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    paddingHorizontal: Platform.OS === 'android' ? 10 : 0,
+    paddingTop: 6,
   },
   content: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   heading: {
-    fontSize: 14,
     color: '#000',
-    textAlign: 'center',
     fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
+    textAlign: 'center',
   },
   subHeading: {
-    fontSize: 8,
     color: '#000',
-    textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 8,
+    textAlign: 'center',
   },
 });
 export default styles;

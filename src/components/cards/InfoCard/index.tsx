@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './index.styles';
 type InfoBoxProps = {
@@ -21,8 +21,9 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     <LinearGradient
       colors={[colors, '#FFFFFF']}
       style={styles.container}
-      start={{x: 0, y: 1}}
-      end={{x: 0, y: 0}}>
+      start={{ x: 0, y: 1 }}
+      end={{ x: 0, y: 0 }}
+    >
       {/* {flag === 'Online' && (
         <LinearGradient
           colors={['#003A4B', '#0088B1']}
@@ -43,7 +44,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           </Text>
           {flag === 'Tests' && (
             // eslint-disable-next-line react-native/no-inline-styles
-            <Text style={{fontSize: 10, color: '#000', textAlign: 'center'}}>
+            <Text style={{ fontSize: 10, color: '#000', textAlign: 'center' }}>
               & Diagnostic Tests
             </Text>
           )}

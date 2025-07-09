@@ -1,87 +1,87 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0,
-    justifyContent: 'flex-end',
+  buttonContainer: {
+    gap: 5,
+    width: '100%',
   },
-  modalContainer: {
+  dividerContainer: {
     alignItems: 'center',
-    padding: 32,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    flexDirection: 'row',
+    paddingVertical: 8,
+    width: '100%',
+  },
+  dividerLine: {
+    backgroundColor: '#E0E0E0',
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    color: '#666',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
+    paddingHorizontal: 16,
   },
   headerContainer: {
     alignItems: 'flex-start',
-    width: '100%',
     marginBottom: 24,
-  },
-  title: {
-    marginBottom: 6,
-    fontSize: 24,
-    fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    fontFamily: Fonts.JakartaRegular,
-  },
-  buttonContainer: {
     width: '100%',
-    gap: 5,
   },
   locationButton: {
-    width: '100%',
-    paddingVertical: 12,
-    display: 'flex',
-    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#0088B1',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#0088B1',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
     gap: 5,
+    justifyContent: 'center',
+    paddingVertical: 12,
+    width: '100%',
   },
   locationButtonText: {
     color: '#0088B1',
-    fontSize: 16,
     fontFamily: Fonts.JakartaRegular,
-  },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    paddingVertical: 8,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#E0E0E0',
-  },
-  dividerText: {
-    paddingHorizontal: 16,
-    color: '#666',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 16,
   },
   manuallocationButton: {
-    width: '100%',
-    paddingVertical: 12,
+    alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 10,
     display: 'flex',
     flexDirection: 'row',
-    borderRadius: 10,
-    backgroundColor: '#0088B1',
-    justifyContent: 'center',
-    alignItems: 'center',
     gap: 5,
+    justifyContent: 'center',
+    paddingVertical: 12,
+    width: '100%',
   },
   manuallocationButtonText: {
     color: '#FFF',
-    fontSize: 16,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    padding: 32,
+  },
+  subtitle: {
+    color: '#666',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+  },
+  title: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 24,
+    marginBottom: 6,
   },
 });
 

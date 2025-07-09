@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {Eye, EyeOff} from 'lucide-react-native';
-import {ResetPassword} from '../../../../Services/auth';
+import { Eye, EyeOff } from 'lucide-react-native';
+import { ResetPassword } from '../../../../Services/auth';
 import styles from './index.styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../../navigation';
-import {useToastStore} from '../../../../store/toastStore'; // Import the toast store
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../../navigation';
+import { useToastStore } from '../../../../store/toastStore'; // Import the toast store
 
 interface ResetPasswordModalProps {
   isVisible: boolean;
@@ -32,7 +32,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const showToast = useToastStore(state => state.showToast); // Get the showToast function
+  const showToast = useToastStore((state) => state.showToast); // Get the showToast function
 
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
@@ -55,7 +55,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
         onClose();
         navigation.reset({
           index: 0,
-          routes: [{name: 'Login'}],
+          routes: [{ name: 'Login' }],
         });
       } else {
         showToast(
@@ -92,7 +92,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           />
           <TouchableOpacity
             style={styles.icon}
-            onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+          >
             {isPasswordVisible ? (
               <Eye size={22} color="#0088b1" />
             ) : (
@@ -114,7 +115,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
             style={styles.icon}
             onPress={() =>
               setIsConfirmPasswordVisible(!isConfirmPasswordVisible)
-            }>
+            }
+          >
             {isConfirmPasswordVisible ? (
               <Eye size={22} color="#0088b1" />
             ) : (
@@ -126,7 +128,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
         <TouchableOpacity
           style={styles.button}
           disabled={loading}
-          onPress={handleResetPassword}>
+          onPress={handleResetPassword}
+        >
           {loading ? (
             <ActivityIndicator color="#f8f8f8" />
           ) : (

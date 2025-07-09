@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,24 +11,24 @@ import {
 } from 'react-native';
 import useProductStore from '../../../store/productsStore';
 import styles from './index.styles';
-import {ProductCardProps} from '../../../types';
-import {useFilterStore} from '../../../store/filterStore';
+import { ProductCardProps } from '../../../types';
+import { useFilterStore } from '../../../store/filterStore';
 
-const {height: SCREEN_HEIGHT} = Dimensions.get('window');
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface FilterBottomSheetProps {
   visible: boolean;
   onClose: () => void;
   onApply: (filtered: ProductCardProps['product'][]) => void;
-  selectedFilters: {[key: string]: boolean};
+  selectedFilters: { [key: string]: boolean };
   setSelectedFilters: React.Dispatch<
-    React.SetStateAction<{[key: string]: boolean}>
+    React.SetStateAction<{ [key: string]: boolean }>
   >;
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  priceRange: {min: string; max: string};
+  priceRange: { min: string; max: string };
   setPriceRange: React.Dispatch<
-    React.SetStateAction<{min: string; max: string}>
+    React.SetStateAction<{ min: string; max: string }>
   >;
 }
 interface CategoryOption {
@@ -67,8 +67,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   // const [priceRange, setPriceRange] = useState({min: '', max: ''});
 
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const {originalProducts} = useProductStore();
-  const {filteredProducts} = useFilterStore();
+  const { originalProducts } = useProductStore();
+  const { filteredProducts } = useFilterStore();
 
   useEffect(() => {
     Animated.spring(translateY, {
@@ -98,42 +98,42 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     //   {key: 'massageTherapy', label: 'Massage Therapy'},
     // ],
     'Salt Name': [
-      {key: 'paracetamol', label: 'Paracetamol'},
-      {key: 'ibuprofen', label: 'Ibuprofen'},
-      {key: 'aspirin', label: 'Aspirin'},
-      {key: 'naproxen', label: 'Naproxen'},
-      {key: 'acetaminophen', label: 'Acetaminophen'},
-      {key: 'diclofenac', label: 'Diclofenac'},
-      {key: 'celecoxib', label: 'Celecoxib'},
-      {key: 'meloxicam', label: 'Meloxicam'},
-      {key: 'ketoprofen', label: 'Ketoprofen'},
-      {key: 'indomethacin', label: 'Indomethacin'},
-      {key: 'morphine', label: 'Morphine'},
-      {key: 'oxycodone', label: 'Oxycodone'},
-      {key: 'hydrocodone', label: 'Hydrocodone'},
-      {key: 'fentanyl', label: 'Fentanyl'},
-      {key: 'tramadol', label: 'Tramadol'},
+      { key: 'paracetamol', label: 'Paracetamol' },
+      { key: 'ibuprofen', label: 'Ibuprofen' },
+      { key: 'aspirin', label: 'Aspirin' },
+      { key: 'naproxen', label: 'Naproxen' },
+      { key: 'acetaminophen', label: 'Acetaminophen' },
+      { key: 'diclofenac', label: 'Diclofenac' },
+      { key: 'celecoxib', label: 'Celecoxib' },
+      { key: 'meloxicam', label: 'Meloxicam' },
+      { key: 'ketoprofen', label: 'Ketoprofen' },
+      { key: 'indomethacin', label: 'Indomethacin' },
+      { key: 'morphine', label: 'Morphine' },
+      { key: 'oxycodone', label: 'Oxycodone' },
+      { key: 'hydrocodone', label: 'Hydrocodone' },
+      { key: 'fentanyl', label: 'Fentanyl' },
+      { key: 'tramadol', label: 'Tramadol' },
     ],
     Manufacturer: [
-      {key: 'cipla', label: 'Cipla'},
-      {key: 'sunPharma', label: 'Sun Pharmaceutical'},
-      {key: 'drReddys', label: "DrReddy's Laboratories Ltd"},
-      {key: 'lupin', label: 'Lupin Pharmaceuticals'},
-      {key: 'aurobindo', label: 'Aurobindo Pharma'},
-      {key: 'glenmark', label: 'Glenmark Pharmaceuticals'},
-      {key: 'torrent', label: 'Torrent Pharmaceuticals'},
-      {key: 'cadila', label: 'Zydus Cadila'},
-      {key: 'alkem', label: 'Alkem Laboratories'},
-      {key: 'biocon', label: 'Biocon'},
-      {key: 'roche', label: 'Roche Products India Pvt Ltd'},
+      { key: 'cipla', label: 'Cipla' },
+      { key: 'sunPharma', label: 'Sun Pharmaceutical' },
+      { key: 'drReddys', label: "DrReddy's Laboratories Ltd" },
+      { key: 'lupin', label: 'Lupin Pharmaceuticals' },
+      { key: 'aurobindo', label: 'Aurobindo Pharma' },
+      { key: 'glenmark', label: 'Glenmark Pharmaceuticals' },
+      { key: 'torrent', label: 'Torrent Pharmaceuticals' },
+      { key: 'cadila', label: 'Zydus Cadila' },
+      { key: 'alkem', label: 'Alkem Laboratories' },
+      { key: 'biocon', label: 'Biocon' },
+      { key: 'roche', label: 'Roche Products India Pvt Ltd' },
     ],
     Availability: [
-      {key: 'inStock', label: 'In Stock'},
-      {key: 'outOfStock', label: 'Out of Stock'},
+      { key: 'inStock', label: 'In Stock' },
+      { key: 'outOfStock', label: 'Out of Stock' },
     ],
     'Prescription Required': [
-      {key: 'prescriptionRequired', label: 'Prescription Required'},
-      {key: 'noPrescriptionRequired', label: 'No Prescription Required'},
+      { key: 'prescriptionRequired', label: 'Prescription Required' },
+      { key: 'noPrescriptionRequired', label: 'No Prescription Required' },
     ],
     // 'Special Tags': [
     //   {key: 'sugarFree', label: 'Sugar - Free'},
@@ -144,14 +144,14 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   };
 
   const toggleFilter = (key: string): void => {
-    setSelectedFilters(prev => ({
+    setSelectedFilters((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
   };
   const hasActiveFilters = (): boolean => {
     return (
-      Object.values(selectedFilters).some(filter => filter) ||
+      Object.values(selectedFilters).some((filter) => filter) ||
       searchText.trim() !== '' ||
       priceRange.min !== '' ||
       priceRange.max !== ''
@@ -177,20 +177,20 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     let productsToFilter = originalProducts;
 
     if (filteredProducts && filteredProducts.length > 0) {
-      const filteredIds = filteredProducts.map(product => product.id);
-      productsToFilter = originalProducts.filter(product =>
+      const filteredIds = filteredProducts.map((product) => product.id);
+      productsToFilter = originalProducts.filter((product) =>
         filteredIds.includes(product.productId.toString()),
       );
     }
 
     const activeFilters = Object.keys(selectedFilters).filter(
-      key => selectedFilters[key],
+      (key) => selectedFilters[key],
     );
 
     if (activeFilters.length > 0) {
-      productsToFilter = productsToFilter.filter(product => {
+      productsToFilter = productsToFilter.filter((product) => {
         if (selectedCategory === 'Category') {
-          return activeFilters.some(filter =>
+          return activeFilters.some((filter) =>
             String(product.Category)
               .toLowerCase()
               .includes(filter.toLowerCase()),
@@ -198,20 +198,20 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
         }
 
         if (selectedCategory === 'Salt Name') {
-          return activeFilters.some(filter =>
+          return activeFilters.some((filter) =>
             product.Composition?.toLowerCase().includes(filter.toLowerCase()),
           );
         }
 
         if (selectedCategory === 'Manufacturer') {
-          return activeFilters.some(filter => {
+          return activeFilters.some((filter) => {
             const manufacturerName =
               product.ManufacturerName?.toLowerCase() || '';
             return (
               manufacturerName.includes(filter.toLowerCase()) ||
               manufacturerName.includes(
                 optionsData.Manufacturer.find(
-                  m => m.key === filter,
+                  (m) => m.key === filter,
                 )?.label.toLowerCase() || '',
               )
             );
@@ -267,7 +267,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     }
 
     if (priceRange.min !== '' || priceRange.max !== '') {
-      productsToFilter = productsToFilter.filter(product => {
+      productsToFilter = productsToFilter.filter((product) => {
         const price = parseFloat(product.DiscountedPrice);
         const minPrice = priceRange.min !== '' ? parseFloat(priceRange.min) : 0;
         const maxPrice =
@@ -279,7 +279,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
 
     if (searchText.trim() !== '') {
       productsToFilter = productsToFilter.filter(
-        product =>
+        (product) =>
           product.ProductName?.toLowerCase().includes(
             searchText.toLowerCase(),
           ) ||
@@ -304,28 +304,31 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   const clearFilters = (): void => {
     setSelectedFilters({});
     setSearchText('');
-    setPriceRange({min: '', max: ''});
+    setPriceRange({ min: '', max: '' });
   };
   const renderSearchableContent = (options: CategoryOption[]) => (
     <View style={styles.contentContainer}>
       <ScrollView
         style={styles.optionsContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         {options
-          .filter(option =>
+          .filter((option) =>
             option.label.toLowerCase().includes(searchText.toLowerCase()),
           )
           .map((option: CategoryOption) => (
             <TouchableOpacity
               key={option.key}
               style={styles.optionRow}
-              onPress={() => toggleFilter(option.key)}>
+              onPress={() => toggleFilter(option.key)}
+            >
               <Text style={styles.optionText}>{option.label}</Text>
               <View
                 style={[
                   styles.checkbox,
                   selectedFilters[option.key] && styles.checkboxSelected,
-                ]}>
+                ]}
+              >
                 {selectedFilters[option.key] && (
                   <Text style={styles.checkmark}>✓</Text>
                 )}
@@ -354,8 +357,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               placeholderTextColor="#999"
               keyboardType="numeric"
               value={priceRange.min}
-              onChangeText={text =>
-                setPriceRange(prev => ({...prev, min: text}))
+              onChangeText={(text) =>
+                setPriceRange((prev) => ({ ...prev, min: text }))
               }
             />
             <Text style={styles.priceSeparator}>-</Text>
@@ -365,8 +368,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               placeholderTextColor="#999"
               keyboardType="numeric"
               value={priceRange.max}
-              onChangeText={text =>
-                setPriceRange(prev => ({...prev, max: text}))
+              onChangeText={(text) =>
+                setPriceRange((prev) => ({ ...prev, max: text }))
               }
             />
           </View>
@@ -388,7 +391,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       transparent
       visible={visible}
       animationType="none"
-      onRequestClose={onClose}>
+      onRequestClose={onClose}
+    >
       <View style={styles.overlay}>
         <TouchableOpacity
           style={styles.overlayTouch}
@@ -397,7 +401,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
         />
 
         <Animated.View
-          style={[styles.bottomSheet, {transform: [{translateY}]}]}>
+          style={[styles.bottomSheet, { transform: [{ translateY }] }]}
+        >
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Filters</Text>
           </View>
@@ -412,12 +417,14 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
                       styles.sidebarItem,
                       selectedCategory === item && styles.sidebarItemActive,
                     ]}
-                    onPress={() => setSelectedCategory(item)}>
+                    onPress={() => setSelectedCategory(item)}
+                  >
                     <Text
                       style={[
                         styles.sidebarText,
                         selectedCategory === item && styles.sidebarTextActive,
-                      ]}>
+                      ]}
+                    >
                       {item}
                     </Text>
                   </TouchableOpacity>
@@ -439,12 +446,14 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
                 !hasActiveFilters() && styles.applyButtonDisabled,
               ]}
               disabled={!hasActiveFilters()}
-              onPress={applyFilters}>
+              onPress={applyFilters}
+            >
               <Text
                 style={[
                   styles.applyButtonText,
                   !hasActiveFilters() && styles.applyButtonTextDisabled,
-                ]}>
+                ]}
+              >
                 Apply Filter
               </Text>
             </TouchableOpacity>

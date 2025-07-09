@@ -1,5 +1,5 @@
-import {create} from 'zustand';
-import {Coupon} from '../types';
+import { create } from 'zustand';
+import { Coupon } from '../types';
 
 interface CouponState {
   customerCoupons: Record<string, Coupon | null>;
@@ -13,7 +13,7 @@ export const useCouponStore = create<CouponState>((set, get) => ({
   customerCoupons: {},
 
   setSelectedCoupon: (customerId: string, coupon: Coupon | null) => {
-    set(state => ({
+    set((state) => ({
       customerCoupons: {
         ...state.customerCoupons,
         [customerId]: coupon,

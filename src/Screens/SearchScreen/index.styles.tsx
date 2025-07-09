@@ -1,122 +1,122 @@
-import {Platform, StatusBar, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { Platform, StatusBar, StyleSheet } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
+  addressCardContainer: {
+    marginBottom: 20,
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+  backButton: {
+    alignItems: 'center',
+    backgroundColor: '#e8f4f7',
+    borderRadius: 16,
+    height: 32,
+    justifyContent: 'center',
+    width: 32,
+  },
   container: {
     backgroundColor: '#fff',
     flex: 1,
     marginBottom: 40,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  backButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#e8f4f7',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 
-  serviceabilityContainer: {
-    marginTop: 8,
-  },
-  successContainer: {
-    flexDirection: 'row',
+  currentLocationContainer: {
     alignItems: 'center',
-    gap: 4,
+    backgroundColor: '#E8F4F7',
+    borderColor: '#0088B1',
+    borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    padding: 15,
   },
-  successText: {
-    color: '#4BB543',
+  currentLocationText: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+  },
+  errorText: {
+    color: '#FF3B30',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
+    marginBottom: 8,
+  },
+  header: {
+    alignItems: 'center',
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    padding: 15,
+  },
+  headerTitle: {
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  inputError: {
+    borderColor: '#FF3B30',
+  },
+  locatingText: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+  },
+  pincodeContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 4,
+  },
+  pincodeInput: {
+    borderColor: '#B0B6B8',
+    borderRadius: 8,
+    borderWidth: 1,
+    flex: 1,
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+    height: 44,
+    paddingHorizontal: 12,
   },
   safeAreaContainer: {
     backgroundColor: '#fff',
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
-  headerTitle: {
-    fontSize: 16,
-    marginLeft: 10,
-    fontFamily: Fonts.JakartaBold,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
-    marginBottom: 8,
-    color: '#333',
-  },
-  pincodeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  pincodeInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#B0B6B8',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    height: 44,
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  inputError: {
-    borderColor: '#FF3B30',
-  },
   searchButton: {
-    marginLeft: 8,
+    alignItems: 'center',
     backgroundColor: '#0088B1',
     borderRadius: 8,
-    paddingHorizontal: 16,
     height: 44,
     justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: 8,
     minWidth: 80,
+    paddingHorizontal: 16,
   },
   searchButtonText: {
     color: '#fff',
-    fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
   },
-  errorText: {
-    color: '#FF3B30',
+  sectionTitle: {
+    color: '#333',
+    fontFamily: Fonts.JakartaSemiBold,
     fontSize: 12,
-    fontFamily: Fonts.JakartaRegular,
     marginBottom: 8,
   },
-  currentLocationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+  serviceabilityContainer: {
+    marginTop: 8,
+  },
+  successContainer: {
     alignItems: 'center',
-    gap: 10,
-    borderWidth: 1,
-    borderColor: '#0088B1',
-    padding: 15,
-    backgroundColor: '#E8F4F7',
-    borderRadius: 12,
-    marginHorizontal: 20,
+    flexDirection: 'row',
+    gap: 4,
   },
-  currentLocationText: {
-    color: '#0088B1',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  locatingText: {
-    color: '#0088B1',
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  addressCardContainer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 20,
+  successText: {
+    color: '#4BB543',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 12,
   },
 });
 export default styles;

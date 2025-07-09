@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,7 +10,7 @@ import {
   Dimensions,
   PanResponder,
 } from 'react-native';
-import {ChevronRight, Plus, Check} from 'lucide-react-native';
+import { ChevronRight, Plus, Check } from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
 import OtherOptionsItem from '../../ui/Drawer/OtherOptions';
 import styles from './index.styles';
@@ -22,17 +22,17 @@ import Animated, {
   runOnJS,
   withSpring,
 } from 'react-native-reanimated';
-import {useAuthStore} from '../../../store/authStore';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../navigation';
+import { useAuthStore } from '../../../store/authStore';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3;
 
-const CustomDrawer = ({onClose}: {onClose: () => void}) => {
+const CustomDrawer = ({ onClose }: { onClose: () => void }) => {
   // const clearAuthentication = useAuthStore(state => state.clearAuthentication);
-  const {first_name, last_name, phoneNumber, email, profileImage} =
+  const { first_name, last_name, phoneNumber, email, profileImage } =
     useAuthStore();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const translateX = useSharedValue(-width);
@@ -40,7 +40,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
   const [imageError, setImageError] = useState(false);
   const drawerAnimatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{translateX: translateX.value}],
+      transform: [{ translateX: translateX.value }],
     };
   });
   // const handleLogout = () => {
@@ -101,14 +101,17 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
       <View style={styles.overlay}>
         <Animated.View
           style={[styles.drawer, drawerAnimatedStyle]}
-          {...panResponder.panHandlers}>
+          {...panResponder.panHandlers}
+        >
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{marginBottom: 60}}>
+            style={{ marginBottom: 60 }}
+          >
             <View style={styles.header}>
               <View style={styles.profileRow}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ProfileScreen')}>
+                  onPress={() => navigation.navigate('ProfileScreen')}
+                >
                   {profileImage && !imageError ? (
                     <Image
                       source={{
@@ -130,7 +133,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                   )}
                 </TouchableOpacity>
 
-                <View style={{flexDirection: 'column'}}>
+                <View style={{ flexDirection: 'column' }}>
                   <Text style={styles.greeting}>
                     {(() => {
                       if (first_name && first_name !== 'Guest') {
@@ -145,7 +148,8 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
 
                   <TouchableOpacity
                     style={styles.profileProgress}
-                    onPress={() => navigation.navigate('ProfileScreen')}>
+                    onPress={() => navigation.navigate('ProfileScreen')}
+                  >
                     <Text style={styles.completeText}>
                       Naviagte to your account
                     </Text>
@@ -165,7 +169,11 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 <View style={styles.familyHeader}>
                   <Text style={styles.familyTitle}>Family members</Text>
                   <TouchableOpacity style={styles.addNew}>
-                    <Plus size={10} style={{marginTop: 3}} color={'#B0B6B8'} />
+                    <Plus
+                      size={10}
+                      style={{ marginTop: 3 }}
+                      color={'#B0B6B8'}
+                    />
                     <Text style={styles.addNewText}>Add New</Text>
                   </TouchableOpacity>
                 </View>
@@ -174,7 +182,11 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                   {['Spouse', 'Mom', 'Dad'].map((label, index) => (
                     <View key={index} style={styles.familyTag}>
                       <Text style={styles.tagText}>{label}</Text>
-                      <Check size={12} style={{marginTop: 3}} color={'#fff'} />
+                      <Check
+                        size={12}
+                        style={{ marginTop: 3 }}
+                        color={'#fff'}
+                      />
                     </View>
                   ))}
                 </View>

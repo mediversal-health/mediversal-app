@@ -1,7 +1,7 @@
 // src/app/component/styles/TakePhotoCapture.styles.ts
 
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 export default StyleSheet.create({
   container: {
@@ -10,23 +10,23 @@ export default StyleSheet.create({
   },
 
   cameraBox: {
-    borderWidth: 2,
-    borderStyle: 'dashed',
+    alignItems: 'center',
     borderColor: '#888',
     borderRadius: 12,
-    padding: 40,
-    alignItems: 'center',
+    borderStyle: 'dashed',
+    borderWidth: 2,
     justifyContent: 'center',
+    padding: 40,
   },
   cameraLoading: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
   cameraText: {
-    fontSize: 16,
     color: '#333',
+    fontSize: 16,
   },
 
   reviewContainer: {
@@ -34,20 +34,20 @@ export default StyleSheet.create({
   },
 
   previewImage: {
-    width: 250,
-    height: 350,
     borderRadius: 12,
+    height: 350,
     marginBottom: 16,
+    width: 250,
   },
 
   uploadedImage: {
-    width: 100,
-    height: 150,
-    borderRadius: 8,
-    marginBottom: 10,
-    flexDirection: 'row',
     borderBlockColor: '#0088B1',
+    borderRadius: 8,
     borderWidth: 1,
+    flexDirection: 'row',
+    height: 150,
+    marginBottom: 10,
+    width: 100,
   },
 
   uploadMore: {
@@ -57,79 +57,79 @@ export default StyleSheet.create({
 
   uploadMoreText: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 12,
     marginBottom: 10,
-    fontFamily: Fonts.JakartaRegular,
   },
 
   footerButtonsColumn: {
-    marginTop: 16,
     flexDirection: 'column',
     gap: 12,
+    marginTop: 16,
   },
 
   proceed: {
-    backgroundColor: '#0088B1',
-    height: 44,
-    width: '100%',
-    borderRadius: 10,
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 10,
+    height: 44,
+    justifyContent: 'center',
     marginVertical: 8,
+    width: '100%',
   },
 
   proceedText: {
     color: '#F8F8F8',
-    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
   },
 
   cancel: {
+    alignItems: 'center',
     borderColor: '#0088B1',
+    borderRadius: 10,
     borderWidth: 1,
     height: 44,
-    width: '100%',
-    borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
   },
 
   cancelText: {
     color: '#0088B1',
-    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
   },
 
   modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
   },
 
   modalContainer: {
-    width: '80%',
-    height: 250,
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 20,
+    height: 250,
     justifyContent: 'space-between',
+    padding: 20,
+    width: '80%',
   },
 
   modalTitle: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaBold,
     color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
     textAlign: 'center',
   },
 
   modalMessage: {
-    fontSize: 14,
     color: '#899193',
-    marginTop: 8,
-    fontWeight: '400',
     flex: 1,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+    fontWeight: '400',
+    marginTop: 8,
   },
 
   // Updated to vertical layout for modal buttons
@@ -139,86 +139,86 @@ export default StyleSheet.create({
   },
 
   modalRemoveBtn: {
-    backgroundColor: '#0088B1',
-    height: 44,
-    borderRadius: 8,
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 8,
+    height: 44,
+    justifyContent: 'center',
     width: '100%',
   },
 
   modalRemoveText: {
     color: '#F8F8F8',
+    fontFamily: Fonts.JakartaBold,
     fontSize: 12,
     textAlign: 'center',
-    fontFamily: Fonts.JakartaBold,
   },
 
   modalCancelBtn: {
-    borderColor: '#0088B1',
-    borderWidth: 1,
-    height: 44,
-    borderRadius: 8,
-    justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    borderColor: '#0088B1',
+    borderRadius: 8,
+    borderWidth: 1,
     fontFamily: Fonts.JakartaRegular,
+    height: 44,
+    justifyContent: 'center',
+    width: '100%',
   },
 
   modalCancelText: {
     color: '#0088B1',
     fontSize: 12,
-    textAlign: 'center',
     fontWeight: '500',
+    textAlign: 'center',
   },
   pickerLoading: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
   loadingText: {
-    marginTop: 10,
     color: '#6D7578',
-    fontSize: 16,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+    marginTop: 10,
   },
   previewContainer: {
     backgroundColor: '#F5F5F5',
-    padding: 16,
-    marginTop: 16,
     borderRadius: 12,
+    marginTop: 16,
+    padding: 16,
   },
   previewTitle: {
-    fontSize: 16,
-    marginBottom: 6,
     color: '#333',
     fontFamily: Fonts.JakartaBold,
+    fontSize: 16,
+    marginBottom: 6,
   },
   fileName: {
-    fontSize: 14,
     color: '#555',
+    fontSize: 14,
     marginBottom: 12,
   },
   imageContainer: {
-    position: 'relative',
     margin: 4,
+    position: 'relative',
   },
   closeButton: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
+    alignItems: 'center',
     backgroundColor: 'red',
     borderRadius: 12,
-    width: 24,
     height: 24,
     justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
+    right: -8,
+    top: -8,
+    width: 24,
     zIndex: 1,
   },
   closeButtonText: {
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 14,
+    fontWeight: 'bold',
   },
 });

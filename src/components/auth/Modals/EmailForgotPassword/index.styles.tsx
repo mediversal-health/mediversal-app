@@ -1,39 +1,31 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    borderRadius: 12,
+    marginTop: 20,
+    paddingVertical: 14,
+  },
+  buttonDisabled: {
+    backgroundColor: 'transparent',
+    borderColor: '#0088B1',
+    borderWidth: 1,
+  },
+  buttonEnabled: {
+    backgroundColor: '#0088B1',
+  },
+  buttonText: {
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+  },
   container: {
-    width: '100%',
-    padding: 30,
     backgroundColor: 'white',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-  },
-  title: {
-    fontSize: 22,
-    color: '#0088B1',
-    marginBottom: 10,
-    fontFamily: Fonts.JakartaBold,
-  },
-  subtitle: {
-    fontSize: 15,
-    color: '#6B7280',
-    marginBottom: 20,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  inputWrapper: {
+    padding: 30,
     width: '100%',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  input: {
-    height: 45,
-    fontSize: 16,
-    color: '#000',
-    fontFamily: Fonts.JakartaRegular,
   },
   errorText: {
     color: '#EF4444',
@@ -41,32 +33,40 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
   },
-  button: {
-    paddingVertical: 14,
-    borderRadius: 12,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  buttonEnabled: {
-    backgroundColor: '#0088B1',
-  },
-  buttonDisabled: {
-    borderWidth: 1,
-    borderColor: '#0088B1',
-    backgroundColor: 'transparent',
-  },
-  buttonText: {
-    fontSize: 16,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  helpWrapper: {
-    marginTop: 30,
-    alignItems: 'center',
-  },
   helpText: {
-    fontSize: 14,
     color: '#000',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+  },
+  helpWrapper: {
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  input: {
+    color: '#000',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+    height: 45,
+  },
+  inputWrapper: {
+    borderColor: '#ccc',
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    width: '100%',
+  },
+  subtitle: {
+    color: '#6B7280',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 15,
+    marginBottom: 20,
+  },
+  title: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 22,
+    marginBottom: 10,
   },
 });
 export default styles;

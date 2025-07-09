@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from 'react-native';
-import {ChevronRight, Edit, Trash} from 'lucide-react-native';
-import {AddressBookTypes} from '../../../types';
+import { ChevronRight, Edit, Trash } from 'lucide-react-native';
+import { AddressBookTypes } from '../../../types';
 import styles from './index.styles';
 
 interface AddressActionModalProps {
@@ -53,7 +53,8 @@ const AddressActionModal: React.FC<AddressActionModalProps> = ({
       animationType="slide"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}>
+      onRequestClose={onClose}
+    >
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.modalOverlay}>
           <TouchableWithoutFeedback>
@@ -62,7 +63,8 @@ const AddressActionModal: React.FC<AddressActionModalProps> = ({
 
               <TouchableOpacity
                 style={styles.modalOption}
-                onPress={handleDeletePress}>
+                onPress={handleDeletePress}
+              >
                 <Trash size={20} color="#000" style={styles.modalIcon} />
                 <Text style={styles.modalOptionText}>Delete Address</Text>
                 <ChevronRight size={20} color="#000" />
@@ -70,7 +72,8 @@ const AddressActionModal: React.FC<AddressActionModalProps> = ({
 
               <TouchableOpacity
                 style={styles.modalOption}
-                onPress={handleEditPress}>
+                onPress={handleEditPress}
+              >
                 <Edit size={20} color="#000" style={styles.modalIcon} />
                 <Text style={styles.modalOptionText}>Edit Address</Text>
                 <ChevronRight size={20} color="#000" />

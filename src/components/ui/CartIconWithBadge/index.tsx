@@ -1,16 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ShoppingBag} from 'lucide-react-native';
-import {Text, TouchableOpacity, View} from 'react-native';
-import {useAuthStore} from '../../../store/authStore';
-import {useCartStore} from '../../../store/cartStore';
-import {RootStackParamList} from '../../../navigation';
-import {Fonts} from '../../../styles/fonts';
-import {useEffect, useState} from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { ShoppingBag } from 'lucide-react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { useAuthStore } from '../../../store/authStore';
+import { useCartStore } from '../../../store/cartStore';
+import { RootStackParamList } from '../../../navigation';
+import { Fonts } from '../../../styles/fonts';
+import { useEffect, useState } from 'react';
 
 const CartIconWithBadge = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
   const [totalItems, setTotalItems] = useState(0);
   const cartStore = useCartStore();
 
@@ -37,7 +37,8 @@ const CartIconWithBadge = () => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('CartPage', {})}
-      style={{position: 'relative'}}>
+      style={{ position: 'relative' }}
+    >
       <ShoppingBag size={20} />
       {totalItems > 0 && (
         <View
@@ -52,14 +53,16 @@ const CartIconWithBadge = () => {
             justifyContent: 'center',
             alignItems: 'center',
             paddingHorizontal: 4,
-          }}>
+          }}
+        >
           <Text
             style={{
               color: 'white',
               fontSize: 10,
               fontFamily: Fonts.JakartaBold,
               textAlign: 'center',
-            }}>
+            }}
+          >
             {totalItems > 99 ? '99+' : totalItems}
           </Text>
         </View>

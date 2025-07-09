@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Clock, Minus, Plus} from 'lucide-react-native';
+import { Clock, Minus, Plus } from 'lucide-react-native';
 import io from 'socket.io-client';
 import styles from './index.styles';
-import {ProductCardProps} from '../../../types';
-import {useCartStore} from '../../../store/cartStore';
-import {DeleteFromCart} from '../../../Services/cart';
-import {useAuthStore} from '../../../store/authStore';
+import { ProductCardProps } from '../../../types';
+import { useCartStore } from '../../../store/cartStore';
+import { DeleteFromCart } from '../../../Services/cart';
+import { useAuthStore } from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
 
 const SOCKET_URL = 'http://3.110.218.39:3001';
@@ -27,15 +27,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
   addingToCart = false,
 }) => {
   const productId = parseInt(product.id, 10);
-  const customer_id = useAuthStore(state => state.customer_id);
-  const {removeFromCart} = useCartStore.getState();
-  const quantity = useCartStore(state =>
+  const customer_id = useAuthStore((state) => state.customer_id);
+  const { removeFromCart } = useCartStore.getState();
+  const quantity = useCartStore((state) =>
     state.getProductQuantity(customer_id?.toString() ?? '', productId),
   );
-  const setProductQuantity = useCartStore(state => state.setProductQuantity);
+  const setProductQuantity = useCartStore((state) => state.setProductQuantity);
 
   const [isLoading, setIsLoading] = useState(false);
-  const {getOriginalProduct} = useProductStore();
+  const { getOriginalProduct } = useProductStore();
   const originalProduct = getOriginalProduct(productId.toString());
   const [availableInventory, setAvailableInventory] = useState(
     originalProduct?.StockAvailableInInventory || 0,
@@ -46,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   useEffect(() => {
     const socket = io(SOCKET_URL);
 
-    socket.on('stockUpdate', (data: {productId: number; stock: number}) => {
+    socket.on('stockUpdate', (data: { productId: number; stock: number }) => {
       if (data.productId === productId) {
         setAvailableInventory(data.stock);
       }
@@ -126,7 +126,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <View style={[styles.cardContainer, dynamicStyles.cardContainer, style]}>
       <View style={styles.imageContainer}>
-        <Image source={{uri: product.image}} style={styles.productImage} />
+        <Image source={{ uri: product.image }} style={styles.productImage} />
       </View>
 
       <View style={styles.infoContainer}>
@@ -165,7 +165,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <TouchableOpacity
             style={styles.counterButton}
             onPress={handleDecrement}
-            disabled={showLoading}>
+            disabled={showLoading}
+          >
             {showLoading && quantity === 1 ? (
               <ActivityIndicator size="small" color="#FFF" />
             ) : (
@@ -178,7 +179,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <TouchableOpacity
             style={styles.counterButton}
             onPress={handleIncrement}
-            disabled={showLoading || !canIncreaseQuantity}>
+            disabled={showLoading || !canIncreaseQuantity}
+          >
             <Plus size={14} color={!canIncreaseQuantity ? '#cccccc' : '#FFF'} />
           </TouchableOpacity>
         </View>
@@ -186,7 +188,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <TouchableOpacity
           style={[styles.addButtonForOutofStock, dynamicStyles.addButton]}
           onPress={handleAddItem}
-          disabled={showLoading || isOutOfStock}>
+          disabled={showLoading || isOutOfStock}
+        >
           {showLoading ? (
             <ActivityIndicator size="small" color="#FFF" />
           ) : isOutOfStock ? (

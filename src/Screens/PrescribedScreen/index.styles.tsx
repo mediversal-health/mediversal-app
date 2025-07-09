@@ -1,78 +1,14 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    flex: 1,
-  },
-  headerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: '11%',
-    paddingBottom: 10,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
   backButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    alignItems: 'center',
     backgroundColor: '#e8f4f7',
+    borderRadius: 16,
+    height: 32,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 16,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#111827',
-  },
-  progressCircle: {
-    width: 150,
-    height: 150,
-    borderRadius: 100,
-    borderWidth: 15,
-    borderColor: 'pink',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  uploadText: {
-    marginTop: 4,
-    fontSize: 12,
-    color: '#6D7578',
-    fontFamily: Fonts.JakartaRegular,
-  },
-
-  heading: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
-    marginBottom: 8,
-    color: '#000000',
-  },
-  description: {
-    fontSize: 10,
-    color: '#899193',
-    marginBottom: 20,
-    fontFamily: Fonts.JakartaRegular,
-  },
-
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  scrollContainer: {
-    paddingBottom: 80,
-  },
-  orderList: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    width: 32,
   },
   buttonContainer: {
     position: 'absolute',
@@ -87,22 +23,37 @@ const styles = StyleSheet.create({
     borderTopColor: '#E0E0E0',
     elevation: 5, // Android shadow
     shadowColor: '#000000', // iOS shadow
-    shadowOffset: {width: 0, height: -2},
+    shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  contactButton: {
-    flex: 1,
-    flexDirection: 'row',
+  checkoutButton: {
     alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 8,
+    flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#E8F4F7',
-    paddingVertical: 12,
+    marginLeft: 8,
     paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  checkoutButtonText: {
+    color: '#FFFFFF',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 10,
+  },
+  contactButton: {
+    alignItems: 'center',
+    backgroundColor: '#E8F4F7',
+    borderColor: '#58D163',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#58D163',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginRight: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   contactButtonText: {
     color: '#34C759',
@@ -110,20 +61,69 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginLeft: 8,
   },
-  checkoutButton: {
+  container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0088B1',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginLeft: 8,
+    padding: 16,
   },
-  checkoutButtonText: {
-    color: '#FFFFFF',
+
+  description: {
+    color: '#899193',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 10,
+    marginBottom: 20,
+  },
+  headerLeft: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+  },
+
+  headerTitle: {
+    color: '#111827',
     fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 16,
+  },
+  headerWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: '11%',
+    paddingBottom: 10,
+    paddingHorizontal: 20,
+  },
+  heading: {
+    color: '#000000',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 12,
+    marginBottom: 8,
+  },
+  orderList: {
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  progressCircle: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderColor: 'pink',
+    borderRadius: 100,
+    borderWidth: 15,
+    height: 150,
+    justifyContent: 'center',
+    marginBottom: 20,
+    width: 150,
+  },
+  safeArea: {
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+  scrollContainer: {
+    paddingBottom: 80,
+  },
+  uploadText: {
+    color: '#6D7578',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    marginTop: 4,
   },
 });
 

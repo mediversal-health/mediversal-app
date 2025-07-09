@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
-import {LocateFixed, MapPin} from 'lucide-react-native';
+import { LocateFixed, MapPin } from 'lucide-react-native';
 
 interface LocationModalProps {
   isVisible: boolean;
@@ -26,7 +26,8 @@ const LocationModal: React.FC<LocationModalProps> = ({
       swipeDirection={['down']}
       animationOut="slideOutDown"
       animationOutTiming={250}
-      onBackdropPress={onClose}>
+      onBackdropPress={onClose}
+    >
       <View style={styles.modalContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Deliver to</Text>
@@ -38,7 +39,8 @@ const LocationModal: React.FC<LocationModalProps> = ({
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.locationButton}
-            onPress={onSelectCurrentLocation}>
+            onPress={onSelectCurrentLocation}
+          >
             <LocateFixed color={'#0088B1'} />
             <Text style={styles.locationButtonText}>Current Location</Text>
           </TouchableOpacity>
@@ -51,7 +53,8 @@ const LocationModal: React.FC<LocationModalProps> = ({
 
           <TouchableOpacity
             style={styles.manuallocationButton}
-            onPress={onEnterManually}>
+            onPress={onEnterManually}
+          >
             <MapPin color={'#FFF'} />
             <Text style={styles.manuallocationButtonText}>
               Enter Location Manually

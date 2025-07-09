@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface RecentSearchStore {
@@ -16,13 +16,13 @@ const useRecentSearchStore = create<RecentSearchStore>((set, get) => ({
 
   addSearch: async (term, customerId) => {
     try {
-      set(state => {
+      set((state) => {
         if (!term.trim() || state.searches.includes(term)) {
           return state;
         }
 
         const newSearches = [term, ...state.searches].slice(0, 10);
-        return {searches: newSearches};
+        return { searches: newSearches };
       });
 
       await AsyncStorage.setItem(
@@ -34,9 +34,9 @@ const useRecentSearchStore = create<RecentSearchStore>((set, get) => ({
     }
   },
 
-  clearSearches: async customerId => {
+  clearSearches: async (customerId) => {
     try {
-      set({searches: []});
+      set({ searches: [] });
       await AsyncStorage.removeItem(getStorageKey(customerId));
     } catch (error) {
       console.error('Failed to clear searches:', error);
@@ -45,10 +45,10 @@ const useRecentSearchStore = create<RecentSearchStore>((set, get) => ({
 
   removeSearch: async (index, customerId) => {
     try {
-      set(state => {
+      set((state) => {
         const newSearches = [...state.searches];
         newSearches.splice(index, 1);
-        return {searches: newSearches};
+        return { searches: newSearches };
       });
 
       await AsyncStorage.setItem(
@@ -60,13 +60,13 @@ const useRecentSearchStore = create<RecentSearchStore>((set, get) => ({
     }
   },
 
-  hydrate: async customerId => {
+  hydrate: async (customerId) => {
     try {
       const data = await AsyncStorage.getItem(getStorageKey(customerId));
       if (data) {
-        set({searches: JSON.parse(data)});
+        set({ searches: JSON.parse(data) });
       } else {
-        set({searches: []});
+        set({ searches: [] });
       }
     } catch (error) {
       console.error('Failed to hydrate searches:', error);

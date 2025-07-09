@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import { Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
 import {
   ChevronLeft,
   Filter,
@@ -11,19 +11,19 @@ import {
 
 import ProductCard from '../../components/cards/ProductCard';
 import SearchBar from '../../components/common/SearchBar';
-import {ProductCardProps} from '../../types';
+import { ProductCardProps } from '../../types';
 import styles from './index.styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import useProductStore from '../../store/productsStore';
 import FilterBottomSheet from '../../components/modal/FilterBottomSheet';
-import {getProductsById} from '../../Services/pharmacy';
-import {addToCart} from '../../Services/cart';
-import {useAuthStore} from '../../store/authStore';
-import {useToastStore} from '../../store/toastStore';
+import { getProductsById } from '../../Services/pharmacy';
+import { addToCart } from '../../Services/cart';
+import { useAuthStore } from '../../store/authStore';
+import { useToastStore } from '../../store/toastStore';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
-import {useCartStore} from '../../store/cartStore';
-import {useFilterStore} from '../../store/filterStore';
+import { useCartStore } from '../../store/cartStore';
+import { useFilterStore } from '../../store/filterStore';
 
 interface Category {
   id: string;
@@ -36,7 +36,7 @@ const AllProductsScreen: React.FC = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [searchText, setSearchText] = useState('');
-  const [priceRange, setPriceRange] = useState({min: '', max: ''});
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   // const [filteredProducts, setFilteredProducts] = useState<
@@ -44,11 +44,11 @@ const AllProductsScreen: React.FC = () => {
   // >(null);
   const [sortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
-  const {setUserCart} = useCartStore.getState();
-  const {cardProducts, getOriginalProduct} = useProductStore();
-  const {filteredProducts, setFilteredProducts} = useFilterStore();
-  const customer_id = useAuthStore(state => state.customer_id);
-  const showToast = useToastStore(state => state.showToast);
+  const { setUserCart } = useCartStore.getState();
+  const { cardProducts, getOriginalProduct } = useProductStore();
+  const { filteredProducts, setFilteredProducts } = useFilterStore();
+  const customer_id = useAuthStore((state) => state.customer_id);
+  const showToast = useToastStore((state) => state.showToast);
   console.log('card', cardProducts);
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
@@ -158,10 +158,11 @@ const AllProductsScreen: React.FC = () => {
     },
   ];
 
-  const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
+  const renderProduct = ({ item }: { item: ProductCardProps['product'] }) => (
     <TouchableOpacity
       onPress={() => handleProductPress(item)}
-      style={styles.productCardContainer}>
+      style={styles.productCardContainer}
+    >
       <ProductCard
         product={item}
         borderColor={'#2D9CDB'}
@@ -176,32 +177,34 @@ const AllProductsScreen: React.FC = () => {
     setSelectedCategory(categoryName);
     setSelectedFilters({});
     setSearchText('');
-    setPriceRange({min: '', max: ''});
+    setPriceRange({ min: '', max: '' });
 
     if (categoryName === 'All') {
       setFilteredProducts(null);
     } else {
       const filtered = cardProducts.filter(
-        product => product.Category === categoryName,
+        (product) => product.Category === categoryName,
       );
       setFilteredProducts(filtered);
     }
   };
   console.log(filteredProducts, 'filteredProducts all');
 
-  const renderCategory = ({item}: {item: Category}) => (
+  const renderCategory = ({ item }: { item: Category }) => (
     <TouchableOpacity
       style={[
         styles.categoryItem,
         selectedCategory === item.name && styles.selectedCategory,
       ]}
-      onPress={() => handleCategorySelect(item.name)}>
-      <Image source={{uri: item.icon}} style={styles.categoryIcon} />
+      onPress={() => handleCategorySelect(item.name)}
+    >
+      <Image source={{ uri: item.icon }} style={styles.categoryIcon} />
       <Text
         style={[
           styles.categoryText,
           selectedCategory === item.name && styles.selectedCategoryText,
-        ]}>
+        ]}
+      >
         {item.name}
       </Text>
     </TouchableOpacity>
@@ -223,7 +226,7 @@ const AllProductsScreen: React.FC = () => {
         break;
     }
 
-    useProductStore.setState({cardProducts: sorted});
+    useProductStore.setState({ cardProducts: sorted });
   };
 
   return (
@@ -233,7 +236,8 @@ const AllProductsScreen: React.FC = () => {
           <View style={styles.headerLeft}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+            >
               <ChevronLeft size={20} color="#0088B1" />
             </TouchableOpacity>
             <Text style={styles.headerText}>All Products</Text>
@@ -246,7 +250,7 @@ const AllProductsScreen: React.FC = () => {
             <FlatList
               data={categories}
               renderItem={renderCategory}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
             />
           </View>
@@ -258,14 +262,16 @@ const AllProductsScreen: React.FC = () => {
               <View style={styles.iconWrapper}>
                 <TouchableOpacity
                   style={styles.iconButton}
-                  onPress={() => setShowFilters(true)}>
+                  onPress={() => setShowFilters(true)}
+                >
                   <Filter size={14} color="#000" />
                   <Text style={styles.iconLabel}>Filter</Text>
                   <ChevronDown size={14} color="#000" />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconButton}
-                  onPress={() => setSortDropdownVisible(prev => !prev)}>
+                  onPress={() => setSortDropdownVisible((prev) => !prev)}
+                >
                   {/* Conditionally render the icon based on selected option */}
                   {selectedSortOption === 'Sort' ||
                   selectedSortOption === 'Relevance' ? (
@@ -284,7 +290,7 @@ const AllProductsScreen: React.FC = () => {
                       'Price: Low to High',
                       'Price: High to Low',
                       'Discount',
-                    ].map(option => (
+                    ].map((option) => (
                       <TouchableOpacity
                         key={option}
                         style={styles.dropdownOption}
@@ -292,7 +298,8 @@ const AllProductsScreen: React.FC = () => {
                           setSelectedSortOption(option);
                           setSortDropdownVisible(false);
                           sortProducts(option);
-                        }}>
+                        }}
+                      >
                         {option === 'Price: Low to High' ||
                         option === 'Price: High to Low' ||
                         option === 'Discount' ? (
@@ -301,11 +308,11 @@ const AllProductsScreen: React.FC = () => {
                           <ArrowUpDown size={16} color="#0088B1" />
                         )}
                         {option === 'Relevance' ? (
-                          <Text style={{marginLeft: 6, color: '#0088B12'}}>
+                          <Text style={{ marginLeft: 6, color: '#0088B12' }}>
                             {option}
                           </Text>
                         ) : (
-                          <Text style={{marginLeft: 6}}>{option}</Text>
+                          <Text style={{ marginLeft: 6 }}>{option}</Text>
                         )}
                       </TouchableOpacity>
                     ))}
@@ -316,7 +323,7 @@ const AllProductsScreen: React.FC = () => {
             <FlatList
               data={filteredProducts ?? cardProducts}
               renderItem={renderProduct}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item.id}
               numColumns={2}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.productList}
@@ -329,7 +336,7 @@ const AllProductsScreen: React.FC = () => {
       <FilterBottomSheet
         visible={showFilters}
         onClose={() => setShowFilters(false)}
-        onApply={filtered => setFilteredProducts(filtered)}
+        onApply={(filtered) => setFilteredProducts(filtered)}
         selectedFilters={selectedFilters}
         setSelectedFilters={setSelectedFilters}
         searchText={searchText}

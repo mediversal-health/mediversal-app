@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import {Eye, EyeOff} from 'lucide-react-native';
+import { Eye, EyeOff } from 'lucide-react-native';
 import styles from './index.styles';
 import GoogleLoginButton from '../../ui/GoogleLoginButton';
-import {sendOTP} from '../../../Services/auth';
+import { sendOTP } from '../../../Services/auth';
 import EmailForgotPasswordModal from '../Modals/EmailForgotPassword';
 import OtpEmailModal from '../Modals/OtpEmail';
 const EmailLogin = () => {
@@ -106,7 +106,8 @@ const EmailLogin = () => {
           />
           <TouchableOpacity
             style={styles.eyeIcon}
-            onPress={() => setIsPasswordVisible(prev => !prev)}>
+            onPress={() => setIsPasswordVisible((prev) => !prev)}
+          >
             {isPasswordVisible ? (
               <Eye size={22} color="#0088b1" />
             ) : (
@@ -137,7 +138,8 @@ const EmailLogin = () => {
         <TouchableOpacity
           style={styles.loginButton}
           disabled={loading}
-          onPress={handleLogin}>
+          onPress={handleLogin}
+        >
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (

@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {SvgXml} from 'react-native-svg';
+import React, { useState } from 'react';
+import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { SvgXml } from 'react-native-svg';
 import styles from './index.styles';
 
-import {useAuthStore} from '../../../store/authStore';
-import {googleSignIn} from '../../../Services/auth';
+import { useAuthStore } from '../../../store/authStore';
+import { googleSignIn } from '../../../Services/auth';
 
 GoogleSignin.configure({
   webClientId:
@@ -29,7 +29,7 @@ const GoogleIcon = `
 const GoogleLoginButton = () => {
   const [loading, setLoading] = useState(false);
 
-  const {setAuthentication} = useAuthStore();
+  const { setAuthentication } = useAuthStore();
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -60,7 +60,8 @@ const GoogleLoginButton = () => {
     <TouchableOpacity
       style={[styles.button, loading && styles.disabledButton]}
       onPress={handleGoogleLogin}
-      disabled={loading}>
+      disabled={loading}
+    >
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="small" color="#4285F4" />

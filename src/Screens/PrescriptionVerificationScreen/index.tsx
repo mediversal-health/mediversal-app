@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import {styles} from './index.styles';
+import { styles } from './index.styles';
 import {
   ChevronRight,
   FileText,
@@ -25,14 +25,14 @@ import {
   deletePrescription,
   getPrescriptions,
 } from '../../Services/prescription';
-import {useAuthStore} from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 
 import LinearGradient from 'react-native-linear-gradient';
 
 import Whatsapp from './assets/svgs/Whatsapp.svg';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
-import {useToastStore} from '../../store/toastStore';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { useToastStore } from '../../store/toastStore';
 
 interface PrescriptionItem {
   sno: number;
@@ -44,12 +44,12 @@ interface PrescriptionItem {
 }
 
 const PrescriptionVerification = () => {
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
   const [prescriptions, setPrescriptions] = useState<PrescriptionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const showToast = useToastStore(state => state.showToast);
+  const showToast = useToastStore((state) => state.showToast);
   useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
@@ -76,7 +76,7 @@ const PrescriptionVerification = () => {
               response.data.data || response.data.prescriptions || [];
           }
 
-          const enhancedPrescriptions = prescriptionsData.map(item => ({
+          const enhancedPrescriptions = prescriptionsData.map((item) => ({
             ...item,
             fileType: item.prescriptionURL?.toLowerCase().endsWith('.pdf')
               ? 'pdf'
@@ -107,7 +107,7 @@ const PrescriptionVerification = () => {
   }, []);
 
   const handleOpenPDF = (url: string) => {
-    Linking.openURL(url).catch(err => {
+    Linking.openURL(url).catch((err) => {
       console.error('Failed to open PDF:', err);
       showToast('Failed to open PDF', 'error');
     });
@@ -133,8 +133,10 @@ const PrescriptionVerification = () => {
               );
 
               if (response.status === 200) {
-                setPrescriptions(prev =>
-                  prev.filter(item => item.prescription_id !== prescriptionId),
+                setPrescriptions((prev) =>
+                  prev.filter(
+                    (item) => item.prescription_id !== prescriptionId,
+                  ),
                 );
 
                 showToast('Prescription deleted successfully', 'error');
@@ -161,10 +163,11 @@ const PrescriptionVerification = () => {
           if (item.fileType === 'pdf') {
             handleOpenPDF(item.prescriptionURL);
           }
-        }}>
+        }}
+      >
         {item.fileType === 'image' ? (
           <Image
-            source={{uri: item.prescriptionURL}}
+            source={{ uri: item.prescriptionURL }}
             style={styles.imageThumbnail}
             resizeMode="cover"
           />
@@ -186,7 +189,8 @@ const PrescriptionVerification = () => {
             right: 5,
             padding: 5,
           }}
-          onPress={() => handleDeletePrescription(item.prescription_id)}>
+          onPress={() => handleDeletePrescription(item.prescription_id)}
+        >
           <Trash2 size={16} color="#FF4444" />
         </TouchableOpacity>
       </TouchableOpacity>
@@ -202,7 +206,8 @@ const PrescriptionVerification = () => {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-          }}>
+          }}
+        >
           <ActivityIndicator size="large" color="#0088B1" />
           <Text style={styles.description}>Loading your prescriptions...</Text>
         </ScrollView>
@@ -214,7 +219,7 @@ const PrescriptionVerification = () => {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
-          <Text style={[styles.heading, {color: 'red'}]}>{error}</Text>
+          <Text style={[styles.heading, { color: 'red' }]}>{error}</Text>
           <Text style={styles.description}>
             Please try again later or contact support.
           </Text>
@@ -229,7 +234,8 @@ const PrescriptionVerification = () => {
         <View style={styles.headerLeft}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Upload Prescription</Text>
@@ -242,7 +248,7 @@ const PrescriptionVerification = () => {
         </View>
 
         <Text style={styles.estimatedTime}>
-          Estimated time: <Text style={{color: '#0088B1'}}>15 minutes</Text>
+          Estimated time: <Text style={{ color: '#0088B1' }}>15 minutes</Text>
         </Text>
 
         <Text style={styles.heading}>What happens during verification?</Text>
@@ -259,9 +265,10 @@ const PrescriptionVerification = () => {
 
         <LinearGradient
           colors={['#58D163', '#1C9B31']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          style={styles.infoCard}>
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.infoCard}
+        >
           <Text style={styles.infoCardText}>
             We will need some time to review the prescription and prepare the
             list of medicines and tests mentioned in it. If we require any
@@ -296,16 +303,18 @@ const PrescriptionVerification = () => {
           style={styles.uploadMoreButton}
           onPress={() => {
             navigation.navigate('UploadPrescription');
-          }}>
+          }}
+        >
           <Text style={styles.uploadMoreText}>Upload more prescriptions</Text>
         </TouchableOpacity>
       </ScrollView>
-      <View style={{paddingHorizontal: 20, paddingTop: 20}}>
+      <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
         <LinearGradient
           colors={['#58D163', '#1C9B31']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          style={styles.exploreBtn}>
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.exploreBtn}
+        >
           <TouchableOpacity style={styles.whatsappButton} activeOpacity={0.8}>
             <Whatsapp height={20} width={20} />
             <Text style={styles.exploreText}>Contact with Pharmacist</Text>

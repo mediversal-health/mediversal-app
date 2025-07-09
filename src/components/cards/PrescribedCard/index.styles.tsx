@@ -1,85 +1,85 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  amount: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 16,
+    marginTop: 10,
+  },
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#f3f4f6',
+    borderRadius: 12,
+    borderWidth: 1,
+    elevation: 3,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 12,
+    padding: 16,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
-    elevation: 3,
-    borderWidth: 1,
-    borderColor: '#f3f4f6',
-  },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  iconWrapper: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
   },
   contentWrapper: {
     flex: 1,
     justifyContent: 'center',
   },
-  orderId: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginBottom: 2,
-    fontFamily: Fonts.JakartaRegular,
+  iconWrapper: {
+    alignItems: 'center',
+    borderRadius: 20,
+    height: 40,
+    justifyContent: 'center',
+    marginRight: 12,
+    width: 40,
+  },
+  leftSection: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  menuButton: {
+    borderRadius: 6,
+    padding: 4,
   },
   name: {
+    color: '#374151',
+    fontFamily: Fonts.JakartaMedium,
     fontSize: 11,
     fontWeight: '500',
-    color: '#374151',
     marginBottom: 2,
-    fontFamily: Fonts.JakartaMedium,
   },
-  amount: {
-    fontSize: 16,
-    color: '#0088B1',
-    fontFamily: Fonts.JakartaBold,
-    marginTop: 10,
+  orderId: {
+    color: '#6b7280',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    marginBottom: 2,
   },
   rightSection: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  statusBox: {
+    alignItems: 'center',
+    borderRadius: 12,
+    minWidth: 60,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   statusContainer: {
     alignItems: 'flex-end',
     marginRight: 8,
   },
-  statusBox: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-    minWidth: 60,
-    alignItems: 'center',
-  },
   statusText: {
+    fontFamily: Fonts.JakartaSemiBold,
     fontSize: 10,
     fontWeight: '600',
-    fontFamily: Fonts.JakartaSemiBold,
-    textAlign: 'center',
     lineHeight: 12,
-  },
-  menuButton: {
-    padding: 4,
-    borderRadius: 6,
+    textAlign: 'center',
   },
 });
 

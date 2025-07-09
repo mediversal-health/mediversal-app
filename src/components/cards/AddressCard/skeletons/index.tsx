@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View} from 'react-native';
-import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import { View } from 'react-native';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from '../index.styles';
 
@@ -15,10 +15,10 @@ const AddressCardSkeleton: React.FC<AddressCardSkeletonProps> = ({
   count = 1,
 }) => {
   const renderSkeleton = () => (
-    <View style={[styles.container, {borderColor: '#E0E0E0'}]}>
+    <View style={[styles.container, { borderColor: '#E0E0E0' }]}>
       <View style={styles.radioButtonContainer}>
         <ShimmerPlaceHolder
-          style={[styles.radioOuter, {borderWidth: 0}]}
+          style={[styles.radioOuter, { borderWidth: 0 }]}
           shimmerColors={['#E0E0E0', '#F5F5F5', '#E0E0E0']}
           duration={1000}
         />
@@ -28,11 +28,11 @@ const AddressCardSkeleton: React.FC<AddressCardSkeletonProps> = ({
         <View style={styles.leftSection}>
           {/* Icon Container Skeleton */}
           <ShimmerPlaceHolder
-            style={[styles.iconContainer, {marginRight: 10, marginTop: 2}]}
+            style={[styles.iconContainer, { marginRight: 10, marginTop: 2 }]}
             shimmerColors={['#E0E0E0', '#F5F5F5', '#E0E0E0']}
           />
 
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             {/* Title Skeleton */}
             <ShimmerPlaceHolder
               style={{
@@ -95,7 +95,8 @@ const AddressCardSkeleton: React.FC<AddressCardSkeletonProps> = ({
                 height: 30,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <ShimmerPlaceHolder
                 style={{
                   width: 24,
@@ -113,7 +114,7 @@ const AddressCardSkeleton: React.FC<AddressCardSkeletonProps> = ({
 
   return (
     <>
-      {Array.from({length: count}, (_, index) => (
+      {Array.from({ length: count }, (_, index) => (
         <View key={index}>{renderSkeleton()}</View>
       ))}
     </>

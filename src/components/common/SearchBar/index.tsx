@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {Search, Mic} from 'lucide-react-native';
-import {Fonts} from '../../../styles/fonts';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../navigation';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Search } from 'lucide-react-native';
+import { Fonts } from '../../../styles/fonts';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
 const SearchBar: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -12,7 +12,8 @@ const SearchBar: React.FC = () => {
     <TouchableOpacity style={styles.wrapper}>
       <TouchableOpacity
         style={styles.container}
-        onPress={() => navigation.navigate('GlobalSearchScreen')}>
+        onPress={() => navigation.navigate('GlobalSearchScreen')}
+      >
         <View style={styles.textWrapper}>
           <Search color={'#0088B1'} size={20} />
           <Text style={styles.placeholderText}>
@@ -26,32 +27,32 @@ const SearchBar: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    paddingTop: 10,
-  },
   container: {
+    alignItems: 'center',
     backgroundColor: '#e8f4f7',
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
     borderColor: '#ccc',
-    justifyContent: 'space-between',
-  },
-  textWrapper: {
+    borderRadius: 12,
+    borderWidth: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  highlight: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaRegular,
   },
   placeholderText: {
     color: '#999',
     fontFamily: Fonts.JakartaRegular,
   },
-  highlight: {
-    color: '#0088B1',
-    fontFamily: Fonts.JakartaRegular,
+  textWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 5,
+  },
+  wrapper: {
+    paddingTop: 10,
   },
 });
 

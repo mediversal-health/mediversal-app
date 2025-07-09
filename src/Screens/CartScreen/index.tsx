@@ -1,7 +1,7 @@
 /* eslint-disable no-catch-shadow */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
   Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {styles} from './index.styles';
+import { styles } from './index.styles';
 import {
   Percent,
   ChevronRight,
@@ -22,24 +22,24 @@ import {
   ChevronLeft,
 } from 'lucide-react-native';
 
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
 import OtherDetailsCard from '../../components/cards/OtherDetailsCard';
 import LocationModal from '../../components/modal/LocationModal';
-import {RootStackParamList} from '../../navigation';
+import { RootStackParamList } from '../../navigation';
 import NavigationImg from './assets/svgs/navigation.svg';
-import {Fonts} from '../../styles/fonts';
-import {useAuthStore} from '../../store/authStore';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useCallback} from 'react';
-import {getCartItems} from '../../Services/cart';
-import {useCouponStore} from '../../store/couponStore';
-import {useCartStore} from '../../store/cartStore';
+import { Fonts } from '../../styles/fonts';
+import { useAuthStore } from '../../store/authStore';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useCallback } from 'react';
+import { getCartItems } from '../../Services/cart';
+import { useCouponStore } from '../../store/couponStore';
+import { useCartStore } from '../../store/cartStore';
 import RazorpayCheckout from 'react-native-razorpay';
 import useProductStore from '../../store/productsStore';
-import {getProducts} from '../../Services/pharmacy';
-import {useToastStore} from '../../store/toastStore';
+import { getProducts } from '../../Services/pharmacy';
+import { useToastStore } from '../../store/toastStore';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
@@ -48,7 +48,7 @@ const CartPage = () => {
   const RAZORPAY_KEY = process.env.RAZORPAY_KEY;
 
   const formData = route.params?.formData;
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
 
   const pincode = formData?.PinCode;
   const area = formData?.Area_details;
@@ -60,11 +60,11 @@ const CartPage = () => {
   const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
+  const { getSelectedCoupon, setSelectedCoupon } = useCouponStore();
   const selectedCoupon = getSelectedCoupon(String(customer_id));
-  const {originalProducts, setProducts} = useProductStore();
+  const { originalProducts, setProducts } = useProductStore();
   const [hasOutOfStockItems, setHasOutOfStockItems] = useState(false);
-  const showToast = useToastStore(state => state.showToast);
+  const showToast = useToastStore((state) => state.showToast);
   const handleCouponRemove = () => {
     setSelectedCoupon(String(customer_id), null);
   };
@@ -73,10 +73,10 @@ const CartPage = () => {
   };
   const fetchProducts = useCallback(() => {
     getProducts()
-      .then(response => {
+      .then((response) => {
         setProducts(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching products:', error);
       });
   }, [setProducts]);
@@ -151,11 +151,11 @@ const CartPage = () => {
     });
     hideLocationModal();
   };
-  const getProductQuantity = useCartStore(state => state.getProductQuantity);
+  const getProductQuantity = useCartStore((state) => state.getProductQuantity);
   const [version, setVersion] = useState(0);
   useEffect(() => {}, [version]);
   const handleQuantityChange = () => {
-    setVersion(prev => prev + 1);
+    setVersion((prev) => prev + 1);
   };
 
   const cartTotal = apiProductDetails.reduce((total, item) => {
@@ -206,9 +206,9 @@ const CartPage = () => {
         key: RAZORPAY_KEY as string,
         amount: (cartTotal - couponDiscount + 5 + 40) * 100,
         name: 'Mediversal APP',
-        theme: {color: '#0088B1'},
+        theme: { color: '#0088B1' },
       };
-      const cartItems = apiProductDetails.map(item => ({
+      const cartItems = apiProductDetails.map((item) => ({
         productId: item.productId,
         name: item.ProductName,
         price: item.SellingPrice,
@@ -279,17 +279,18 @@ const CartPage = () => {
             setError(null);
             setLoading(true);
             getCartItems(customer_id)
-              .then(apiItems => {
+              .then((apiItems) => {
                 setApiProductDetails(apiItems);
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(err);
                 setError('Failed to load product details. Please try again.');
               })
               .finally(() => {
                 setLoading(false);
               });
-          }}>
+          }}
+        >
           <Text style={styles.retryButtonText}>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -302,7 +303,8 @@ const CartPage = () => {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={() => navigation.goBack()}
+          >
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           {/* <View style={styles.headerRightIcons}>
@@ -327,20 +329,23 @@ const CartPage = () => {
                   flexDirection: 'row',
                   gap: 15,
                   justifyContent: 'space-between',
-                }}>
-                <View style={{flexDirection: 'row', gap: 10}}>
+                }}
+              >
+                <View style={{ flexDirection: 'row', gap: 10 }}>
                   <NavigationImg />
-                  <View style={{flexDirection: 'column', width: '70%'}}>
+                  <View style={{ flexDirection: 'column', width: '70%' }}>
                     <Text
                       style={{
                         color: '#899193',
                         fontSize: 10,
                         fontFamily: Fonts.JakartaRegular,
-                      }}>
+                      }}
+                    >
                       Deliver to {formData?.Recipient_name}
                     </Text>
                     <Text
-                      style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
+                      style={{ fontSize: 12, fontFamily: Fonts.JakartaRegular }}
+                    >
                       {formattedAddress}
                     </Text>
                   </View>
@@ -351,14 +356,16 @@ const CartPage = () => {
                       fromLocationMap: false,
                       isFromProfile: false,
                     })
-                  }>
+                  }
+                >
                   <Text
                     style={{
                       justifyContent: 'flex-end',
                       fontFamily: Fonts.JakartaSemiBold,
                       color: '#50B57F',
                       fontSize: 12,
-                    }}>
+                    }}
+                  >
                     Change
                   </Text>
                 </TouchableOpacity>
@@ -372,12 +379,14 @@ const CartPage = () => {
                   navigation.navigate('ApplyCouponScreen', {
                     cartTotal: cartTotal,
                   })
-                }>
+                }
+              >
                 <LinearGradient
                   colors={['#F8F8F8', '#FE90E2']}
-                  start={{x: 1, y: 0}}
-                  end={{x: 1, y: 1}}
-                  style={styles.couponStrip}>
+                  start={{ x: 1, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.couponStrip}
+                >
                   <View style={styles.couponLeft}>
                     <Percent size={16} color="#000" style={styles.icon} />
                     <Text style={styles.couponText}>Apply Coupon</Text>
@@ -391,11 +400,12 @@ const CartPage = () => {
             (apiProductDetails && selectedCoupon && (
               <LinearGradient
                 colors={['#FFFFFF', '#0088B1']}
-                start={{x: 1, y: 1}}
-                end={{x: 0, y: 1}}
-                style={styles.appliedCouponContainer}>
+                start={{ x: 1, y: 1 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.appliedCouponContainer}
+              >
                 <View style={styles.appliedCouponLeft}>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.appliedCouponText}>
                       Coupon Applied:
                     </Text>
@@ -417,7 +427,7 @@ const CartPage = () => {
               </View>
             ))}
           {apiProductDetails.length > 0 ? (
-            apiProductDetails.map(item => (
+            apiProductDetails.map((item) => (
               <CartItemCard
                 key={item.id}
                 productId={item.productId}
@@ -451,15 +461,17 @@ const CartPage = () => {
                 </View>
                 <TouchableOpacity
                   onPress={() => setSelectedRadio(!selectedRadio)}
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={[styles.radioLabel, {marginRight: 8}]}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}
+                >
+                  <Text style={[styles.radioLabel, { marginRight: 8 }]}>
                     0MCs
                   </Text>
                   <View
                     style={[
                       styles.radioCircle,
-                      selectedRadio && {borderColor: '#0088B1'},
-                    ]}>
+                      selectedRadio && { borderColor: '#0088B1' },
+                    ]}
+                  >
                     {selectedRadio && <View style={styles.selectedDot} />}
                   </View>
                 </TouchableOpacity>
@@ -501,7 +513,8 @@ const CartPage = () => {
               <TouchableOpacity
                 style={styles.addressButton}
                 onPress={handleCheckout}
-                disabled={isProcessingPayment}>
+                disabled={isProcessingPayment}
+              >
                 {isProcessingPayment ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
@@ -511,7 +524,8 @@ const CartPage = () => {
             ) : (
               <TouchableOpacity
                 style={styles.addressButton}
-                onPress={showLocationModal}>
+                onPress={showLocationModal}
+              >
                 <Text style={styles.addressButtonText}>
                   Select / Add Address
                 </Text>

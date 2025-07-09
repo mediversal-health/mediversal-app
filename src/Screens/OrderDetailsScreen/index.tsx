@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import {useRoute, useNavigation, RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
-import {NavigationProp} from '@react-navigation/native';
-import {trackOrders} from '../../Services/order';
+import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { NavigationProp } from '@react-navigation/native';
+import { trackOrders } from '../../Services/order';
 import {
   Box,
   ChevronLeft,
@@ -20,12 +20,12 @@ import {
   IndianRupee,
   FileText,
 } from 'lucide-react-native';
-import {Fonts} from '../../styles/fonts';
+import { Fonts } from '../../styles/fonts';
 import OrderTrackingProgress from '../../components/ui/OrderTrackingProgress';
 import CartItemCard from '../../components/cards/CartItemCard';
 import styles from './index.styles';
 import Whatsapp from '../PrescribedScreen/assets/svgs/Whatsapp.svg';
-import {TrackScan} from '../../types';
+import { TrackScan } from '../../types';
 
 type OrdersDetailsScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -35,7 +35,7 @@ type OrdersDetailsScreenRouteProp = RouteProp<
 const OrdersDetailsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<OrdersDetailsScreenRouteProp>();
-  const {order_data} = route.params;
+  const { order_data } = route.params;
   console.log('abcgd', order_data);
 
   const [trackingData, setTrackingData] = useState<TrackScan[] | []>([]);
@@ -117,32 +117,35 @@ const OrdersDetailsScreen: React.FC = () => {
             colors={['#0088B1']}
             tintColor="#0088B1"
           />
-        }>
+        }
+      >
         <View style={styles.headerWrapper}>
           <View style={styles.headerLeft}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+            >
               <ChevronLeft size={20} color="#0088B1" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Order Details</Text>
           </View>
         </View>
 
-        <View style={{paddingHorizontal: 10}}>
+        <View style={{ paddingHorizontal: 10 }}>
           <View style={styles.orderInfoContainer}>
             <View style={styles.orderInfoBorder}>
-              <Text style={{marginBottom: 5, fontFamily: Fonts.JakartaBold}}>
+              <Text style={{ marginBottom: 5, fontFamily: Fonts.JakartaBold }}>
                 Order ID:ORD-{order_data.orderId}
               </Text>
             </View>
             <View
-              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              style={{ justifyContent: 'space-between', flexDirection: 'row' }}
+            >
               <Text style={styles.orderInfoText}>
                 <Text style={styles.orderInfoLabel}>Order date:</Text>{' '}
                 {formatOrderDate(order_data.createdAt)}
               </Text>
-              <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
+              <View style={{ flexDirection: 'row', gap: 5, marginTop: 5 }}>
                 <Truck size={18} color={'#12B76A'} />
                 <Text style={styles.deliveryEstimate}>
                   Estimated delivery:{' '}
@@ -155,12 +158,12 @@ const OrdersDetailsScreen: React.FC = () => {
 
         {trackingData && <OrderTrackingProgress trackingData={trackingData} />}
 
-        <View style={{flexDirection: 'row', marginLeft: 20, gap: 5}}>
+        <View style={{ flexDirection: 'row', marginLeft: 20, gap: 5 }}>
           <Box />
           <Text style={styles.orderItemsHeader}>Order Items</Text>
         </View>
 
-        {order_data.items.map(item => (
+        {order_data.items.map((item) => (
           <CartItemCard
             key={item.orderId}
             productId={item.productId}
@@ -198,7 +201,8 @@ const OrdersDetailsScreen: React.FC = () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginBottom: 16,
-            }}>
+            }}
+          >
             <MapPin size={20} color="#667085" />
             <Text style={styles.addressTitle}>Delivery Address</Text>
           </View>
@@ -218,7 +222,8 @@ const OrdersDetailsScreen: React.FC = () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginBottom: 16,
-            }}>
+            }}
+          >
             <IndianRupee size={16} color="#667085" />
             <Text style={styles.paymentTitle}>Payment Details</Text>
           </View>
@@ -242,7 +247,7 @@ const OrdersDetailsScreen: React.FC = () => {
 
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Payment Status</Text>
-            <Text style={[styles.summaryValue, {color: '#10B981'}]}>
+            <Text style={[styles.summaryValue, { color: '#10B981' }]}>
               Completed
             </Text>
           </View>
@@ -250,7 +255,8 @@ const OrdersDetailsScreen: React.FC = () => {
 
         <TouchableOpacity
           style={styles.cancelButton}
-          onPress={handleCancelOrder}>
+          onPress={handleCancelOrder}
+        >
           <Text style={styles.cancelButtonText}>Cancel Order</Text>
           <ChevronRight size={20} color="#EF4444" />
         </TouchableOpacity>
@@ -258,7 +264,7 @@ const OrdersDetailsScreen: React.FC = () => {
 
       <View>
         <View style={styles.buttonContainer}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity style={styles.contactButton}>
               <Whatsapp />
               <Text style={styles.contactButtonText}>Contact us</Text>

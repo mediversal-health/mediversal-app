@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, forwardRef, useImperativeHandle} from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,16 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {pick} from '@react-native-documents/picker';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../navigation';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { pick } from '@react-native-documents/picker';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../navigation';
 import styles from './index.styles';
-import {UploadPickerHandle, UploadType} from '../../../types';
+import { UploadPickerHandle, UploadType } from '../../../types';
 // Import the upload function and AuthContext (assuming you have one)
-import {uploadPrescriptions} from '../../../Services/prescription';
-import {useAuthStore} from '../../../store/authStore';
-import {useToastStore} from '../../../store/toastStore';
+import { uploadPrescriptions } from '../../../Services/prescription';
+import { useAuthStore } from '../../../store/authStore';
+import { useToastStore } from '../../../store/toastStore';
 // Adjust path as needed
 
 interface UploadPickerProps {
@@ -32,7 +32,7 @@ interface ExtendedDocumentPickerResponse {
   size: number;
 }
 const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
-  ({onCancel, initialType = 'image'}, ref) => {
+  ({ onCancel, initialType = 'image' }, ref) => {
     const [fileType, setFileType] = useState<UploadType>(initialType);
     const [images, setImages] = useState<string[]>([]);
     const [pdfs, setPdfs] = useState<ExtendedDocumentPickerResponse[]>([]);
@@ -40,9 +40,9 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
     const [isPickerOpen, setIsPickerOpen] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const customer_id = useAuthStore(state => state.customer_id);
+    const customer_id = useAuthStore((state) => state.customer_id);
     console.log(customer_id);
-    const showToast = useToastStore(state => state.showToast);
+    const showToast = useToastStore((state) => state.showToast);
     // Common handler for all picker types
     const openPicker = async (type: UploadType) => {
       setFileType(type);
@@ -82,15 +82,15 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
       if (result.assets) {
         const selectedUris = result.assets
-          .map(asset => asset.uri)
+          .map((asset) => asset.uri)
           .filter(Boolean) as string[];
-        setImages(prev => [...prev, ...selectedUris]);
+        setImages((prev) => [...prev, ...selectedUris]);
       }
     };
 
     const openDocumentPicker = async () => {
       try {
-        const [result] = await pick({type: ['application/pdf']});
+        const [result] = await pick({ type: ['application/pdf'] });
 
         if (!result) {
           handleCancel();
@@ -109,7 +109,7 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
         };
 
         if (fileObject.uri) {
-          setPdfs(prev => [...prev, fileObject]);
+          setPdfs((prev) => [...prev, fileObject]);
         } else {
           handleCancel();
         }
@@ -131,7 +131,7 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
       }
 
       if (result.assets && result.assets[0]?.uri) {
-        setImages(prev =>
+        setImages((prev) =>
           result.assets && result.assets[0].uri
             ? [...prev, result.assets[0].uri]
             : prev,
@@ -178,12 +178,12 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
         // Prepare files for upload
         const files =
           fileType === 'pdf'
-            ? pdfs.map(pdfObj => ({
+            ? pdfs.map((pdfObj) => ({
                 uri: pdfObj.uri,
                 type: pdfObj.type || 'application/pdf',
                 name: pdfObj.name || `document_${Date.now()}.pdf`,
               }))
-            : images.map(uri => ({
+            : images.map((uri) => ({
                 uri,
                 type: 'image/jpeg',
                 name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
@@ -226,14 +226,14 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
       onCancel?.();
     };
     const handleRemoveImage = (index: number) => {
-      setImages(prev => {
+      setImages((prev) => {
         const newImages = [...prev];
         newImages.splice(index, 1);
         return newImages;
       });
     };
     const handleRemovePdf = (index: number) => {
-      setPdfs(prev => {
+      setPdfs((prev) => {
         const newPdfs = [...prev];
         newPdfs.splice(index, 1);
         return newPdfs;
@@ -270,7 +270,7 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
               Selected Prescription {fileType === 'pdf' ? 'PDF' : 'Images'}:
             </Text>
             {fileType === 'pdf' ? (
-              <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
                 {pdfs.map((pdf, index) => (
                   <View key={index} style={styles.imageContainer}>
                     <Text style={styles.fileName}>
@@ -278,20 +278,22 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
                     </Text>
                     <TouchableOpacity
                       style={styles.closeButton}
-                      onPress={() => handleRemovePdf(index)}>
+                      onPress={() => handleRemovePdf(index)}
+                    >
                       <Text style={styles.closeButtonText}>×</Text>
                     </TouchableOpacity>
                   </View>
                 ))}
               </View>
             ) : (
-              <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
                 {images.map((uri, index) => (
                   <View key={index} style={styles.imageContainer}>
-                    <Image source={{uri}} style={styles.uploadedImage} />
+                    <Image source={{ uri }} style={styles.uploadedImage} />
                     <TouchableOpacity
                       style={styles.closeButton}
-                      onPress={() => handleRemoveImage(index)}>
+                      onPress={() => handleRemoveImage(index)}
+                    >
                       <Text style={styles.closeButtonText}>×</Text>
                     </TouchableOpacity>
                   </View>
@@ -301,7 +303,8 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
             <TouchableOpacity
               style={styles.uploadMore}
-              onPress={handleUploadMore}>
+              onPress={handleUploadMore}
+            >
               <Text style={styles.uploadMoreText}>
                 Upload more {fileType === 'pdf' ? 'PDFs' : 'images'}
               </Text>
@@ -321,7 +324,8 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
           visible={showModal}
           transparent
           animationType="fade"
-          onRequestClose={closeModal}>
+          onRequestClose={closeModal}
+        >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>Are you sure?</Text>
@@ -333,14 +337,16 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
               <View style={styles.modalButtons}>
                 <TouchableOpacity
                   style={styles.modalRemoveBtn}
-                  onPress={confirmRemove}>
+                  onPress={confirmRemove}
+                >
                   <Text style={styles.modalRemoveText}>
                     Remove {fileType === 'pdf' ? 'PDF' : 'Images'}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.modalCancelBtn}
-                  onPress={closeModal}>
+                  onPress={closeModal}
+                >
                   <Text style={styles.modalCancelText}>Cancel</Text>
                 </TouchableOpacity>
               </View>

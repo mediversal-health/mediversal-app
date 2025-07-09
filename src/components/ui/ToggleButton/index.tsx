@@ -6,7 +6,7 @@ import {
   LayoutAnimation,
   Text,
 } from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { Fonts } from '../../../styles/fonts';
 
 interface ToggleButtonsProps {
   isMobile: boolean;
@@ -34,12 +34,14 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({
                 styles.toggleButton,
                 selected && styles.selectedToggleButton,
               ]}
-              onPress={() => handleToggle(index === 0)}>
+              onPress={() => handleToggle(index === 0)}
+            >
               <Text
                 style={[
                   styles.toggleButtonText,
                   selected && styles.selectedToggleButtonText,
-                ]}>
+                ]}
+              >
                 {label}
               </Text>
             </TouchableOpacity>
@@ -52,37 +54,37 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
-    padding: 4,
-    marginBottom: 24,
     backgroundColor: '#e8f4f7',
     borderRadius: 12,
-  },
-  toggleContainer: {
     flexDirection: 'row',
-    flex: 1,
-    overflow: 'hidden',
-    backgroundColor: '#f8f8f8',
-    borderRadius: 8,
-  },
-  toggleButton: {
-    flex: 1,
-    padding: 12,
-    alignItems: 'center',
+    marginBottom: 24,
+    padding: 4,
   },
   selectedToggleButton: {
     backgroundColor: '#0088B1',
     borderRadius: 8,
   },
-  toggleButtonText: {
-    fontSize: 14,
-    color: '#666666',
-    fontFamily: Fonts.JakartaBold,
-  },
   selectedToggleButtonText: {
     color: '#f8f8f8',
     fontWeight: '600',
+  },
+  toggleButton: {
+    alignItems: 'center',
+    flex: 1,
+    padding: 12,
+  },
+  toggleButtonText: {
+    color: '#666666',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
+  },
+  toggleContainer: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 8,
+    flexDirection: 'row',
+    flex: 1,
+    overflow: 'hidden',
   },
 });
 

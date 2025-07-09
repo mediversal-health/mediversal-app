@@ -1,49 +1,9 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0,
-    justifyContent: 'flex-end',
-  },
-  signUpOtpRoot: {
-    marginVertical: 20,
-    justifyContent: 'center',
-  },
-  signUpOtpCell: {
-    width: 48,
-    height: 48,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  signUpOtpText: {
-    fontSize: 18,
-    color: '#333',
-  },
-  modalContainer: {
-    alignItems: 'center',
-    padding: 32,
-    backgroundColor: '#f8f8f8',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-  },
-  headerContainer: {
-    alignItems: 'flex-start',
-    width: '100%',
-  },
-  title: {
-    marginBottom: 12,
-    fontSize: 24,
-    fontFamily: Fonts.JakartaBold,
+  blueText: {
     color: '#0088B1',
-  },
-  subtitle: {
-    marginBottom: 12,
-    fontSize: 16,
-    color: '#666',
     fontFamily: Fonts.JakartaRegular,
   },
   changeEmailContainer: {
@@ -53,42 +13,62 @@ const styles = StyleSheet.create({
   changeEmailText: {
     fontSize: 16,
   },
+  disabledText: {
+    color: '#0088B1',
+  },
+  emailInput: {
+    color: '#666',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
+    height: 40,
+  },
+  emailInputContainer: {
+    alignSelf: 'stretch',
+    borderColor: '#ccc',
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingLeft: 8,
+    paddingVertical: 4,
+  },
+  errorText: {
+    color: '#ff3b30',
+    fontSize: 12,
+    marginTop: 5,
+    textAlign: 'center',
+  },
   grayText: {
     color: '#666',
     fontFamily: Fonts.JakartaRegular,
   },
-  blueText: {
-    color: '#0088B1',
-    fontFamily: Fonts.JakartaRegular,
+  headerContainer: {
+    alignItems: 'flex-start',
+    width: '100%',
   },
-  emailInputContainer: {
-    alignSelf: 'stretch',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingLeft: 8,
-    paddingVertical: 4,
-    marginBottom: 12,
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
   },
-  emailInput: {
-    fontSize: 16,
-    color: '#666',
-    height: 40,
-    fontFamily: Fonts.JakartaRegular,
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    padding: 32,
   },
   otpContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
     gap: 8,
+    justifyContent: 'center',
   },
   otpInput: {
-    width: 48,
-    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
     fontSize: 18,
     fontWeight: 'bold',
+    height: 48,
     textAlign: 'center',
-    borderWidth: 1,
-    borderRadius: 8,
+    width: 48,
   },
   otpInputEmpty: {
     borderColor: '#ccc',
@@ -96,50 +76,70 @@ const styles = StyleSheet.create({
   otpInputFilled: {
     borderColor: '#0088B1',
   },
-  timerContainer: {
-    flexDirection: 'row',
+  resendText: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+  },
+  signUpOtpCell: {
     alignItems: 'center',
+    borderRadius: 8,
+    borderWidth: 1.5,
+    height: 48,
     justifyContent: 'center',
-    width: '100%',
-    marginTop: 12,
+    marginHorizontal: 5,
+    width: 48,
+  },
+  signUpOtpRoot: {
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  signUpOtpText: {
+    color: '#333',
+    fontSize: 18,
+  },
+  subtitle: {
+    color: '#666',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 16,
     marginBottom: 12,
+  },
+  timerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 12,
+    marginTop: 12,
+    width: '100%',
   },
   timerText: {
     fontWeight: 'bold',
   },
-  resendText: {
-    fontFamily: Fonts.JakartaBold,
+  title: {
     color: '#0088B1',
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 24,
+    marginBottom: 12,
   },
   verifyButton: {
+    alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 10,
     marginTop: 24,
     paddingVertical: 14,
     width: '100%',
-    backgroundColor: '#0088B1',
-    borderRadius: 10,
-    alignItems: 'center',
   },
   verifyButtonDisabled: {
-    borderWidth: 1,
-    borderColor: '#0088B1',
     backgroundColor: 'transparent',
+    borderColor: '#0088B1',
+    borderWidth: 1,
   },
   verifyButtonLoading: {
     backgroundColor: '#0088B1',
   },
   verifyButtonText: {
     color: '#fff',
-    fontSize: 16,
     fontFamily: Fonts.JakartaRegular,
-  },
-  disabledText: {
-    color: '#0088B1',
-  },
-  errorText: {
-    color: '#ff3b30',
-    fontSize: 12,
-    marginTop: 5,
-    textAlign: 'center',
+    fontSize: 16,
   },
 });
 

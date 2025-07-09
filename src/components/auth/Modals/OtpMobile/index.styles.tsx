@@ -1,61 +1,84 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0,
-    justifyContent: 'flex-end',
-  },
   container: {
+    alignItems: 'center',
     backgroundColor: '#f8f8f8',
-    padding: 24,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    alignItems: 'center',
+    padding: 24,
   },
-  title: {
-    fontSize: 28,
-    fontFamily: Fonts.JakartaBold,
+  disabledText: {
     color: '#0088B1',
-    alignSelf: 'flex-start',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#7f7f7f',
-    alignSelf: 'flex-start',
-    paddingBottom: 20,
-    fontFamily: Fonts.JakartaRegular,
   },
   editLink: {
     color: '#7f7f7f',
-    fontSize: 14,
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
   },
   editLinkHighlight: {
     color: '#0088B1',
     fontFamily: Fonts.JakartaSemiBold,
+  },
+  errorText: {
+    color: '#ff3b30',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  otpCell: {
+    alignItems: 'center',
+    borderRadius: 8,
+    borderWidth: 1.5,
+    height: 48,
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    width: 48,
+  },
+  otpInput: {
+    backgroundColor: 'red',
+    borderRadius: 8,
+    fontSize: 18,
+    fontWeight: 'bold',
+    height: 48,
+    textAlign: 'center',
+    width: 48,
+  },
+  otpInputEmpty: {
+    borderColor: '#d3d3d3',
+    borderWidth: 1,
+  },
+  otpInputFilled: {
+    borderColor: '#0088B1',
+    borderWidth: 1.5,
+  },
+  otpRoot: {
+    justifyContent: 'center',
+    marginVertical: 20,
   },
   otpRow: {
     flexDirection: 'row',
     gap: 10,
     marginTop: 20,
   },
-  otpInput: {
-    width: 48,
-    height: 48,
-    borderRadius: 8,
-    textAlign: 'center',
+  otpText: {
+    color: '#333',
     fontSize: 18,
-    fontWeight: 'bold',
-    backgroundColor: 'red',
   },
-  otpInputFilled: {
-    borderColor: '#0088B1',
-    borderWidth: 1.5,
+  resendButton: {
+    justifyContent: 'center',
+    minHeight: 20,
   },
-  otpInputEmpty: {
-    borderColor: '#d3d3d3',
-    borderWidth: 1,
+  resendLink: {
+    color: '#0088B1',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontWeight: '600',
   },
   resendRow: {
     marginTop: 16,
@@ -64,67 +87,44 @@ const styles = StyleSheet.create({
     color: '#7f7f7f',
     fontFamily: Fonts.JakartaRegular,
   },
+  subtitle: {
+    alignSelf: 'flex-start',
+    color: '#7f7f7f',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+    paddingBottom: 20,
+  },
   timerText: {
     color: '#0088B1',
     fontFamily: Fonts.JakartaRegular,
   },
-  resendButton: {
-    minHeight: 20,
-    justifyContent: 'center',
-  },
-  resendLink: {
+  title: {
+    alignSelf: 'flex-start',
     color: '#0088B1',
-    fontWeight: '600',
-    fontFamily: Fonts.JakartaSemiBold,
+    fontFamily: Fonts.JakartaBold,
+    fontSize: 28,
   },
   verifyButton: {
+    alignItems: 'center',
+    backgroundColor: '#0088B1',
+    borderRadius: 10,
+    fontFamily: Fonts.JakartaRegular,
     marginTop: 24,
     paddingVertical: 14,
     width: '100%',
-    backgroundColor: '#0088B1',
-    borderRadius: 10,
-    alignItems: 'center',
-    fontFamily: Fonts.JakartaRegular,
   },
   verifyButtonDisabled: {
-    borderWidth: 1,
-    borderColor: '#0088B1',
     backgroundColor: 'transparent',
+    borderColor: '#0088B1',
+    borderWidth: 1,
   },
   verifyButtonLoading: {
     backgroundColor: '#0088B1',
   },
   verifyButtonText: {
     color: '#fff',
+    fontFamily: Fonts.JakartaRegular,
     fontSize: 16,
-    fontFamily: Fonts.JakartaRegular,
-  },
-  disabledText: {
-    color: '#0088B1',
-  },
-  errorText: {
-    color: '#ff3b30',
-    fontSize: 12,
-    marginTop: 5,
-    textAlign: 'center',
-    fontFamily: Fonts.JakartaRegular,
-  },
-  otpRoot: {
-    marginVertical: 20,
-    justifyContent: 'center',
-  },
-  otpCell: {
-    width: 48,
-    height: 48,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  otpText: {
-    fontSize: 18,
-    color: '#333',
   },
 });
 export default styles;

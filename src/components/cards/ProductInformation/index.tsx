@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {ChevronDown, ChevronUp} from 'lucide-react-native';
-import {Fonts} from '../../../styles/fonts';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { ChevronDown, ChevronUp } from 'lucide-react-native';
+import { Fonts } from '../../../styles/fonts';
 
 interface ExpandableSectionProps {
   title: string;
@@ -24,9 +24,10 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
         borderColor: '#E8F4F7',
         borderRadius: 10,
         backgroundColor: '#FFFFFF',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-      }}>
+      }}
+    >
       <TouchableOpacity
         onPress={() => setExpanded(!expanded)}
         style={{
@@ -38,8 +39,9 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
           borderColor: '#E8F4F7',
           borderBottomWidth: 2,
           borderRadius: 10,
-        }}>
-        <Text style={{fontSize: 12, fontFamily: Fonts.JakartaSemiBold}}>
+        }}
+      >
+        <Text style={{ fontSize: 12, fontFamily: Fonts.JakartaSemiBold }}>
           {title}
         </Text>
         {expanded ? (
@@ -48,7 +50,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
           <ChevronDown size={16} color="#000" />
         )}
       </TouchableOpacity>
-      {expanded && <View style={{padding: 16}}>{children}</View>}
+      {expanded && <View style={{ padding: 16 }}>{children}</View>}
     </View>
   );
 };

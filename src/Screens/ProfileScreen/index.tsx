@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ChevronLeft,
   Mail,
@@ -23,21 +23,21 @@ import {
   UserCheck,
   X,
 } from 'lucide-react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Fonts} from '../../styles/fonts';
-import {useAuthStore} from '../../store/authStore';
-import {RootStackParamList} from '../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../styles/fonts';
+import { useAuthStore } from '../../store/authStore';
+import { RootStackParamList } from '../../navigation';
 import styles from './index.styles';
-import {useScreenStore} from '../../store/screenSelector';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {useToastStore} from '../../store/toastStore';
+import { useScreenStore } from '../../store/screenSelector';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { useToastStore } from '../../store/toastStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Platform} from 'react-native';
-import {updateProfile} from '../../Services/auth';
+import { Platform } from 'react-native';
+import { updateProfile } from '../../Services/auth';
 
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const currentScreen = useScreenStore(state => state.currentScreen);
+  const currentScreen = useScreenStore((state) => state.currentScreen);
   const {
     first_name,
     last_name,
@@ -52,7 +52,7 @@ export default function ProfileScreen() {
     clearAuthentication,
   } = useAuthStore();
 
-  const showToast = useToastStore(state => state.showToast);
+  const showToast = useToastStore((state) => state.showToast);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [dobDate, setDobDate] = useState(
     birthday ? new Date(birthday) : new Date(1995, 1, 25),
@@ -61,7 +61,7 @@ export default function ProfileScreen() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
+  const [tempImage, setTempImage] = useState<{ uri: string } | null>(null);
   const isBirthdayLocked = !!birthday;
 
   // Determine which image to display
@@ -69,7 +69,7 @@ export default function ProfileScreen() {
     tempImage ||
     (profileImage
       ? typeof profileImage === 'string'
-        ? {uri: profileImage}
+        ? { uri: profileImage }
         : profileImage
       : null);
   const [userData, setUserData] = useState({
@@ -93,7 +93,7 @@ export default function ProfileScreen() {
       : '26 March, 2025',
     photo: profileImage
       ? typeof profileImage === 'string'
-        ? {uri: profileImage}
+        ? { uri: profileImage }
         : profileImage
       : require('../../assests/pngs/MainAvatar.png'),
   });
@@ -136,7 +136,7 @@ export default function ProfileScreen() {
         last_name: string | undefined;
         email: string;
         phone_number: string;
-        image?: {uri: string; type: string; name: string} | undefined;
+        image?: { uri: string; type: string; name: string } | undefined;
         birthday?: string;
       } = {
         first_name: userData.first_name,
@@ -144,7 +144,7 @@ export default function ProfileScreen() {
         email: userData.email ?? '',
         phone_number: userData.phone.replace(/\D/g, ''),
         image: imageData,
-        ...(!isBirthdayLocked ? {birthday: formattedDob} : {}),
+        ...(!isBirthdayLocked ? { birthday: formattedDob } : {}),
       };
 
       await updateProfile(customer_id?.toString() ?? '', payload);
@@ -184,7 +184,7 @@ export default function ProfileScreen() {
   };
 
   const handleChange = (field: string, value: string) => {
-    setUserData(prev => ({
+    setUserData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -219,7 +219,7 @@ export default function ProfileScreen() {
       }
 
       if (response.assets?.[0]?.uri) {
-        setTempImage({uri: response.assets[0].uri});
+        setTempImage({ uri: response.assets[0].uri });
       }
     } catch (error) {
       console.error('Image picker error:', error);
@@ -234,7 +234,8 @@ export default function ProfileScreen() {
           <View style={styles.header}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+            >
               <ChevronLeft size={24} color="#0088B1" />
             </TouchableOpacity>
             <Text
@@ -242,7 +243,8 @@ export default function ProfileScreen() {
                 fontSize: 16,
                 fontFamily: Fonts.JakartaSemiBold,
                 color: '#111827',
-              }}>
+              }}
+            >
               Profile Page
             </Text>
           </View>
@@ -251,7 +253,8 @@ export default function ProfileScreen() {
           <TouchableOpacity
             style={styles.profileImageContainer}
             onPress={isEditMode ? selectImage : undefined}
-            disabled={!isEditMode}>
+            disabled={!isEditMode}
+          >
             {displayImage && !imageError ? (
               <Image
                 source={displayImage}
@@ -288,18 +291,20 @@ export default function ProfileScreen() {
                 <TouchableOpacity
                   style={styles.editButton}
                   onPress={handleSave}
-                  disabled={isLoading}>
+                  disabled={isLoading}
+                >
                   {isLoading ? (
                     <ActivityIndicator color="#0088B1" />
                   ) : (
                     <>
-                      <View style={{flexDirection: 'row', gap: 5}}>
+                      <View style={{ flexDirection: 'row', gap: 5 }}>
                         <UserCheck size={20} color="#0088B1" />
                         <Text style={styles.EditTitle}>Update Profile</Text>
                       </View>
                       <TouchableOpacity
-                        style={{flexDirection: 'row', gap: 2}}
-                        onPress={() => setIsEditMode(false)}>
+                        style={{ flexDirection: 'row', gap: 2 }}
+                        onPress={() => setIsEditMode(false)}
+                      >
                         <X size={20} color="#EB5757" />
                         <Text style={styles.CancelTitle}> Cancel </Text>
                       </TouchableOpacity>
@@ -309,7 +314,8 @@ export default function ProfileScreen() {
               ) : (
                 <TouchableOpacity
                   style={styles.editButton}
-                  onPress={toggleEditMode}>
+                  onPress={toggleEditMode}
+                >
                   <UserPen size={20} color="#0088B1" />
                   <Text style={styles.EditTitle}>Edit Info</Text>
                 </TouchableOpacity>
@@ -345,10 +351,10 @@ export default function ProfileScreen() {
                 <TextInput
                   style={[
                     styles.infoValue,
-                    {borderBottomWidth: 1, borderColor: '#0088B1'},
+                    { borderBottomWidth: 1, borderColor: '#0088B1' },
                   ]}
                   value={userData.first_name}
-                  onChangeText={text => handleChange('first_name', text)}
+                  onChangeText={(text) => handleChange('first_name', text)}
                   keyboardType="default"
                 />
               ) : (
@@ -365,10 +371,10 @@ export default function ProfileScreen() {
                 <TextInput
                   style={[
                     styles.infoValue,
-                    {borderBottomWidth: 1, borderColor: '#0088B1'},
+                    { borderBottomWidth: 1, borderColor: '#0088B1' },
                   ]}
                   value={userData.last_name}
-                  onChangeText={text => handleChange('last_name', text)}
+                  onChangeText={(text) => handleChange('last_name', text)}
                   keyboardType="default"
                 />
               ) : (
@@ -384,10 +390,10 @@ export default function ProfileScreen() {
                 <TextInput
                   style={[
                     styles.infoValue,
-                    {borderBottomWidth: 1, borderColor: '#0088B1'},
+                    { borderBottomWidth: 1, borderColor: '#0088B1' },
                   ]}
                   value={userData.phone}
-                  onChangeText={text => handleChange('phone', text)}
+                  onChangeText={(text) => handleChange('phone', text)}
                   keyboardType="phone-pad"
                 />
               ) : (
@@ -414,25 +420,27 @@ export default function ProfileScreen() {
                     if (!isBirthdayLocked) {
                       setShowDatePicker(true);
                     }
-                  }}>
+                  }}
+                >
                   <Text
                     style={{
                       textAlign: 'right',
                       width: '100%',
                       fontFamily: Fonts.JakartaRegular,
                       fontSize: 10,
-                    }}>
+                    }}
+                  >
                     {userData.dob}
                   </Text>
                 </TouchableOpacity>
               ) : (
-                <Text style={[styles.infoValue, {textAlign: 'right'}]}>
+                <Text style={[styles.infoValue, { textAlign: 'right' }]}>
                   {userData.dob}
                 </Text>
               )}
             </View>
             {isBirthdayLocked && isEditMode && (
-              <Text style={{color: '#888', fontSize: 10, marginTop: 4}}>
+              <Text style={{ color: '#888', fontSize: 10, marginTop: 4 }}>
                 Birthday is locked and cannot be changed again.
               </Text>
             )}
@@ -443,7 +451,7 @@ export default function ProfileScreen() {
                 mode="date"
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 maximumDate={new Date()}
-                style={{justifyContent: 'flex-end'}}
+                style={{ justifyContent: 'flex-end' }}
                 onChange={(event, selectedDate) => {
                   setShowDatePicker(false);
                   if (selectedDate) {
@@ -470,7 +478,8 @@ export default function ProfileScreen() {
                     navigation.navigate('AddressBookScreen', {
                       isFromProfile: true,
                     })
-                  }>
+                  }
+                >
                   <View style={styles.infoItemLeft}>
                     <MapPinned size={20} color="#666" />
                     <Text style={styles.infoLabel}>Address Book</Text>
@@ -480,7 +489,8 @@ export default function ProfileScreen() {
 
                 <TouchableOpacity
                   style={styles.logoutItem}
-                  onPress={handleLogout}>
+                  onPress={handleLogout}
+                >
                   <View style={styles.infoItemLeft}>
                     <LogOut size={20} color="#FF4444" />
                     <Text style={styles.logoutLabel}>Logout</Text>
@@ -489,7 +499,8 @@ export default function ProfileScreen() {
 
                 <TouchableOpacity
                   style={styles.logoutItem}
-                  onPress={handleLogout}>
+                  onPress={handleLogout}
+                >
                   <View style={styles.infoItemLeft}>
                     <UserRoundXIcon size={20} color="#000" />
                     <Text style={styles.DeleteUserLabel}>Delete User</Text>

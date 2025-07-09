@@ -1,4 +1,4 @@
-import {StyleProp, ViewStyle} from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 export type AuthState = {
   token: string | null;
@@ -8,7 +8,7 @@ export type AuthState = {
 
   first_name?: string | null;
   last_name?: string | null;
-  profileImage: string | {uri: string} | null;
+  profileImage: string | { uri: string } | null;
   birthday?: string | null;
   joinedDate?: string | null;
 
@@ -90,7 +90,7 @@ export interface Product {
   DiscountedPercentage: string;
   updated_by: number;
   archivedProduct: number;
-  Category: String;
+  Category: string;
   subCategory: string;
   images: string[];
   quantity?: number;

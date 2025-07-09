@@ -1,94 +1,94 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
-  card: {
-    borderWidth: 1,
-    borderColor: '#B0B6B8',
-    borderRadius: 10,
-    marginHorizontal: 12,
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-    marginTop: 12,
-    backgroundColor: '#fff',
-  },
-  cardContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
-  },
   billTitle: {
     color: '#161D1F',
     fontFamily: Fonts.JakartaSemiBold,
     fontSize: 12,
   },
-  priceWrapper: {
-    flexDirection: 'row',
+  card: {
+    backgroundColor: '#fff',
+    borderColor: '#B0B6B8',
+    borderRadius: 10,
+    borderWidth: 1,
+    justifyContent: 'center',
+    marginHorizontal: 12,
+    marginTop: 12,
+    paddingHorizontal: 5,
+  },
+  cardContent: {
     alignItems: 'center',
-    gap: 6,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'space-between',
   },
   cutPrice: {
     color: '#B0B6B8',
+    fontSize: 12,
     textDecorationLine: 'line-through',
-    fontSize: 12,
   },
-  finalPrice: {
-    fontSize: 12,
+  detailsHeading: {
     color: '#161D1F',
     fontFamily: Fonts.JakartaSemiBold,
-  },
-  savingsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginLeft: 14,
+    fontSize: 14,
     marginVertical: 6,
-  },
-  savingsText: {
-    color: '#161D1F',
-    fontSize: 10,
-    fontFamily: Fonts.JakartaSemiBold,
   },
   detailsSection: {
     backgroundColor: '#ffffff',
-    paddingHorizontal: 10,
-    marginHorizontal: 12,
-    marginBottom: 12,
     borderRadius: 8,
+    marginBottom: 12,
+    marginHorizontal: 12,
+    paddingHorizontal: 10,
+  },
+  finalPrice: {
+    color: '#161D1F',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 12,
   },
   inclCharges: {
     color: '#6C7375',
-    fontSize: 10,
     fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 10,
+  },
+  leftText: {
+    color: '#333',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 13,
+  },
+  priceWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
   },
 
-  detailsHeading: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
-    marginVertical: 6,
-    color: '#161D1F',
+  rightText: {
+    color: '#333',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 13,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 4,
   },
-  leftText: {
-    fontSize: 13,
-    fontFamily: Fonts.JakartaRegular,
-    color: '#333',
+  savingsRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
+    marginLeft: 14,
+    marginVertical: 6,
   },
-  rightText: {
-    fontSize: 13,
-    color: '#333',
-    fontFamily: Fonts.JakartaRegular,
+  savingsText: {
+    color: '#161D1F',
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 10,
   },
   totalToPay: {
-    fontSize: 14,
-    fontFamily: Fonts.JakartaRegular,
     color: '#161D1F',
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
     marginBottom: 2,
   },
 });

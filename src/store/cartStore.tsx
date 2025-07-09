@@ -1,7 +1,7 @@
-import {create} from 'zustand';
-import {persist} from 'zustand/middleware';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CartItem} from '../types';
+import { CartItem } from '../types';
 
 interface ProductStore {
   userQuantityMap: Record<string, Record<number, number>>;
@@ -28,7 +28,7 @@ export const useCartStore = create<ProductStore>()(
       userCartData: {},
 
       setProductQuantity: (customerId, productId, quantity) => {
-        set(state => ({
+        set((state) => ({
           userQuantityMap: {
             ...state.userQuantityMap,
             [customerId]: {
@@ -44,7 +44,7 @@ export const useCartStore = create<ProductStore>()(
       },
 
       setUserCart: (customerId, cartData) => {
-        set(state => ({
+        set((state) => ({
           userCartData: {
             ...state.userCartData,
             [customerId]: cartData,
@@ -52,14 +52,14 @@ export const useCartStore = create<ProductStore>()(
         }));
       },
 
-      getUserCart: customerId => {
+      getUserCart: (customerId) => {
         return get().userCartData[customerId] || [];
       },
 
-      clearUserData: customerId => {
-        set(state => {
-          const newUserQuantityMap = {...state.userQuantityMap};
-          const newUserCartData = {...state.userCartData};
+      clearUserData: (customerId) => {
+        set((state) => {
+          const newUserQuantityMap = { ...state.userQuantityMap };
+          const newUserCartData = { ...state.userCartData };
           delete newUserQuantityMap[customerId];
           delete newUserCartData[customerId];
           return {
@@ -70,10 +70,10 @@ export const useCartStore = create<ProductStore>()(
       },
 
       removeFromCart: (customerId, productId) => {
-        set(state => {
+        set((state) => {
           const currentCart = state.userCartData[customerId] || [];
           const updatedCart = currentCart.filter(
-            item => item.productId !== productId,
+            (item) => item.productId !== productId,
           );
 
           const currentQuantityMap = {
@@ -94,7 +94,7 @@ export const useCartStore = create<ProductStore>()(
         });
       },
 
-      subscribe: listener => {
+      subscribe: (listener) => {
         return api.subscribe((state, prevState) => {
           if (
             state.userCartData !== prevState.userCartData ||
@@ -108,14 +108,14 @@ export const useCartStore = create<ProductStore>()(
     {
       name: 'product-store',
       storage: {
-        getItem: async name => {
+        getItem: async (name) => {
           const item = await AsyncStorage.getItem(name);
           return item ? JSON.parse(item) : null;
         },
         setItem: async (name, value) => {
           await AsyncStorage.setItem(name, JSON.stringify(value));
         },
-        removeItem: async name => {
+        removeItem: async (name) => {
           await AsyncStorage.removeItem(name);
         },
       },

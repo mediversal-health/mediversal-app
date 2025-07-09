@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC} from 'react';
-import {View} from 'react-native';
-import {SvgProps} from 'react-native-svg';
+import React, { FC } from 'react';
+import { View } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 
 interface CircleCardProps {
   logo: FC<SvgProps>;
@@ -24,7 +24,8 @@ const CircleCard: React.FC<CircleCardProps> = ({
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
+      }}
+    >
       <Logo width={size - 30} height={size - 30} fill={fillColor} />
     </View>
   );

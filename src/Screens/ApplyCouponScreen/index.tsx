@@ -1,5 +1,5 @@
-import {ChevronLeft} from 'lucide-react-native';
-import React, {useEffect, useState} from 'react';
+import { ChevronLeft } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -17,12 +17,12 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { RootStackParamList } from '../../navigation';
 import CouponCard from '../../components/cards/CouponCard';
-import {useCouponStore} from '../../store/couponStore';
-import {Coupon} from '../../types';
-import {useAuthStore} from '../../store/authStore';
-import {fetchCoupons} from '../../Services/coupons';
+import { useCouponStore } from '../../store/couponStore';
+import { Coupon } from '../../types';
+import { useAuthStore } from '../../store/authStore';
+import { fetchCoupons } from '../../Services/coupons';
 
 type ApplyCouponScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -31,7 +31,7 @@ type ApplyCouponScreenRouteProp = RouteProp<
 
 const ApplyCouponScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const customer_id = useAuthStore(state => state.customer_id);
+  const customer_id = useAuthStore((state) => state.customer_id);
   const [searchQuery, setSearchQuery] = useState('');
   const [topCoupons, setTopCoupons] = useState<Coupon[]>([]);
   const [moreCoupons, setMoreCoupons] = useState<Coupon[]>([]);
@@ -39,7 +39,7 @@ const ApplyCouponScreen = () => {
   const [error, setError] = useState(false);
   const route = useRoute<ApplyCouponScreenRouteProp>();
   const cartTotal = route.params?.cartTotal || 0;
-  const {setSelectedCoupon} = useCouponStore();
+  const { setSelectedCoupon } = useCouponStore();
 
   useEffect(() => {
     const loadCoupons = async () => {
@@ -139,7 +139,7 @@ const ApplyCouponScreen = () => {
 
     const searchTerm = query.toLowerCase().trim();
 
-    return coupons.filter(coupon => {
+    return coupons.filter((coupon) => {
       const nameMatch = coupon.coupon_name.toLowerCase().includes(searchTerm);
 
       const descriptionMatch = coupon.description
@@ -171,7 +171,8 @@ const ApplyCouponScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.goBack()}
+        >
           <ChevronLeft size={20} color="#0088B1" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Apply Coupons</Text>
@@ -200,7 +201,8 @@ const ApplyCouponScreen = () => {
 
       <ScrollView
         style={styles.scrollView}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         {!loading && (error || hasNoCoupons) && !showSearchResults && (
           <View style={styles.noCouponsContainer}>
             <Text style={styles.noCouponsText}>
@@ -218,7 +220,7 @@ const ApplyCouponScreen = () => {
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>Top Coupons for You</Text>
                 {(showSearchResults ? filteredTopCoupons : topCoupons).map(
-                  coupon => (
+                  (coupon) => (
                     <CouponCard
                       key={coupon.coupon_name}
                       coupon={coupon}
@@ -234,7 +236,7 @@ const ApplyCouponScreen = () => {
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>More Coupons</Text>
                 {(showSearchResults ? filteredMoreCoupons : moreCoupons).map(
-                  coupon => (
+                  (coupon) => (
                     <CouponCard
                       key={coupon.coupon_name}
                       coupon={coupon}

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,31 +7,31 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {styles} from './PaymentSuccessScreen.styles';
-import {useAuthStore} from '../../store/authStore';
-import {createOrder} from '../../Services/order';
-import {DeleteFromCart} from '../../Services/cart';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { styles } from './PaymentSuccessScreen.styles';
+import { useAuthStore } from '../../store/authStore';
+import { createOrder } from '../../Services/order';
+import { DeleteFromCart } from '../../Services/cart';
 
-import {useCartStore} from '../../store/cartStore';
-import {useToastStore} from '../../store/toastStore';
+import { useCartStore } from '../../store/cartStore';
+import { useToastStore } from '../../store/toastStore';
 import LottieView from 'lottie-react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 
 Dimensions.get('window');
 
-const PaymentSuccessScreen = ({route}: any) => {
+const PaymentSuccessScreen = ({ route }: any) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const {customer_id, email, phoneNumber, first_name, last_name} =
+  const { customer_id, email, phoneNumber, first_name, last_name } =
     useAuthStore();
-  const {paymentId, amount, cartItems, address} = route.params;
-  const {removeFromCart} = useCartStore.getState();
+  const { paymentId, amount, cartItems, address } = route.params;
+  const { removeFromCart } = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderCreated, setOrderCreated] = useState(false);
-  const showToast = useToastStore(state => state.showToast);
-  const setProductQuantity = useCartStore(state => state.setProductQuantity);
+  const showToast = useToastStore((state) => state.showToast);
+  const setProductQuantity = useCartStore((state) => state.setProductQuantity);
   console.log(cartItems);
   useEffect(() => {
     const handleCreateOrder = async () => {
@@ -107,7 +107,8 @@ const PaymentSuccessScreen = ({route}: any) => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
         style={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.content}>
           {/* Success Icon */}
           <View style={styles.iconContainer}>
@@ -144,7 +145,8 @@ const PaymentSuccessScreen = ({route}: any) => {
               <Text
                 style={styles.detailValue}
                 numberOfLines={1}
-                ellipsizeMode="tail">
+                ellipsizeMode="tail"
+              >
                 {paymentId || 'N/A'}
               </Text>
             </View>
@@ -179,7 +181,8 @@ const PaymentSuccessScreen = ({route}: any) => {
                       ? '#FF9800'
                       : '#F44336',
                   },
-                ]}>
+                ]}
+              >
                 {orderCreated
                   ? 'Created'
                   : isCreatingOrder
@@ -192,7 +195,8 @@ const PaymentSuccessScreen = ({route}: any) => {
           {/* Primary Action Button */}
           <TouchableOpacity
             style={styles.primaryButton}
-            onPress={() => navigation.navigate('Layout')}>
+            onPress={() => navigation.navigate('Layout')}
+          >
             <Text style={styles.primaryButtonText}>Continue Shopping</Text>
           </TouchableOpacity>
 
