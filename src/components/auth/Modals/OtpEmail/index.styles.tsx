@@ -13,6 +13,23 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },
+  emailOtpRoot: {
+    marginVertical: 20,
+    justifyContent: 'center',
+  },
+  emailOtpCell: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  emailOtpText: {
+    fontSize: 18,
+    color: '#333',
+  },
   headerContainer: {
     alignItems: 'flex-start',
     width: '100%',

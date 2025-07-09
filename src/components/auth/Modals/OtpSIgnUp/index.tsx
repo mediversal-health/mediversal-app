@@ -14,7 +14,12 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {verifyRegisterUser, RegisterUser} from '../../../../Services/auth';
 import {RootStackParamList} from '../../../../navigation';
 import styles from './index.styles';
-import CustomOtpInput from '../../../ui/CustomOtpInput';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
 
 interface OTPModalProps {
   isVisible: boolean;
@@ -23,23 +28,31 @@ interface OTPModalProps {
   password: string;
 }
 
+const CELL_COUNT = 6;
+
 const OtpSignUpModal: React.FC<OTPModalProps> = ({
   isVisible,
   onClose,
   email,
   password,
 }) => {
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+  const [otpValue, setOtpValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(60);
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  console.log(email, password);
+
+  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: otpValue,
+    setValue: setOtpValue,
+  });
+
   useEffect(() => {
     if (isVisible) {
-      setOtp(Array(6).fill(''));
+      setOtpValue('');
       setError('');
       setTimer(60);
     }
@@ -59,24 +72,16 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
     };
   }, [isVisible, timer]);
 
-  const isOtpFilled = otp.every(d => d !== '');
+  const isOtpFilled = otpValue.length === 6;
 
   const handleVerifyOTP = async () => {
-    if (!isOtpFilled) {
-      return;
-    }
-
-    const enteredOTP = otp.join('');
-    if (enteredOTP.length !== 6) {
-      setError('Please enter a valid 6-digit OTP');
-      return;
-    }
+    if (!isOtpFilled) return;
 
     setLoading(true);
     setError('');
 
     try {
-      const res = await verifyRegisterUser(email, enteredOTP, password);
+      const res = await verifyRegisterUser(email, otpValue, password);
       if (res.status === 200 || res.data?.success) {
         Alert.alert('Success', 'Account Created successfully');
         onClose();
@@ -86,13 +91,8 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
         });
       } else {
         setError(res.data?.message || 'Invalid OTP');
-        // Alert.alert('Error', res.data?.message || 'Invalid OTP');
       }
     } catch (error: any) {
-      // Alert.alert(
-      //   'Error',
-      //   error?.response?.data?.message || 'Something went wrong',
-      // );
       setError(error?.response?.data?.message || 'Error verifying OTP');
     } finally {
       setLoading(false);
@@ -109,7 +109,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
 
       if (response.status === 200 || response.data?.success) {
         Alert.alert('Success', 'OTP resent to your email.');
-        setOtp(Array(6).fill(''));
+        setOtpValue('');
         setTimer(60);
       } else {
         Alert.alert('Error', response.data?.message || 'Resend failed');
@@ -117,9 +117,9 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
       }
     } catch (error: any) {
       setResendLoading(false);
-      setError(error?.response?.data?.message || 'Error resending OTP');
       const message =
         (error as any)?.response?.data?.message || 'Something went wrong';
+      setError(message);
       Alert.alert('Error', message);
     }
   };
@@ -133,7 +133,7 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
       swipeDirection={['down']}
       animationOut="slideOutDown"
       animationOutTiming={250}
-      onBackdropPress={onClose}>
+      onBackdropPress={undefined}>
       <View style={styles.modalContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Email Verification</Text>
@@ -161,19 +161,44 @@ const OtpSignUpModal: React.FC<OTPModalProps> = ({
           />
         </View>
 
-        <CustomOtpInput
-          otp={otp}
-          setOtp={setOtp}
-          error={error}
-          isVisible={isVisible}
+        <CodeField
+          ref={ref}
+          {...props}
+          value={otpValue}
+          onChangeText={setOtpValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.signUpOtpRoot}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          autoComplete="sms-otp"
+          renderCell={({index, symbol, isFocused}) => (
+            <View
+              key={index}
+              style={[
+                styles.signUpOtpCell,
+                {
+                  borderColor: error
+                    ? '#ff3b30'
+                    : isFocused
+                    ? '#0088B1'
+                    : '#d3d3d3',
+                },
+              ]}
+              onLayout={getCellOnLayoutHandler(index)}>
+              <Text style={styles.signUpOtpText}>
+                {symbol || (isFocused ? <Cursor /> : '')}
+              </Text>
+            </View>
+          )}
         />
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
         <View style={styles.timerContainer}>
           {timer > 0 ? (
             <Text style={styles.timerText}>
               <Text style={styles.grayText}>Didn't get OTP? </Text>
-              <Text style={styles.blueText}>{timer}</Text>
+              <Text style={styles.blueText}>{timer}s</Text>
             </Text>
           ) : (
             <TouchableOpacity
