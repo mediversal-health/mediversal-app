@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -5,6 +6,8 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 
 import {ChevronLeft, Search} from 'lucide-react-native';
@@ -39,76 +42,78 @@ const PrescriptionsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.headerWrapper}>
-        <View style={styles.headerLeft}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}>
-            <ChevronLeft size={20} color="#0088B1" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>My Prescriptions</Text>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}>
+          <ChevronLeft size={20} color="#0088B1" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>My Prescriptions</Text>
       </View>
 
-      <View style={styles.searchWrapper}>
-        <View style={styles.searchContainer}>
-          <View style={styles.searchTextWrapper}>
-            <Search color={'#0088B1'} size={20} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search for orders, items or services"
-              placeholderTextColor="#999"
-              value={searchQuery}
-              onChangeText={text => setSearchQuery(text)}
-            />
+      <ScrollView style={{backgroundColor: '#FFF'}}>
+        <View style={styles.searchWrapper}>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchTextWrapper}>
+              <Search color={'#0088B1'} size={20} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search for orders, items or services"
+                placeholderTextColor="#999"
+                value={searchQuery}
+                onChangeText={text => setSearchQuery(text)}
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filterChipsWrapper}>
-        {statusOptions.map(status => (
-          <TouchableOpacity
-            key={status}
-            style={[
-              styles.chip,
-              selectedStatus === status && {
-                ...styles.activeChip,
-                backgroundColor: statusColors[status] || '#0088B1',
-              },
-            ]}
-            onPress={() => setSelectedStatus(status)}>
-            <Text
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterChipsWrapper}>
+          {statusOptions.map(status => (
+            <TouchableOpacity
+              key={status}
               style={[
-                styles.chipText,
-                selectedStatus === status && styles.activeChipText,
-              ]}>
-              {status}
-            </Text>
+                styles.chip,
+                selectedStatus === status && {
+                  ...styles.activeChip,
+                  backgroundColor: statusColors[status] || '#0088B1',
+                },
+              ]}
+              onPress={() => setSelectedStatus(status)}>
+              <Text
+                style={[
+                  styles.chipText,
+                  selectedStatus === status && styles.activeChipText,
+                ]}>
+                {status}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.text}>Pending Prescriptions</Text>
+        <View style={styles.orderList}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PrescriptionVerification')}>
+            <PendingPrescriptionsCard />
           </TouchableOpacity>
-        ))}
+        </View>
+        <Text style={styles.text}>Verified Prescriptions</Text>
+        <View style={styles.orderList}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PrescribedScreen')}>
+            <PrescriptionsCard />
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-
-      <View style={styles.divider} />
-
-      <Text style={styles.text}>Pending Prescriptions</Text>
-      <View style={styles.orderList}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('PrescriptionVerification')}>
-          <PendingPrescriptionsCard />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.text}>Verified Prescriptions</Text>
-      <View style={styles.orderList}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('PrescribedScreen')}>
-          <PrescriptionsCard />
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 

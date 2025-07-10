@@ -2,7 +2,6 @@ import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
-  Modal,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -13,7 +12,7 @@ import useProductStore from '../../../store/productsStore';
 import styles from './index.styles';
 import {ProductCardProps} from '../../../types';
 import {useFilterStore} from '../../../store/filterStore';
-
+import Modal from 'react-native-modal';
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 interface FilterBottomSheetProps {
@@ -385,16 +384,20 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
 
   return (
     <Modal
-      transparent
-      visible={visible}
-      animationType="none"
-      onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <TouchableOpacity
+      isVisible={visible}
+      style={styles.modal}
+      onBackButtonPress={onClose}
+      onSwipeComplete={onClose}
+      swipeDirection={['down']}
+      animationOut="slideOutDown"
+      animationOutTiming={250}
+      onBackdropPress={onClose}>
+      <View style={styles.modalContainer}>
+        {/* <TouchableOpacity
           style={styles.overlayTouch}
           activeOpacity={1}
           onPress={onClose}
-        />
+        /> */}
 
         <Animated.View
           style={[styles.bottomSheet, {transform: [{translateY}]}]}>

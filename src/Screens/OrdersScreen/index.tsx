@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -6,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import OrderCard from '../../components/cards/AllOrdersCard';
 import {ChevronLeft, Search} from 'lucide-react-native';
@@ -53,7 +56,7 @@ const OrdersScreen: React.FC = () => {
       setLoading(true);
 
       const response = await getOrders(customer_id.toString());
-      console.log(response);
+      console.log('response', response);
       const mappedOrders: Order[] = response.data.map((item: any) => {
         const rawStatus = item.deliveryStatus?.toUpperCase?.() || 'ON GOING';
         const mappedStatus = rawStatus;
@@ -97,19 +100,18 @@ const OrdersScreen: React.FC = () => {
     .reverse();
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.headerWrapper}>
-        <View style={styles.headerLeft}>
-          <TouchableOpacity
-            testID="back-button"
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}>
-            <ChevronLeft size={20} color="#0088B1" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>My Orders</Text>
-        </View>
-      </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
 
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+          testID="back-button">
+          <ChevronLeft size={20} color="#0088B1" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>My Orders</Text>
+      </View>
       <View style={styles.searchWrapper}>
         <View style={styles.searchContainer}>
           <View style={styles.searchTextWrapper}>
@@ -125,54 +127,55 @@ const OrdersScreen: React.FC = () => {
         </View>
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filterChipsWrapper}>
-        {statusOptions.map(status => (
-          <TouchableOpacity
-            key={status}
-            style={[
-              styles.chip,
-              selectedStatus === status && {
-                ...styles.activeChip,
-                backgroundColor: statusColors[status] || '#0088B1',
-              },
-            ]}
-            onPress={() => setSelectedStatus(status)}>
-            <Text
-              style={[
-                styles.chipText,
-                selectedStatus === status && styles.activeChipText,
-              ]}>
-              {status}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      <View style={styles.divider} />
-
-      <View style={styles.orderList}>
-        {loading ? (
-          <ActivityIndicator size="large" color="#0088B1" />
-        ) : filteredOrders.length > 0 ? (
-          filteredOrders.map((order, index) => (
+      <ScrollView style={{backgroundColor: '#FFf'}}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterChipsWrapper}>
+          {statusOptions.map(status => (
             <TouchableOpacity
-              key={index}
-              onPress={() =>
-                navigation.navigate('OrdersDetailsScreen', {
-                  order_data: order.orderData,
-                })
-              }>
-              <OrderCard order={order} />
+              key={status}
+              style={[
+                styles.chip,
+                selectedStatus === status && {
+                  ...styles.activeChip,
+                  backgroundColor: statusColors[status] || '#0088B1',
+                },
+              ]}
+              onPress={() => setSelectedStatus(status)}>
+              <Text
+                style={[
+                  styles.chipText,
+                  selectedStatus === status && styles.activeChipText,
+                ]}>
+                {status}
+              </Text>
             </TouchableOpacity>
-          ))
-        ) : (
-          <Text>No orders found.</Text>
-        )}
-      </View>
-    </ScrollView>
+          ))}
+        </ScrollView>
+        <View style={styles.divider} />
+
+        <View style={styles.orderList}>
+          {loading ? (
+            <ActivityIndicator size="large" color="#0088B1" />
+          ) : filteredOrders.length > 0 ? (
+            filteredOrders.map((order, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() =>
+                  navigation.navigate('OrdersDetailsScreen', {
+                    order_data: order.orderData,
+                  })
+                }>
+                <OrderCard order={order} />
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text>No orders found.</Text>
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

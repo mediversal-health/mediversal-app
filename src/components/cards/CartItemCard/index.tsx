@@ -25,6 +25,7 @@ type CartItemCardProps = {
   onRemove?: () => void;
   removing?: boolean;
   onQuantityChange?: () => void;
+  quantityOrg?: number;
   fromOrderDesc: boolean;
 };
 
@@ -38,6 +39,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   removing = false,
   onQuantityChange,
   fromOrderDesc,
+  quantityOrg,
 }) => {
   const customer_id = useAuthStore(state => state.customer_id);
 
@@ -137,7 +139,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
               <Text style={styles.mrp}>₹{price}</Text>
             </View>
           ) : (
-            <Text style={styles.mrpBig}>Quantity : {quantity}</Text>
+            <Text style={styles.mrpBig}>Quantity : {quantityOrg}</Text>
           )}
         </View>
         {/* Right Side Delete & Controls */}

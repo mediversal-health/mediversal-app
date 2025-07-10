@@ -1,22 +1,19 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StatusBar, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#F8F8F8',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
-  headerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: '11%',
-    paddingBottom: 10,
-  },
-  headerLeft: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+
     gap: 10,
   },
   backButton: {

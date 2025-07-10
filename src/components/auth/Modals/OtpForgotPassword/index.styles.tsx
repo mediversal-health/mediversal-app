@@ -6,6 +6,23 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'flex-end',
   },
+  forgotOtpRoot: {
+    marginVertical: 20,
+    justifyContent: 'center',
+  },
+  forgotOtpCell: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  forgotOtpText: {
+    fontSize: 18,
+    color: '#333',
+  },
   modalContainer: {
     alignItems: 'center',
     padding: 32,

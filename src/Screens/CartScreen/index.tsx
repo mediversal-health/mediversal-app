@@ -40,12 +40,14 @@ import RazorpayCheckout from 'react-native-razorpay';
 import useProductStore from '../../store/productsStore';
 import {getProducts} from '../../Services/pharmacy';
 import {useToastStore} from '../../store/toastStore';
+import Config from 'react-native-config';
+import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
-  const RAZORPAY_KEY = process.env.RAZORPAY_KEY;
+  const RAZORPAY_KEY = Config.RAZORPAY_KEY;
 
   const formData = route.params?.formData;
   const customer_id = useAuthStore(state => state.customer_id);
@@ -64,6 +66,7 @@ const CartPage = () => {
   const selectedCoupon = getSelectedCoupon(String(customer_id));
   const {originalProducts, setProducts} = useProductStore();
   const [hasOutOfStockItems, setHasOutOfStockItems] = useState(false);
+  const [isPaymentMethodVisible, setPaymentMethodVisible] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const handleCouponRemove = () => {
     setSelectedCoupon(String(customer_id), null);
@@ -119,6 +122,49 @@ const CartPage = () => {
       fetchProductDetails();
     }
   }, []);
+  const handleCheckoutPress = () => {
+    setPaymentMethodVisible(true);
+  };
+
+  const handleSelectCOD = () => {
+    setPaymentMethodVisible(false);
+    const cartItems = apiProductDetails.map(item => ({
+      productId: item.productId,
+      name: item.ProductName,
+      price: item.SellingPrice,
+      sku: item.SKU,
+      tax: item.tax,
+      quantity: getProductQuantity(
+        customer_id?.toString() ?? '',
+        item.productId,
+      ),
+      imageUrl: item.imageUrl,
+    }));
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'PaymentSuccessScreen',
+          params: {
+            amount: cartTotal - couponDiscount + 5 + 40,
+            cartItems: cartItems,
+            address: formattedAddress,
+            pincode: formData?.PinCode ?? 0,
+
+            area: formData?.Area_details ?? '',
+            city: formData?.City,
+            State: formData?.State ?? '',
+            PhoneNumber: Number(formData?.PhoneNumber) || 0,
+          },
+        },
+      ],
+    });
+  };
+
+  const handlePayOnline = () => {
+    setPaymentMethodVisible(false);
+    handleCheckout();
+  };
 
   console.log('API product details:', apiProductDetails);
 
@@ -419,7 +465,7 @@ const CartPage = () => {
           {apiProductDetails.length > 0 ? (
             apiProductDetails.map(item => (
               <CartItemCard
-                key={item.id}
+                key={item.productId}
                 productId={item.productId}
                 imageUrl={item.imageUrl}
                 name={item.ProductName}
@@ -500,7 +546,7 @@ const CartPage = () => {
             'undefined - undefined, undefined, undefined' ? (
               <TouchableOpacity
                 style={styles.addressButton}
-                onPress={handleCheckout}
+                onPress={handleCheckoutPress}
                 disabled={isProcessingPayment}>
                 {isProcessingPayment ? (
                   <ActivityIndicator color="#fff" />
@@ -526,6 +572,13 @@ const CartPage = () => {
         onClose={hideLocationModal}
         onSelectCurrentLocation={handleSelectCurrentLocation}
         onEnterManually={handleEnterManually}
+      />
+
+      <PaymentMethodModal
+        isVisible={isPaymentMethodVisible}
+        onClose={() => setPaymentMethodVisible(false)}
+        onSelectCOD={handleSelectCOD}
+        onPayOnline={handlePayOnline}
       />
     </>
   );

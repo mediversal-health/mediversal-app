@@ -60,7 +60,7 @@ export type RootStackParamList = {
   PrescribedScreen: undefined;
   ApplyCouponScreen: {cartTotal: number};
   PaymentSuccessScreen: {
-    paymentId: string;
+    paymentId?: string;
     amount: number;
     address: string;
     cartItems: Array<{
@@ -79,8 +79,6 @@ export type RootStackParamList = {
   ProfileScreen: undefined;
   GlobalSearchScreen: undefined;
   OrdersDetailsScreen: {
-    order_id: number;
-    awb: string;
     order_data: OrderData;
   };
 };

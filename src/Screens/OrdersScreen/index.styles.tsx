@@ -1,22 +1,19 @@
-import {StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet, Platform} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#FFFFFF',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
-  headerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: '11%',
-    paddingBottom: 10,
-  },
-  headerLeft: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+
     gap: 10,
   },
   backButton: {
@@ -35,6 +32,7 @@ const styles = StyleSheet.create({
   searchWrapper: {
     paddingHorizontal: 20,
     paddingBottom: 10,
+    backgroundColor: '#fff',
   },
   searchContainer: {
     backgroundColor: '#e8f4f7',
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Fonts.JakartaRegular,
     color: '#111827',
+    padding: 5,
   },
   filterChipsWrapper: {
     flexDirection: 'row',
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
   },
   chip: {
     paddingVertical: 4,
+
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: '#e5e7eb',

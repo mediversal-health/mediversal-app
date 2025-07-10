@@ -1,10 +1,20 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StatusBar, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#FFFFFF',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+
+    gap: 10,
   },
   headerWrapper: {
     flexDirection: 'row',
@@ -13,6 +23,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: '11%',
     paddingBottom: 10,
+
+    // backgroundColor: '#f9fafb',
   },
   headerLeft: {
     flexDirection: 'row',
@@ -112,12 +124,17 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: Fonts.JakartaRegular,
   },
+  OrderCancelled: {
+    color: '#EB5757',
+    fontSize: 11,
+    fontFamily: Fonts.JakartaRegular,
+  },
   orderItemsHeader: {
     fontSize: 14,
     fontFamily: Fonts.JakartaRegular,
   },
   summaryCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8F8F8',
     marginHorizontal: 10,
     marginTop: 20,
     padding: 16,
@@ -144,6 +161,16 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaRegular,
     color: '#000000',
   },
+  discountLabel: {
+    fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#50B57F',
+  },
+  discountValue: {
+    fontSize: 10,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#50B57F',
+  },
   totalRow: {
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
@@ -157,7 +184,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   addressCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8F8F8',
     marginHorizontal: 10,
     marginTop: 20,
     padding: 16,
@@ -183,7 +210,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   paymentCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8F8F8',
     marginHorizontal: 10,
     marginTop: 20,
     padding: 16,

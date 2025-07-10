@@ -6,6 +6,23 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'flex-end',
   },
+  signUpOtpRoot: {
+    marginVertical: 20,
+    justifyContent: 'center',
+  },
+  signUpOtpCell: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  signUpOtpText: {
+    fontSize: 18,
+    color: '#333',
+  },
   modalContainer: {
     alignItems: 'center',
     padding: 32,

@@ -14,8 +14,14 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {sendOTP, verifyOTP} from '../../../../Services/auth';
 import {RootStackParamList} from '../../../../navigation';
 import styles from './index.styles';
-import CustomOtpInput from '../../../ui/CustomOtpInput';
 import {useAuthStore} from '../../../../store/authStore';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+
 interface OTPModalProps {
   isVisible: boolean;
   onClose: () => void;
@@ -23,23 +29,32 @@ interface OTPModalProps {
   password: string;
 }
 
+const CELL_COUNT = 6;
+
 const OtpEmailModal: React.FC<OTPModalProps> = ({
   isVisible,
   onClose,
   email,
   password,
 }) => {
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
-  const [loading, setLoading] = useState(false);
+  const [otpValue, setOtpValue] = useState('');
   const [timer, setTimer] = useState(60);
+  const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const setAuthentication = useAuthStore(state => state.setAuthentication);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: otpValue,
+    setValue: setOtpValue,
+  });
+
   useEffect(() => {
     if (isVisible) {
-      setOtp(Array(6).fill(''));
+      setOtpValue('');
       setError('');
       setTimer(60);
     }
@@ -59,16 +74,10 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
     };
   }, [isVisible, timer]);
 
-  const isOtpFilled = otp.every(d => d !== '');
+  const isOtpFilled = otpValue.length === CELL_COUNT;
 
   const handleVerifyOTP = async () => {
     if (!isOtpFilled) {
-      return;
-    }
-
-    const enteredOTP = otp.join('');
-    if (enteredOTP.length !== 6) {
-      setError('Please enter a valid 6-digit OTP');
       return;
     }
 
@@ -76,7 +85,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
     setError('');
 
     try {
-      const response = await verifyOTP(email, enteredOTP, 'email');
+      const response = await verifyOTP(email, otpValue, 'email');
       if (response.data?.success) {
         setAuthentication({
           token: response.data.token as string,
@@ -91,15 +100,10 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
         setIsAuthenticated(true);
         navigation.navigate('Layout');
       } else {
-        // Alert.alert('Error', response.data?.message || 'Resend failed');
         setError(response.data?.message || 'Invalid OTP');
       }
     } catch (error: any) {
       setError(error?.response?.data?.message || 'Error verifying OTP');
-      // Alert.alert(
-      //   'Error',
-      //   error?.response?.data?.message || 'Something went wrong',
-      // );
     } finally {
       setLoading(false);
     }
@@ -115,7 +119,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
 
       if (response.status === 200 || response.data?.success) {
         Alert.alert('Success', 'OTP resent to your email.');
-        setOtp(Array(6).fill(''));
+        setOtpValue('');
         setTimer(60);
       } else {
         Alert.alert('Error', response.data?.message || 'Resend failed');
@@ -123,9 +127,9 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
       }
     } catch (error: any) {
       setResendLoading(false);
-      setError(error?.response?.data?.message || 'Error resending OTP');
       const message =
         (error as any)?.response?.data?.message || 'Something went wrong';
+      setError(message);
       Alert.alert('Error', message);
     }
   };
@@ -134,12 +138,12 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
     <Modal
       isVisible={isVisible}
       style={styles.modal}
+      onBackdropPress={undefined}
       onBackButtonPress={onClose}
       onSwipeComplete={onClose}
       swipeDirection={['down']}
       animationOut="slideOutDown"
-      animationOutTiming={250}
-      onBackdropPress={onClose}>
+      animationOutTiming={250}>
       <View style={styles.modalContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Email Verification</Text>
@@ -167,13 +171,39 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           />
         </View>
 
-        <CustomOtpInput
-          otp={otp}
-          setOtp={setOtp}
-          error={error}
-          isVisible={isVisible}
+        <CodeField
+          ref={ref}
+          {...props}
+          value={otpValue}
+          onChangeText={setOtpValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.emailOtpRoot}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          autoComplete="sms-otp"
+          renderCell={({index, symbol, isFocused}) => (
+            <View
+              key={index}
+              style={[
+                styles.emailOtpCell,
+                {
+                  borderColor: error
+                    ? '#ff3b30'
+                    : isFocused
+                    ? '#0088B1'
+                    : '#d3d3d3',
+                },
+              ]}
+              onLayout={getCellOnLayoutHandler(index)}>
+              <Text style={styles.emailOtpText}>
+                {symbol || (isFocused ? <Cursor /> : '')}
+              </Text>
+            </View>
+          )}
         />
+
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
         <View style={styles.timerContainer}>
           {timer > 0 ? (
             <Text style={styles.timerText}>

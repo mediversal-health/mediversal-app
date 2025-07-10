@@ -64,7 +64,6 @@ export default function ProfileScreen() {
   const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
   const isBirthdayLocked = !!birthday;
 
-  // Determine which image to display
   const displayImage =
     tempImage ||
     (profileImage

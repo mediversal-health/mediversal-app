@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
+    backgroundColor: 'red',
   },
   otpInputFilled: {
     borderColor: '#0088B1',
@@ -107,6 +108,23 @@ const styles = StyleSheet.create({
     marginTop: 5,
     textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,
+  },
+  otpRoot: {
+    marginVertical: 20,
+    justifyContent: 'center',
+  },
+  otpCell: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  otpText: {
+    fontSize: 18,
+    color: '#333',
   },
 });
 export default styles;
