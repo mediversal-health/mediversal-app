@@ -77,12 +77,12 @@ const AddressBookScreen: React.FC = () => {
     setAddresses,
     selectedAddress,
     setSelectedAddress,
-    hasLoadedAddresses, // Get the flag from store
+    hasLoadedAddresses,
     setHasLoadedAddresses,
   } = useAddressBookStore();
 
-  const [isFormVisible, setIsFormVisible] = useState(false); // Changed initial state
-  const [isAddressCardVisible, setIsAddressCardVisible] = useState(false); // Changed initial state
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isAddressCardVisible, setIsAddressCardVisible] = useState(false);
   const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
   const savedFormDataRef = useRef<AddressBookTypes | null>(null);
   const [modalVisible, setModalVisible] = useState(false);

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 16,
-    fontFamily: Fonts.JakartaRegular,
+    fontFamily: Fonts.JakartaBold,
   },
   mainContent: {
     flex: 1,

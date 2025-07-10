@@ -197,6 +197,7 @@ export type OrderItem = {
   productHeight: number | null;
   productWeight: number | null;
   productName: string;
+  imageUrl: string;
 };
 
 export type OrderData = {
@@ -206,17 +207,19 @@ export type OrderData = {
   customerAddress: string;
   customerPhone: string;
   customerEmail: string;
-  paymentStatus: 'Paid' | 'Unpaid' | string;
-  paymentMethod: 'UPI' | 'Cash' | 'Card' | string;
+  paymentStatus: string;
+  paymentMethod: string;
   paymentTime: string;
-  transactionId: string;
+  transactionId?: string;
   createdAt: string;
   TotalOrderAmount: string;
-  deliverystatus: 'ON GOING' | 'DELIVERED' | 'PENDING' | string;
+  deliverystatus: string;
   rapidshypShipmentId: number | null;
   rapidshypAwb: string | null;
   labelUrl: string | null;
   manifestUrl: string | null;
+  applied_discount_value: string | number;
+  coupon_id: number;
   items: OrderItem[];
 };
 
@@ -225,4 +228,9 @@ export interface TrackScan {
   scan: string;
   scan_datetime: string;
   scan_location: string;
+}
+
+export interface TrackItem {
+  edd: string;
+  TrackScan: TrackScan[];
 }

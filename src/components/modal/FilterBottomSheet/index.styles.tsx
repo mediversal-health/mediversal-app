@@ -4,13 +4,18 @@ import {Fonts} from '../../../styles/fonts';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
+  modalContainer: {
+    padding: 0,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
   },
   overlayTouch: {
     flex: 1,
+  },
+  modal: {
+    margin: 0,
+    justifyContent: 'flex-end',
   },
   bottomSheet: {
     backgroundColor: '#f8f9fa',

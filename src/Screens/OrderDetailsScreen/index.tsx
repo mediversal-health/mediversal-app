@@ -6,11 +6,13 @@ import {
   Text,
   TouchableOpacity,
   RefreshControl,
+  StatusBar,
+  SafeAreaView,
 } from 'react-native';
 import {useRoute, useNavigation, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp} from '@react-navigation/native';
-import {trackOrders} from '../../Services/order';
+import {trackOrders} from '../../Services/rapidshyp';
 import {
   Box,
   ChevronLeft,
@@ -23,6 +25,7 @@ import {
 import {Fonts} from '../../styles/fonts';
 import OrderTrackingProgress from '../../components/ui/OrderTrackingProgress';
 import CartItemCard from '../../components/cards/CartItemCard';
+import OrderCancelBottomSheet from '../../components/ui/CancelOrderBottomSheet'; // Import the bottom sheet
 import styles from './index.styles';
 import Whatsapp from '../PrescribedScreen/assets/svgs/Whatsapp.svg';
 import {TrackScan} from '../../types';
@@ -39,7 +42,10 @@ const OrdersDetailsScreen: React.FC = () => {
   console.log('abcgd', order_data);
 
   const [trackingData, setTrackingData] = useState<TrackScan[] | []>([]);
+  const [edd, setEdd] = useState<String | null>(' ');
   const [refreshing, setRefreshing] = useState(false);
+  const [isCancelBottomSheetVisible, setIsCancelBottomSheetVisible] =
+    useState(false);
 
   // Format date functions
   const formatOrderDate = (dateString: string) => {
@@ -51,15 +57,15 @@ const OrdersDetailsScreen: React.FC = () => {
     });
   };
 
-  const formatEstimatedDeliveryDate = (dateString: string) => {
-    const date = new Date(dateString);
-    date.setDate(date.getDate() + 3); // Adding 3 days for estimated delivery
-    return date.toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-  };
+  // const formatEstimatedDeliveryDate = (dateString: string) => {
+  //   const date = new Date(dateString);
+  //   date.setDate(date.getDate() + 3);
+  //   return date.toLocaleDateString('en-IN', {
+  //     day: 'numeric',
+  //     month: 'short',
+  //     year: 'numeric',
+  //   });
+  // };
 
   const formatTransactionTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -71,7 +77,13 @@ const OrdersDetailsScreen: React.FC = () => {
       minute: '2-digit',
     });
   };
-
+  console.log(trackingData);
+  const isOrderCancelled = () => {
+    return trackingData.some(scan => scan.scan === 'CANCELED');
+  };
+  const isOutForDelivery = () => {
+    return trackingData.some(scan => scan.scan === 'Out for delivery');
+  };
   useEffect(() => {
     if (order_data.rapidshypAwb) {
       fetchTrackingDetails();
@@ -87,11 +99,23 @@ const OrdersDetailsScreen: React.FC = () => {
         order_data.orderId,
         order_data.rapidshypAwb,
       );
-      setTrackingData(
-        data.records[0].shipment_details[0].track_scans as TrackScan[],
-      );
+
+      if (
+        data.records &&
+        data.records.length > 0 &&
+        data.records[0].shipment_details &&
+        data.records[0].shipment_details.length > 0
+      ) {
+        const shipment = data.records[0].shipment_details[0];
+
+        setTrackingData(shipment.track_scans as TrackScan[]);
+        setEdd(shipment.edd ?? null);
+      } else {
+        throw new Error('No shipment details found');
+      }
     } catch (err) {
       console.error('Error fetching tracking details:', err);
+      setEdd(null);
     } finally {
       setRefreshing(false);
     }
@@ -103,13 +127,39 @@ const OrdersDetailsScreen: React.FC = () => {
   };
 
   const handleCancelOrder = () => {
-    console.log('Cancel order pressed');
+    setIsCancelBottomSheetVisible(true);
+  };
+
+  const handleCloseCancelBottomSheet = () => {
+    setIsCancelBottomSheetVisible(false);
+  };
+
+  const handleConfirmCancelOrder = (reason: string) => {
+    console.log('Order cancelled with reason:', reason);
+
+    setIsCancelBottomSheetVisible(false);
+  };
+
+  const handleKeepOrder = () => {
+    console.log('User decided to keep the order');
+    setIsCancelBottomSheetVisible(false);
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}>
+          <ChevronLeft size={20} color="#0088B1" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Order Details</Text>
+      </View>
+
       <ScrollView
-        style={styles.container}
+        style={{backgroundColor: '#FFF'}}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -118,17 +168,6 @@ const OrdersDetailsScreen: React.FC = () => {
             tintColor="#0088B1"
           />
         }>
-        <View style={styles.headerWrapper}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}>
-              <ChevronLeft size={20} color="#0088B1" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Order Details</Text>
-          </View>
-        </View>
-
         <View style={{paddingHorizontal: 10}}>
           <View style={styles.orderInfoContainer}>
             <View style={styles.orderInfoBorder}>
@@ -142,13 +181,20 @@ const OrdersDetailsScreen: React.FC = () => {
                 <Text style={styles.orderInfoLabel}>Order date:</Text>{' '}
                 {formatOrderDate(order_data.createdAt)}
               </Text>
-              <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
-                <Truck size={18} color={'#12B76A'} />
-                <Text style={styles.deliveryEstimate}>
-                  Estimated delivery:{' '}
-                  {formatEstimatedDeliveryDate(order_data.createdAt)}
-                </Text>
-              </View>
+              {isOrderCancelled() ? (
+                <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
+                  <Text style={styles.OrderCancelled}>Order Cancelled</Text>
+                </View>
+              ) : (
+                <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
+                  <Truck size={18} color={'#12B76A'} />
+
+                  <Text style={styles.deliveryEstimate}>
+                    Estimated delivery:{' '}
+                    {edd && edd == null ? edd : 'Updating Soon'}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -156,17 +202,22 @@ const OrdersDetailsScreen: React.FC = () => {
         {trackingData && <OrderTrackingProgress trackingData={trackingData} />}
 
         <View style={{flexDirection: 'row', marginLeft: 20, gap: 5}}>
-          <Box />
+          <View
+            style={{backgroundColor: '#E8F4F7', padding: 2, borderRadius: 5}}>
+            <Box />
+          </View>
           <Text style={styles.orderItemsHeader}>Order Items</Text>
         </View>
 
         {order_data.items.map(item => (
           <CartItemCard
-            key={item.orderId}
+            key={item.productId}
             productId={item.productId}
             name={item.productName}
+            imageUrl={item.imageUrl}
             mrp={item.sellingPrice ?? 0}
             price={100}
+            quantityOrg={item.quantity}
             fromOrderDesc={true}
           />
         ))}
@@ -183,9 +234,20 @@ const OrdersDetailsScreen: React.FC = () => {
 
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Delivery Fee</Text>
-            <Text style={styles.summaryValue}>₹45.00</Text>
+            <Text style={styles.summaryValue}>₹40.00</Text>
           </View>
-
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Handling & Packaging Fee</Text>
+            <Text style={styles.summaryValue}>₹5.00</Text>
+          </View>
+          {order_data.applied_discount_value && (
+            <View style={styles.summaryRow}>
+              <Text style={styles.discountLabel}>Discount</Text>
+              <Text style={styles.discountValue}>
+                -₹{order_data.applied_discount_value}
+              </Text>
+            </View>
+          )}
           <View style={styles.totalRow}>
             <Text style={styles.totalText}>Total</Text>
             <Text style={styles.totalText}>₹{order_data.TotalOrderAmount}</Text>
@@ -227,33 +289,38 @@ const OrdersDetailsScreen: React.FC = () => {
             <Text style={styles.summaryLabel}>Payment Method</Text>
             <Text style={styles.summaryValue}>{order_data.paymentMethod}</Text>
           </View>
-
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Transaction ID</Text>
-            <Text style={styles.summaryValue}>{order_data.transactionId}</Text>
-          </View>
-
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Transaction Time</Text>
-            <Text style={styles.summaryValue}>
-              {formatTransactionTime(order_data.paymentTime)}
-            </Text>
-          </View>
-
+          {order_data.paymentMethod !== 'COD' && (
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Transaction ID</Text>
+              <Text style={styles.summaryValue}>
+                {order_data.transactionId}
+              </Text>
+            </View>
+          )}
+          {order_data.paymentMethod !== 'COD' && (
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Transaction Time</Text>
+              <Text style={styles.summaryValue}>
+                {formatTransactionTime(order_data.paymentTime)}
+              </Text>
+            </View>
+          )}
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Payment Status</Text>
             <Text style={[styles.summaryValue, {color: '#10B981'}]}>
-              Completed
+              {order_data.paymentMethod !== 'COD' ? 'Completed' : 'Pending '}
             </Text>
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={handleCancelOrder}>
-          <Text style={styles.cancelButtonText}>Cancel Order</Text>
-          <ChevronRight size={20} color="#EF4444" />
-        </TouchableOpacity>
+        {!isOrderCancelled() && !isOutForDelivery() && (
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={handleCancelOrder}>
+            <Text style={styles.cancelButtonText}>Cancel Order</Text>
+            <ChevronRight size={20} color="#EF4444" />
+          </TouchableOpacity>
+        )}
       </ScrollView>
 
       <View>
@@ -270,7 +337,15 @@ const OrdersDetailsScreen: React.FC = () => {
           </View>
         </View>
       </View>
-    </>
+
+      <OrderCancelBottomSheet
+        isVisible={isCancelBottomSheetVisible}
+        onClose={handleCloseCancelBottomSheet}
+        onCancel={handleConfirmCancelOrder}
+        onKeepOrder={handleKeepOrder}
+        orderId={order_data.orderId}
+      />
+    </SafeAreaView>
   );
 };
 

@@ -1,9 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {View, Text, Dimensions} from 'react-native';
 import {TrackScan} from '../../../types';
-
+import styles from './index.styles';
 interface OrderTrackingProgressProps {
   trackingData: TrackScan[];
 }
@@ -11,152 +10,152 @@ interface OrderTrackingProgressProps {
 const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
   trackingData,
 }) => {
-  // Date formatting function for Indian locale
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
+  const screenWidth = Dimensions.get('window').width;
+  const itemWidth = screenWidth / 4;
+
+  const getKeyMilestones = (scans: TrackScan[]) => {
+    const milestones = [];
+    const statusMap: Record<string, TrackScan> = {};
+
+    scans.forEach(scan => {
+      if (scan.scan.includes('Shipment Booked')) {
+        statusMap.booked = scan;
+      } else if (
+        scan.scan.includes('READY_FOR_DISPATCH') ||
+        scan.scan.includes('Dispatched')
+      ) {
+        statusMap.dispatched = scan;
+      } else if (
+        scan.scan.includes('Out for delivery') ||
+        scan.scan.includes('OFD')
+      ) {
+        statusMap.delivery = scan;
+      } else if (scan.scan.includes('Delivered') || scan.scan.includes('DEL')) {
+        statusMap.delivered = scan;
+      } else if (scan.scan.includes('CANCELED')) {
+        statusMap.canceled = scan;
+      }
     });
-  };
 
-  const getDisplayText = (scan: string) => {
-    switch (scan) {
-      case 'Shipment Booked':
-        return 'Confirmed';
-      case 'NEW':
-        return 'Order Confirmed';
-      case 'IN_PROCESS':
-        return 'Processing';
-      case 'CANCELED':
-        return 'Cancelled';
-      case 'READY_FOR_DISPATCH':
-        return 'Dispatched';
-      case 'DELIVERED':
-        return 'Delivered';
-      default:
-        return scan;
+    if (statusMap.booked) {
+      milestones.push(statusMap.booked);
     }
+    if (statusMap.dispatched) {
+      milestones.push(statusMap.dispatched);
+    }
+    if (statusMap.delivery) {
+      milestones.push(statusMap.delivery);
+    }
+    if (statusMap.delivered) {
+      milestones.push(statusMap.delivered);
+    }
+    if (statusMap.canceled) {
+      milestones.push(statusMap.canceled);
+    }
+
+    return milestones.length > 0 ? milestones : scans.slice(-4);
   };
 
-  const getStatusColor = (scan: string) => {
-    return scan === 'CANCELED'
-      ? '#F04438'
-      : scan === 'DELIVERED' ||
-        scan === 'Shipment Booked' ||
-        scan === 'READY_FOR_DISPATCH' ||
-        scan === 'IN_PROCESS' ||
-        scan === 'NEW'
-      ? '#12B76A'
-      : '#667085';
+  const keyMilestones = getKeyMilestones(trackingData);
+  const activeIndex = keyMilestones.findIndex(
+    step => step.scan.includes('Delivered') || step.scan.includes('CANCELED'),
+  );
+
+  const getStatusColor = (scan: string, index: number) => {
+    if (scan.includes('CANCELED')) {
+      return '#F04438';
+    }
+    if (scan.includes('Delivered')) {
+      return '#12B76A';
+    }
+
+    const currentActiveIndex =
+      activeIndex === -1 ? keyMilestones.length - 1 : activeIndex;
+    return index <= currentActiveIndex ? '#12B76A' : '#E5E8E9';
   };
 
-  const isCompleted = (scan: string) => {
-    return (
-      scan === 'DELIVERED' ||
-      scan === 'CANCELED' ||
-      scan === 'Shipment Booked' ||
-      scan === 'READY_FOR_DISPATCH' ||
-      scan === 'IN_PROCESS' ||
-      scan === 'NEW'
-    );
-  };
+  const getIcon = (scan: string, index: number) => {
+    if (scan.includes('CANCELED')) {
+      return '✕';
+    }
+    if (scan.includes('Delivered')) {
+      return '✓';
+    }
 
-  const trackScans = trackingData;
+    const currentActiveIndex =
+      activeIndex === -1 ? keyMilestones.length - 1 : activeIndex;
+    return index <= currentActiveIndex ? '✓' : (index + 1).toString();
+  };
 
   return (
-    <View style={{marginHorizontal: 10, marginVertical: 20, padding: 20}}>
-      <View style={{position: 'relative', height: 60}}>
+    <View style={styles.container}>
+      <View style={styles.timelineContainer}>
+        <View style={styles.timelineBackground} />
+
         <View
-          style={{
-            position: 'absolute',
-            top: 33,
-            right: 24,
-            height: 2,
-            backgroundColor: '#E5E8E9',
-            zIndex: 1,
-          }}
+          style={[
+            styles.timelineActive,
+            {
+              width: `${
+                ((activeIndex === -1 ? keyMilestones.length - 1 : activeIndex) /
+                  (keyMilestones.length - 1)) *
+                100
+              }%`,
+            },
+          ]}
         />
 
-        <View
-          style={{
-            position: 'absolute',
-            top: 33,
-            left: 0,
-            width: '100%',
-            height: 2,
-            backgroundColor: '#12B76A',
-            zIndex: 2,
-          }}
-        />
+        <View style={styles.stepsContainer}>
+          {keyMilestones.map((step, index) => {
+            const isActive =
+              index <=
+              (activeIndex === -1 ? keyMilestones.length - 1 : activeIndex);
+            const statusColor = getStatusColor(step.scan, index);
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            position: 'relative',
-            zIndex: 3,
-          }}>
-          {trackScans.map((step, index) => (
-            <View
-              key={step.rapidshyp_status_code + index}
-              style={{
-                alignItems:
-                  index === 0
-                    ? 'flex-start'
-                    : index === trackScans.length - 1
-                    ? 'flex-end'
-                    : 'center',
-              }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontFamily: Fonts.JakartaMedium || 'System',
-                  color: getStatusColor(step.scan),
-                  marginBottom: 8,
-                  textAlign:
-                    index === 0
-                      ? 'left'
-                      : index === trackScans.length - 1
-                      ? 'right'
-                      : 'center',
-                }}>
-                {getDisplayText(step.scan)}
-              </Text>
-
+            return (
               <View
-                style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: 8,
-                  backgroundColor: isCompleted(step.scan)
-                    ? getStatusColor(step.scan)
-                    : '#E5E8E9',
-                  borderWidth: 3,
-                  borderColor: 'white',
-                  marginBottom: 8,
-                }}
-              />
+                key={`${step.rapidshyp_status_code}_${index}`}
+                style={[styles.step, {width: itemWidth}]}>
+                <View
+                  style={[
+                    styles.stepIcon,
+                    {
+                      backgroundColor: statusColor,
+                      borderColor: isActive ? statusColor : '#E5E8E9',
+                    },
+                  ]}>
+                  <Text style={styles.stepIconText}>
+                    {getIcon(step.scan, index)}
+                  </Text>
+                </View>
 
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontFamily: Fonts.JakartaRegular || 'System',
-                  color: '#667085',
-                  textAlign:
-                    index === 0
-                      ? 'left'
-                      : index === trackScans.length - 1
-                      ? 'right'
-                      : 'center',
-                  width: 60,
-                }}>
-                {formatDateTime(step.scan_datetime)}
-              </Text>
-            </View>
-          ))}
+                <Text
+                  style={[
+                    styles.stepTitle,
+                    {color: isActive ? '#101828' : '#667085'},
+                  ]}>
+                  {step.scan.includes('Shipment Booked')
+                    ? 'Shipment Booked'
+                    : step.scan.includes('READY_FOR_DISPATCH')
+                    ? 'Dispatched'
+                    : step.scan.includes('Out for delivery')
+                    ? 'Out for delivery'
+                    : step.scan.includes('Delivered')
+                    ? 'Delivered'
+                    : step.scan.includes('CANCELED')
+                    ? 'Cancelled'
+                    : step.scan}
+                </Text>
+
+                {/* <Text style={styles.stepDate}>
+                  {(step.scan_datetime).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </Text> */}
+              </View>
+            );
+          })}
         </View>
       </View>
     </View>
