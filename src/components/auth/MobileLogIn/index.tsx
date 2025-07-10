@@ -120,7 +120,6 @@ const MobileLogin = () => {
       } else {
         Alert.alert('Error', response.data?.message || 'Failed to send OTP');
       }
-      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error: any) {
       console.error('OTP Error:', error);
       Alert.alert(
