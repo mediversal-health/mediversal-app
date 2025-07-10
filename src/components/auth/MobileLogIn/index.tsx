@@ -59,20 +59,19 @@ const MobileLogin = () => {
         setKeyboardVisible(false);
       },
     );
-
-    useEffect(() => {
-      if (keyboardVisible) {
-        console.log('Keyboard opened');
-      } else {
-        console.log('Keyboard closed');
-      }
-    }, [keyboardVisible]);
-
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (keyboardVisible) {
+      console.log('Keyboard opened');
+    } else {
+      console.log('Keyboard closed');
+    }
+  }, [keyboardVisible]);
 
   const handleMobileInputChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
