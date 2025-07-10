@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-catch-shadow */
 import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
@@ -13,8 +11,13 @@ import styles from './index.styles';
 import {verifyOTP, sendOTP} from '../../../../Services/auth';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../../../navigation';
-import CustomOtpInput from '../../../ui/CustomOtpInput';
 import {useAuthStore} from '../../../../store/authStore';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
 
 interface OTPModalProps {
   isVisible: boolean;
@@ -33,12 +36,14 @@ interface ApiResponse {
   };
 }
 
+const CELL_COUNT = 6;
+
 const OtpMobileModal: React.FC<OTPModalProps> = ({
   isVisible,
   onGoBack,
   phoneNumber,
 }) => {
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+  const [otpValue, setOtpValue] = useState('');
   const [timer, setTimer] = useState(60);
   const [verifying, setVerifying] = useState(false);
   const [resending, setResending] = useState(false);
@@ -46,10 +51,18 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const setAuthentication = useAuthStore(state => state.setAuthentication);
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+
+  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: otpValue,
+    setValue: setOtpValue,
+  });
+
   useEffect(() => {
     if (isVisible) {
-      setOtp(Array(6).fill(''));
+      setOtpValue('');
       setError('');
+      setTimer(60);
     }
   }, [isVisible]);
 
@@ -61,19 +74,23 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
       }, 1000);
     }
     return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
+      if (interval) clearInterval(interval);
     };
   }, [isVisible, timer]);
 
+  useEffect(() => {
+    if (otpValue.length === CELL_COUNT) {
+      handleVerifyOTP(otpValue);
+    }
+  }, [otpValue]);
+
   const handleVerifyOTP = useCallback(
-    async (fullOtpString?: string) => {
+    async (code?: string) => {
       try {
         setVerifying(true);
         setError('');
+        const otpToVerify = code || otpValue;
 
-        const otpToVerify = fullOtpString || otp.join('');
         if (otpToVerify.length !== 6) {
           setError('Please enter a valid 6-digit OTP');
           return;
@@ -84,8 +101,6 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           otpToVerify,
           'phone',
         )) as ApiResponse;
-        console.log(response);
-        console.log(response.data?.user.customer_id);
 
         if (response.data?.success) {
           setAuthentication({
@@ -100,7 +115,6 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           });
           setIsAuthenticated(true);
           navigation.navigate('Layout');
-          // onClose();
         } else {
           setError(response.data?.message || 'Invalid OTP');
         }
@@ -110,16 +124,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
         setVerifying(false);
       }
     },
-    [otp, phoneNumber, setAuthentication, navigation, setIsAuthenticated],
-  );
-
-  const onOtpCompleteHandler = useCallback(
-    (fullOtpCode: string) => {
-      console.log('OTP received via autofill/paste:', fullOtpCode);
-      // setOtp(fullOtpCode.split(''));
-      handleVerifyOTP(fullOtpCode);
-    },
-    [handleVerifyOTP],
+    [otpValue, phoneNumber, setAuthentication, navigation, setIsAuthenticated],
   );
 
   const handleResendOTP = async () => {
@@ -131,20 +136,17 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
 
       if (response.data?.success) {
         setTimer(60);
-        setOtp(Array(6).fill(''));
+        setOtpValue('');
         Alert.alert('Success', 'OTP sent successfully');
       } else {
         setError(response.data?.message || 'Failed to resend OTP');
       }
     } catch (error: any) {
       setError(error?.response?.data?.message || 'Error resending OTP');
-      console.error('Resend OTP Error:', error);
     } finally {
       setResending(false);
     }
   };
-
-  const isOtpFilled = otp.every(d => d !== '');
 
   return (
     <Modal
@@ -168,13 +170,35 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           </Text>
         </TouchableOpacity>
 
-        <CustomOtpInput
-          otp={otp}
-          setOtp={setOtp}
-          error={error}
-          isVisible={isVisible}
-          otpLength={6}
-          onOtpComplete={onOtpCompleteHandler}
+        <CodeField
+          ref={ref}
+          {...props}
+          value={otpValue}
+          onChangeText={setOtpValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.otpRoot}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          autoComplete="sms-otp"
+          renderCell={({index, symbol, isFocused}) => (
+            <View
+              key={index}
+              style={[
+                styles.otpCell,
+                {
+                  borderColor: error
+                    ? '#ff3b30'
+                    : isFocused
+                    ? '#0088B1'
+                    : '#d3d3d3',
+                },
+              ]}
+              onLayout={getCellOnLayoutHandler(index)}>
+              <Text style={styles.otpText}>
+                {symbol || (isFocused ? <Cursor /> : '')}
+              </Text>
+            </View>
+          )}
         />
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -203,10 +227,10 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           style={[
             styles.verifyButton,
             verifying ? styles.verifyButtonLoading : null,
-            !isOtpFilled ? styles.verifyButtonDisabled : null,
+            otpValue.length !== CELL_COUNT ? styles.verifyButtonDisabled : null,
           ]}
           onPress={() => handleVerifyOTP()}
-          disabled={!isOtpFilled || verifying}
+          disabled={otpValue.length !== CELL_COUNT || verifying}
           activeOpacity={0.8}>
           {verifying ? (
             <ActivityIndicator size="small" color="#fff" />
@@ -214,7 +238,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
             <Text
               style={[
                 styles.verifyButtonText,
-                !isOtpFilled && styles.disabledText,
+                otpValue.length !== CELL_COUNT && styles.disabledText,
               ]}>
               Verify & Continue
             </Text>
