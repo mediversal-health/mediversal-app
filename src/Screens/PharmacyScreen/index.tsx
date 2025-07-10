@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -47,28 +47,28 @@ import Dabur from './assests/svgs/Dabur-Logo.wine.svg';
 import Mankind from './assests/svgs/MANKIND.NS_BIG.svg';
 import ImmunityCard from '../../components/cards/ImmunityCard';
 import styles from './index.styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
-import {ProductCardProps} from '../../types';
-import {getProducts, getProductsById} from '../../Services/pharmacy';
+import { ProductCardProps } from '../../types';
+import { getProducts, getProductsById } from '../../Services/pharmacy';
 import useProductStore from '../../store/productsStore';
 import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
-import {Fonts} from '../../styles/fonts';
-import {addToCart} from '../../Services/cart';
-import {useAuthStore} from '../../store/authStore';
-import {useToastStore} from '../../store/toastStore';
-import {useCartStore} from '../../store/cartStore';
+import { Fonts } from '../../styles/fonts';
+import { addToCart } from '../../Services/cart';
+import { useAuthStore } from '../../store/authStore';
+import { useToastStore } from '../../store/toastStore';
+import { useCartStore } from '../../store/cartStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
-  const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
+  const { setProducts, cardProducts, getOriginalProduct } = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
-  const {setUserCart} = useCartStore.getState();
+  const { setUserCart } = useCartStore.getState();
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -142,10 +142,10 @@ const PharmacyScreen = () => {
   const skeletonItems = loading
     ? Array(5)
         .fill(0)
-        .map((_, index) => ({id: `skeleton-${index}`}))
+        .map((_, index) => ({ id: `skeleton-${index}` }))
     : cardProducts;
 
-  const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
+  const renderProduct = ({ item }: { item: ProductCardProps['product'] }) => (
     <TouchableOpacity onPress={() => handleProductPress(item)}>
       <ProductCard
         product={item}
@@ -174,7 +174,7 @@ const PharmacyScreen = () => {
 
   return (
     <SafeAreaView
-      style={{flex: 1, flexDirection: 'column', backgroundColor: '#fff'}}>
+      style={{ flex: 1, flexDirection: 'column', backgroundColor: '#fff' }}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         refreshControl={
@@ -209,7 +209,7 @@ const PharmacyScreen = () => {
           </View>
 
           <View style={styles.priscriptionContainer}>
-            <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{ flexDirection: 'row', gap: 5 }}>
               <PriscriptionSVG width={25} height={32} strokeWidth={2} />
               <View>
                 <Text style={styles.priscriptionText}>Upload Prescription</Text>
@@ -227,8 +227,8 @@ const PharmacyScreen = () => {
           <LinearGradient
             colors={['#FFE3C1', '#FFFFFF']}
             locations={[0, 0.3, 1]}
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
             style={styles.gradientBox}>
             <Vector1 style={styles.vector1} width={40} height={40} />
             <Vector2 style={styles.vector2} width={30} height={30} />
@@ -339,7 +339,7 @@ const PharmacyScreen = () => {
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
                 marginLeft: 10,
               }}>
-              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              <Text style={{ fontFamily: Fonts.JakartaRegular, fontSize: 12 }}>
                 Trending Medicines
               </Text>
             </View>
@@ -370,7 +370,7 @@ const PharmacyScreen = () => {
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
                 marginLeft: 10,
               }}>
-              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              <Text style={{ fontFamily: Fonts.JakartaRegular, fontSize: 12 }}>
                 Featured Brands
               </Text>
             </View>
@@ -452,7 +452,7 @@ const PharmacyScreen = () => {
           </ScrollView>
 
           <View style={styles.imagecontainer}>
-            <Text style={{fontSize: 8}}>Powered By</Text>
+            <Text style={{ fontSize: 8 }}>Powered By</Text>
             <MediversalLogo style={styles.logo} />
           </View>
         </View>

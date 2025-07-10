@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect} from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -46,8 +46,8 @@ const LoginScreen = () => {
       }
 
       Alert.alert('Exit App', 'Are you sure you want to exit?', [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Exit', onPress: () => BackHandler.exitApp()},
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Exit', onPress: () => BackHandler.exitApp() },
       ]);
 
       return true;

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -11,20 +11,20 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
-import {ChevronLeft, Search, X} from 'lucide-react-native';
+import { ChevronLeft, Search, X } from 'lucide-react-native';
 import styles from './index.styles';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../navigation';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation';
 import PriscriptionSVG from '../HomeScreen/assets/svgs/priscription-icon.svg';
 import useProductStore from '../../store/productsStore';
 import useRecentSearchStore from '../../store/recentSearchStore';
-import {Product} from '../../types';
+import { Product } from '../../types';
 import OrderNowCard from '../../components/cards/OrderCard';
 import CategoryCard from '../../components/cards/CategoryCard';
-import {Fonts} from '../../styles/fonts';
+import { Fonts } from '../../styles/fonts';
 import Sneezing from '../PharmacyScreen/assests/svgs/Sneezing.svg';
 import Acitdity from '../PharmacyScreen/assests/svgs/Gastric.svg';
 import Headache from '../PharmacyScreen/assests/svgs/Dizzy.svg';
@@ -33,16 +33,16 @@ import Dehydration from '../PharmacyScreen/assests/svgs/Dehydration.svg';
 import Burn from '../PharmacyScreen/assests/svgs/Burn.svg';
 import BlockedNose from '../PharmacyScreen/assests/svgs/Burn.svg';
 import JointPain from '../PharmacyScreen/assests/svgs/Pain in joints.svg';
-import {useAuthStore} from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 
 const GlobalSearchScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const {originalProducts, getOriginalProduct} = useProductStore();
+  const { originalProducts, getOriginalProduct } = useProductStore();
   const customerId = useAuthStore(state => state.customer_id);
-  const {searches, addSearch, clearSearches, removeSearch, hydrate} =
+  const { searches, addSearch, clearSearches, removeSearch, hydrate } =
     useRecentSearchStore();
 
   // Hydrate recent searches for current customer
@@ -112,12 +112,12 @@ const GlobalSearchScreen = () => {
     });
   };
 
-  const renderSearchItem = ({item}: {item: Product}) => (
+  const renderSearchItem = ({ item }: { item: Product }) => (
     <TouchableOpacity
       style={styles.searchItem}
       onPress={() => handleProductPress(item.productId)}>
       <Image
-        source={{uri: item.images?.[0]}}
+        source={{ uri: item.images?.[0] }}
         style={styles.searchItemImage}
         resizeMode="contain"
       />
@@ -146,7 +146,8 @@ const GlobalSearchScreen = () => {
       <TouchableOpacity
         style={styles.recentSearchTextWrapper}
         onPress={() => handleRecentSearchPress(item)}>
-        <View style={{backgroundColor: '#D3D7D8', padding: 3, borderRadius: 5}}>
+        <View
+          style={{ backgroundColor: '#D3D7D8', padding: 3, borderRadius: 5 }}>
           <Search color="#999" size={16} />
         </View>
         <Text style={styles.recentSearchText}>{item}</Text>
@@ -161,7 +162,7 @@ const GlobalSearchScreen = () => {
   );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top']}>
       <View
         style={{
           flexDirection: 'row',
@@ -180,11 +181,11 @@ const GlobalSearchScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }} />
         <CartIconWithBadge />
       </View>
 
-      <View style={{paddingHorizontal: 20, marginBottom: 5, flex: 1}}>
+      <View style={{ paddingHorizontal: 20, marginBottom: 5, flex: 1 }}>
         <View style={styles.wrapper}>
           <View style={styles.container}>
             <View style={styles.textWrapper}>
@@ -254,14 +255,14 @@ const GlobalSearchScreen = () => {
                   renderItem={renderRecentSearchItem}
                   keyExtractor={(item, index) => index.toString()}
                   scrollEnabled={false}
-                  contentContainerStyle={{paddingBottom: 20}}
+                  contentContainerStyle={{ paddingBottom: 20 }}
                 />
               </View>
             )}
 
             <OrderNowCard />
 
-            <View style={{marginTop: 10}}>
+            <View style={{ marginTop: 10 }}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,

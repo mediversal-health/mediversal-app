@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Stethoscope} from 'lucide-react-native';
-import {styles} from './index.styles';
-import {useCartStore} from '../../../store/cartStore';
-import {useAuthStore} from '../../../store/authStore';
+import { Stethoscope } from 'lucide-react-native';
+import { styles } from './index.styles';
+import { useCartStore } from '../../../store/cartStore';
+import { useAuthStore } from '../../../store/authStore';
 
 interface MedicineDetailProps {
   images: string[];
@@ -87,10 +87,10 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
     }
   };
 
-  const renderImageItem = ({item}: {item: string}) => (
+  const renderImageItem = ({ item }: { item: string }) => (
     <Image
-      source={typeof item === 'string' ? {uri: item} : item}
-      style={[styles.image, {width: screenWidth, height: 300}]}
+      source={typeof item === 'string' ? { uri: item } : item}
+      style={[styles.image, { width: screenWidth, height: 300 }]}
       resizeMode="contain"
       onError={() => console.log('Image failed to load')}
     />
@@ -121,13 +121,13 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
             offset: screenWidth * index,
             index,
           })}
-          onScrollToIndexFailed={({index}) => {
+          onScrollToIndexFailed={({ index }) => {
             flatListRef.current?.scrollToOffset({
               offset: index * screenWidth,
               animated: false,
             });
             setTimeout(() => {
-              flatListRef.current?.scrollToIndex({index, animated: false});
+              flatListRef.current?.scrollToIndex({ index, animated: false });
             }, 100);
           }}
         />
@@ -152,7 +152,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
         {stars.map((star, index) => (
           <Text
             key={index}
-            style={{color: star === '☆' ? '#B0B6B8' : '#0088B1'}}>
+            style={{ color: star === '☆' ? '#B0B6B8' : '#0088B1' }}>
             {star}
           </Text>
         ))}

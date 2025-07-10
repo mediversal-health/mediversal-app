@@ -1,5 +1,5 @@
-import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { Platform, StyleSheet } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   headerWrapper: {

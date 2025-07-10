@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC} from 'react';
-import {View} from 'react-native';
-import {SvgProps} from 'react-native-svg';
+import React, { FC } from 'react';
+import { View } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 
 interface CircleCardProps {
   logo: FC<SvgProps>;

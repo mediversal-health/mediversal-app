@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -13,10 +12,10 @@ import {
   ScrollView,
 } from 'react-native';
 import CountryPickerComponent from '../../ui/CountryPicker';
-import {Country} from 'react-native-country-picker-modal';
+import { Country } from 'react-native-country-picker-modal';
 import styles from './index.styles';
 import OtpMobileModal from '../Modals/OtpMobile';
-import {sendOTP} from '../../../Services/auth';
+import { sendOTP } from '../../../Services/auth';
 
 interface OTPResponse {
   data?: {
@@ -66,6 +65,14 @@ const MobileLogin = () => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (keyboardVisible) {
+      console.log('Keyboard opened');
+    } else {
+      console.log('Keyboard closed');
+    }
+  }, [keyboardVisible]);
 
   const handleMobileInputChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
@@ -136,7 +143,7 @@ const MobileLogin = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 20}>
       <ScrollView
         ref={scrollViewRef}

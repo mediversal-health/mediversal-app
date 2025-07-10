@@ -1,9 +1,9 @@
 import React from 'react';
-import {useToastStore} from '../../../store/toastStore';
+import { useToastStore } from '../../../store/toastStore';
 import GlobalCustomToast from './index';
 
 const GlobalToastContainer: React.FC = () => {
-  const {toast, hideToast} = useToastStore();
+  const { toast, hideToast } = useToastStore();
 
   return (
     <GlobalCustomToast

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, forwardRef, useImperativeHandle} from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,16 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {pick} from '@react-native-documents/picker';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../../navigation';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { pick } from '@react-native-documents/picker';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../navigation';
 import styles from './index.styles';
-import {UploadPickerHandle, UploadType} from '../../../types';
+import { UploadPickerHandle, UploadType } from '../../../types';
 // Import the upload function and AuthContext (assuming you have one)
-import {uploadPrescriptions} from '../../../Services/prescription';
-import {useAuthStore} from '../../../store/authStore';
-import {useToastStore} from '../../../store/toastStore';
+import { uploadPrescriptions } from '../../../Services/prescription';
+import { useAuthStore } from '../../../store/authStore';
+import { useToastStore } from '../../../store/toastStore';
 // Adjust path as needed
 
 interface UploadPickerProps {
@@ -32,7 +32,7 @@ interface ExtendedDocumentPickerResponse {
   size: number;
 }
 const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
-  ({onCancel, initialType = 'image'}, ref) => {
+  ({ onCancel, initialType = 'image' }, ref) => {
     const [fileType, setFileType] = useState<UploadType>(initialType);
     const [images, setImages] = useState<string[]>([]);
     const [pdfs, setPdfs] = useState<ExtendedDocumentPickerResponse[]>([]);
@@ -90,7 +90,7 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
 
     const openDocumentPicker = async () => {
       try {
-        const [result] = await pick({type: ['application/pdf']});
+        const [result] = await pick({ type: ['application/pdf'] });
 
         if (!result) {
           handleCancel();
@@ -270,7 +270,7 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
               Selected Prescription {fileType === 'pdf' ? 'PDF' : 'Images'}:
             </Text>
             {fileType === 'pdf' ? (
-              <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
                 {pdfs.map((pdf, index) => (
                   <View key={index} style={styles.imageContainer}>
                     <Text style={styles.fileName}>
@@ -285,10 +285,10 @@ const UploadPicker = forwardRef<UploadPickerHandle, UploadPickerProps>(
                 ))}
               </View>
             ) : (
-              <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 12}}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
                 {images.map((uri, index) => (
                   <View key={index} style={styles.imageContainer}>
-                    <Image source={{uri}} style={styles.uploadedImage} />
+                    <Image source={{ uri }} style={styles.uploadedImage} />
                     <TouchableOpacity
                       style={styles.closeButton}
                       onPress={() => handleRemoveImage(index)}>

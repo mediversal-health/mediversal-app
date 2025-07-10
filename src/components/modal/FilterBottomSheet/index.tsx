@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,24 +10,24 @@ import {
 } from 'react-native';
 import useProductStore from '../../../store/productsStore';
 import styles from './index.styles';
-import {ProductCardProps} from '../../../types';
-import {useFilterStore} from '../../../store/filterStore';
+import { ProductCardProps } from '../../../types';
+import { useFilterStore } from '../../../store/filterStore';
 import Modal from 'react-native-modal';
-const {height: SCREEN_HEIGHT} = Dimensions.get('window');
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface FilterBottomSheetProps {
   visible: boolean;
   onClose: () => void;
   onApply: (filtered: ProductCardProps['product'][]) => void;
-  selectedFilters: {[key: string]: boolean};
+  selectedFilters: { [key: string]: boolean };
   setSelectedFilters: React.Dispatch<
-    React.SetStateAction<{[key: string]: boolean}>
+    React.SetStateAction<{ [key: string]: boolean }>
   >;
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  priceRange: {min: string; max: string};
+  priceRange: { min: string; max: string };
   setPriceRange: React.Dispatch<
-    React.SetStateAction<{min: string; max: string}>
+    React.SetStateAction<{ min: string; max: string }>
   >;
 }
 interface CategoryOption {
@@ -66,8 +66,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   // const [priceRange, setPriceRange] = useState({min: '', max: ''});
 
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const {originalProducts} = useProductStore();
-  const {filteredProducts} = useFilterStore();
+  const { originalProducts } = useProductStore();
+  const { filteredProducts } = useFilterStore();
 
   useEffect(() => {
     Animated.spring(translateY, {
@@ -97,42 +97,42 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     //   {key: 'massageTherapy', label: 'Massage Therapy'},
     // ],
     'Salt Name': [
-      {key: 'paracetamol', label: 'Paracetamol'},
-      {key: 'ibuprofen', label: 'Ibuprofen'},
-      {key: 'aspirin', label: 'Aspirin'},
-      {key: 'naproxen', label: 'Naproxen'},
-      {key: 'acetaminophen', label: 'Acetaminophen'},
-      {key: 'diclofenac', label: 'Diclofenac'},
-      {key: 'celecoxib', label: 'Celecoxib'},
-      {key: 'meloxicam', label: 'Meloxicam'},
-      {key: 'ketoprofen', label: 'Ketoprofen'},
-      {key: 'indomethacin', label: 'Indomethacin'},
-      {key: 'morphine', label: 'Morphine'},
-      {key: 'oxycodone', label: 'Oxycodone'},
-      {key: 'hydrocodone', label: 'Hydrocodone'},
-      {key: 'fentanyl', label: 'Fentanyl'},
-      {key: 'tramadol', label: 'Tramadol'},
+      { key: 'paracetamol', label: 'Paracetamol' },
+      { key: 'ibuprofen', label: 'Ibuprofen' },
+      { key: 'aspirin', label: 'Aspirin' },
+      { key: 'naproxen', label: 'Naproxen' },
+      { key: 'acetaminophen', label: 'Acetaminophen' },
+      { key: 'diclofenac', label: 'Diclofenac' },
+      { key: 'celecoxib', label: 'Celecoxib' },
+      { key: 'meloxicam', label: 'Meloxicam' },
+      { key: 'ketoprofen', label: 'Ketoprofen' },
+      { key: 'indomethacin', label: 'Indomethacin' },
+      { key: 'morphine', label: 'Morphine' },
+      { key: 'oxycodone', label: 'Oxycodone' },
+      { key: 'hydrocodone', label: 'Hydrocodone' },
+      { key: 'fentanyl', label: 'Fentanyl' },
+      { key: 'tramadol', label: 'Tramadol' },
     ],
     Manufacturer: [
-      {key: 'cipla', label: 'Cipla'},
-      {key: 'sunPharma', label: 'Sun Pharmaceutical'},
-      {key: 'drReddys', label: "DrReddy's Laboratories Ltd"},
-      {key: 'lupin', label: 'Lupin Pharmaceuticals'},
-      {key: 'aurobindo', label: 'Aurobindo Pharma'},
-      {key: 'glenmark', label: 'Glenmark Pharmaceuticals'},
-      {key: 'torrent', label: 'Torrent Pharmaceuticals'},
-      {key: 'cadila', label: 'Zydus Cadila'},
-      {key: 'alkem', label: 'Alkem Laboratories'},
-      {key: 'biocon', label: 'Biocon'},
-      {key: 'roche', label: 'Roche Products India Pvt Ltd'},
+      { key: 'cipla', label: 'Cipla' },
+      { key: 'sunPharma', label: 'Sun Pharmaceutical' },
+      { key: 'drReddys', label: "DrReddy's Laboratories Ltd" },
+      { key: 'lupin', label: 'Lupin Pharmaceuticals' },
+      { key: 'aurobindo', label: 'Aurobindo Pharma' },
+      { key: 'glenmark', label: 'Glenmark Pharmaceuticals' },
+      { key: 'torrent', label: 'Torrent Pharmaceuticals' },
+      { key: 'cadila', label: 'Zydus Cadila' },
+      { key: 'alkem', label: 'Alkem Laboratories' },
+      { key: 'biocon', label: 'Biocon' },
+      { key: 'roche', label: 'Roche Products India Pvt Ltd' },
     ],
     Availability: [
-      {key: 'inStock', label: 'In Stock'},
-      {key: 'outOfStock', label: 'Out of Stock'},
+      { key: 'inStock', label: 'In Stock' },
+      { key: 'outOfStock', label: 'Out of Stock' },
     ],
     'Prescription Required': [
-      {key: 'prescriptionRequired', label: 'Prescription Required'},
-      {key: 'noPrescriptionRequired', label: 'No Prescription Required'},
+      { key: 'prescriptionRequired', label: 'Prescription Required' },
+      { key: 'noPrescriptionRequired', label: 'No Prescription Required' },
     ],
     // 'Special Tags': [
     //   {key: 'sugarFree', label: 'Sugar - Free'},
@@ -303,7 +303,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   const clearFilters = (): void => {
     setSelectedFilters({});
     setSearchText('');
-    setPriceRange({min: '', max: ''});
+    setPriceRange({ min: '', max: '' });
   };
   const renderSearchableContent = (options: CategoryOption[]) => (
     <View style={styles.contentContainer}>
@@ -354,7 +354,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               keyboardType="numeric"
               value={priceRange.min}
               onChangeText={text =>
-                setPriceRange(prev => ({...prev, min: text}))
+                setPriceRange(prev => ({ ...prev, min: text }))
               }
             />
             <Text style={styles.priceSeparator}>-</Text>
@@ -365,7 +365,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               keyboardType="numeric"
               value={priceRange.max}
               onChangeText={text =>
-                setPriceRange(prev => ({...prev, max: text}))
+                setPriceRange(prev => ({ ...prev, max: text }))
               }
             />
           </View>
@@ -400,7 +400,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
         /> */}
 
         <Animated.View
-          style={[styles.bottomSheet, {transform: [{translateY}]}]}>
+          style={[styles.bottomSheet, { transform: [{ translateY }] }]}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Filters</Text>
           </View>

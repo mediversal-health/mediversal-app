@@ -1,13 +1,13 @@
-import {ChevronRight, FileUp, Search, ShoppingBag} from 'lucide-react-native';
-import {Text, View} from 'react-native';
+import { ChevronRight, FileUp, Search, ShoppingBag } from 'lucide-react-native';
+import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './index.styles';
 const OnboardingSteps = () => {
   return (
     <LinearGradient
       colors={['#0088B1', '#F8F8F8']}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: -1}}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: -1 }}
       style={styles.gradientBox}>
       <View style={styles.onboardingContainer}>
         <View style={styles.titleContainer}>

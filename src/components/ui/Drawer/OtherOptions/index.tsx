@@ -1,19 +1,18 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Bell, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Bell, ChevronRight } from 'lucide-react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
   onPress?: () => void; // Add onPress prop
 };
 
-const OtherOptionsItem = ({title, onPress}: OptionsItemProps) => {
+const OtherOptionsItem = ({ title, onPress }: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.leftSection}>
-        <View style={{marginTop: 5}}>
+        <View style={{ marginTop: 5 }}>
           <Bell size={24} color="#B0B6B8" />
         </View>
 
@@ -50,11 +49,6 @@ const styles = StyleSheet.create({
     color: '#161D1F',
     marginTop: 6,
     fontFamily: Fonts.JakartaRegular,
-  },
-  description: {
-    fontSize: 10,
-    color: '#666',
-    marginTop: 2,
   },
 });
 

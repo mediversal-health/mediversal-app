@@ -1,6 +1,6 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../Screens/LoginScreen';
 import EmailSignup from '../components/auth/EmailSignUp';
 // import Layout from '../Layout';
@@ -10,9 +10,9 @@ import UploadPrescription from '../Screens/UploadPrescription';
 import AddressBookScreen from '../Screens/AddressBookScreen';
 import CartPage from '../Screens/CartScreen';
 import LocationMapScreen from '../Screens/LocationMapScreen';
-import {AddressBookTypes, OrderData, Product} from '../types';
+import { AddressBookTypes, OrderData, Product } from '../types';
 import SearchScreen from '../Screens/SearchScreen';
-import {useAuthStore} from '../store/authStore'; // 🔐 added auth store
+import { useAuthStore } from '../store/authStore'; // 🔐 added auth store
 import PrescriptionVerification from '../Screens/PrescriptionVerificationScreen';
 import OrdersScreen from '../Screens/OrdersScreen';
 import PrescribedScreen from '../Screens/PrescribedScreen';
@@ -31,7 +31,7 @@ export type RootStackParamList = {
   PrescriptionVerification: undefined;
   SuccessAnimation: undefined;
   Layout: undefined;
-  UploadScreen: {product?: Product};
+  UploadScreen: { product?: Product };
   AllProducts: undefined;
   UploadPrescription: undefined;
   PrescriptionScreen: undefined;
@@ -42,7 +42,7 @@ export type RootStackParamList = {
     location?: {
       title: string;
       address: string;
-      coords?: {latitude: number; longitude: number};
+      coords?: { latitude: number; longitude: number };
       formattedAddress: {
         street: string;
         area: string;
@@ -58,7 +58,7 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   OrdersScreen: undefined;
   PrescribedScreen: undefined;
-  ApplyCouponScreen: {cartTotal: number};
+  ApplyCouponScreen: { cartTotal: number };
   PaymentSuccessScreen: {
     paymentId?: string;
     amount: number;
@@ -90,7 +90,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token ? (
           <>
             <Stack.Screen name="Layout" component={Layout} />

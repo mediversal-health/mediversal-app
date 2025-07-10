@@ -1,8 +1,8 @@
 // src/components/modals/PrescriptionGuideModal.tsx
 
-import React, {useState} from 'react';
-import {Modal, View, Text, TouchableOpacity, Dimensions} from 'react-native';
-import {ChevronRight} from 'lucide-react-native';
+import React, { useState } from 'react';
+import { Modal, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { ChevronRight } from 'lucide-react-native';
 import styles from './index.styles';
 import Slip from './assets/slip.svg';
 
@@ -31,18 +31,18 @@ const carouselData = [
   },
 ];
 
-const PrescriptionGuideModal: React.FC<Props> = ({visible, onClose}) => {
+const PrescriptionGuideModal: React.FC<Props> = ({ visible, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % carouselData.length);
   };
-  const {caption, description} = carouselData[currentIndex];
+  const { caption, description } = carouselData[currentIndex];
 
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
-        <View style={[styles.modalContainer, {height: screenHeight * 0.7}]}>
+        <View style={[styles.modalContainer, { height: screenHeight * 0.7 }]}>
           <Text style={styles.modalTitle}>Prescription Upload Guide</Text>
           <View style={styles.imageContainer}>
             <Slip />

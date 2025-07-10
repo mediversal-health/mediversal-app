@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {forgotPassword, verifyResetOtp} from '../../../../Services/auth';
+import { forgotPassword, verifyResetOtp } from '../../../../Services/auth';
 import ResetPasswordModal from '../ResetPassword';
 import styles from './index.styles';
 import {
@@ -38,7 +38,7 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
   const [error, setError] = useState<string>('');
   const [resendLoading, setResendLoading] = useState(false);
 
-  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value: otpValue, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otpValue,
     setValue: setOtpValue,
@@ -162,7 +162,7 @@ const OtpForgotPasswordModal: React.FC<OtpForgotPasswordModalProps> = ({
             keyboardType="number-pad"
             textContentType="oneTimeCode"
             autoComplete="sms-otp"
-            renderCell={({index, symbol, isFocused}) => (
+            renderCell={({ index, symbol, isFocused }) => (
               <View
                 key={index}
                 style={[

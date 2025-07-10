@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from 'react-native';
-import {ChevronRight, Edit, Trash} from 'lucide-react-native';
-import {AddressBookTypes} from '../../../types';
+import { ChevronRight, Edit, Trash } from 'lucide-react-native';
+import { AddressBookTypes } from '../../../types';
 import styles from './index.styles';
 
 interface AddressActionModalProps {

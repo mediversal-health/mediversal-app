@@ -13,7 +13,7 @@ export const openRazorpayCheckout = () => {
       contact: '9565441245',
       name: 'Sushant',
     },
-    theme: {color: '#F37254'},
+    theme: { color: '#F37254' },
   };
 
   RazorpayCheckout.open(options)

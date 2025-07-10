@@ -1,7 +1,7 @@
 // src/app/component/styles/TakePhotoCapture.styles.ts
 
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 export default StyleSheet.create({
   container: {

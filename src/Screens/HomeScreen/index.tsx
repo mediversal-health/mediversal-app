@@ -8,7 +8,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {ArrowRight} from 'lucide-react-native';
+import { ArrowRight } from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
 import styles from './index.styles';
 import PriscriptionSVG from './assets/svgs/priscription-icon.svg';
@@ -22,8 +22,8 @@ import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import PriceCard from '../../components/cards/PriceCard';
 import OrderNowCard from '../../components/cards/OrderCard';
-import {RootStackParamList} from '../../navigation';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -129,8 +129,8 @@ const HomeScreen = () => {
         <View style={styles.separatorContainer}>
           <LinearGradient
             colors={['#00FF80', 'transparent']}
-            start={{x: 1, y: 0}}
-            end={{x: 0, y: 0}}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 0 }}
             style={styles.line}
           />
           <View style={styles.separatorTextContainer}>
@@ -139,8 +139,8 @@ const HomeScreen = () => {
           </View>
           <LinearGradient
             colors={['transparent', '#00FF80']}
-            start={{x: 1, y: 0}}
-            end={{x: 0, y: 0}}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 0 }}
             style={styles.line}
           />
         </View>

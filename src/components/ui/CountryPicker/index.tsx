@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity} from 'react-native';
-import CountryPicker, {Country} from 'react-native-country-picker-modal';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity } from 'react-native';
+import CountryPicker, { Country } from 'react-native-country-picker-modal';
 import styles from './index.styles';
 interface CountryPickerProps {
   onSelectCountry: (country: Country) => void;

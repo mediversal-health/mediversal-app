@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   ScrollView,
@@ -10,9 +10,9 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {ChevronLeft, Search} from 'lucide-react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { ChevronLeft, Search } from 'lucide-react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import styles from './index.styles';
 import PrescriptionsCard from '../../components/cards/PrescriptionsCard';
 import PendingPrescriptionsCard from '../../components/cards/PendingPrescriptionsCard';
@@ -54,7 +54,7 @@ const PrescriptionsScreen: React.FC = () => {
         <Text style={styles.headerTitle}>My Prescriptions</Text>
       </View>
 
-      <ScrollView style={{backgroundColor: '#FFF'}}>
+      <ScrollView style={{ backgroundColor: '#FFF' }}>
         <View style={styles.searchWrapper}>
           <View style={styles.searchContainer}>
             <View style={styles.searchTextWrapper}>

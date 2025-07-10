@@ -1,7 +1,7 @@
-import {Dimensions, Platform, StatusBar, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import { Dimensions, Platform, StatusBar, StyleSheet } from 'react-native';
+import { Fonts } from '../../styles/fonts';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const ITEM_WIDTH = (width - 48) / 3; // 16px padding on each side + 8px gap between items
 
 export const styles = StyleSheet.create({

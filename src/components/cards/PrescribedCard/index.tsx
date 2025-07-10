@@ -1,15 +1,15 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {Check, AlertCircle, MoreVertical} from 'lucide-react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Check, AlertCircle, MoreVertical } from 'lucide-react-native';
 
 interface PrescribedOrderCardProps {
   order: PrescribedOrder;
   onMenuPress?: () => void;
 }
 
-import type {ReactElement} from 'react';
+import type { ReactElement } from 'react';
 
-import {PrescribedOrder, PrescribedOrderStatus} from '../../../types';
+import { PrescribedOrder, PrescribedOrderStatus } from '../../../types';
 import styles from './index.styles';
 
 interface StatusConfig {
@@ -52,8 +52,8 @@ const PrescribedCard: React.FC<PrescribedOrderCardProps> = ({
 
       <View style={styles.rightSection}>
         <View style={styles.statusContainer}>
-          <View style={[styles.statusBox, {backgroundColor: config.bgColor}]}>
-            <Text style={[styles.statusText, {color: config.statusColor}]}>
+          <View style={[styles.statusBox, { backgroundColor: config.bgColor }]}>
+            <Text style={[styles.statusText, { color: config.statusColor }]}>
               {order.status}
             </Text>
           </View>
@@ -61,7 +61,7 @@ const PrescribedCard: React.FC<PrescribedOrderCardProps> = ({
         <TouchableOpacity
           style={styles.menuButton}
           onPress={onMenuPress}
-          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
           <MoreVertical size={18} color="#6b7280" />
         </TouchableOpacity>
       </View>

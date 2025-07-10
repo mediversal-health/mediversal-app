@@ -8,11 +8,11 @@ import {
   View,
 } from 'react-native';
 import styles from './index.styles';
-import {ChevronLeft, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../styles/fonts';
-import {PrescribedOrder} from '../../types';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { ChevronLeft, ChevronRight } from 'lucide-react-native';
+import { Fonts } from '../../styles/fonts';
+import { PrescribedOrder } from '../../types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import PrescribedCard from '../../components/cards/PrescribedCard';
 import Whatsapp from './assets/svgs/Whatsapp.svg';
 const PrescribedScreen = () => {
@@ -82,7 +82,7 @@ const PrescribedScreen = () => {
             }}>
             Estimated Time :{' '}
             <Text
-              style={{fontFamily: Fonts.JakartaExtraBold, color: '#0088B1'}}>
+              style={{ fontFamily: Fonts.JakartaExtraBold, color: '#0088B1' }}>
               15 Minutes
             </Text>
           </Text>
@@ -93,7 +93,7 @@ const PrescribedScreen = () => {
             appropriate dosage, potential drug interactions, and verifies that
             it's from a licensed medical practitioner.
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Text
               style={{
                 fontFamily: Fonts.JakartaRegular,
@@ -113,10 +113,10 @@ const PrescribedScreen = () => {
               marginTop: 20,
               gap: 10,
             }}>
-            <Text style={{fontFamily: Fonts.JakartaSemiBold}}>
+            <Text style={{ fontFamily: Fonts.JakartaSemiBold }}>
               Clarification Needed
             </Text>
-            <Text style={{fontFamily: Fonts.JakartaRegular}}>
+            <Text style={{ fontFamily: Fonts.JakartaRegular }}>
               Our licensed pharmacist will reach out to you for clarification on
               the medication listed in your prescription. Expect a call from our
               certified pharmacy team shortly.

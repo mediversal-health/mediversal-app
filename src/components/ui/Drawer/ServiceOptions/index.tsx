@@ -1,19 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Bell, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../../../styles/fonts';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Bell, ChevronRight } from 'lucide-react-native';
+import { Fonts } from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
   description: string;
 };
 
-const OptiionsItem = ({title, description}: OptionsItemProps) => {
+const OptiionsItem = ({ title, description }: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.leftSection}>
-        <View style={{marginTop: 5}}>
+        <View style={{ marginTop: 5 }}>
           <Bell size={24} color="#B0B6B8" />
         </View>
 

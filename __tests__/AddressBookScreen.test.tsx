@@ -16,7 +16,7 @@
  * - Components: AddressCard, AddressCardSkeleton, AddressActionModal
  */
 
-import {render, waitFor, fireEvent} from '@testing-library/react-native';
+import { render, waitFor, fireEvent } from '@testing-library/react-native';
 import AddressBookScreen from '../src/Screens/AddressBookScreen';
 
 jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -93,23 +93,23 @@ jest.mock('../src/Services/address', () => ({
 }));
 
 jest.mock('../src/components/cards/AddressCard', () => {
-  const {Text} = require('react-native');
+  const { Text } = require('react-native');
   return () => <Text>Mocked AddressCard</Text>;
 });
 
 jest.mock('../src/components/cards/AddressCard/skeletons', () => {
-  const {Text} = require('react-native');
+  const { Text } = require('react-native');
   return () => <Text>Mocked AddressCardSkeleton</Text>;
 });
 
 jest.mock('../src/components/modal/AddressActionModal', () => {
-  const {Text} = require('react-native');
+  const { Text } = require('react-native');
   return () => <Text>Mocked AddressActionModal</Text>;
 });
 
 describe('AddressBookScreen', () => {
   it('renders header and address components', async () => {
-    const {getByText} = render(<AddressBookScreen />);
+    const { getByText } = render(<AddressBookScreen />);
     await waitFor(() => {
       expect(getByText('Address Book')).toBeTruthy();
       expect(getByText('Mocked AddressCard')).toBeTruthy();
@@ -117,21 +117,21 @@ describe('AddressBookScreen', () => {
   });
 
   it('renders Add New Address section when form is shown', async () => {
-    const {getByText} = render(<AddressBookScreen />);
+    const { getByText } = render(<AddressBookScreen />);
     await waitFor(() => {
       expect(getByText('Add New Address')).toBeTruthy();
     });
   });
 
   it('displays skeleton while loading initially', async () => {
-    const {getByText} = render(<AddressBookScreen />);
+    const { getByText } = render(<AddressBookScreen />);
     await waitFor(() => {
       expect(getByText('Mocked AddressCardSkeleton')).toBeTruthy();
     });
   });
 
   it('toggles form visibility when Add New Address is clicked', async () => {
-    const {getByText} = render(<AddressBookScreen />);
+    const { getByText } = render(<AddressBookScreen />);
     const addNewBtn = await waitFor(() => getByText('Add New Address'));
     fireEvent.press(addNewBtn);
     expect(addNewBtn).toBeTruthy();

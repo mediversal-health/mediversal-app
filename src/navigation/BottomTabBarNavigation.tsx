@@ -1,15 +1,15 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
-import {Home, User} from 'lucide-react-native';
-import {View} from 'react-native';
+import { Home, User } from 'lucide-react-native';
+import { View } from 'react-native';
 import Menu from './assests/svgs/Menu 3.svg'; // your custom SVG
 import Pharmacy from './assests/svgs/Layer 2.svg';
 import Homecare from './assests/svgs/homecare.svg';
 import PharmacyScreen from '../Screens/PharmacyScreen';
-import {useScreenStore} from '../store/screenSelector';
-import {Fonts} from '../styles/fonts';
+import { useScreenStore } from '../store/screenSelector';
+import { Fonts } from '../styles/fonts';
 import ProfileScreen from '../Screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
@@ -20,8 +20,8 @@ export default function BottomTabNavigator() {
 
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
           let IconComponent;
 
           switch (route.name) {

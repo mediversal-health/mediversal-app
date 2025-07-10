@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,12 @@ import {
   StatusBar,
   RefreshControl,
 } from 'react-native';
-import {ChevronDown, ChevronLeft, Plus} from 'lucide-react-native';
-import {useNavigation, RouteProp, useRoute} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
-import {AddressBookTypes} from '../../types';
+import { ChevronDown, ChevronLeft, Plus } from 'lucide-react-native';
+import { useNavigation, RouteProp, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
+import { AddressBookTypes } from '../../types';
 import styles from './index.styles';
-import {useAuthStore} from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import {
   getCustomerAddresses,
   saveCustomerAddress,
@@ -23,12 +23,12 @@ import {
   deleteCustomerAddress,
 } from '../../Services/address';
 import AddressCard from '../../components/cards/AddressCard';
-import {useAddressBookStore} from '../../store/addressStore';
+import { useAddressBookStore } from '../../store/addressStore';
 import AddressActionModal from '../../components/modal/AddressActionModal';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Fonts} from '../../styles/fonts';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Fonts } from '../../styles/fonts';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
-import {useToastStore} from '../../store/toastStore';
+import { useToastStore } from '../../store/toastStore';
 
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
@@ -113,7 +113,7 @@ const AddressBookScreen: React.FC = () => {
       savedFormDataRef.current
     ) {
       setShouldNavigateAfterSave(false);
-      navigation.replace('CartPage', {formData: savedFormDataRef.current});
+      navigation.replace('CartPage', { formData: savedFormDataRef.current });
       savedFormDataRef.current = null;
     }
   }, [selectedAddress, shouldNavigateAfterSave, navigation]);
@@ -224,8 +224,8 @@ const AddressBookScreen: React.FC = () => {
     field: keyof AddressBookTypes,
     value: string,
   ): void => {
-    setFormData({...formData, [field]: value});
-    setErrors(prev => ({...prev, [field]: undefined}));
+    setFormData({ ...formData, [field]: value });
+    setErrors(prev => ({ ...prev, [field]: undefined }));
   };
 
   const handleAddressTypeSelect = (type: AddressType): void => {
@@ -428,7 +428,7 @@ const AddressBookScreen: React.FC = () => {
 
       return;
     }
-    navigation.replace('CartPage', {formData: selectedAddress});
+    navigation.replace('CartPage', { formData: selectedAddress });
   };
 
   const handleModalClose = () => {
@@ -448,7 +448,7 @@ const AddressBookScreen: React.FC = () => {
           <Text style={styles.headerTitle}>Address Book</Text>
         </View>
         <ScrollView style={styles.scrollView}>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <AddressCardSkeleton count={3} />
           </View>
         </ScrollView>
@@ -469,7 +469,7 @@ const AddressBookScreen: React.FC = () => {
         <Text style={styles.headerTitle}>Address Book</Text>
       </View>
 
-      <View style={{justifyContent: 'space-between', flex: 1}}>
+      <View style={{ justifyContent: 'space-between', flex: 1 }}>
         <ScrollView
           style={styles.scrollView}
           refreshControl={
@@ -499,13 +499,17 @@ const AddressBookScreen: React.FC = () => {
                   width: '100%',
                 }}>
                 <View
-                  style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center',
+                  }}>
                   <Text style={styles.dropdownHeaderText}>Select Address</Text>
                 </View>
                 <View
                   style={{
                     transform: [
-                      {rotate: isAddressCardVisible ? '180deg' : '0deg'},
+                      { rotate: isAddressCardVisible ? '180deg' : '0deg' },
                     ],
                   }}>
                   <ChevronDown size={20} color="#000" />
@@ -514,7 +518,7 @@ const AddressBookScreen: React.FC = () => {
             </TouchableOpacity>
           )}
           {!isFromProfile && isAddressCardVisible && (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               {refreshing ? (
                 <AddressCardSkeleton count={3} />
               ) : (
@@ -569,7 +573,7 @@ const AddressBookScreen: React.FC = () => {
                 </View>
                 <View
                   style={{
-                    transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
+                    transform: [{ rotate: isFormVisible ? '180deg' : '0deg' }],
                   }}>
                   <ChevronDown size={20} color="#000" />
                 </View>
@@ -842,7 +846,7 @@ const AddressBookScreen: React.FC = () => {
             </>
           )}
         </ScrollView>
-        <View style={{marginHorizontal: 16}}>
+        <View style={{ marginHorizontal: 16 }}>
           {isAddressCardVisible && !isFromProfile && !isFormVisible && (
             <TouchableOpacity
               style={[

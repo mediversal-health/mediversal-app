@@ -1,6 +1,6 @@
-import React, {useRef, useEffect} from 'react';
-import {View, TextInput, StyleSheet, Keyboard} from 'react-native'; // Import Keyboard
-import {Fonts} from '../../../styles/fonts';
+import React, { useRef, useEffect } from 'react';
+import { View, TextInput, StyleSheet, Keyboard } from 'react-native'; // Import Keyboard
+import { Fonts } from '../../../styles/fonts';
 
 interface CustomOtpInputProps {
   otp: string[];

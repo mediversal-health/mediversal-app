@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Animated} from 'react-native';
-import {ChevronDown, DollarSign} from 'lucide-react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { ChevronDown, DollarSign } from 'lucide-react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SVGArrow from './assets/SVGArrow.svg';
 import styles from './index.style';
@@ -35,7 +35,7 @@ const CheaperAlternative: React.FC<CheaperAlternativeProps> = ({
   });
 
   const animatedStyles = {
-    transform: [{rotate: rotateInterpolate}],
+    transform: [{ rotate: rotateInterpolate }],
   };
 
   return (
@@ -69,8 +69,8 @@ const CheaperAlternative: React.FC<CheaperAlternativeProps> = ({
           <LinearGradient
             colors={['#0088B1', '#F8F8F8']}
             style={styles.backgroundGradient}
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
           />
           <View style={styles.content}>{children}</View>
         </View>

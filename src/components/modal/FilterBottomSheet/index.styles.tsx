@@ -1,5 +1,5 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { StyleSheet, Dimensions } from 'react-native';
+import { Fonts } from '../../../styles/fonts';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 

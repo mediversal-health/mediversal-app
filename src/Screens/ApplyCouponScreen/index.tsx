@@ -1,5 +1,5 @@
-import {ChevronLeft} from 'lucide-react-native';
-import React, {useEffect, useState} from 'react';
+import { ChevronLeft } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -17,12 +17,12 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { RootStackParamList } from '../../navigation';
 import CouponCard from '../../components/cards/CouponCard';
-import {useCouponStore} from '../../store/couponStore';
-import {Coupon} from '../../types';
-import {useAuthStore} from '../../store/authStore';
-import {fetchCoupons} from '../../Services/coupons';
+import { useCouponStore } from '../../store/couponStore';
+import { Coupon } from '../../types';
+import { useAuthStore } from '../../store/authStore';
+import { fetchCoupons } from '../../Services/coupons';
 
 type ApplyCouponScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -39,7 +39,7 @@ const ApplyCouponScreen = () => {
   const [error, setError] = useState(false);
   const route = useRoute<ApplyCouponScreenRouteProp>();
   const cartTotal = route.params?.cartTotal || 0;
-  const {setSelectedCoupon} = useCouponStore();
+  const { setSelectedCoupon } = useCouponStore();
 
   useEffect(() => {
     const loadCoupons = async () => {

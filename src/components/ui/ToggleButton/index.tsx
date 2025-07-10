@@ -6,7 +6,7 @@ import {
   LayoutAnimation,
   Text,
 } from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import { Fonts } from '../../../styles/fonts';
 
 interface ToggleButtonsProps {
   isMobile: boolean;
