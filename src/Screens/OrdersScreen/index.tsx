@@ -106,7 +106,8 @@ const OrdersScreen: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.goBack()}
+          testID="back-button">
           <ChevronLeft size={20} color="#0088B1" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>My Orders</Text>
