@@ -25,7 +25,7 @@ import {
 import {Fonts} from '../../styles/fonts';
 import OrderTrackingProgress from '../../components/ui/OrderTrackingProgress';
 import CartItemCard from '../../components/cards/CartItemCard';
-import OrderCancelBottomSheet from '../../components/ui/CancelOrderBottomSheet'; // Import the bottom sheet
+import OrderCancelBottomSheet from '../../components/modal/CancelOrderBottomSheet'; // Import the bottom sheet
 import styles from './index.styles';
 import Whatsapp from '../PrescribedScreen/assets/svgs/Whatsapp.svg';
 import {TrackScan} from '../../types';

@@ -283,21 +283,45 @@ const GlobalSearchScreen = () => {
                   SvgImage={Sneezing}
                   title="Cold & Cough"
                   placement="bottom"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Cold & Cough',
+                      svgImage: Sneezing,
+                    })
+                  }
                 />
                 <CategoryCard
                   SvgImage={Acitdity}
                   title="Acidity"
                   placement="center"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Acidity',
+                      svgImage: Acitdity,
+                    })
+                  }
                 />
                 <CategoryCard
                   SvgImage={Headache}
                   title="Headache"
                   placement="bottom"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Headache',
+                      svgImage: Headache,
+                    })
+                  }
                 />
                 <CategoryCard
                   SvgImage={MuscleCramps}
                   title="Muscle Cramps"
                   placement="top"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Muscle Cramps',
+                      svgImage: MuscleCramps,
+                    })
+                  }
                 />
               </View>
               <View
@@ -314,21 +338,45 @@ const GlobalSearchScreen = () => {
                   SvgImage={Dehydration}
                   title="Dehydration"
                   placement="bottom"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Dehydration',
+                      svgImage: Dehydration,
+                    })
+                  }
                 />
                 <CategoryCard
                   SvgImage={Burn}
                   title="Burn Care"
                   placement="bottom"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Burn Care',
+                      svgImage: Burn,
+                    })
+                  }
                 />
                 <CategoryCard
                   SvgImage={BlockedNose}
                   title="Blocked Nose"
                   placement="bottom"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Blocked Nose',
+                      svgImage: BlockedNose,
+                    })
+                  }
                 />
                 <CategoryCard
                   SvgImage={JointPain}
                   title="Joint Pain"
                   placement="bottom"
+                  onPress={() =>
+                    navigation.navigate('CategoryFilterScreen', {
+                      subCategory_name: 'Joint Pain',
+                      svgImage: JointPain,
+                    })
+                  }
                 />
               </View>
             </View>

@@ -389,18 +389,12 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       onBackButtonPress={onClose}
       onSwipeComplete={onClose}
       swipeDirection={['down']}
+      animationIn="slideInUp"
       animationOut="slideOutDown"
-      animationOutTiming={250}
+      backdropTransitionOutTiming={0}
       onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
-        {/* <TouchableOpacity
-          style={styles.overlayTouch}
-          activeOpacity={1}
-          onPress={onClose}
-        /> */}
-
-        <Animated.View
-          style={[styles.bottomSheet, {transform: [{translateY}]}]}>
+        <View style={styles.bottomSheet}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Filters</Text>
           </View>
@@ -452,7 +446,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
               </Text>
             </TouchableOpacity>
           </View>
-        </Animated.View>
+        </View>
       </View>
     </Modal>
   );

@@ -2,8 +2,8 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
-import {Home, User} from 'lucide-react-native';
-import {View} from 'react-native';
+import {Home, User, Lock} from 'lucide-react-native';
+import {Alert, View} from 'react-native';
 import Menu from './assests/svgs/Menu 3.svg'; // your custom SVG
 import Pharmacy from './assests/svgs/Layer 2.svg';
 import Homecare from './assests/svgs/homecare.svg';
@@ -90,7 +90,16 @@ export default function BottomTabNavigator() {
         }}
       />
       <Tab.Screen name="Menu" component={EmptyScreen} />
-      <Tab.Screen name="Homecare" component={EmptyScreen} />
+      <Tab.Screen
+        name="Homecare"
+        component={EmptyScreen}
+        listeners={{
+          tabPress: e => {
+            e.preventDefault(); // disable navigation
+            Alert.alert('Coming soon'); // show message
+          },
+        }}
+      />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
