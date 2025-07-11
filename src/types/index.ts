@@ -38,6 +38,7 @@ export interface ProductCardProps {
     discountedPrice: number;
     discountPercentage: number;
     Category: string;
+    manufacturer_name: string;
     image: string;
   };
   onAddToCart?: (id: string, quantity: number) => void;

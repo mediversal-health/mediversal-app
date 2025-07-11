@@ -7,9 +7,9 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
-import {StackNavigationProp} from '@react-navigation/stack';
+
 import {styles} from './PaymentSuccessScreen.styles';
 import {useAuthStore} from '../../store/authStore';
 import {createOrder} from '../../Services/order';
@@ -22,7 +22,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 Dimensions.get('window');
 
 const PaymentSuccessScreen = ({route}: any) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {customer_id, email, phoneNumber, first_name, last_name} =
     useAuthStore();
   const {paymentId, amount, cartItems, address} = route.params;
@@ -98,6 +98,12 @@ const PaymentSuccessScreen = ({route}: any) => {
 
     handleCreateOrder();
   }, []);
+  const handleNavigate = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Layout'}],
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -192,14 +198,12 @@ const PaymentSuccessScreen = ({route}: any) => {
             </View>
           </View>
 
-          {/* Primary Action Button */}
           <TouchableOpacity
             style={styles.primaryButton}
-            onPress={() => navigation.navigate('Layout')}>
+            onPress={() => handleNavigate()}>
             <Text style={styles.primaryButtonText}>Continue Shopping</Text>
           </TouchableOpacity>
 
-          {/* Support Link */}
           <TouchableOpacity style={styles.supportLink}>
             <Text style={styles.supportText}>Need help? Contact Support</Text>
           </TouchableOpacity>
