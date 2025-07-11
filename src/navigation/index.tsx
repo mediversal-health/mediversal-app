@@ -24,6 +24,8 @@ import PrescriptionsScreen from '../Screens/PrescriptionsScreen';
 import GlobalSearchScreen from '../Screens/GlobalSearchScreen';
 import OrdersDetailsScreen from '../Screens/OrderDetailsScreen';
 import BrandFilterScreen from '../Screens/BrandFilterScreen';
+import CategoryFilterScreen from '../Screens/CategoryFilterScreen';
+import {SvgProps} from 'react-native-svg';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -84,6 +86,10 @@ export type RootStackParamList = {
   };
   BrandFilterScreen: {
     brand_name: string;
+  };
+  CategoryFilterScreen: {
+    subCategory_name: string;
+    svgImage?: React.FC<SvgProps>;
   };
 };
 
@@ -147,6 +153,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="BrandFilterScreen"
               component={BrandFilterScreen}
+            />
+            <Stack.Screen
+              name="CategoryFilterScreen"
+              component={CategoryFilterScreen}
             />
           </>
         ) : (

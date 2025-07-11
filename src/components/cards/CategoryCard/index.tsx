@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, ViewStyle, Platform} from 'react-native';
+import {View, Text, ViewStyle, Platform, TouchableOpacity} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import styles from './index.styles';
 interface CategoryCardProps {
@@ -15,6 +15,7 @@ interface CategoryCardProps {
   imageWidth?: number;
 
   imageHeight?: number;
+  onPress?: () => void;
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({
@@ -24,6 +25,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   style = {},
   imageWidth = Platform.OS === 'ios' ? 40 : 45,
   imageHeight = 40,
+  onPress = () => {},
 }) => {
   const getImageAlignment = () => {
     switch (placement) {
@@ -47,14 +49,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   };
 
   return (
-    <View style={{display: 'flex'}}>
+    <TouchableOpacity style={{display: 'flex'}} onPress={onPress}>
       <View style={[styles.container, style]}>
         <View style={[styles.imageContainer, getImageAlignment()]}>
           <SvgImage width={imageWidth} height={imageHeight} />
         </View>
       </View>
       {title && <Text style={styles.title}>{title}</Text>}
-    </View>
+    </TouchableOpacity>
   );
 };
 

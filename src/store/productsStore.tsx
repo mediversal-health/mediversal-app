@@ -26,7 +26,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
       SubCategory: product.subCategory?.toString() ?? '',
       image: product.images?.[0] || '',
       manufacturer_name: product.ManufacturerName,
-
+      subCategory_name: product.subCategory,
       // Store reference to original product
       _originalProduct: product,
     }));

@@ -1,5 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native';
+import {
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import React, {useState} from 'react';
 import {
   ChevronLeft,
@@ -228,15 +236,18 @@ const AllProductsScreen: React.FC = () => {
 
   return (
     <>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+
         <View style={styles.header}>
-          <View style={styles.headerLeft}>
+          <View style={{flexDirection: 'row', gap: 5}}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+              testID="back-button">
               <ChevronLeft size={20} color="#0088B1" />
             </TouchableOpacity>
-            <Text style={styles.headerText}>All Products</Text>
+            <Text style={styles.headerTitle}>All Products</Text>
           </View>
           <CartIconWithBadge />
         </View>
@@ -324,19 +335,18 @@ const AllProductsScreen: React.FC = () => {
             />
           </View>
         </View>
-      </View>
-
-      <FilterBottomSheet
-        visible={showFilters}
-        onClose={() => setShowFilters(false)}
-        onApply={filtered => setFilteredProducts(filtered)}
-        selectedFilters={selectedFilters}
-        setSelectedFilters={setSelectedFilters}
-        searchText={searchText}
-        setSearchText={setSearchText}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-      />
+        <FilterBottomSheet
+          visible={showFilters}
+          onClose={() => setShowFilters(false)}
+          onApply={filtered => setFilteredProducts(filtered)}
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+          searchText={searchText}
+          setSearchText={setSearchText}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+        />
+      </SafeAreaView>
     </>
   );
 };
