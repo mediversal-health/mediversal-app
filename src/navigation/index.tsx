@@ -23,6 +23,7 @@ import ProfileScreen from '../Screens/ProfileScreen';
 import PrescriptionsScreen from '../Screens/PrescriptionsScreen';
 import GlobalSearchScreen from '../Screens/GlobalSearchScreen';
 import OrdersDetailsScreen from '../Screens/OrderDetailsScreen';
+import BrandFilterScreen from '../Screens/BrandFilterScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -80,6 +81,9 @@ export type RootStackParamList = {
   GlobalSearchScreen: undefined;
   OrdersDetailsScreen: {
     order_data: OrderData;
+  };
+  BrandFilterScreen: {
+    brand_name: string;
   };
 };
 
@@ -139,6 +143,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="OrdersDetailsScreen"
               component={OrdersDetailsScreen}
+            />
+            <Stack.Screen
+              name="BrandFilterScreen"
+              component={BrandFilterScreen}
             />
           </>
         ) : (

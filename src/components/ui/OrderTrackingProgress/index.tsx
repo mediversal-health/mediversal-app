@@ -1,8 +1,10 @@
+/* eslint-disable curly */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import {View, Text} from 'react-native';
+import StepIndicator from 'react-native-step-indicator';
 import {TrackScan} from '../../../types';
-import styles from './index.styles';
+
 interface OrderTrackingProgressProps {
   trackingData: TrackScan[];
 }
@@ -10,11 +12,7 @@ interface OrderTrackingProgressProps {
 const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
   trackingData,
 }) => {
-  const screenWidth = Dimensions.get('window').width;
-  const itemWidth = screenWidth / 4;
-
   const getKeyMilestones = (scans: TrackScan[]) => {
-    const milestones = [];
     const statusMap: Record<string, TrackScan> = {};
 
     scans.forEach(scan => {
@@ -37,129 +35,134 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
       }
     });
 
-    if (statusMap.booked) {
-      milestones.push(statusMap.booked);
-    }
-    if (statusMap.dispatched) {
-      milestones.push(statusMap.dispatched);
-    }
-    if (statusMap.delivery) {
-      milestones.push(statusMap.delivery);
-    }
-    if (statusMap.delivered) {
-      milestones.push(statusMap.delivered);
-    }
-    if (statusMap.canceled) {
-      milestones.push(statusMap.canceled);
-    }
+    const result: TrackScan[] = [];
+    if (statusMap.booked) result.push(statusMap.booked);
+    if (statusMap.dispatched) result.push(statusMap.dispatched);
+    if (statusMap.delivery) result.push(statusMap.delivery);
+    if (statusMap.delivered) result.push(statusMap.delivered);
+    if (statusMap.canceled) result.push(statusMap.canceled);
 
-    return milestones.length > 0 ? milestones : scans.slice(-4);
+    return result.length > 0 ? result : scans.slice(-4);
   };
 
   const keyMilestones = getKeyMilestones(trackingData);
+
+  const labels = keyMilestones.map(scan => {
+    if (scan.scan.includes('Shipment Booked')) return 'Shipment Booked';
+    if (scan.scan.includes('READY_FOR_DISPATCH')) return 'Dispatched';
+    if (scan.scan.includes('Out for delivery')) return 'Out for Delivery';
+    if (scan.scan.includes('Delivered')) return 'Delivered';
+    if (scan.scan.includes('CANCELED')) return 'Cancelled';
+    return scan.scan;
+  });
+
   const activeIndex = keyMilestones.findIndex(
     step => step.scan.includes('Delivered') || step.scan.includes('CANCELED'),
   );
 
-  const getStatusColor = (scan: string, index: number) => {
-    if (scan.includes('CANCELED')) {
-      return '#F04438';
-    }
-    if (scan.includes('Delivered')) {
-      return '#12B76A';
-    }
-
-    const currentActiveIndex =
-      activeIndex === -1 ? keyMilestones.length - 1 : activeIndex;
-    return index <= currentActiveIndex ? '#12B76A' : '#E5E8E9';
-  };
-
-  const getIcon = (scan: string, index: number) => {
-    if (scan.includes('CANCELED')) {
-      return '✕';
-    }
-    if (scan.includes('Delivered')) {
-      return '✓';
-    }
-
-    const currentActiveIndex =
-      activeIndex === -1 ? keyMilestones.length - 1 : activeIndex;
-    return index <= currentActiveIndex ? '✓' : (index + 1).toString();
-  };
+  const currentPosition =
+    activeIndex === -1 ? keyMilestones.length - 1 : activeIndex;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.timelineContainer}>
-        <View style={styles.timelineBackground} />
+    <View style={{paddingVertical: 16, paddingHorizontal: 8}}>
+      <StepIndicator
+        stepCount={labels.length}
+        currentPosition={currentPosition}
+        labels={labels}
+        customStyles={customStepIndicatorStyles}
+        renderStepIndicator={({position}) => {
+          const scanText = keyMilestones[position].scan;
 
-        <View
-          style={[
-            styles.timelineActive,
-            {
-              width: `${
-                ((activeIndex === -1 ? keyMilestones.length - 1 : activeIndex) /
-                  (keyMilestones.length - 1)) *
-                100
-              }%`,
-            },
-          ]}
-        />
+          const isCanceled = scanText.includes('CANCELED');
+          const isDelivered = scanText.includes('Delivered');
 
-        <View style={styles.stepsContainer}>
-          {keyMilestones.map((step, index) => {
-            const isActive =
-              index <=
-              (activeIndex === -1 ? keyMilestones.length - 1 : activeIndex);
-            const statusColor = getStatusColor(step.scan, index);
+          const backgroundColor = isCanceled
+            ? '#F04438'
+            : position <= currentPosition
+            ? '#12B76A'
+            : '#E5E8E9';
 
-            return (
-              <View
-                key={`${step.rapidshyp_status_code}_${index}`}
-                style={[styles.step, {width: itemWidth}]}>
-                <View
-                  style={[
-                    styles.stepIcon,
-                    {
-                      backgroundColor: statusColor,
-                      borderColor: isActive ? statusColor : '#E5E8E9',
-                    },
-                  ]}>
-                  <Text style={styles.stepIconText}>
-                    {getIcon(step.scan, index)}
-                  </Text>
-                </View>
+          const borderColor = isCanceled
+            ? '#F04438'
+            : position <= currentPosition
+            ? '#12B76A'
+            : '#E5E8E9';
 
-                <Text
-                  style={[
-                    styles.stepTitle,
-                    {color: isActive ? '#101828' : '#667085'},
-                  ]}>
-                  {step.scan.includes('Shipment Booked')
-                    ? 'Shipment Booked'
-                    : step.scan.includes('READY_FOR_DISPATCH')
-                    ? 'Dispatched'
-                    : step.scan.includes('Out for delivery')
-                    ? 'Out for delivery'
-                    : step.scan.includes('Delivered')
-                    ? 'Delivered'
-                    : step.scan.includes('CANCELED')
-                    ? 'Cancelled'
-                    : step.scan}
-                </Text>
+          const textColor =
+            isCanceled || position <= currentPosition ? '#fff' : '#aaa';
 
-                {/* <Text style={styles.stepDate}>
-                  {(step.scan_datetime).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </Text> */}
-              </View>
-            );
-          })}
-        </View>
-      </View>
+          const label = isCanceled
+            ? '✕'
+            : isDelivered || position <= currentPosition
+            ? '✓'
+            : `${position + 1}`;
+
+          return (
+            <View
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 15,
+                backgroundColor,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderWidth: 2,
+                borderColor,
+              }}>
+              <Text style={{color: textColor, fontWeight: 'bold'}}>
+                {label}
+              </Text>
+            </View>
+          );
+        }}
+        renderLabel={({position, label}) => {
+          const scanText = keyMilestones[position].scan;
+          const isCanceled = scanText.includes('CANCELED');
+          const isActive = position <= currentPosition;
+
+          return (
+            <Text
+              style={{
+                fontSize: 12,
+                color: isCanceled
+                  ? '#F04438'
+                  : isActive
+                  ? '#101828'
+                  : '#667085',
+                textAlign: 'center',
+                marginTop: 8,
+              }}>
+              {label}
+            </Text>
+          );
+        }}
+      />
     </View>
   );
+};
+
+const customStepIndicatorStyles = {
+  stepIndicatorSize: 30,
+  currentStepIndicatorSize: 35,
+  separatorStrokeWidth: 2,
+  currentStepStrokeWidth: 3,
+  stepStrokeCurrentColor: '#12B76A',
+  stepStrokeWidth: 2,
+  stepStrokeFinishedColor: '#12B76A',
+  stepStrokeUnFinishedColor: '#E5E8E9',
+  separatorFinishedColor: '#12B76A',
+  separatorUnFinishedColor: '#E5E8E9',
+  stepIndicatorFinishedColor: '#12B76A',
+  stepIndicatorUnFinishedColor: '#E5E8E9',
+  stepIndicatorCurrentColor: '#12B76A',
+  stepIndicatorLabelFontSize: 12,
+  currentStepIndicatorLabelFontSize: 13,
+  stepIndicatorLabelCurrentColor: '#fff',
+  stepIndicatorLabelFinishedColor: '#fff',
+  stepIndicatorLabelUnFinishedColor: '#aaa',
+  labelColor: '#667085',
+  labelSize: 12,
+  currentStepLabelColor: '#101828',
 };
 
 export default OrderTrackingProgress;

@@ -383,9 +383,33 @@ const PharmacyScreen = () => {
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
-              <CircleCard logo={Cipla} size={110} />
-              <CircleCard logo={SunPharma} size={110} />
-              <CircleCard logo={Abbott} size={110} />
+              <CircleCard
+                logo={Cipla}
+                size={110}
+                onPress={() =>
+                  navigation.navigate('BrandFilterScreen', {
+                    brand_name: 'Cipla',
+                  })
+                }
+              />
+              <CircleCard
+                logo={SunPharma}
+                size={110}
+                onPress={() =>
+                  navigation.navigate('BrandFilterScreen', {
+                    brand_name: 'Sun Pharma',
+                  })
+                }
+              />
+              <CircleCard
+                logo={Abbott}
+                size={110}
+                onPress={() =>
+                  navigation.navigate('BrandFilterScreen', {
+                    brand_name: 'Abbott',
+                  })
+                }
+              />
             </View>
             <View
               style={{
@@ -396,9 +420,33 @@ const PharmacyScreen = () => {
                 marginBottom: 10,
                 marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
               }}>
-              <CircleCard logo={Himalaya} size={110} />
-              <CircleCard logo={Dabur} size={110} />
-              <CircleCard logo={Mankind} size={110} />
+              <CircleCard
+                logo={Himalaya}
+                size={110}
+                onPress={() =>
+                  navigation.navigate('BrandFilterScreen', {
+                    brand_name: 'Himalaya',
+                  })
+                }
+              />
+              <CircleCard
+                logo={Dabur}
+                size={110}
+                onPress={() =>
+                  navigation.navigate('BrandFilterScreen', {
+                    brand_name: 'Dabur',
+                  })
+                }
+              />
+              <CircleCard
+                logo={Mankind}
+                size={110}
+                onPress={() =>
+                  navigation.navigate('BrandFilterScreen', {
+                    brand_name: 'Mankind',
+                  })
+                }
+              />
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('AllProducts')}>
