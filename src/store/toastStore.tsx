@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -46,6 +46,6 @@ export const useToastStore = create<ToastStore>(set => ({
     })),
   hideToast: () =>
     set(state => ({
-      toast: {...state.toast, visible: false},
+      toast: { ...state.toast, visible: false },
     })),
 }));

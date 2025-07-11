@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {View, Text, ScrollView, SafeAreaView} from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import {
   ShieldCheck,
   File,
@@ -9,7 +9,7 @@ import {
   Stethoscope,
   ChevronLeft,
 } from 'lucide-react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styles from './index.style';
 import RecentPrescriptionCard from '../../components/cards/RecentPrescriptionCard';
 import PrescriptionGuideModal from '../../components/modal/PrescriptionGuideModal';
@@ -17,9 +17,9 @@ import Expert from './assets/experts.svg';
 import Secure from './assets/secure.svg';
 import Upload from './assets/uploaded.svg';
 import UploadPicker from '../../components/common/UploadPicker';
-import {UploadPickerHandle} from '../../types/index';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { UploadPickerHandle } from '../../types/index';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 const UploadPrescription: React.FC = () => {
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [showUploadContent, setShowUploadContent] = useState(true);

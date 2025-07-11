@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
-import {Bell, ChevronDown} from 'lucide-react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import { Bell, ChevronDown } from 'lucide-react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Image,
   StatusBar,
@@ -10,38 +9,38 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomTabNavigator from './navigation/BottomTabBarNavigation';
 import CustomDrawer from './components/common/CustomDrawer';
-import {useScreenStore} from './store/screenSelector';
+import { useScreenStore } from './store/screenSelector';
 import SearchBar from './components/common/SearchBar';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from './navigation';
-import {Fonts} from './styles/fonts';
-import {getProducts} from './Services/pharmacy';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from './navigation';
+import { Fonts } from './styles/fonts';
+import { getProducts } from './Services/pharmacy';
 import useProductStore from './store/productsStore';
-import {useAddressBookStore} from './store/addressStore';
+import { useAddressBookStore } from './store/addressStore';
 import CartIconWithBadge from './components/ui/CartIconWithBadge';
-import {useAuthStore} from './store/authStore';
-import {requestLocationPermission} from './utils/permissions';
-import {useToastStore} from './store/toastStore';
+import { useAuthStore } from './store/authStore';
+import { requestLocationPermission } from './utils/permissions';
+import { useToastStore } from './store/toastStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
-  const {customerAddressMap} = useAddressBookStore();
+  const { customerAddressMap } = useAddressBookStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const currentCustomerAddress = customer_id
     ? customerAddressMap[customer_id]
     : null;
   const showToast = useToastStore(state => state.showToast);
-  const {profileImage, email, isAuthenticated, setIsAuthenticated} =
+  const { profileImage, email, isAuthenticated, setIsAuthenticated } =
     useAuthStore();
 
   const [imageError, setImageError] = useState(false);
-  const {setProducts} = useProductStore();
+  const { setProducts } = useProductStore();
   useEffect(() => {
     if (isAuthenticated) {
       showToast('Welcome to Mediversal!', 'success', 3000, true);
@@ -74,7 +73,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top']}>
       <StatusBar
         backgroundColor="#0088B1"
         barStyle="light-content"
@@ -91,7 +90,7 @@ const Layout = () => {
               paddingBottom: 0,
               marginBottom: 10,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
                 {profileImage && !imageError ? (
                   <Image
@@ -136,7 +135,7 @@ const Layout = () => {
                 )}
               </TouchableWithoutFeedback>
 
-              <View style={{flexDirection: 'column'}}>
+              <View style={{ flexDirection: 'column' }}>
                 <Text
                   style={{
                     fontSize: 12,
@@ -150,7 +149,7 @@ const Layout = () => {
                     justifyContent: 'space-between',
                     width: '90%',
                   }}>
-                  <View style={{flexDirection: 'row', gap: 3}}>
+                  <View style={{ flexDirection: 'row', gap: 3 }}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('SearchScreen')}>
                       <Text
@@ -171,7 +170,7 @@ const Layout = () => {
                     </TouchableOpacity>
                     <ChevronDown size={20} />
                   </View>
-                  <View style={{gap: 12, flexDirection: 'row'}}>
+                  <View style={{ gap: 12, flexDirection: 'row' }}>
                     <Bell size={20} />
                     <CartIconWithBadge />
                   </View>
@@ -185,11 +184,11 @@ const Layout = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 20,
             }}>
-            <View style={{flexDirection: 'column'}}>
-              <Text style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ fontSize: 12, fontFamily: Fonts.JakartaRegular }}>
                 Get Medicine reminderds and other updates{' '}
               </Text>
-              <View style={{flexDirection: 'row', gap: 3}}>
+              <View style={{ flexDirection: 'row', gap: 3 }}>
                 <Text
                   style={{
                     fontSize: 12,
@@ -213,11 +212,11 @@ const Layout = () => {
             <Switch
               value={isEnabled}
               onValueChange={setIsEnabled}
-              trackColor={{false: '#ccc', true: '#ccc'}}
+              trackColor={{ false: '#ccc', true: '#ccc' }}
               thumbColor={isEnabled ? '#0088B1' : '#ccc'}
             />
           </View>
-          <TouchableOpacity style={{paddingHorizontal: 20}}>
+          <TouchableOpacity style={{ paddingHorizontal: 20 }}>
             <SearchBar />
           </TouchableOpacity>
         </>
@@ -232,14 +231,15 @@ const Layout = () => {
               paddingBottom: 10,
               marginTop: 10,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <Text style={{fontSize: 16, fontFamily: Fonts.JakartaSemiBold}}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <Text style={{ fontSize: 16, fontFamily: Fonts.JakartaSemiBold }}>
                 Pharmacy
               </Text>
             </View>
             <CartIconWithBadge />
           </View>
-          <View style={{paddingHorizontal: 20, marginBottom: 5}}>
+          <View style={{ paddingHorizontal: 20, marginBottom: 5 }}>
             <SearchBar />
           </View>
         </>

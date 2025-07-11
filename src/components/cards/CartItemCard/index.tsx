@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Trash2, SquareMinus, SquarePlus} from 'lucide-react-native';
-import {styles} from './index.styles';
-import {useCartStore} from '../../../store/cartStore';
-import {DeleteFromCart} from '../../../Services/cart';
-import {useAuthStore} from '../../../store/authStore';
+import { Trash2, SquareMinus, SquarePlus } from 'lucide-react-native';
+import { styles } from './index.styles';
+import { useCartStore } from '../../../store/cartStore';
+import { DeleteFromCart } from '../../../Services/cart';
+import { useAuthStore } from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
-import {useCouponStore} from '../../../store/couponStore';
-import {useToastStore} from '../../../store/toastStore';
+import { useCouponStore } from '../../../store/couponStore';
+import { useToastStore } from '../../../store/toastStore';
 
 type CartItemCardProps = {
   productId: number;
@@ -50,13 +50,13 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   const showToast = useToastStore(state => state.showToast);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
-  const {getOriginalProduct} = useProductStore();
+  const { getOriginalProduct } = useProductStore();
   const originalProduct = getOriginalProduct(productId.toString());
-  const {setSelectedCoupon} = useCouponStore();
+  const { setSelectedCoupon } = useCouponStore();
   const availableInventory = originalProduct?.StockAvailableInInventory || 0;
   const isOutOfStock = availableInventory === 0;
   const canIncreaseQuantity = quantity < availableInventory;
-  const {removeFromCart} = useCartStore.getState();
+  const { removeFromCart } = useCartStore.getState();
   // console.log('Available Inventory:', availableInventory);
   // console.log('Current Quantity:', quantity);
   // console.log('Can Increase:', canIncreaseQuantity);
@@ -128,7 +128,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     <View>
       <View style={styles.card}>
         {/* Left Image */}
-        <Image source={{uri: imageUrl}} style={styles.image} />
+        <Image source={{ uri: imageUrl }} style={styles.image} />
         {/* Middle Details */}
         <View style={styles.middleContent}>
           <Text style={styles.name}>{name}</Text>
@@ -144,7 +144,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         </View>
         {/* Right Side Delete & Controls */}
         {fromOrderDesc ? (
-          <View style={{flexDirection: 'column'}}>
+          <View style={{ flexDirection: 'column' }}>
             <Text style={styles.actualPrice}>₹{mrp}</Text>
             <Text style={styles.mrp}>₹{price}</Text>
           </View>
@@ -185,7 +185,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           </View>
         )}
       </View>
-      <View style={{paddingHorizontal: 30}}>
+      <View style={{ paddingHorizontal: 30 }}>
         {isOutOfStock && (
           <View style={styles.outOfStockContainer}>
             <View style={styles.outOfStockLeft}>

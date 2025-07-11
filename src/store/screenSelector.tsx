@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 type ScreenState = {
   currentScreen: 'Home' | 'Pharmacy' | 'Homecare' | 'Consultation' | 'Profile';
@@ -9,5 +9,5 @@ type ScreenState = {
 
 export const useScreenStore = create<ScreenState>(set => ({
   currentScreen: 'Home',
-  setCurrentScreen: screen => set({currentScreen: screen}),
+  setCurrentScreen: screen => set({ currentScreen: screen }),
 }));

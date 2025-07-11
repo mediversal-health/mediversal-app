@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {AddressBookTypes} from '../../types';
+import { AddressBookTypes } from '../../types';
 
 const IP_ADDR = process.env.API_URL;
 

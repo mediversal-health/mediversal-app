@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {CheckCircle, ChevronLeft, MapPinned} from 'lucide-react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { CheckCircle, ChevronLeft, MapPinned } from 'lucide-react-native';
 import {
   Text,
   TouchableOpacity,
@@ -12,19 +12,19 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigation';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation';
 import styles from './index.styles';
 
 import Geolocation from '@react-native-community/geolocation';
-import {requestLocationPermission} from '../../utils/permissions';
-import {useAddressBookStore} from '../../store/addressStore';
-import {AddressBookTypes} from '../../types';
+import { requestLocationPermission } from '../../utils/permissions';
+import { useAddressBookStore } from '../../store/addressStore';
+import { AddressBookTypes } from '../../types';
 import AddressCard from '../../components/cards/AddressCard';
-import {getCustomerAddresses} from '../../Services/address';
-import {useAuthStore} from '../../store/authStore';
+import { getCustomerAddresses } from '../../Services/address';
+import { useAuthStore } from '../../store/authStore';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
-import {RAPID_SHYP_ACCESS_TOKEN} from '@env';
+import { RAPID_SHYP_ACCESS_TOKEN } from '@env';
 export default function SearchScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const customer_id = useAuthStore(state => state.customer_id);
@@ -167,7 +167,7 @@ export default function SearchScreen() {
     const getLocationWithHighAccuracy = () => {
       Geolocation.getCurrentPosition(
         position => {
-          const {latitude, longitude} = position.coords;
+          const { latitude, longitude } = position.coords;
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
@@ -192,7 +192,7 @@ export default function SearchScreen() {
     const getLocationWithLowAccuracy = () => {
       Geolocation.getCurrentPosition(
         position => {
-          const {latitude, longitude} = position.coords;
+          const { latitude, longitude } = position.coords;
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
@@ -214,7 +214,7 @@ export default function SearchScreen() {
 
       watchIdRef.current = Geolocation.watchPosition(
         position => {
-          const {latitude, longitude} = position.coords;
+          const { latitude, longitude } = position.coords;
           fetchAddress(latitude, longitude);
           clearLocationWatch();
           setIsLocating(false);
@@ -312,7 +312,7 @@ export default function SearchScreen() {
         </View>
 
         <ScrollView
-          contentContainerStyle={{flexGrow: 1}}
+          contentContainerStyle={{ flexGrow: 1 }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -392,7 +392,7 @@ export default function SearchScreen() {
               {isLoading && !refreshing ? (
                 <AddressCardSkeleton count={3} />
               ) : (
-                <View style={{alignItems: 'center'}}>
+                <View style={{ alignItems: 'center' }}>
                   {addresses.map((addr, idx) => (
                     <AddressCard
                       key={idx}

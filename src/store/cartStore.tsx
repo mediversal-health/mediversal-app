@@ -1,7 +1,7 @@
-import {create} from 'zustand';
-import {persist} from 'zustand/middleware';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CartItem} from '../types';
+import { CartItem } from '../types';
 
 interface ProductStore {
   userQuantityMap: Record<string, Record<number, number>>;
@@ -58,8 +58,8 @@ export const useCartStore = create<ProductStore>()(
 
       clearUserData: customerId => {
         set(state => {
-          const newUserQuantityMap = {...state.userQuantityMap};
-          const newUserCartData = {...state.userCartData};
+          const newUserQuantityMap = { ...state.userQuantityMap };
+          const newUserCartData = { ...state.userCartData };
           delete newUserQuantityMap[customerId];
           delete newUserCartData[customerId];
           return {
