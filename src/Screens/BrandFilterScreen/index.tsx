@@ -50,6 +50,7 @@ const BrandFilterScreen = () => {
   const [filteredProducts, setFilteredProducts] = useState<
     ProductCardProps['product'][]
   >([]);
+  console.log(filteredProducts);
   const [selectedProductType, setSelectedProductType] =
     useState<string>('Face Cleanser');
   useEffect(() => {

@@ -14,13 +14,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
-import {
-  Percent,
-  ChevronRight,
-  Truck,
-  Wallet,
-  ChevronLeft,
-} from 'lucide-react-native';
+import {ChevronRight, Truck, Wallet, ChevronLeft} from 'lucide-react-native';
 
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
