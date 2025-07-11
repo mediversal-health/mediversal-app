@@ -29,11 +29,6 @@ declare module 'react-native-razorpay' {
     razorpay_signature?: string;
   }
 
-  interface RazorpayError {
-    code: number;
-    description: string;
-  }
-
   const RazorpayCheckout: {
     open(options: RazorpayOptions): Promise<RazorpaySuccess>;
     onExternalWalletSelection?(callback: (data: any) => void): void;

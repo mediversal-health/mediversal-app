@@ -499,7 +499,11 @@ const AddressBookScreen: React.FC = () => {
                   width: '100%',
                 }}>
                 <View
-                  style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    alignItems: 'center',
+                  }}>
                   <Text style={styles.dropdownHeaderText}>Select Address</Text>
                 </View>
                 <View

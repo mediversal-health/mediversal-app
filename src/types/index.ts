@@ -38,6 +38,7 @@ export interface ProductCardProps {
     discountedPrice: number;
     discountPercentage: number;
     Category: string;
+    manufacturer_name: string;
     image: string;
   };
   onAddToCart?: (id: string, quantity: number) => void;
@@ -90,7 +91,7 @@ export interface Product {
   DiscountedPercentage: string;
   updated_by: number;
   archivedProduct: number;
-  Category: String;
+  Category: string;
   subCategory: string;
   images: string[];
   quantity?: number;

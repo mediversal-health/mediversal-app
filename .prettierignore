@@ -1,0 +1,12 @@
+node_modules
+android
+ios
+build
+coverage
+dist
+*.log
+.env
+.env.*
+*.svg
+*.png
+*.jpg

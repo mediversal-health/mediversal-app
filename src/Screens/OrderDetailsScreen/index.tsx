@@ -42,7 +42,7 @@ const OrdersDetailsScreen: React.FC = () => {
   console.log('abcgd', order_data);
 
   const [trackingData, setTrackingData] = useState<TrackScan[] | []>([]);
-  const [edd, setEdd] = useState<String | null>(' ');
+  const [edd, setEdd] = useState<string | null>(' ');
   const [refreshing, setRefreshing] = useState(false);
   const [isCancelBottomSheetVisible, setIsCancelBottomSheetVisible] =
     useState(false);

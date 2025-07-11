@@ -6,7 +6,7 @@ import {ChevronRight, FileText} from 'lucide-react-native';
 import styles from './index.styles';
 import {Fonts} from '../../../styles/fonts';
 
-const PendingPrescriptionsCard: React.FC = ({}) => {
+const PendingPrescriptionsCard: React.FC = () => {
   return (
     <View style={styles.card}>
       <View
@@ -18,7 +18,7 @@ const PendingPrescriptionsCard: React.FC = ({}) => {
         }}>
         <View>
           <View style={{flexDirection: 'row', gap: 5}}>
-            <View style={[styles.iconWrapper]}>
+            <View style={styles.iconWrapper}>
               <FileText />
             </View>
             <View style={{flexDirection: 'column'}}>

@@ -42,6 +42,7 @@ import {getProducts} from '../../Services/pharmacy';
 import {useToastStore} from '../../store/toastStore';
 import Config from 'react-native-config';
 import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
+import PinkDiscount from './assets/svgs/pink discount.svg';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
@@ -386,7 +387,10 @@ const CartPage = () => {
                       Deliver to {formData?.Recipient_name}
                     </Text>
                     <Text
-                      style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
+                      style={{
+                        fontSize: 12,
+                        fontFamily: Fonts.JakartaRegular,
+                      }}>
                       {formattedAddress}
                     </Text>
                   </View>
@@ -425,7 +429,7 @@ const CartPage = () => {
                   end={{x: 1, y: 1}}
                   style={styles.couponStrip}>
                   <View style={styles.couponLeft}>
-                    <Percent size={16} color="#000" style={styles.icon} />
+                    <PinkDiscount />
                     <Text style={styles.couponText}>Apply Coupon</Text>
                   </View>
                   <ChevronRight size={16} color="#000" />

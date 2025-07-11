@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {Bell, ChevronDown} from 'lucide-react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {

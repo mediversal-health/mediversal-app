@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
@@ -66,6 +65,14 @@ const MobileLogin = () => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (keyboardVisible) {
+      console.log('Keyboard opened');
+    } else {
+      console.log('Keyboard closed');
+    }
+  }, [keyboardVisible]);
 
   const handleMobileInputChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');

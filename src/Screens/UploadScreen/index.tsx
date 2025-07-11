@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text as RNText,
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Text,
 } from 'react-native';
 import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
@@ -187,9 +187,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
             <ProductInfo product={product} />
 
             {/* Related Products Section */}
-            <RNText style={styles.relatedProductsHeading}>
-              Related Products
-            </RNText>
+            <Text style={styles.relatedProductsHeading}>Related Products</Text>
             <View>
               <ScrollView
                 horizontal
@@ -209,7 +207,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.reminderButton}>
             <Clock size={18} color="#0088B1" />
-            <RNText style={styles.reminderButtonText}>Set Reminder</RNText>
+            <Text style={styles.reminderButtonText}>Set Reminder</Text>
           </TouchableOpacity>
           {/* <TouchableOpacity style={styles.buyButton}>
             <RNText style={styles.buyButtonText}>Buy Now</RNText>

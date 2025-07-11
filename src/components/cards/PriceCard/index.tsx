@@ -39,7 +39,11 @@ const PriceCard: React.FC<CardProps> = ({
         <View>
           <Text style={styles.offer}>{offer}</Text>
           <View
-            style={{flexDirection: 'row', alignItems: 'center', marginTop: 2}}>
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 2,
+            }}>
             <Text style={styles.price}>{price}</Text>
             <Text style={styles.strikePrice}> ₹999 </Text>
           </View>

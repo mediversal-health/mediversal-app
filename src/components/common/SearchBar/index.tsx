@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {Search, Mic} from 'lucide-react-native';
+import {Search} from 'lucide-react-native';
 import {Fonts} from '../../../styles/fonts';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';

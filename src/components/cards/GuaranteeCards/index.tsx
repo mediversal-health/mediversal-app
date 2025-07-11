@@ -3,9 +3,7 @@ import {View, Text, ScrollView} from 'react-native';
 import {Shield} from 'lucide-react-native';
 import {styles} from './index.style';
 
-interface GuaranteeCardsProps {
-  // You can add any additional props here if needed
-}
+type GuaranteeCardsProps = Record<string, never>;
 
 const GuaranteeCards: React.FC<GuaranteeCardsProps> = () => {
   return (

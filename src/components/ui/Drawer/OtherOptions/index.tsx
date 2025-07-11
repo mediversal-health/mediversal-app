@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Bell, ChevronRight} from 'lucide-react-native';
@@ -50,11 +49,6 @@ const styles = StyleSheet.create({
     color: '#161D1F',
     marginTop: 6,
     fontFamily: Fonts.JakartaRegular,
-  },
-  description: {
-    fontSize: 10,
-    color: '#666',
-    marginTop: 2,
   },
 });
 
