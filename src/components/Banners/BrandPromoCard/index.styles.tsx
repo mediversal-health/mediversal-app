@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 16,
-    marginVertical: 8,
+    marginHorizontal: Platform.OS === 'ios' ? -10 : 16,
+    marginVertical: Platform.OS === 'ios' ? 0 : 8,
     borderRadius: 12,
   },
   gradientContainer: {
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     paddingRight: 16,
+    paddingBottom: Platform.OS === 'ios' ? 35 : 0,
   },
   discountText: {
     fontSize: 24,
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     height: 90,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: Platform.OS === 'ios' ? 30 : 0,
   },
   image: {
     width: '100%',

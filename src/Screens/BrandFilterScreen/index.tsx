@@ -144,7 +144,10 @@ const BrandFilterScreen = () => {
           <Text style={styles.headerTitle}>{brand_name} Products</Text>
         </View>
         <View style={{flexDirection: 'row', gap: 10}}>
-          <Search size={20} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('GlobalSearchScreen')}>
+            <Search size={20} />
+          </TouchableOpacity>
           <CartIconWithBadge />
         </View>
       </View>
