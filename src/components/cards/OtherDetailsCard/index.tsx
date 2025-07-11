@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { styles } from './index.styles';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {ChevronDown, ChevronUp} from 'lucide-react-native';
+import {styles} from './index.styles';
 
 const OtherDetailsCard: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
@@ -12,7 +12,7 @@ const OtherDetailsCard: React.FC = () => {
       {/* Collapsible Card Header */}
       <TouchableOpacity
         onPress={() => setExpanded(!expanded)}
-        style={[styles.card, expanded && { backgroundColor: '#E8F4F7' }]}>
+        style={[styles.card, expanded && {backgroundColor: '#E8F4F7'}]}>
         <Text style={styles.title}>Other Details</Text>
         {expanded ? (
           <ChevronUp size={18} color="#000" />

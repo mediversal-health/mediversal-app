@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -11,13 +11,13 @@ import {
   StatusBar,
 } from 'react-native';
 import OrderCard from '../../components/cards/AllOrdersCard';
-import { ChevronLeft, Search } from 'lucide-react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation';
-import { Order, OrderData } from '../../types';
+import {ChevronLeft, Search} from 'lucide-react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
+import {Order, OrderData} from '../../types';
 import styles from './index.styles';
-import { useAuthStore } from '../../store/authStore';
-import { getOrders } from '../../Services/order';
+import {useAuthStore} from '../../store/authStore';
+import {getOrders} from '../../Services/order';
 
 const OrdersScreen: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
@@ -127,7 +127,7 @@ const OrdersScreen: React.FC = () => {
         </View>
       </View>
 
-      <ScrollView style={{ backgroundColor: '#FFf' }}>
+      <ScrollView style={{backgroundColor: '#FFf'}}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}

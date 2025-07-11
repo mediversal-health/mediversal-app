@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,27 +7,27 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { styles } from './PaymentSuccessScreen.styles';
-import { useAuthStore } from '../../store/authStore';
-import { createOrder } from '../../Services/order';
-import { DeleteFromCart } from '../../Services/cart';
-import { useCartStore } from '../../store/cartStore';
-import { useToastStore } from '../../store/toastStore';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {styles} from './PaymentSuccessScreen.styles';
+import {useAuthStore} from '../../store/authStore';
+import {createOrder} from '../../Services/order';
+import {DeleteFromCart} from '../../Services/cart';
+import {useCartStore} from '../../store/cartStore';
+import {useToastStore} from '../../store/toastStore';
 import LottieView from 'lottie-react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 Dimensions.get('window');
 
-const PaymentSuccessScreen = ({ route }: any) => {
+const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { customer_id, email, phoneNumber, first_name, last_name } =
+  const {customer_id, email, phoneNumber, first_name, last_name} =
     useAuthStore();
-  const { paymentId, amount, cartItems, address } = route.params;
+  const {paymentId, amount, cartItems, address} = route.params;
   const isCOD = !paymentId; // If paymentId is not present, it's COD
-  const { removeFromCart } = useCartStore.getState();
+  const {removeFromCart} = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderCreated, setOrderCreated] = useState(false);
   const showToast = useToastStore(state => state.showToast);

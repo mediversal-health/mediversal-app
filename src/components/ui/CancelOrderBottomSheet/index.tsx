@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import styles from './index.styles';
-import { cancelOrder } from '../../../Services/rapidshyp';
+import {cancelOrder} from '../../../Services/rapidshyp';
 import Modal from 'react-native-modal';
 interface OrderCancelBottomSheetProps {
   isVisible: boolean;

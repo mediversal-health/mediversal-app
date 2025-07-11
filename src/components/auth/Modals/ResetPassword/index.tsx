@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Eye, EyeOff } from 'lucide-react-native';
-import { ResetPassword } from '../../../../Services/auth';
+import {Eye, EyeOff} from 'lucide-react-native';
+import {ResetPassword} from '../../../../Services/auth';
 import styles from './index.styles';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../../navigation';
-import { useToastStore } from '../../../../store/toastStore'; // Import the toast store
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../../navigation';
+import {useToastStore} from '../../../../store/toastStore'; // Import the toast store
 
 interface ResetPasswordModalProps {
   isVisible: boolean;
@@ -55,7 +55,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
         onClose();
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Login' }],
+          routes: [{name: 'Login'}],
         });
       } else {
         showToast(

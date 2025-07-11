@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { ChevronRight } from 'lucide-react-native';
+import {ChevronRight} from 'lucide-react-native';
 import BackgroundSVG from '../../../assests/svgs/Looper-1.svg';
 import styles from './index.styles';
 type CardProps = {
@@ -25,9 +25,9 @@ const PriceCard: React.FC<CardProps> = ({
       <LinearGradient
         colors={['#00FF80', '#017DA2']}
         style={styles.topHalf}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}>
-        <View style={{ position: 'absolute', bottom: -50, left: 0 }}>
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}>
+        <View style={{position: 'absolute', bottom: -50, left: 0}}>
           <BackgroundSVG width={162} height={157} strokeWidth={2} />
         </View>
 

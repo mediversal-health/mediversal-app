@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { render, waitFor, fireEvent } from '@testing-library/react-native';
+import {render, waitFor, fireEvent} from '@testing-library/react-native';
 import OrdersScreen from '../src/Screens/OrdersScreen';
 
 beforeAll(() => {
@@ -54,7 +54,7 @@ jest.mock('../src/Services/order', () => ({
 
 describe('OrdersScreen', () => {
   it('renders screen with header, search and filter chips', async () => {
-    const { getByText, getByPlaceholderText } = render(<OrdersScreen />);
+    const {getByText, getByPlaceholderText} = render(<OrdersScreen />);
     expect(getByText('My Orders')).toBeTruthy();
     expect(
       getByPlaceholderText('Search for orders, items or services'),
@@ -63,7 +63,7 @@ describe('OrdersScreen', () => {
   });
 
   it('displays loading spinner and renders order card after fetch', async () => {
-    const { getByText, getAllByText } = render(<OrdersScreen />);
+    const {getByText, getAllByText} = render(<OrdersScreen />);
 
     await waitFor(() => {
       expect(getByText('ORD-12345')).toBeTruthy();
@@ -74,7 +74,7 @@ describe('OrdersScreen', () => {
   });
 
   it('filters orders by status chip interaction', async () => {
-    const { getByText, queryByText } = render(<OrdersScreen />);
+    const {getByText, queryByText} = render(<OrdersScreen />);
 
     await waitFor(() => {
       expect(getByText('ORD-12345')).toBeTruthy();
@@ -89,7 +89,7 @@ describe('OrdersScreen', () => {
   });
 
   it('filters orders by search input', async () => {
-    const { getByPlaceholderText, queryByText, getByText } = render(
+    const {getByPlaceholderText, queryByText, getByText} = render(
       <OrdersScreen />,
     );
 
@@ -109,7 +109,7 @@ describe('OrdersScreen', () => {
   });
 
   it('navigates back when back button is pressed', () => {
-    const { getByTestId } = render(<OrdersScreen />);
+    const {getByTestId} = render(<OrdersScreen />);
     const backBtn = getByTestId('back-button');
     fireEvent.press(backBtn);
     expect(mockGoBack).toHaveBeenCalled();

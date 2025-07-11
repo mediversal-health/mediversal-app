@@ -17,27 +17,27 @@
  */
 
 import React from 'react';
-import { render, screen } from '@testing-library/react-native';
+import {render, screen} from '@testing-library/react-native';
 import LoginScreen from '../src/Screens/LoginScreen';
 
 jest.mock('../src/components/auth/EmailSignUp', () => {
-  const { Text } = require('react-native');
+  const {Text} = require('react-native');
   return () => <Text>EmailSignup Component</Text>;
 });
 jest.mock('../src/components/auth/MobileLogIn', () => {
-  const { Text } = require('react-native');
+  const {Text} = require('react-native');
   return () => <Text>MobileLogin Component</Text>;
 });
 jest.mock('../src/components/auth/EmailLogIn', () => {
-  const { Text } = require('react-native');
+  const {Text} = require('react-native');
   return () => <Text>EmailLogin Component</Text>;
 });
 jest.mock('../src/components/ui/ToggleButton', () => {
-  const { Text } = require('react-native');
+  const {Text} = require('react-native');
   return () => <Text>Toggle Button Component</Text>;
 });
 jest.mock('../src/assests/svgs/Carosel.svg', () => {
-  const { Text } = require('react-native');
+  const {Text} = require('react-native');
   return () => <Text>Carosel SVG</Text>;
 });
 

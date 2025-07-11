@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react-native';
+import {render, screen, waitFor} from '@testing-library/react-native';
 import MobileLogin from '../src/components/auth/MobileLogIn';
 
 jest.mock('../src/Services/auth/index.tsx', () => ({

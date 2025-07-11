@@ -15,7 +15,7 @@
  * 2. Renders key action buttons: Edit Info, Address Book, Logout, and Delete User.
  */
 
-import { render } from '@testing-library/react-native';
+import {render} from '@testing-library/react-native';
 import ProfileScreen from '../src/Screens/ProfileScreen';
 
 jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -60,7 +60,7 @@ jest.mock('../src/Services/auth', () => ({
 
 describe('ProfileScreen', () => {
   it('renders correctly with basic information', () => {
-    const { getByText } = render(<ProfileScreen />);
+    const {getByText} = render(<ProfileScreen />);
 
     expect(getByText('JohnDoe')).toBeTruthy();
     expect(getByText('Information')).toBeTruthy();

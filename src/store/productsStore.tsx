@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { ProductCardProps } from '../types';
-import { Product } from '../types';
+import {create} from 'zustand';
+import {ProductCardProps} from '../types';
+import {Product} from '../types';
 interface ProductStore {
   originalProducts: Product[];
   cardProducts: ProductCardProps['product'][];

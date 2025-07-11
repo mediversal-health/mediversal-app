@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
-import { LocateFixed, MapPin } from 'lucide-react-native';
+import {LocateFixed, MapPin} from 'lucide-react-native';
 
 interface LocationModalProps {
   isVisible: boolean;

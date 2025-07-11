@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 
-import { useCouponStore } from '../../../store/couponStore';
-import { Coupon } from '../../../types';
+import {useCouponStore} from '../../../store/couponStore';
+import {Coupon} from '../../../types';
 import styles from './index.styles';
-import { useAuthStore } from '../../../store/authStore';
-import { useToastStore } from '../../../store/toastStore';
+import {useAuthStore} from '../../../store/authStore';
+import {useToastStore} from '../../../store/toastStore';
 
 interface CouponCardProps {
   coupon: Coupon;
@@ -22,7 +22,7 @@ const CouponCard: React.FC<CouponCardProps> = ({
   onApply,
   onRemove,
 }) => {
-  const { getSelectedCoupon, setSelectedCoupon } = useCouponStore();
+  const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
   const selectedCoupon = customer_id

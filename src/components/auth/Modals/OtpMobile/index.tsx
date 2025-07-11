@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
-import { verifyOTP, sendOTP } from '../../../../Services/auth';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../../navigation';
-import { useAuthStore } from '../../../../store/authStore';
+import {verifyOTP, sendOTP} from '../../../../Services/auth';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../../navigation';
+import {useAuthStore} from '../../../../store/authStore';
 import {
   CodeField,
   Cursor,
@@ -52,7 +52,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
   const setAuthentication = useAuthStore(state => state.setAuthentication);
   const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
 
-  const ref = useBlurOnFulfill({ value: otpValue, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otpValue,
     setValue: setOtpValue,
@@ -180,7 +180,7 @@ const OtpMobileModal: React.FC<OTPModalProps> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           autoComplete="sms-otp"
-          renderCell={({ index, symbol, isFocused }) => (
+          renderCell={({index, symbol, isFocused}) => (
             <View
               key={index}
               style={[

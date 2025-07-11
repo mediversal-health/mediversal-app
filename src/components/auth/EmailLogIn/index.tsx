@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
+import {Eye, EyeOff} from 'lucide-react-native';
 import styles from './index.styles';
 import GoogleLoginButton from '../../ui/GoogleLoginButton';
-import { sendOTP } from '../../../Services/auth';
+import {sendOTP} from '../../../Services/auth';
 import EmailForgotPasswordModal from '../Modals/EmailForgotPassword';
 import OtpEmailModal from '../Modals/OtpEmail';
 const EmailLogin = () => {

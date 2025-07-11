@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import {View, Text, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Calendar, Clock } from 'lucide-react-native';
+import {Calendar, Clock} from 'lucide-react-native';
 import BackgroundSVG from '../../../assests/svgs/Looper-1.svg';
 import styles from './index.styles';
 
@@ -10,10 +10,10 @@ const DoctorsCard = () => {
   return (
     <LinearGradient
       colors={['rgba(0, 188, 212, 0.1)', '#00BCD4', '#0088B1']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
       style={styles.cardContainer}>
-      <View style={{ padding: 12, flex: 1 }}>
+      <View style={{padding: 12, flex: 1}}>
         <View style={styles.svgBottomLeft}>
           <BackgroundSVG width={162} height={157} strokeWidth={3} />
         </View>

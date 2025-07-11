@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { Fonts } from '../../styles/fonts';
+import {StyleSheet} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#E0E0E0',
     elevation: 5, // Android shadow
     shadowColor: '#000000', // iOS shadow
-    shadowOffset: { width: 0, height: -2 },
+    shadowOffset: {width: 0, height: -2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },

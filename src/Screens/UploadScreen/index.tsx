@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -10,8 +10,8 @@ import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
 import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
-import { Clock, Search, ChevronLeft } from 'lucide-react-native';
-import { styles } from './index.style';
+import {Clock, Search, ChevronLeft} from 'lucide-react-native';
+import {styles} from './index.style';
 import ProductCard from '../../components/cards/ProductCard';
 
 import {
@@ -19,24 +19,24 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation';
-import { addToCart } from '../../Services/cart';
-import { useAuthStore } from '../../store/authStore';
-import { Product } from '../../types';
-import { useCartStore } from '../../store/cartStore';
+import {RootStackParamList} from '../../navigation';
+import {addToCart} from '../../Services/cart';
+import {useAuthStore} from '../../store/authStore';
+import {Product} from '../../types';
+import {useCartStore} from '../../store/cartStore';
 import useProductStore from '../../store/productsStore';
-import { useToastStore } from '../../store/toastStore';
+import {useToastStore} from '../../store/toastStore';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
 
 type UploadScreenRouteProp = RouteProp<RootStackParamList, 'UploadScreen'>;
 
-const UploadScreen = ({ route }: { route: UploadScreenRouteProp }) => {
+const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { product } = route.params;
-  const { cardProducts } = useProductStore();
+  const {product} = route.params;
+  const {cardProducts} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
-  const { setUserCart } = useCartStore.getState();
+  const {setUserCart} = useCartStore.getState();
   // const [loading, setLoading] = useState<boolean>(false);
   // const [relatedProductsLoading, setRelatedProductsLoading] =
   //   useState<boolean>(false); // For related products
@@ -97,7 +97,7 @@ const UploadScreen = ({ route }: { route: UploadScreenRouteProp }) => {
 
   const relatedProductItems = cardProducts;
 
-  const renderCheaperAlternativeProduct = ({ item }: { item: any }) => {
+  const renderCheaperAlternativeProduct = ({item}: {item: any}) => {
     return (
       <TouchableOpacity onPress={() => handleProductPress(item)}>
         <ProductCard
@@ -111,7 +111,7 @@ const UploadScreen = ({ route }: { route: UploadScreenRouteProp }) => {
   };
 
   // Render related product
-  const renderRelatedProduct = ({ item }: { item: any }) => {
+  const renderRelatedProduct = ({item}: {item: any}) => {
     return (
       <TouchableOpacity onPress={() => handleProductPress(item)}>
         <ProductCard
@@ -171,7 +171,7 @@ const UploadScreen = ({ route }: { route: UploadScreenRouteProp }) => {
                     style={styles.productCardsContainer}>
                     {cheaperAlternativeItems.map(item => (
                       <View key={item.id} style={styles.productCard}>
-                        {renderCheaperAlternativeProduct({ item })}
+                        {renderCheaperAlternativeProduct({item})}
                       </View>
                     ))}
                   </ScrollView>
@@ -195,7 +195,7 @@ const UploadScreen = ({ route }: { route: UploadScreenRouteProp }) => {
                 style={styles.productCardsContainer}>
                 {relatedProductItems.map(item => (
                   <View key={item.id} style={styles.productCard}>
-                    {renderRelatedProduct({ item })}
+                    {renderRelatedProduct({item})}
                   </View>
                 ))}
               </ScrollView>

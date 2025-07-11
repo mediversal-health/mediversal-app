@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
+import React, {useState} from 'react';
+import {View, TextInput, TouchableOpacity, Text} from 'react-native';
+import {Eye, EyeOff} from 'lucide-react-native';
 import styles from './index.styles';
 import GoogleLoginButton from '../../ui/GoogleLoginButton';
-import { RegisterUser } from '../../../Services/auth';
+import {RegisterUser} from '../../../Services/auth';
 import OtpSignUpModal from '../Modals/OtpSIgnUp';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../navigation';
-import { useToastStore } from '../../../store/toastStore'; // Import the toast store
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../../navigation';
+import {useToastStore} from '../../../store/toastStore'; // Import the toast store
 
 const EmailSignup = () => {
   const [email, setEmail] = useState('');
@@ -84,7 +84,7 @@ const EmailSignup = () => {
   const handleNavigate = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Login' }],
+      routes: [{name: 'Login'}],
     });
   };
 

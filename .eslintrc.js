@@ -31,9 +31,10 @@ module.exports = {
     'react-native/no-inline-styles': 'off',
     'prettier/prettier': 'error',
     'react/react-in-jsx-scope': 'off',
-    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
     'react/jsx-key': 'off',
     'react/no-unescaped-entities': 'off',
+    'object-curly-spacing': ['error', 'never'],
   },
   settings: {
     react: {

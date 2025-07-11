@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, StyleSheet, Animated, View } from 'react-native';
-import { CheckCircle, XCircle } from 'lucide-react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {Text, StyleSheet, Animated, View} from 'react-native';
+import {CheckCircle, XCircle} from 'lucide-react-native';
 
 // Import your SVG components - replace these with your actual imports
 import SvgIcon from './assets/svgs/Vector (1).svg';
@@ -97,7 +97,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
       style={[
         styles.toast,
         toastTypeStyles[type],
-        { transform: [{ translateY: slideAnim }] },
+        {transform: [{translateY: slideAnim}]},
       ]}>
       <View style={styles.toastContent}>
         {type === 'success' && showIcon && (

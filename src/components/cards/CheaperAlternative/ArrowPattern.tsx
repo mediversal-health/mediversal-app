@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { MoveDown } from 'lucide-react-native';
+import {View, StyleSheet} from 'react-native';
+import {MoveDown} from 'lucide-react-native';
 
 interface ArrowPatternProps {
   backgroundColor?: string;
@@ -41,9 +41,7 @@ const ArrowPattern: React.FC<ArrowPatternProps> = ({
   };
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
-      {createArrows()}
-    </View>
+    <View style={[styles.container, {backgroundColor}]}>{createArrows()}</View>
   );
 };
 

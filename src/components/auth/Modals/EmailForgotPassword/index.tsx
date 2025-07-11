@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './index.styles';
-import { forgotPassword } from '../../../../Services/auth';
+import {forgotPassword} from '../../../../Services/auth';
 import OtpForgotPasswordModal from '../OtpForgotPassword';
 interface EmailForgotPasswordModalProps {
   isVisible: boolean;
@@ -65,7 +65,7 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
         swipeDirection={['down']}
         backdropOpacity={0.5}
         // eslint-disable-next-line react-native/no-inline-styles
-        style={{ margin: 0, justifyContent: 'flex-end' }}>
+        style={{margin: 0, justifyContent: 'flex-end'}}>
         <View style={styles.container}>
           <Text style={styles.title}>Reset Your Password</Text>
           <Text style={styles.subtitle}>
@@ -76,7 +76,7 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
             style={[
               styles.inputWrapper,
               // eslint-disable-next-line react-native/no-inline-styles
-              isEmailFocused && { borderColor: '#0088B1' },
+              isEmailFocused && {borderColor: '#0088B1'},
             ]}>
             <TextInput
               placeholder="mediversal@gmail.com"
@@ -116,9 +116,7 @@ const EmailForgotPasswordModal: React.FC<EmailForgotPasswordModalProps> = ({
                 style={[
                   styles.buttonText,
                   // eslint-disable-next-line react-native/no-inline-styles
-                  isValidEmail(email)
-                    ? { color: '#fff' }
-                    : { color: '#0088B1' },
+                  isValidEmail(email) ? {color: '#fff'} : {color: '#0088B1'},
                 ]}>
                 Send OTP
               </Text>

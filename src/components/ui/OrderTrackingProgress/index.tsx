@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import { TrackScan } from '../../../types';
+import {View, Text, Dimensions} from 'react-native';
+import {TrackScan} from '../../../types';
 import styles from './index.styles';
 interface OrderTrackingProgressProps {
   trackingData: TrackScan[];
@@ -115,7 +115,7 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
             return (
               <View
                 key={`${step.rapidshyp_status_code}_${index}`}
-                style={[styles.step, { width: itemWidth }]}>
+                style={[styles.step, {width: itemWidth}]}>
                 <View
                   style={[
                     styles.stepIcon,
@@ -132,7 +132,7 @@ const OrderTrackingProgress: React.FC<OrderTrackingProgressProps> = ({
                 <Text
                   style={[
                     styles.stepTitle,
-                    { color: isActive ? '#101828' : '#667085' },
+                    {color: isActive ? '#101828' : '#667085'},
                   ]}>
                   {step.scan.includes('Shipment Booked')
                     ? 'Shipment Booked'

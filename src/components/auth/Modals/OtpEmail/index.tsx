@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-catch-shadow */
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
   TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { sendOTP, verifyOTP } from '../../../../Services/auth';
-import { RootStackParamList } from '../../../../navigation';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {sendOTP, verifyOTP} from '../../../../Services/auth';
+import {RootStackParamList} from '../../../../navigation';
 import styles from './index.styles';
-import { useAuthStore } from '../../../../store/authStore';
+import {useAuthStore} from '../../../../store/authStore';
 import {
   CodeField,
   Cursor,
@@ -46,7 +46,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
   const setAuthentication = useAuthStore(state => state.setAuthentication);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const ref = useBlurOnFulfill({ value: otpValue, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({value: otpValue, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otpValue,
     setValue: setOtpValue,
@@ -181,7 +181,7 @@ const OtpEmailModal: React.FC<OTPModalProps> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           autoComplete="sms-otp"
-          renderCell={({ index, symbol, isFocused }) => (
+          renderCell={({index, symbol, isFocused}) => (
             <View
               key={index}
               style={[

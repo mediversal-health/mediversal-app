@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { Fonts } from '../../../styles/fonts';
+import {StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   card: {
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     gap: 20,
     justifyContent: 'space-between',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,

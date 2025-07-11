@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { Fonts } from '../../styles/fonts';
+import {StyleSheet, Dimensions} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   safeArea: {

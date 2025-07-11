@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, ViewStyle, Platform } from 'react-native';
-import { SvgProps } from 'react-native-svg';
+import {View, Text, ViewStyle, Platform} from 'react-native';
+import {SvgProps} from 'react-native-svg';
 import styles from './index.styles';
 interface CategoryCardProps {
   SvgImage: React.FC<SvgProps>;
@@ -47,7 +47,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   };
 
   return (
-    <View style={{ display: 'flex' }}>
+    <View style={{display: 'flex'}}>
       <View style={[styles.container, style]}>
         <View style={[styles.imageContainer, getImageAlignment()]}>
           <SvgImage width={imageWidth} height={imageHeight} />

@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { Coupon } from '../types';
+import {create} from 'zustand';
+import {Coupon} from '../types';
 
 interface CouponState {
   customerCoupons: Record<string, Coupon | null>;

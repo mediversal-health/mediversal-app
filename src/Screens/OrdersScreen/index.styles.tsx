@@ -1,5 +1,5 @@
-import { StatusBar, StyleSheet, Platform } from 'react-native';
-import { Fonts } from '../../styles/fonts';
+import {StatusBar, StyleSheet, Platform} from 'react-native';
+import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {

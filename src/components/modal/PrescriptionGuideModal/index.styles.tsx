@@ -1,5 +1,5 @@
-import { Platform, StyleSheet } from 'react-native';
-import { Fonts } from '../../../styles/fonts';
+import {Platform, StyleSheet} from 'react-native';
+import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modalOverlay: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 16,
     top: '50%',
-    transform: [{ translateY: -12 }],
+    transform: [{translateY: -12}],
   },
   caption: {
     textAlign: 'center',

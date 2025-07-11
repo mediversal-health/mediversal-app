@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text } from 'react-native';
+import {View, Text} from 'react-native';
 import {
   Check,
   X,
@@ -13,10 +13,10 @@ import {
   Boxes,
 } from 'lucide-react-native';
 
-import type { ReactElement } from 'react';
-import { Order, OrderStatus } from '../../../types';
+import type {ReactElement} from 'react';
+import {Order, OrderStatus} from '../../../types';
 import styles from './index.styles';
-import { Fonts } from '../../../styles/fonts';
+import {Fonts} from '../../../styles/fonts';
 
 interface OrderCardProps {
   order: Order;
@@ -62,7 +62,7 @@ const DEFAULT_CONFIG: StatusConfig = {
   statusColor: '#6b7280',
 };
 
-const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
+const OrderCard: React.FC<OrderCardProps> = ({order}) => {
   const config = STATUS_CONFIG[order.status as OrderStatus] || DEFAULT_CONFIG;
 
   return (
@@ -75,12 +75,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           justifyContent: 'space-between',
         }}>
         <View>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
+          <View style={{flexDirection: 'row', gap: 5}}>
             <View
-              style={[styles.iconWrapper, { backgroundColor: config.bgColor }]}>
+              style={[styles.iconWrapper, {backgroundColor: config.bgColor}]}>
               <Truck />
             </View>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{flexDirection: 'column'}}>
               <Text style={styles.name}>{order.status}</Text>
               <Text style={styles.orderId}>{order.orderId}</Text>
             </View>
@@ -89,13 +89,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
         <ChevronRight />
       </View>
-      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+      <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
         <View style={styles.rightContent}>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Package size={20} />
             </View>
-            <View style={{ flexDirection: 'column', gap: 2 }}>
+            <View style={{flexDirection: 'column', gap: 2}}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
@@ -109,11 +109,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           </View>
         </View>
         <View style={styles.rightContent}>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Boxes size={20} />
             </View>
-            <View style={{ flexDirection: 'column', gap: 2 }}>
+            <View style={{flexDirection: 'column', gap: 2}}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
@@ -127,11 +127,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           </View>
         </View>
         <View style={styles.rightContent}>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <BadgeIndianRupee size={20} />
             </View>
-            <View style={{ flexDirection: 'column', gap: 2 }}>
+            <View style={{flexDirection: 'column', gap: 2}}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
+import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
 import {
   ChevronLeft,
   Filter,
@@ -11,19 +11,19 @@ import {
 
 import ProductCard from '../../components/cards/ProductCard';
 import SearchBar from '../../components/common/SearchBar';
-import { ProductCardProps } from '../../types';
+import {ProductCardProps} from '../../types';
 import styles from './index.styles';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation';
 import useProductStore from '../../store/productsStore';
 import FilterBottomSheet from '../../components/modal/FilterBottomSheet';
-import { getProductsById } from '../../Services/pharmacy';
-import { addToCart } from '../../Services/cart';
-import { useAuthStore } from '../../store/authStore';
-import { useToastStore } from '../../store/toastStore';
+import {getProductsById} from '../../Services/pharmacy';
+import {addToCart} from '../../Services/cart';
+import {useAuthStore} from '../../store/authStore';
+import {useToastStore} from '../../store/toastStore';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
-import { useCartStore } from '../../store/cartStore';
-import { useFilterStore } from '../../store/filterStore';
+import {useCartStore} from '../../store/cartStore';
+import {useFilterStore} from '../../store/filterStore';
 
 interface Category {
   id: string;
@@ -36,7 +36,7 @@ const AllProductsScreen: React.FC = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [searchText, setSearchText] = useState('');
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [priceRange, setPriceRange] = useState({min: '', max: ''});
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   // const [filteredProducts, setFilteredProducts] = useState<
@@ -44,9 +44,9 @@ const AllProductsScreen: React.FC = () => {
   // >(null);
   const [sortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
-  const { setUserCart } = useCartStore.getState();
-  const { cardProducts, getOriginalProduct } = useProductStore();
-  const { filteredProducts, setFilteredProducts } = useFilterStore();
+  const {setUserCart} = useCartStore.getState();
+  const {cardProducts, getOriginalProduct} = useProductStore();
+  const {filteredProducts, setFilteredProducts} = useFilterStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
   console.log('card', cardProducts);
@@ -158,7 +158,7 @@ const AllProductsScreen: React.FC = () => {
     },
   ];
 
-  const renderProduct = ({ item }: { item: ProductCardProps['product'] }) => (
+  const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
     <TouchableOpacity
       onPress={() => handleProductPress(item)}
       style={styles.productCardContainer}>
@@ -176,7 +176,7 @@ const AllProductsScreen: React.FC = () => {
     setSelectedCategory(categoryName);
     setSelectedFilters({});
     setSearchText('');
-    setPriceRange({ min: '', max: '' });
+    setPriceRange({min: '', max: ''});
 
     if (categoryName === 'All') {
       setFilteredProducts(null);
@@ -189,14 +189,14 @@ const AllProductsScreen: React.FC = () => {
   };
   console.log(filteredProducts, 'filteredProducts all');
 
-  const renderCategory = ({ item }: { item: Category }) => (
+  const renderCategory = ({item}: {item: Category}) => (
     <TouchableOpacity
       style={[
         styles.categoryItem,
         selectedCategory === item.name && styles.selectedCategory,
       ]}
       onPress={() => handleCategorySelect(item.name)}>
-      <Image source={{ uri: item.icon }} style={styles.categoryIcon} />
+      <Image source={{uri: item.icon}} style={styles.categoryIcon} />
       <Text
         style={[
           styles.categoryText,
@@ -223,7 +223,7 @@ const AllProductsScreen: React.FC = () => {
         break;
     }
 
-    useProductStore.setState({ cardProducts: sorted });
+    useProductStore.setState({cardProducts: sorted});
   };
 
   return (
@@ -301,11 +301,11 @@ const AllProductsScreen: React.FC = () => {
                           <ArrowUpDown size={16} color="#0088B1" />
                         )}
                         {option === 'Relevance' ? (
-                          <Text style={{ marginLeft: 6, color: '#0088B12' }}>
+                          <Text style={{marginLeft: 6, color: '#0088B12'}}>
                             {option}
                           </Text>
                         ) : (
-                          <Text style={{ marginLeft: 6 }}>{option}</Text>
+                          <Text style={{marginLeft: 6}}>{option}</Text>
                         )}
                       </TouchableOpacity>
                     ))}
