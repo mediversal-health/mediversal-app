@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginRight: Platform.OS === 'ios' ? 16 : 0,
+    marginBottom: Platform.OS === 'ios' ? 30 : 0,
   },
   imageTextWrapper: {
     flexDirection: 'row',
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 5,
     paddingHorizontal: 10,
+    marginRight: Platform.OS === 'ios' ? 16 : 0,
   },
   consultButtonText: {
     fontSize: 10,
