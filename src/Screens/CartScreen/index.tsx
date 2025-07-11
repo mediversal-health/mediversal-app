@@ -1,7 +1,7 @@
 /* eslint-disable no-catch-shadow */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
   Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {styles} from './index.styles';
+import { styles } from './index.styles';
 import {
   Percent,
   ChevronRight,
@@ -22,24 +22,24 @@ import {
   ChevronLeft,
 } from 'lucide-react-native';
 
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
 import BillSummaryCard from '../../components/cards/BillSummaryCard';
 import OtherDetailsCard from '../../components/cards/OtherDetailsCard';
 import LocationModal from '../../components/modal/LocationModal';
-import {RootStackParamList} from '../../navigation';
+import { RootStackParamList } from '../../navigation';
 import NavigationImg from './assets/svgs/navigation.svg';
-import {Fonts} from '../../styles/fonts';
-import {useAuthStore} from '../../store/authStore';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useCallback} from 'react';
-import {getCartItems} from '../../Services/cart';
-import {useCouponStore} from '../../store/couponStore';
-import {useCartStore} from '../../store/cartStore';
+import { Fonts } from '../../styles/fonts';
+import { useAuthStore } from '../../store/authStore';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useCallback } from 'react';
+import { getCartItems } from '../../Services/cart';
+import { useCouponStore } from '../../store/couponStore';
+import { useCartStore } from '../../store/cartStore';
 import RazorpayCheckout from 'react-native-razorpay';
 import useProductStore from '../../store/productsStore';
-import {getProducts} from '../../Services/pharmacy';
-import {useToastStore} from '../../store/toastStore';
+import { getProducts } from '../../Services/pharmacy';
+import { useToastStore } from '../../store/toastStore';
 import Config from 'react-native-config';
 import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
 const CartPage = () => {
@@ -62,9 +62,9 @@ const CartPage = () => {
   const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const {getSelectedCoupon, setSelectedCoupon} = useCouponStore();
+  const { getSelectedCoupon, setSelectedCoupon } = useCouponStore();
   const selectedCoupon = getSelectedCoupon(String(customer_id));
-  const {originalProducts, setProducts} = useProductStore();
+  const { originalProducts, setProducts } = useProductStore();
   const [hasOutOfStockItems, setHasOutOfStockItems] = useState(false);
   const [isPaymentMethodVisible, setPaymentMethodVisible] = useState(false);
   const showToast = useToastStore(state => state.showToast);
@@ -252,7 +252,7 @@ const CartPage = () => {
         key: RAZORPAY_KEY as string,
         amount: (cartTotal - couponDiscount + 5 + 40) * 100,
         name: 'Mediversal APP',
-        theme: {color: '#0088B1'},
+        theme: { color: '#0088B1' },
       };
       const cartItems = apiProductDetails.map(item => ({
         productId: item.productId,
@@ -374,9 +374,9 @@ const CartPage = () => {
                   gap: 15,
                   justifyContent: 'space-between',
                 }}>
-                <View style={{flexDirection: 'row', gap: 10}}>
+                <View style={{ flexDirection: 'row', gap: 10 }}>
                   <NavigationImg />
-                  <View style={{flexDirection: 'column', width: '70%'}}>
+                  <View style={{ flexDirection: 'column', width: '70%' }}>
                     <Text
                       style={{
                         color: '#899193',
@@ -386,7 +386,10 @@ const CartPage = () => {
                       Deliver to {formData?.Recipient_name}
                     </Text>
                     <Text
-                      style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
+                      style={{
+                        fontSize: 12,
+                        fontFamily: Fonts.JakartaRegular,
+                      }}>
                       {formattedAddress}
                     </Text>
                   </View>
@@ -421,8 +424,8 @@ const CartPage = () => {
                 }>
                 <LinearGradient
                   colors={['#F8F8F8', '#FE90E2']}
-                  start={{x: 1, y: 0}}
-                  end={{x: 1, y: 1}}
+                  start={{ x: 1, y: 0 }}
+                  end={{ x: 1, y: 1 }}
                   style={styles.couponStrip}>
                   <View style={styles.couponLeft}>
                     <Percent size={16} color="#000" style={styles.icon} />
@@ -437,11 +440,11 @@ const CartPage = () => {
             (apiProductDetails && selectedCoupon && (
               <LinearGradient
                 colors={['#FFFFFF', '#0088B1']}
-                start={{x: 1, y: 1}}
-                end={{x: 0, y: 1}}
+                start={{ x: 1, y: 1 }}
+                end={{ x: 0, y: 1 }}
                 style={styles.appliedCouponContainer}>
                 <View style={styles.appliedCouponLeft}>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{ flexDirection: 'row' }}>
                     <Text style={styles.appliedCouponText}>
                       Coupon Applied:
                     </Text>
@@ -497,14 +500,14 @@ const CartPage = () => {
                 </View>
                 <TouchableOpacity
                   onPress={() => setSelectedRadio(!selectedRadio)}
-                  style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={[styles.radioLabel, {marginRight: 8}]}>
+                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={[styles.radioLabel, { marginRight: 8 }]}>
                     0MCs
                   </Text>
                   <View
                     style={[
                       styles.radioCircle,
-                      selectedRadio && {borderColor: '#0088B1'},
+                      selectedRadio && { borderColor: '#0088B1' },
                     ]}>
                     {selectedRadio && <View style={styles.selectedDot} />}
                   </View>
