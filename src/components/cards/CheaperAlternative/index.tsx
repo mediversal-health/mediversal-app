@@ -4,6 +4,7 @@ import {ChevronDown, DollarSign} from 'lucide-react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SVGArrow from './assets/SVGArrow.svg';
 import styles from './index.style';
+import {Fonts} from '../../../styles/fonts';
 
 interface CheaperAlternativeProps {
   discountPercentage: number;
@@ -52,10 +53,11 @@ const CheaperAlternative: React.FC<CheaperAlternativeProps> = ({
         activeOpacity={0.7}>
         <View style={styles.headerContent}>
           <View style={styles.iconContainer}>
-            <DollarSign size={20} color="#0088B1" />
+            <DollarSign size={24} color="#0088B1" />
           </View>
           <Text style={styles.headerText}>
-            {discountPercentage}% Cheaper alternative available
+            {discountPercentage}% Cheaper alternative{' '}
+            <Text style={{fontFamily: Fonts.JakartaRegular}}>available</Text>
           </Text>
         </View>
         <Animated.View style={animatedStyles}>

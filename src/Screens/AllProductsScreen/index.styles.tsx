@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   productCardContainer: {
     width: '50%',
     marginBottom: 10,
+    gap: 5,
   },
   searchBarContainer: {
     paddingHorizontal: 16,

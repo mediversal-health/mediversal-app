@@ -7,6 +7,7 @@ export const Fonts = {
   JakartaMedium: 'PlusJakartaSans-Medium',
   JakartaRegular: 'PlusJakartaSans-Regular',
   JakartaSemiBold: 'PlusJakartaSans-SemiBold',
+  JakartaBoldItalic: 'PlusJakartaSans-BoldItalic',
 };
 export const FontSizes = {
   xxs: 10,

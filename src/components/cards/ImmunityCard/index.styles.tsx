@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 8,
     color: '#40C4FF',
-    fontWeight: '600',
+    fontFamily: Fonts.JakartaMedium,
   },
   svgContainer: {
     position: 'absolute',

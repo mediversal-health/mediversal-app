@@ -19,9 +19,11 @@ const OrderNowCard = () => {
       </View>
 
       <View style={styles.textContent}>
-        <Text style={styles.heading}>Stay Healthy,</Text>
-        <Text style={styles.heading}>Stay Happy</Text>
-        <Text style={styles.subText}>Orders medicines easily from home</Text>
+        <View>
+          <Text style={styles.heading}>Stay Healthy,</Text>
+          <Text style={styles.heading}>Stay Happy</Text>
+          <Text style={styles.subText}>Orders medicines easily from home</Text>
+        </View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('AllProducts')}>

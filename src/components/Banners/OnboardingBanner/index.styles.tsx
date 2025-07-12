@@ -5,22 +5,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#F8F8F8',
   },
   gradientBox: {
     flex: 1,
-    height: 230,
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: Platform.OS === 'ios' ? 0 : 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+
     overflow: 'hidden',
   },
   onboardingContainer: {
@@ -33,26 +25,26 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   titleText: {
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: Fonts.JakartaBold,
-    color: '#fff',
+    color: '#F8F8F8',
     marginBottom: 4,
   },
   subtitleText: {
-    fontSize: 10,
+    fontSize: 11,
     fontFamily: Fonts.JakartaRegular,
-    color: '#fff',
+    color: '#F8F8F8',
   },
   stepsRow: {
     backgroundColor: '#E8F4F7',
     borderRadius: 4,
     paddingVertical: 4,
-    paddingHorizontal: 16,
+    paddingHorizontal: 32,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   stepLabel: {
     color: '#0088B1',
@@ -63,6 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    gap: 12,
   },
   stepBox: {
     backgroundColor: '#E8F4F7',
@@ -71,12 +64,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-
-    marginHorizontal: 4,
   },
   stepText: {
     color: '#0088B1',
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: Fonts.JakartaSemiBold,
     marginTop: 6,
     textAlign: 'center',

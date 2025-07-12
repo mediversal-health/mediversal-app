@@ -154,11 +154,7 @@ const AllProductsScreen: React.FC = () => {
       name: 'SENIOR & ASSISTED LIVING',
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
-    {
-      id: '12',
-      name: 'SENIOR & ASSISTED LIVING',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
-    },
+
     {
       id: '13',
       name: 'SEASONAL, HOME & EMERGENCY ESSENTIALS',

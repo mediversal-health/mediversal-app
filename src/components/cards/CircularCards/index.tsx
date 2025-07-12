@@ -22,10 +22,12 @@ const CircleCard: React.FC<CircleCardProps> = ({
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#E8F4F7',
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#d0d1d1ff',
       }}
       onPress={onPress}>
       <Logo width={size - 30} height={size - 30} fill={fillColor} />

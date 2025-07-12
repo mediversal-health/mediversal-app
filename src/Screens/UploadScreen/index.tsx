@@ -105,6 +105,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
           onAddToCart={item.onAddToCart}
           borderColor={'#2D9CDB'}
           buttonColor={'#2D9CDB'}
+          backgroundColor={'#E8F4F7'}
         />
       </TouchableOpacity>
     );
@@ -119,6 +120,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
           onAddToCart={item.onAddToCart}
           borderColor={'#2D9CDB'}
           buttonColor={'#2D9CDB'}
+          backgroundColor={'#E8F4F7'}
         />
       </TouchableOpacity>
     );
@@ -134,8 +136,10 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <View style={styles.headerRightIcons}>
-            <TouchableOpacity style={styles.iconSpacing}>
-              <Search size={20} color="#161D1F" />
+            <TouchableOpacity
+              style={styles.iconSpacing}
+              onPress={() => navigation.navigate('GlobalSearchScreen')}>
+              <Search size={20} color="#161D1F" strokeWidth={1} />
             </TouchableOpacity>
             <CartIconWithBadge />
           </View>
@@ -164,11 +168,8 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
 
             <View style={styles.cheaperAlternativeContainer}>
               <CheaperAlternative discountPercentage={5}>
-                <View style={styles.productCardsContainer}>
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.productCardsContainer}>
+                <View>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {cheaperAlternativeItems.map(item => (
                       <View key={item.id} style={styles.productCard}>
                         {renderCheaperAlternativeProduct({item})}
