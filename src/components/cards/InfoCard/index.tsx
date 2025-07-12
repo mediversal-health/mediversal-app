@@ -42,8 +42,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
             )}
           </Text>
           {flag === 'Tests' && (
-            // eslint-disable-next-line react-native/no-inline-styles
-            <Text style={{fontSize: 10, color: '#000', textAlign: 'center'}}>
+            <Text style={{fontSize: 10, color: '#161D1F', textAlign: 'center'}}>
               & Diagnostic Tests
             </Text>
           )}
@@ -60,9 +59,9 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         ) : flag === 'Checkup' ? (
           <SvgComponent width={70} height={40} />
         ) : flag === 'Surgeries' ? (
-          <SvgComponent width={70} height={80} />
+          <SvgComponent width={90} height={80} />
         ) : (
-          <SvgComponent width={40} height={40} />
+          <SvgComponent width={50} height={40} />
         )}
       </View>
     </LinearGradient>

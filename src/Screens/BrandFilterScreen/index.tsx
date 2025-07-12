@@ -146,7 +146,7 @@ const BrandFilterScreen = () => {
         <View style={{flexDirection: 'row', gap: 10}}>
           <TouchableOpacity
             onPress={() => navigation.navigate('GlobalSearchScreen')}>
-            <Search size={20} />
+            <Search size={20} color={'#899193'} strokeWidth={1.5} />
           </TouchableOpacity>
           <CartIconWithBadge />
         </View>

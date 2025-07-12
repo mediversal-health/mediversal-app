@@ -19,8 +19,8 @@ import SVG3 from './assets/svgs/m-1 1.svg';
 import SVG4 from './assets/svgs/hc-1 1.svg';
 import SVG5 from './assets/svgs/ecp-2 1.svg';
 import SVG6 from './assets/svgs/surgeries-1 1.svg';
-import LinearGradient from 'react-native-linear-gradient';
-import PriceCard from '../../components/cards/PriceCard';
+// import LinearGradient from 'react-native-linear-gradient';
+// import PriceCard from '../../components/cards/PriceCard';
 import OrderNowCard from '../../components/cards/OrderCard';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -33,7 +33,7 @@ const HomeScreen = () => {
       {/* Render the ToastComponent at the top of your screen */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+        <StatusBar backgroundColor="#F8F8F8" barStyle="dark-content" />
 
         <View style={styles.headerContainer}>
           <Text style={styles.sectionLabel}>Upcoming</Text>
@@ -44,7 +44,11 @@ const HomeScreen = () => {
             </View>
             <TouchableOpacity style={styles.seeAllButton}>
               <Text style={styles.seeAllText}>See All</Text>
-              <ArrowRight size={10} style={styles.arrowIcon} />
+              <ArrowRight
+                size={12}
+                style={styles.arrowIcon}
+                color={'#161d1f'}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -61,8 +65,8 @@ const HomeScreen = () => {
         <View
           style={{
             flexDirection: 'row',
-            paddingHorizontal: 10,
-            paddingVertical: 20,
+            marginVertical: 24,
+            // paddingVertical: 20,
           }}>
           <OrderNowCard />
         </View>
@@ -126,7 +130,7 @@ const HomeScreen = () => {
           />
         </View>
 
-        <View style={styles.separatorContainer}>
+        {/* <View style={styles.separatorContainer}>
           <LinearGradient
             colors={['#00FF80', 'transparent']}
             start={{x: 1, y: 0}}
@@ -165,7 +169,7 @@ const HomeScreen = () => {
         <View style={styles.footer}>
           <Text style={styles.footerText}>See All</Text>
           <ArrowRight color="#ccc" height={10} />
-        </View>
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );

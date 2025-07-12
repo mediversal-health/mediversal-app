@@ -73,7 +73,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}} edges={['top']}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} edges={['top']}>
       <StatusBar
         backgroundColor="#0088B1"
         barStyle="light-content"
@@ -88,6 +88,7 @@ const Layout = () => {
               justifyContent: 'space-between',
               paddingHorizontal: 20,
               paddingBottom: 0,
+              marginTop: 10,
               marginBottom: 10,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -127,7 +128,7 @@ const Layout = () => {
                       style={{
                         fontFamily: Fonts.JakartaRegular,
                         fontSize: 18,
-                        color: '#fff',
+                        color: '#F8F8F8',
                       }}>
                       {email ? email.charAt(0).toUpperCase() : 'GU'}
                     </Text>
@@ -140,6 +141,7 @@ const Layout = () => {
                   style={{
                     fontSize: 12,
                     fontFamily: Fonts.JakartaBold,
+                    color: '#161D1F',
                   }}>
                   Delivering to
                 </Text>
@@ -168,17 +170,18 @@ const Layout = () => {
                           : 'Select Location'}
                       </Text>
                     </TouchableOpacity>
-                    <ChevronDown size={20} />
+                    <ChevronDown size={20} color={'#161D1F'} strokeWidth={2} />
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
-                    <Bell size={20} />
+                    <Bell size={20} color={'#161D1F'} strokeWidth={1} />
                     <CartIconWithBadge />
                   </View>
                 </View>
               </View>
             </View>
           </View>
-          <View
+          {/* Notification Switch*/}
+          {/* <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -215,8 +218,8 @@ const Layout = () => {
               trackColor={{false: '#ccc', true: '#ccc'}}
               thumbColor={isEnabled ? '#0088B1' : '#ccc'}
             />
-          </View>
-          <TouchableOpacity style={{paddingHorizontal: 20}}>
+          </View> */}
+          <TouchableOpacity style={{paddingHorizontal: 16, paddingBottom: 16}}>
             <SearchBar />
           </TouchableOpacity>
         </>

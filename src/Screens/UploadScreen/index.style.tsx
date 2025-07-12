@@ -80,20 +80,23 @@ export const styles = StyleSheet.create({
   },
   productCardsContainer: {
     flexDirection: 'row',
-    flexWrap: 'nowrap',
+    gap: 10,
+    marginLeft: 24,
   },
   productCard: {
     width: 'auto',
-    marginRight: 1,
+    marginRight: 12,
     marginBottom: 24,
   },
 
   relatedProductsHeading: {
+    marginTop: 24,
     fontSize: 18,
     fontFamily: Fonts.JakartaSemiBold,
     marginBottom: 12,
     paddingHorizontal: 16,
     color: '#000',
+    marginHorizontal: 16,
   },
   relatedProductsContainer: {
     marginTop: 2,

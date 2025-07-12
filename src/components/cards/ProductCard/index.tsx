@@ -146,18 +146,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </View>
 
         <View style={styles.discountContainer}>
-          <Text style={styles.originalPrice}>₹{product.discountedPrice}</Text>
+          <Text style={styles.originalPrice}>₹{product.originalPrice}</Text>
           <Text style={styles.discountPercentage}>
             {Math.round(
-              ((product.discountedPrice - product.originalPrice) /
-                product.discountedPrice) *
+              ((product.originalPrice - product.discountedPrice) /
+                product.originalPrice) *
                 100,
             )}
             % off
           </Text>
         </View>
 
-        <Text style={styles.currentPrice}>₹{product.originalPrice}</Text>
+        <Text style={styles.currentPrice}>₹{product.discountedPrice}</Text>
       </View>
 
       {quantity > 0 ? (

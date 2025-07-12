@@ -24,9 +24,6 @@ import useProductStore from '../../store/productsStore';
 import {ProductCardProps} from '../../types';
 import LinearGradient from 'react-native-linear-gradient';
 import Chips from '../../components/ui/ProductTypeChips';
-
-import BrandPromoBanner from '../../components/Banners/BrandPromoCard';
-
 import FaceCleanserSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 import MoisturizerSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 import SunscreenSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
@@ -149,7 +146,7 @@ const CategoryFilterScreen = () => {
         <View style={{flexDirection: 'row', gap: 10}}>
           <TouchableOpacity
             onPress={() => navigation.navigate('GlobalSearchScreen')}>
-            <Search size={20} />
+            <Search size={20} color={'#899193'} strokeWidth={1.5} />
           </TouchableOpacity>
           <CartIconWithBadge />
         </View>

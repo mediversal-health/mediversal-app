@@ -14,7 +14,7 @@ const SearchBar: React.FC = () => {
         style={styles.container}
         onPress={() => navigation.navigate('GlobalSearchScreen')}>
         <View style={styles.textWrapper}>
-          <Search color={'#0088B1'} size={20} />
+          <Search color={'#899193'} size={20} strokeWidth={1.5} />
           <Text style={styles.placeholderText}>
             Search for <Text style={styles.highlight}>Medicines</Text>
           </Text>
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#e8f4f7',
     borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
   textWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 12,
   },
   placeholderText: {
-    color: '#999',
+    color: '#899193',
     fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
   },
   highlight: {
     color: '#0088B1',

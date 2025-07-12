@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Stethoscope} from 'lucide-react-native';
+import {MessageCircleMore} from 'lucide-react-native';
 import {styles} from './index.styles';
 import {useCartStore} from '../../../store/cartStore';
 import {useAuthStore} from '../../../store/authStore';
@@ -201,9 +201,19 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           {(() => {
             const orig = Number((originalPrice || '').replace(/[^\d.]/g, ''));
             const curr = Number((currentPrice || '').replace(/[^\d.]/g, ''));
-            return orig && curr
-              ? `${Math.round(((orig - curr) / orig) * 100)}% OFF`
-              : discount;
+            console.log(orig, curr);
+            // Check if prices are valid numbers and original price is greater than 0
+            if (
+              !isNaN(orig) &&
+              !isNaN(curr) &&
+              orig > 0 &&
+              curr > 0 &&
+              orig > curr
+            ) {
+              const discountPercent = Math.round(((orig - curr) / orig) * 100);
+              return `${discountPercent}% off`;
+            }
+            return discount; // Return null if discount can't be calculated
           })()}
         </Text>
       </View>
@@ -232,7 +242,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.consultButton}>
-          <Stethoscope size={16} color="#0088B1" />
+          <MessageCircleMore size={16} color="#0088B1" />
           <Text style={styles.consultButtonText}>Consult</Text>
         </TouchableOpacity>
       </View>

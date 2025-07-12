@@ -5,11 +5,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#afb3b0',
+    borderColor: '#E5E8E9',
     marginTop: 10,
     borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 10,
     justifyContent: 'space-between',
     flexDirection: 'row',
     overflow: 'hidden',
@@ -26,11 +26,15 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#E8F4F7',
     borderRadius: 8,
-    padding: 8,
+    paddingHorizontal: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     fontSize: 10,
-    fontFamily: Fonts.JakartaRegular,
+    fontFamily: Fonts.JakartaMedium,
+    color: '#161D1F',
   },
 });
 export default styles;

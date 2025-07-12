@@ -5,9 +5,9 @@ import styles from './index.styles';
 const OnboardingSteps = () => {
   return (
     <LinearGradient
-      colors={['#0088B1', '#F8F8F8']}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: -1}}
+      colors={['#0188b1', '#BADCE6']}
+      start={{x: 0, y: 1}}
+      end={{x: 1, y: 0}}
       style={styles.gradientBox}>
       <View style={styles.onboardingContainer}>
         <View style={styles.titleContainer}>
@@ -27,17 +27,17 @@ const OnboardingSteps = () => {
 
         <View style={styles.boxesContainer}>
           <View style={styles.stepBox}>
-            <Search color="#0088B1" size={24} />
+            <Search color="#0088B1" size={24} strokeWidth={1.5} />
             <Text style={styles.stepText}>Find Medicine</Text>
           </View>
 
           <View style={styles.stepBox}>
-            <FileUp color="#0088B1" size={24} />
+            <FileUp color="#0088B1" size={24} strokeWidth={1.5} />
             <Text style={styles.stepText}>Upload Rx</Text>
           </View>
 
           <View style={styles.stepBox}>
-            <ShoppingBag color="#0088B1" size={24} />
+            <ShoppingBag color="#0088B1" size={24} strokeWidth={1.5} />
             <Text style={styles.stepText}>Checkout</Text>
           </View>
         </View>
