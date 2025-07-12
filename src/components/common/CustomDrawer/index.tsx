@@ -9,6 +9,7 @@ import {
   ScrollView,
   Dimensions,
   PanResponder,
+  Linking,
 } from 'react-native';
 import {ChevronRight, Plus, Check} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
@@ -185,8 +186,9 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OptiionsItem
               title="Buy Medicines"
               description="Get Medicine at 25% OFF"
+              onPress={() => navigation.navigate('ProfileScreen')}
             />
-            <OptiionsItem
+            {/* <OptiionsItem
               title="Homecare"
               description="Medical Care & Support at Home"
             />
@@ -209,7 +211,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OptiionsItem
               title="Surgeries"
               description="(NABH Accredited) Safe Surgeries by Experts"
-            />
+            /> */}
 
             <Text style={styles.sectionHeader}>Records</Text>
             <OtherOptionsItem
@@ -231,7 +233,12 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OtherOptionsItem title="Help & Support" />
             <OtherOptionsItem title="About Mediversal App" />
             <OtherOptionsItem title="Terms & Conditions" />
-            <OtherOptionsItem title="Privacy Policy" />
+            <OtherOptionsItem
+              title="Privacy Policy"
+              onPress={() =>
+                Linking.openURL('https://gwsmediversal.in/privacy-policy')
+              }
+            />
             {/* <TouchableOpacity
               onPress={handleLogout}
               style={styles.logoutButton}

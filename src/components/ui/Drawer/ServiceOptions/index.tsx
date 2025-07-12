@@ -7,6 +7,7 @@ import {Fonts} from '../../../../styles/fonts';
 type OptionsItemProps = {
   title: string;
   description: string;
+  onPress: () => void;
 };
 
 const OptiionsItem = ({title, description}: OptionsItemProps) => {
