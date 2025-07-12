@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   guaranteeDescription: {
     fontSize: 8,
     color: '#161D1F',
-    marginBottom: 6,
+    marginBottom: 12,
     fontFamily: Fonts.JakartaSemiBold,
   },
   featureContainer: {
@@ -91,12 +91,12 @@ export const styles = StyleSheet.create({
   personalizedTitle: {
     fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#111111',
+    color: '#161D1F',
     marginBottom: 4,
   },
   personalizedSubtitle: {
     fontSize: 8,
-    color: '#555555',
+    color: '#161D1F',
     marginBottom: 8,
     fontFamily: Fonts.JakartaSemiBold,
   },
@@ -115,7 +115,7 @@ export const styles = StyleSheet.create({
   personalizedFeatureText: {
     marginLeft: 6,
     fontSize: 8,
-    color: '#444444',
+    color: '#B0B6B8',
     fontFamily: Fonts.JakartaRegular,
   },
 });
