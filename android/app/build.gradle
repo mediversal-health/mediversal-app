@@ -83,9 +83,9 @@ android {
         applicationId "com.mediversal_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 4
         resConfigs "en", "hi"  
-        versionName "3.0"
+        versionName "4.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.mediversal_app' 
