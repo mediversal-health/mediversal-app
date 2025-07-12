@@ -105,6 +105,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
           onAddToCart={item.onAddToCart}
           borderColor={'#2D9CDB'}
           buttonColor={'#2D9CDB'}
+          backgroundColor={'#E8F4F7'}
         />
       </TouchableOpacity>
     );
@@ -119,6 +120,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
           onAddToCart={item.onAddToCart}
           borderColor={'#2D9CDB'}
           buttonColor={'#2D9CDB'}
+          backgroundColor={'#E8F4F7'}
         />
       </TouchableOpacity>
     );
