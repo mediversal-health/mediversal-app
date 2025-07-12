@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginTop: 8,
+    paddingBottom: 20,
   },
   inputRow: {
     flexDirection: 'row',
@@ -64,7 +65,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     color: '#666666',
-    padding: 40,
+    paddingTop: 20,
+    paddingBottom: 40,
+    paddingHorizontal: 40,
   },
   termsHighlight: {
     color: '#000000',

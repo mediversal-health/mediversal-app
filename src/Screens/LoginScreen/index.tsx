@@ -9,6 +9,7 @@ import {
   BackHandler,
   Alert,
   Text,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 import ToggleButtons from '../../components/ui/ToggleButton';
@@ -63,63 +64,71 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.topSection}>
-          {(isMobile || isSignup) && (
-            <View style={styles.carouselContainer}>
-              <Carosel width={280} height={280} />
-            </View>
-          )}
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.welcomeText}>{headerText}</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContent}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.topSection}>
+            {(isMobile || isSignup) && (
+              <View style={styles.carouselContainer}>
+                <Carosel width={280} height={280} />
+              </View>
+            )}
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.welcomeText}>{headerText}</Text>
 
-            {!isSignup ? (
-              <>
-                <Text style={styles.appNameText}>Mediversal</Text>
-                <Text style={styles.taglineText}>
-                  Easy Healthcare, In Your Hands
-                </Text>
-              </>
+              {!isSignup ? (
+                <>
+                  <Text style={styles.appNameText}>Mediversal</Text>
+                  <Text style={styles.taglineText}>
+                    Easy Healthcare, In Your Hands
+                  </Text>
+                </>
+              ) : (
+                <Text style={styles.appNameText}>{subHeaderText}</Text>
+              )}
+            </View>
+          </View>
+
+          <View style={styles.bottomSection}>
+            {isSignup ? (
+              <EmailSignup />
             ) : (
-              <Text style={styles.appNameText}>{subHeaderText}</Text>
+              <>
+                <ToggleButtons isMobile={isMobile} setIsMobile={setIsMobile} />
+                {isMobile ? <MobileLogin /> : <EmailLogin />}
+
+                {!isMobile && (
+                  <View style={styles.createAccountContainer}>
+                    <Text style={styles.noAccountText}>
+                      Don't have an Account?
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsSignup(true);
+                        setIsMobile(false);
+                      }}>
+                      <Text style={styles.createOneText}> Create One</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                {!isMobile && (
+                  <Text style={styles.termsText}>
+                    By logging in, you agree to our
+                    <Text style={styles.termsHighlight}>
+                      Terms & Conditions
+                    </Text>
+                  </Text>
+                )}
+              </>
             )}
           </View>
-        </View>
-
-        <View style={styles.bottomSection}>
-          {isSignup ? (
-            <EmailSignup />
-          ) : (
-            <>
-              <ToggleButtons isMobile={isMobile} setIsMobile={setIsMobile} />
-              {isMobile ? <MobileLogin /> : <EmailLogin />}
-
-              {!isMobile && (
-                <View style={styles.createAccountContainer}>
-                  <Text style={styles.noAccountText}>
-                    Don't have an Account?
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setIsSignup(true);
-                      setIsMobile(false);
-                    }}>
-                    <Text style={styles.createOneText}> Create One</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              {!isMobile && (
-                <Text style={styles.termsText}>
-                  By logging in, you agree to our
-                  <Text style={styles.termsHighlight}>Terms & Conditions</Text>
-                </Text>
-              )}
-            </>
-          )}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

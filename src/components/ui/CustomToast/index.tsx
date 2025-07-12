@@ -1,10 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Text, StyleSheet, Animated, View} from 'react-native';
-import {CheckCircle, XCircle} from 'lucide-react-native';
-
-// Import your SVG components - replace these with your actual imports
-import SvgIcon from './assets/svgs/Vector (1).svg';
-import SvgIcon2 from './assets/svgs/Asset 2 1.svg';
+import {Text, Animated, View} from 'react-native';
+import {CheckCircle, XCircle, AlertCircle, Info} from 'lucide-react-native';
+import {styles} from './GlobalCustomToast.styles';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -29,15 +26,46 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
-  const toastTypeStyles: Record<ToastType, object> = {
-    success: styles.success,
-    error: styles.error,
-    warning: styles.warning,
-    info: styles.info,
+  const getIcon = () => {
+    if (!showIcon) return null;
+
+    const iconProps = {
+      size: 18,
+      color: 'white',
+      style: styles.icon,
+    };
+
+    switch (type) {
+      case 'success':
+        return <CheckCircle {...iconProps} />;
+      case 'error':
+        return <XCircle {...iconProps} />;
+      case 'warning':
+        return <AlertCircle {...iconProps} />;
+      case 'info':
+        return <Info {...iconProps} />;
+      default:
+        return null;
+    }
+  };
+
+  const getTypeStyle = () => {
+    switch (type) {
+      case 'success':
+        return styles.success;
+      case 'error':
+        return styles.error;
+      case 'warning':
+        return styles.warning;
+      case 'info':
+        return styles.info;
+      default:
+        return styles.success;
+    }
   };
 
   useEffect(() => {
-    // Clear any existing timeout and animation
+    // Cleanup existing animations and timeouts
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -48,7 +76,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     }
 
     if (visible) {
-      // Slide down animation
+      // Slide down animation sequence
       animationRef.current = Animated.sequence([
         Animated.timing(slideAnim, {
           toValue: 0,
@@ -65,7 +93,6 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
 
       animationRef.current.start(finished => {
         if (finished) {
-          // Use setTimeout to defer the state update
           timeoutRef.current = setTimeout(() => {
             onHide();
           }, 0);
@@ -75,7 +102,6 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
       slideAnim.setValue(-100);
     }
 
-    // Cleanup function
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -96,87 +122,15 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     <Animated.View
       style={[
         styles.toast,
-        toastTypeStyles[type],
+        getTypeStyle(),
         {transform: [{translateY: slideAnim}]},
       ]}>
-      <View style={styles.toastContent}>
-        {type === 'success' && showIcon && (
-          <CheckCircle size={20} color="white" style={styles.statusIcon} />
-        )}
-        {type === 'error' && showIcon && (
-          <XCircle size={20} color="white" style={styles.statusIcon} />
-        )}
-        <Text style={styles.toastText}>{message}</Text>
-        {showIcon && (
-          <View style={styles.iconContainer}>
-            <SvgIcon width={50} height={50} fill="white" />
-            <View style={styles.overlayIconContainer}>
-              <SvgIcon2 width={20} height={20} fill="white" />
-            </View>
-          </View>
-        )}
+      <View style={styles.content}>
+        {getIcon()}
+        <Text style={styles.message}>{message}</Text>
       </View>
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  error: {
-    backgroundColor: '#F44336',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  info: {
-    backgroundColor: '#2196F3',
-  },
-  overlayIconContainer: {
-    alignItems: 'center',
-    bottom: 2,
-    justifyContent: 'center',
-    position: 'absolute',
-    right: -2,
-  },
-  statusIcon: {
-    marginRight: 8,
-  },
-  success: {
-    backgroundColor: '#4CAF50',
-  },
-  toast: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-    right: 20,
-    paddingHorizontal: 20,
-    // paddingVertical: 12,
-    borderRadius: 12,
-    zIndex: 1000,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  toastContent: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  toastText: {
-    color: 'white',
-    flex: 1,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  warning: {
-    backgroundColor: '#FF9800',
-  },
-});
 
 export default GlobalCustomToast;

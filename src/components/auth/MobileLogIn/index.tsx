@@ -6,7 +6,6 @@ import {
   Text,
   ActivityIndicator,
   Alert,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -35,44 +34,8 @@ const MobileLogin = () => {
   const [isMobileFocused, setIsMobileFocused] = useState<boolean>(false);
   const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [keyboardVisible, setKeyboardVisible] = useState<boolean>(false);
 
   const inputRef = useRef<TextInput>(null);
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-        setTimeout(() => {
-          scrollViewRef.current?.scrollTo({
-            y: 150,
-            animated: true,
-          });
-        }, 100);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (keyboardVisible) {
-      console.log('Keyboard opened');
-    } else {
-      console.log('Keyboard closed');
-    }
-  }, [keyboardVisible]);
 
   const handleMobileInputChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
@@ -121,7 +84,6 @@ const MobileLogin = () => {
       } else {
         Alert.alert('Error', response.data?.message || 'Failed to send OTP');
       }
-      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error: any) {
       console.error('OTP Error:', error);
       Alert.alert(
@@ -142,12 +104,12 @@ const MobileLogin = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
       style={{flex: 1}}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 20}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 20}>
       <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={[styles.container]}>
+        contentContainerStyle={[styles.container]}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.inputRow}>
           <View style={styles.countryCodeBox}>
             <CountryPickerComponent onSelectCountry={handleCountrySelect} />
@@ -168,15 +130,7 @@ const MobileLogin = () => {
               onChangeText={handleMobileInputChange}
               maxLength={10}
               placeholderTextColor="#b3b3b3"
-              onFocus={() => {
-                setIsMobileFocused(true);
-                setTimeout(() => {
-                  scrollViewRef.current?.scrollTo({
-                    y: 150,
-                    animated: true,
-                  });
-                }, 100);
-              }}
+              onFocus={() => setIsMobileFocused(true)}
               onBlur={() => setIsMobileFocused(false)}
             />
           </View>
@@ -196,7 +150,7 @@ const MobileLogin = () => {
         </TouchableOpacity>
 
         <Text style={styles.termsText}>
-          By logging in, you agree to our{' '}
+          By logging in, you agree to our
           <Text style={styles.termsHighlight}>Terms & Conditions</Text>
         </Text>
 

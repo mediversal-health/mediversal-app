@@ -34,6 +34,7 @@ import {useToastStore} from '../../store/toastStore';
 import Config from 'react-native-config';
 import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
 import PinkDiscount from './assets/svgs/pink discount.svg';
+import EmptyCartComponent from '../../components/ui/EmptyCartComponent';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
@@ -477,9 +478,7 @@ const CartPage = () => {
               />
             ))
           ) : (
-            <View style={styles.emptyCartContainer}>
-              <Text style={styles.emptyCartText}>Your cart is empty</Text>
-            </View>
+            <EmptyCartComponent />
           )}
 
           {/* MediCash Card */}
