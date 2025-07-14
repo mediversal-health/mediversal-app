@@ -234,29 +234,19 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <Text style={styles.sectionHeader}>About us</Text>
             <OtherOptionsItem
               title="Help & Support"
-              onPress={() =>
-                Linking.openURL('https://gwsmediversal.in/contacts')
-              }
+              onPress={() => navigation.navigate('HelpSupportScreen')}
             />
             <OtherOptionsItem
               title="About Us"
-              onPress={() =>
-                Linking.openURL(
-                  'https://www.mediversal.in/multi-super-speciality-hospital/about',
-                )
-              }
+              onPress={() => navigation.navigate('AboutUsScreen')}
             />
             <OtherOptionsItem
               title="Terms & Conditions"
-              onPress={() =>
-                Linking.openURL('https://gwsmediversal.in/term-and-conditions')
-              }
+              onPress={() => navigation.navigate('TermsConditionsScreen')}
             />
             <OtherOptionsItem
               title="Privacy Policy"
-              onPress={() =>
-                Linking.openURL('https://gwsmediversal.in/privacy-policy')
-              }
+              onPress={() => navigation.navigate('PrivacyPolicyScreen')}
             />
             {/* <TouchableOpacity
               onPress={handleLogout}

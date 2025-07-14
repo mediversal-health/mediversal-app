@@ -26,6 +26,10 @@ import OrdersDetailsScreen from '../Screens/OrderDetailsScreen';
 import BrandFilterScreen from '../Screens/BrandFilterScreen';
 import CategoryFilterScreen from '../Screens/CategoryFilterScreen';
 import {SvgProps} from 'react-native-svg';
+import AboutUsScreen from '../Screens/AboutUsScreen';
+import HelpSupportScreen from '../Screens/HelpSupportScreen';
+import TermsConditionsScreen from '../Screens/TermsConditionsScreen';
+import PrivacyPolicyScreen from '../Screens/PrivacyPolicyScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -91,6 +95,10 @@ export type RootStackParamList = {
     subCategory_name: string;
     svgImage?: React.FC<SvgProps>;
   };
+  AboutUsScreen: undefined;
+  HelpSupportScreen: undefined;
+  TermsConditionsScreen: undefined;
+  PrivacyPolicyScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -157,6 +165,19 @@ const AppNavigator = () => {
             <Stack.Screen
               name="CategoryFilterScreen"
               component={CategoryFilterScreen}
+            />
+            <Stack.Screen name="AboutUsScreen" component={AboutUsScreen} />
+            <Stack.Screen
+              name="HelpSupportScreen"
+              component={HelpSupportScreen}
+            />
+            <Stack.Screen
+              name="TermsConditionsScreen"
+              component={TermsConditionsScreen}
+            />
+            <Stack.Screen
+              name="PrivacyPolicyScreen"
+              component={PrivacyPolicyScreen}
             />
           </>
         ) : (
