@@ -11,7 +11,7 @@ import {
   PanResponder,
   Linking,
 } from 'react-native';
-import {ChevronRight, Plus, Check} from 'lucide-react-native';
+import {ChevronRight, Bell} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
 import OtherOptionsItem from '../../ui/Drawer/OtherOptions';
 import styles from './index.styles';
@@ -162,7 +162,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 </View>
               </View>
 
-              <View style={styles.familySection}>
+              {/* <View style={styles.familySection}>
                 <View style={styles.familyHeader}>
                   <Text style={styles.familyTitle}>Family members</Text>
                   <TouchableOpacity style={styles.addNew}>
@@ -179,7 +179,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                     </View>
                   ))}
                 </View>
-              </View>
+              </View> */}
             </View>
 
             <Text style={styles.sectionHeader}>Our Services</Text>
@@ -255,6 +255,13 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
               <Text style={styles.logoutText}>Logout</Text>
             </TouchableOpacity> */}
           </ScrollView>
+          <View style={styles.likeUsBanner}>
+            <View style={styles.likeUsLeft}>
+              <Bell size={20} color="#F8F8F8" />
+              <Text style={styles.likeUsText}>Like Us? Give us 5 stars</Text>
+            </View>
+            <ChevronRight size={20} color="#F8F8F8" />
+          </View>
         </Animated.View>
       </View>
     </TouchableWithoutFeedback>
