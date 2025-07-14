@@ -9,7 +9,6 @@ import {
   ScrollView,
   Dimensions,
   PanResponder,
-  Linking,
 } from 'react-native';
 import {ChevronRight, Bell} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
