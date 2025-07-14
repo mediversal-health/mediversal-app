@@ -69,6 +69,7 @@ const OrderCancelBottomSheet: React.FC<OrderCancelBottomSheetProps> = ({
       }
     } catch (error) {
       onClose();
+      console.log(error);
       showToast('Order cancellation  completed', 'success', 1000, true);
     } finally {
       setIsSubmitting(false);
