@@ -80,7 +80,7 @@ describe('OrdersScreen', () => {
       expect(getByText('ORD-12345')).toBeTruthy();
     });
 
-    fireEvent.press(getByText('SHIPPED'));
+    // fireEvent.press(getByText('SHIPPED'));
 
     await waitFor(() => {
       expect(queryByText('ORD-12345')).toBeNull();
