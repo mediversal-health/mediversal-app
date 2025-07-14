@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: Platform.OS === 'ios' ? 0 : 16,
-
     overflow: 'hidden',
+    height: Platform.OS === 'ios' ? 220 : 195,
   },
   onboardingContainer: {
     width: '100%',

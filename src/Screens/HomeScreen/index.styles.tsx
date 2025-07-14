@@ -1,16 +1,16 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginBottom: 100,
-    paddingHorizontal: 16,
+    paddingHorizontal: Platform.OS === 'ios' ? 8 : 16,
     backgroundColor: '#F8F8F8',
   },
   headerContainer: {
     paddingVertical: 10,
-    paddingHorizontal: 0,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   sectionLabel: {
     fontSize: 12,
@@ -48,9 +48,10 @@ const styles = StyleSheet.create({
   horizontalScroll: {
     flexDirection: 'row',
     paddingHorizontal: 0,
+    marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   priscriptionContainer: {
-    width: '100%',
+    width: Platform.OS === 'ios' ? '95%' : '100%',
     alignSelf: 'center',
     backgroundColor: '#E8F4F7',
     borderRadius: 12,
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     gap: 12,
     justifyContent: 'space-between',
     marginTop: 12,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   separatorContainer: {
     flexDirection: 'row',

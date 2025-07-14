@@ -276,6 +276,7 @@ const PharmacyScreen = () => {
                 fontSize: 14,
                 marginTop: 24,
                 color: '#161D1F',
+                marginLeft: Platform.OS === 'ios' ? 10 : 0,
               }}>
               Browse by Category
             </Text>

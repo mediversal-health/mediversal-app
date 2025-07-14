@@ -186,7 +186,9 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OptiionsItem
               title="Buy Medicines"
               description="Get Medicine at 25% OFF"
-              onPress={() => navigation.navigate('ProfileScreen')}
+              onPress={() => {
+                navigation.navigate('AllProducts');
+              }}
             />
             {/* <OptiionsItem
               title="Homecare"
@@ -226,13 +228,30 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 navigation.navigate('PrescriptionScreen');
               }}
             />
-            <OtherOptionsItem title="Health Reports" />
-            <OtherOptionsItem title="Bill & Invoice" />
+            {/* <OtherOptionsItem title="Health Reports" />
+            <OtherOptionsItem title="Bill & Invoice" /> */}
 
             <Text style={styles.sectionHeader}>About us</Text>
-            <OtherOptionsItem title="Help & Support" />
-            <OtherOptionsItem title="About Mediversal App" />
-            <OtherOptionsItem title="Terms & Conditions" />
+            <OtherOptionsItem
+              title="Help & Support"
+              onPress={() =>
+                Linking.openURL('https://gwsmediversal.in/contacts')
+              }
+            />
+            <OtherOptionsItem
+              title="About Us"
+              onPress={() =>
+                Linking.openURL(
+                  'https://www.mediversal.in/multi-super-speciality-hospital/about',
+                )
+              }
+            />
+            <OtherOptionsItem
+              title="Terms & Conditions"
+              onPress={() =>
+                Linking.openURL('https://gwsmediversal.in/term-and-conditions')
+              }
+            />
             <OtherOptionsItem
               title="Privacy Policy"
               onPress={() =>

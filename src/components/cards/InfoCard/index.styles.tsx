@@ -38,12 +38,14 @@ const styles = StyleSheet.create({
     color: '#161D1F',
     textAlign: 'center',
     fontFamily: Fonts.JakartaBold,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   subHeading: {
     fontSize: 6,
     color: '#161D1F',
     textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
 });
 export default styles;

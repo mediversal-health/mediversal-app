@@ -7,6 +7,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import DoctorsCard from '../../components/cards/DoctorsCard';
@@ -66,7 +67,7 @@ const HomeScreen = () => {
           style={{
             flexDirection: 'row',
             marginVertical: 24,
-            // paddingVertical: 20,
+            paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
           }}>
           <OrderNowCard />
         </View>
