@@ -230,7 +230,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
 
         if (selectedCategory === 'Prescription Required') {
           const isPrescriptionRequired =
-            product.PrescriptionRequired === 'true' ||
+            product.PrescriptionRequired === 'Yes' ||
             product.Category === 'PRESCRIPTION (Rx)';
           if (activeFilters.includes('prescriptionRequired')) {
             return isPrescriptionRequired;

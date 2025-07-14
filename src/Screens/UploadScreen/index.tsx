@@ -156,7 +156,7 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               productId={product?.productId}
               rating={4.5}
               name={product?.ProductName}
-              packInfo={`Strip of 10 ${product?.quantity} Tablets`}
+              packInfo={`${product?.ProductStrength} ${product?.PackageSize}`}
               saltComposition={product?.Composition}
               currentPrice={`₹ ${product?.SellingPrice}`}
               originalPrice={product?.CostPrice}
@@ -164,6 +164,8 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               deliveryTime="Get by 9pm, Tomorrow"
               onAddToCart={handleAddToCart}
               isAddingToCart={!!addingToCart}
+              prescriptionRequired={product?.PrescriptionRequired}
+              StockAvailableInInventory={product?.StockAvailableInInventory}
             />
 
             <View style={styles.cheaperAlternativeContainer}>

@@ -96,6 +96,8 @@ export interface Product {
   subCategory: string;
   images: string[];
   quantity?: number;
+  ProductStrength: string;
+  PackageSize: string;
 }
 
 export type UploadType = 'image' | 'pdf' | 'camera';

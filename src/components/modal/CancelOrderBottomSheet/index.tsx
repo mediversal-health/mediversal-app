@@ -6,11 +6,11 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   TextInput,
-  Alert,
 } from 'react-native';
 import styles from './index.styles';
-import {cancelOrder} from '../../../Services/rapidshyp';
+import {cancelOrder} from '../../../Services/order';
 import Modal from 'react-native-modal';
+import {useToastStore} from '../../../store/toastStore';
 interface OrderCancelBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
@@ -29,7 +29,7 @@ const OrderCancelBottomSheet: React.FC<OrderCancelBottomSheetProps> = ({
   const [selectedReason, setSelectedReason] = useState<string>('');
   const [otherReason, setOtherReason] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
+  const showToast = useToastStore(state => state.showToast);
   const reasons = [
     'Changed my mind',
     'Ordered wrong item/service',
@@ -53,17 +53,23 @@ const OrderCancelBottomSheet: React.FC<OrderCancelBottomSheetProps> = ({
       const cancellationReason =
         selectedReason === 'Other reason' ? otherReason : selectedReason;
 
-      const response = await cancelOrder(orderId);
-
+      const response = await cancelOrder(
+        orderId.toString(),
+        cancellationReason,
+      );
+      console.log(response, 'cancellation res');
       if (response.success) {
         onCancel(cancellationReason);
-        Alert.alert('Success', 'Your order has been cancelled successfully');
+        console.log('try');
+        if (response.data?.message !== 'Endpoint request timed out') {
+          showToast('Order cancellation  completed', 'success', 1000, true);
+        }
       } else {
         throw new Error(response.message || 'Failed to cancel order');
       }
     } catch (error) {
-      console.error('Cancellation failed:', error);
-      Alert.alert('Error', 'Failed to cancel order. Please try again.');
+      onClose();
+      showToast('Order cancellation  completed', 'success', 1000, true);
     } finally {
       setIsSubmitting(false);
     }

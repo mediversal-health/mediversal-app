@@ -29,8 +29,8 @@ const OrdersScreen: React.FC = () => {
     'ALL',
     'ON GOING',
     'COMPLETED',
-    'CLARIFICATION NEEDED',
-    'SHIPPED',
+    // 'CLARIFICATION NEEDED',
+    // 'SHIPPED',
     'CANCELLED',
   ];
 
@@ -58,8 +58,20 @@ const OrdersScreen: React.FC = () => {
       const response = await getOrders(customer_id.toString());
       console.log('response', response);
       const mappedOrders: Order[] = response.data.map((item: any) => {
-        const rawStatus = item.deliveryStatus?.toUpperCase?.() || 'ON GOING';
-        const mappedStatus = rawStatus;
+        const rawStatus = item.deliverystatus?.toUpperCase?.() || 'ON GOING';
+
+        // Map the status to match your filter options
+        let mappedStatus;
+        if (rawStatus.includes('CANCELLED')) {
+          mappedStatus = 'CANCELLED';
+        } else if (
+          rawStatus.includes('DELIVERED') ||
+          rawStatus === 'COMPLETED'
+        ) {
+          mappedStatus = 'COMPLETED';
+        } else {
+          mappedStatus = 'ON GOING';
+        }
 
         return {
           name: item.customerName || 'Guest',
@@ -128,10 +140,7 @@ const OrdersScreen: React.FC = () => {
       </View>
 
       <ScrollView style={{backgroundColor: '#FFf'}}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.filterChipsWrapper}>
+        <View style={styles.filterChipsWrapper}>
           {statusOptions.map(status => (
             <TouchableOpacity
               key={status}
@@ -152,7 +161,7 @@ const OrdersScreen: React.FC = () => {
               </Text>
             </TouchableOpacity>
           ))}
-        </ScrollView>
+        </View>
         <View style={styles.divider} />
 
         <View style={styles.orderList}>

@@ -177,4 +177,7 @@ export const styles = StyleSheet.create({
     color: '#50B57F',
     fontFamily: Fonts.JakartaRegular,
   },
+  outOfStock: {
+    color: '#EB5757', // Red color for out of stock
+  },
 });
