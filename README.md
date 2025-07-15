@@ -1,97 +1,175 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Mediversal-APP
 
-# Getting Started
+![Mediversal Logo](https://www.mediversal.in/logo.png)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+> ## Empowering Health, Enhancing Lives.
 
-## Step 1: Start Metro
+Mediversal-App is a comprehensive healthcare platform designed to bring a wide range of essential health services directly to your fingertips. Our mission is to make healthcare accessible, convenient, and reliable for everyone across diverse services.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## 🌟 Core Services
 
-```sh
-# Using npm
-npm start
+* **Pharmacy**: Seamlessly order medications, health supplements, and wellness products with home delivery options.
+* **Homecare**: Access professional healthcare services in the comfort of your home, including nursing, physiotherapy, and elder care assistance.
+* **Eldercare**: Dedicated support and specialized services tailored to the unique needs of senior citizens, promoting their well-being and independence.
+* **Online Consultation**: Connect instantly with certified doctors and specialists via secure video or chat for expert medical advice and prescriptions.
+* **Lab Tests**: Conveniently book a wide array of diagnostic lab tests with home sample collection, and receive timely, accurate results.
+* **Health Checkups**: Comprehensive health assessment packages designed for preventive care, early detection, and personalized health insights.
+* **And Many More**: We are continuously expanding our offerings to include specialized therapies, medical equipment rentals, and integrated health solutions.
 
-# OR using Yarn
-yarn start
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to set up and run the Mediversal-App on your local development environment.
+
+### 🔧 Prerequisites
+
+Ensure your system meets the following requirements:
+
+* **Node.js**: `v18` or higher
+  [Download Node.js](https://nodejs.org/en/download/current/)
+* **npm**: Comes bundled with Node.js
+* **React Native CLI**: Install globally
+
+  ```bash
+  npm install -g react-native-cli
+  ```
+* **JDK (Java Development Kit)**: Recommended version: JDK 17
+  [Download via Android Studio](https://developer.android.com/studio)
+* **Android Studio**: Required for Android development
+  [Download Android Studio](https://developer.android.com/studio)
+* **Xcode** (macOS only): Required for iOS development
+  [Download from Mac App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+* **CocoaPods** (macOS only):
+
+  ```bash
+  sudo gem install cocoapods
+  ```
+
+---
+
+## 🏠 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Mediversal/Mediversal-app.git
+cd Mediversal-app
 ```
 
-## Step 2: Build and run your app
+> 💡 **Note**: If you cloned the repository *before* it was transferred to the `Mediversal` organization:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+```bash
+git remote set-url origin https://github.com/Mediversal/Mediversal-app.git
+git pull origin main
+```
+
+### 2. Install JavaScript dependencies
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### 3. Install iOS dependencies (macOS only)
+
+```bash
+cd ios
+pod install
+cd ..
+```
+
+---
+
+## ▶️ Running the App
 
 ### Android
 
-```sh
-# Using npm
+Make sure an Android device or emulator is connected and run:
+
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+### iOS (macOS only)
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+Ensure an iOS device or simulator is connected and run:
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+```bash
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Starting the Metro Bundler (Optional)
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```bash
+npm start
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## 🛠️ Development Workflow
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Available Scripts
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+| Script                  | Description                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| `npm run android`       | Builds and runs the app on Android devices/emulators           |
+| `npm run ios`           | Builds and runs the app on iOS devices/simulators (macOS only) |
+| `npm start`             | Starts the Metro Bundler                                       |
+| `npm test`              | Runs all Jest unit tests                                       |
+| `npm run test:coverage` | Runs tests with coverage report                                |
+| `npm run lint`          | Lints all code files using ESLint                              |
+| `npm run lint:fix`      | Lints and auto-fixes issues                                    |
+| `npm run format`        | Formats code using Prettier                                    |
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Code Quality & Standards
 
-## Congratulations! :tada:
+We enforce consistency and quality using the following tools:
 
-You've successfully run and modified your React Native App. :partying_face:
+* **ESLint**: Enforces JavaScript/TypeScript best practices
+* **Prettier**: Code formatting for consistency
 
-### Now what?
+---
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## 📦 Key Dependencies & Technologies
 
-# Troubleshooting
+* **React Native**: Core framework for building native mobile apps
+* **React Navigation**: Handles app navigation
+* **Axios**: HTTP client for API integration
+* **Zustand**: Lightweight state management
+* **@notifee/react-native**: Local/remote notifications
+* **react-native-onesignal**: Push notifications via OneSignal
+* **react-native-razorpay**: Payment gateway integration
+* **Lottie React Native**: Rich animations
+* **Google Sign-In**: Authentication with Google
+* **React Native Maps**: Map view and geolocation
+* **React Native FS**: File system access
+* **Image Picker & Crop Picker**: For prescription and report uploads
+* **Socket.IO Client**: Real-time communication (e.g., consultations)
+* **React Native Config / dotenv**: Secure environment variable management
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+---
 
-# Learn More
+## 🛡️ Security & Data Privacy
 
-To learn more about React Native, take a look at the following resources:
+We take healthcare data seriously. Our app complies with:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+* **Encrypted API Communication**: HTTPS, TLS for all endpoints
+* **Data Minimization**: Collecting only essential data
+* **Secure Authentication**
+* **Automated Dependency Scanning**
+
+---
+
+## 📝 License
+
+This project, "Mediversal-App," is Proprietary and Confidential to Mediversal.
+
+All rights, including intellectual property rights, copyrights, and trade secrets, are exclusively reserved by Mediversal. This software, its source code, documentation, and any related materials are provided solely for internal use by authorized Mediversal personnel for the development and operation of Mediversal services.
+
+Unauthorized access, reproduction, distribution, modification, reverse engineering, decompilation, or disclosure of this software, in whole or in part, to any third party is strictly prohibited without the express written consent of Mediversal.
+
+Any violation of these terms will be met with appropriate legal action.
+
+© 2025 Mediversal. All rights reserved.
