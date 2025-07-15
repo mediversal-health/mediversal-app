@@ -1,78 +1,169 @@
-# Mediversal-App
+# Mediversal-APP
 
-![Mediversal Logo](link-to-your-logo-if-any.png) ## Empowering Health, Enhancing Lives.
+![Mediversal Logo](https://www.mediversal.in/logo.png)
 
-Mediversal-App is a comprehensive healthcare platform designed to bring a wide range of essential health services directly to your fingertips. Our mission is to make healthcare accessible, convenient, and reliable for everyone.
+> ## Empowering Health, Enhancing Lives.
 
-### Services Offered:
+Mediversal-App is a comprehensive healthcare platform designed to bring a wide range of essential health services directly to your fingertips. Our mission is to make healthcare accessible, convenient, and reliable for everyone across diverse services.
 
-* **Pharmacy:** Order medications and health products with ease.
-* **Homecare:** Professional care services delivered to your home.
-* **Eldercare:** Specialized support and services for senior citizens.
-* **Online Consultation:** Connect with healthcare professionals remotely.
-* **Lab Tests:** Schedule and access results for various diagnostic tests.
-* **Health Checkups:** Comprehensive health assessments and preventive care.
-* **And Many More:** Constantly expanding our offerings to meet diverse health needs.
+---
+
+## 🌟 Core Services
+
+* **Pharmacy**: Seamlessly order medications, health supplements, and wellness products with home delivery options.
+* **Homecare**: Access professional healthcare services in the comfort of your home, including nursing, physiotherapy, and elder care assistance.
+* **Eldercare**: Dedicated support and specialized services tailored to the unique needs of senior citizens, promoting their well-being and independence.
+* **Online Consultation**: Connect instantly with certified doctors and specialists via secure video or chat for expert medical advice and prescriptions.
+* **Lab Tests**: Conveniently book a wide array of diagnostic lab tests with home sample collection, and receive timely, accurate results.
+* **Health Checkups**: Comprehensive health assessment packages designed for preventive care, early detection, and personalized health insights.
+* **And Many More**: We are continuously expanding our offerings to include specialized therapies, medical equipment rentals, and integrated health solutions.
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these steps to set up and run the Mediversal-App on your local machine.
+Follow these instructions to set up and run the Mediversal-App on your local development environment.
 
-### Prerequisites
+### 🔧 Prerequisites
 
-Before you begin, ensure you have the following installed:
+Ensure your system meets the following requirements:
 
-* **Node.js**: `v18` or higher (as specified in `package.json`).
-    * [Download Node.js](https://nodejs.org/en/download/)
-* **npm**: Comes with Node.js.
-* **React Native CLI**:
-    ```bash
-    npm install -g react-native-cli
-    ```
-* **JDK (Java Development Kit)**:
-    * For Android development. Recommended: JDK 17.
-    * [Android Studio](https://developer.android.com/studio) usually includes the necessary JDK.
-* **Android Studio**: For Android emulator and SDKs.
-    * [Download Android Studio](https://developer.android.com/studio)
-* **Xcode**: For iOS development (macOS only).
-    * [Download Xcode from App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-* **CocoaPods**: (macOS only)
-    ```bash
-    sudo gem install cocoapods
-    ```
+* **Node.js**: `v18` or higher
+  [Download Node.js](https://nodejs.org/en/download/current/)
+* **npm**: Comes bundled with Node.js
+* **React Native CLI**: Install globally
 
-### Installation
+  ```bash
+  npm install -g react-native-cli
+  ```
+* **JDK (Java Development Kit)**: Recommended version: JDK 17
+  [Download via Android Studio](https://developer.android.com/studio)
+* **Android Studio**: Required for Android development
+  [Download Android Studio](https://developer.android.com/studio)
+* **Xcode** (macOS only): Required for iOS development
+  [Download from Mac App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+* **CocoaPods** (macOS only):
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/Mediversal/Mediversal-app.git](https://github.com/Mediversal/Mediversal-app.git) # After transfer
-    cd Mediversal-app
-    ```
-    * **Note:** If you cloned before the transfer, you'll need to update your remote:
-        ```bash
-        git remote rm origin
-        git remote add origin [https://github.com/Mediversal/Mediversal-app.git](https://github.com/Mediversal/Mediversal-app.git)
-        git pull origin main
-        ```
+  ```bash
+  sudo gem install cocoapods
+  ```
 
-2.  **Install dependencies:**
-    ```bash
-    npm install --legacy-peer-deps
-    ```
+---
 
-3.  **For iOS Development (macOS only):**
-    Navigate to the `ios` directory and install pods:
-    ```bash
-    cd ios
-    pod install
-    cd ..
-    ```
+## 🏠 Installation
 
-### Running the App
+### 1. Clone the repository
 
-#### Android
+```bash
+git clone https://github.com/Mediversal/Mediversal-app.git
+cd Mediversal-app
+```
+
+> 💡 **Note**: If you cloned the repository *before* it was transferred to the `Mediversal` organization:
+
+```bash
+git remote set-url origin https://github.com/Mediversal/Mediversal-app.git
+git pull origin main
+```
+
+### 2. Install JavaScript dependencies
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### 3. Install iOS dependencies (macOS only)
+
+```bash
+cd ios
+pod install
+cd ..
+```
+
+---
+
+## ▶️ Running the App
+
+### Android
+
+Make sure an Android device or emulator is connected and run:
 
 ```bash
 npm run android
+```
+
+### iOS (macOS only)
+
+Ensure an iOS device or simulator is connected and run:
+
+```bash
+npm run ios
+```
+
+### Starting the Metro Bundler (Optional)
+
+```bash
+npm start
+```
+
+---
+
+## 🛠️ Development Workflow
+
+### Available Scripts
+
+| Script                  | Description                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| `npm run android`       | Builds and runs the app on Android devices/emulators           |
+| `npm run ios`           | Builds and runs the app on iOS devices/simulators (macOS only) |
+| `npm start`             | Starts the Metro Bundler                                       |
+| `npm test`              | Runs all Jest unit tests                                       |
+| `npm run test:coverage` | Runs tests with coverage report                                |
+| `npm run lint`          | Lints all code files using ESLint                              |
+| `npm run lint:fix`      | Lints and auto-fixes issues                                    |
+| `npm run format`        | Formats code using Prettier                                    |
+
+### Code Quality & Standards
+
+We enforce consistency and quality using the following tools:
+
+* **ESLint**: Enforces JavaScript/TypeScript best practices
+* **Prettier**: Code formatting for consistency
+
+---
+
+## 📦 Key Dependencies & Technologies
+
+* **React Native**: Core framework for building native mobile apps
+* **React Navigation**: Handles app navigation
+* **Axios**: HTTP client for API integration
+* **Zustand**: Lightweight state management
+* **@notifee/react-native**: Local/remote notifications
+* **react-native-onesignal**: Push notifications via OneSignal
+* **react-native-razorpay**: Payment gateway integration
+* **Lottie React Native**: Rich animations
+* **Google Sign-In**: Authentication with Google
+* **React Native Maps**: Map view and geolocation
+* **React Native FS**: File system access
+* **Image Picker & Crop Picker**: For prescription and report uploads
+* **Socket.IO Client**: Real-time communication (e.g., consultations)
+* **React Native Config / dotenv**: Secure environment variable management
+
+---
+
+## 🛡️ Security & Data Privacy
+
+We take healthcare data seriously. Our app complies with:
+
+* **Encrypted API Communication**: HTTPS, TLS for all endpoints
+* **Data Minimization**: Collecting only essential data
+* **Secure Authentication**
+* **Automated Dependency Scanning**
+
+---
+
+## 📝 License
+
+This project is **Proprietary and Confidential** to **Mediversal**. All rights, including intellectual property rights, are reserved by Mediversal. Unauthorized access, reproduction, distribution, or modification is strictly prohibited.
+
+© 2025 Mediversal. All rights reserved.
