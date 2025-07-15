@@ -54,7 +54,6 @@ const HomeScreen = () => {
           </View>
         </View>
 
-        {/* Rest of your existing HomeScreen code... */}
         <ScrollView
           horizontal
           style={styles.horizontalScroll}
@@ -170,6 +169,11 @@ const HomeScreen = () => {
         <View style={styles.footer}>
           <Text style={styles.footerText}>See All</Text>
           <ArrowRight color="#ccc" height={10} />
+        </View> */}
+
+        {/* <View style={styles.imagecontainer}>
+          <Text style={{fontSize: 8}}>Powered By</Text>
+          <MediversalLogo style={styles.logo} />
         </View> */}
       </ScrollView>
     </SafeAreaView>

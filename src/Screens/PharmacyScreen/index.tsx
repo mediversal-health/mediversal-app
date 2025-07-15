@@ -50,7 +50,7 @@ import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
-import {ProductCardProps} from '../../types';
+import {OrderData, ProductCardProps} from '../../types';
 import {getProducts, getProductsById} from '../../Services/pharmacy';
 import useProductStore from '../../store/productsStore';
 import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
@@ -59,6 +59,7 @@ import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
 import {useCartStore} from '../../store/cartStore';
+import {getOrders} from '../../Services/order';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -67,8 +68,29 @@ const PharmacyScreen = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
+  const JoinedData = useAuthStore(state => state.joinedDate);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const {setUserCart} = useCartStore.getState();
+  const [orders, setOrders] = useState<OrderData[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (customer_id) {
+        try {
+          setLoadingOrders(true);
+          const response = await getOrders(customer_id.toString());
+          setOrders(response.data);
+          setLoadingOrders(false);
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+          setLoadingOrders(false);
+        }
+      }
+    };
+
+    fetchOrders();
+  }, [customer_id]);
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -97,6 +119,22 @@ const PharmacyScreen = () => {
     setRefreshing(true);
     fetchProducts();
   };
+
+  useEffect(() => {
+    if (JoinedData) {
+      const joinedDate = new Date(JoinedData);
+      const currentDate = new Date();
+
+      // Calculate the difference in milliseconds
+      const diffInMs = currentDate.getTime() - joinedDate.getTime();
+      // Convert milliseconds to days
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+      console.log(diffInDays);
+      setShowOnboarding(diffInDays <= 2);
+    }
+  }, [JoinedData]);
+
+  console.log(JoinedData);
   console.log(customer_id);
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
@@ -186,8 +224,8 @@ const PharmacyScreen = () => {
           />
         }>
         <View style={styles.safeArea}>
-          <OnboardingSteps />
-          <PromoBanner />
+          {showOnboarding && <OnboardingSteps />}
+          {!loadingOrders && orders.length < 1 && <PromoBanner />}
 
           <View style={styles.containerx}>
             <View style={styles.item}>

@@ -4,9 +4,10 @@ import {Fonts} from '../../styles/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 100,
+    // marginBottom: 100,
     paddingHorizontal: Platform.OS === 'ios' ? 8 : 16,
     backgroundColor: '#F8F8F8',
+    paddingBottom: 80,
   },
   headerContainer: {
     paddingVertical: 10,

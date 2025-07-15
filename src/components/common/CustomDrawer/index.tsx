@@ -11,6 +11,7 @@ import {
   PanResponder,
 } from 'react-native';
 import {ChevronRight, Bell} from 'lucide-react-native';
+import {ChevronRight} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
 import OtherOptionsItem from '../../ui/Drawer/OtherOptions';
 import styles from './index.styles';

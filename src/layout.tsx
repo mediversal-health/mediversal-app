@@ -1,9 +1,8 @@
-import {Bell, ChevronDown} from 'lucide-react-native';
+import {ChevronDown} from 'lucide-react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
-  Switch,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -27,7 +26,7 @@ import {useToastStore} from './store/toastStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
+  // const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
   const {customerAddressMap} = useAddressBookStore();
@@ -173,7 +172,7 @@ const Layout = () => {
                     <ChevronDown size={20} color={'#161D1F'} strokeWidth={2} />
                   </View>
                   <View style={{gap: 12, flexDirection: 'row'}}>
-                    <Bell size={20} color={'#161D1F'} strokeWidth={1} />
+                    {/* <Bell size={20} color={'#161D1F'} strokeWidth={1} /> */}
                     <CartIconWithBadge />
                   </View>
                 </View>

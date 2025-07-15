@@ -10,9 +10,9 @@ type OptionsItemProps = {
   onPress: () => void;
 };
 
-const OptiionsItem = ({title, description}: OptionsItemProps) => {
+const OptiionsItem = ({title, description, onPress}: OptionsItemProps) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.leftSection}>
         <View style={{marginTop: 5}}>
           <Bell size={24} color="#B0B6B8" />
