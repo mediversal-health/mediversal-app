@@ -164,6 +164,12 @@ We take healthcare data seriously. Our app complies with:
 
 ## 📝 License
 
-This project is **Proprietary and Confidential** to **Mediversal**. All rights, including intellectual property rights, are reserved by Mediversal. Unauthorized access, reproduction, distribution, or modification is strictly prohibited.
+This project, "Mediversal-App," is Proprietary and Confidential to Mediversal.
+
+All rights, including intellectual property rights, copyrights, and trade secrets, are exclusively reserved by Mediversal. This software, its source code, documentation, and any related materials are provided solely for internal use by authorized Mediversal personnel for the development and operation of Mediversal services.
+
+Unauthorized access, reproduction, distribution, modification, reverse engineering, decompilation, or disclosure of this software, in whole or in part, to any third party is strictly prohibited without the express written consent of Mediversal.
+
+Any violation of these terms will be met with appropriate legal action.
 
 © 2025 Mediversal. All rights reserved.
