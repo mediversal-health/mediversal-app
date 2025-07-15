@@ -86,7 +86,7 @@ export const updateProfile = async (
   formData: {
     first_name: string | undefined;
     last_name: string | undefined;
-    birthday?: string; // ✅ optional now
+    birthday?: string;
     email: string;
     phone_number: string;
     image?: {
@@ -103,7 +103,6 @@ export const updateProfile = async (
   data.append('email', formData.email ?? '');
   data.append('phone_number', formData.phone_number ?? '');
 
-  // ✅ Conditionally add birthday
   if (formData.birthday) {
     data.append('birthday', formData.birthday);
   }
@@ -116,7 +115,6 @@ export const updateProfile = async (
     });
   }
 
-  // Debug output — works in React Native
   console.log('FormData Payload:');
   (data as any)._parts.forEach(([key, value]: [string, any]) => {
     console.log(`${key}:`, value);
@@ -127,4 +125,8 @@ export const updateProfile = async (
       'Content-Type': 'multipart/form-data',
     },
   });
+};
+
+export const DeleteUser = async (customer_id: any) => {
+  return axios.delete(`${IP_ADDR}/api/Auth/delete-user/${customer_id}`);
 };
