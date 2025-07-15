@@ -1,97 +1,78 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Mediversal-App
 
-# Getting Started
+![Mediversal Logo](link-to-your-logo-if-any.png) ## Empowering Health, Enhancing Lives.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+Mediversal-App is a comprehensive healthcare platform designed to bring a wide range of essential health services directly to your fingertips. Our mission is to make healthcare accessible, convenient, and reliable for everyone.
 
-## Step 1: Start Metro
+### Services Offered:
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+* **Pharmacy:** Order medications and health products with ease.
+* **Homecare:** Professional care services delivered to your home.
+* **Eldercare:** Specialized support and services for senior citizens.
+* **Online Consultation:** Connect with healthcare professionals remotely.
+* **Lab Tests:** Schedule and access results for various diagnostic tests.
+* **Health Checkups:** Comprehensive health assessments and preventive care.
+* **And Many More:** Constantly expanding our offerings to meet diverse health needs.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## 🚀 Getting Started
 
-# OR using Yarn
-yarn start
-```
+Follow these steps to set up and run the Mediversal-App on your local machine.
 
-## Step 2: Build and run your app
+### Prerequisites
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+Before you begin, ensure you have the following installed:
 
-### Android
+* **Node.js**: `v18` or higher (as specified in `package.json`).
+    * [Download Node.js](https://nodejs.org/en/download/)
+* **npm**: Comes with Node.js.
+* **React Native CLI**:
+    ```bash
+    npm install -g react-native-cli
+    ```
+* **JDK (Java Development Kit)**:
+    * For Android development. Recommended: JDK 17.
+    * [Android Studio](https://developer.android.com/studio) usually includes the necessary JDK.
+* **Android Studio**: For Android emulator and SDKs.
+    * [Download Android Studio](https://developer.android.com/studio)
+* **Xcode**: For iOS development (macOS only).
+    * [Download Xcode from App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+* **CocoaPods**: (macOS only)
+    ```bash
+    sudo gem install cocoapods
+    ```
 
-```sh
-# Using npm
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/Mediversal/Mediversal-app.git](https://github.com/Mediversal/Mediversal-app.git) # After transfer
+    cd Mediversal-app
+    ```
+    * **Note:** If you cloned before the transfer, you'll need to update your remote:
+        ```bash
+        git remote rm origin
+        git remote add origin [https://github.com/Mediversal/Mediversal-app.git](https://github.com/Mediversal/Mediversal-app.git)
+        git pull origin main
+        ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install --legacy-peer-deps
+    ```
+
+3.  **For iOS Development (macOS only):**
+    Navigate to the `ios` directory and install pods:
+    ```bash
+    cd ios
+    pod install
+    cd ..
+    ```
+
+### Running the App
+
+#### Android
+
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
