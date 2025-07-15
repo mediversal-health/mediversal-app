@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
@@ -9,10 +8,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Stethoscope} from 'lucide-react-native';
+import {MessageCircleMore} from 'lucide-react-native';
 import {styles} from './index.styles';
 import {useCartStore} from '../../../store/cartStore';
 import {useAuthStore} from '../../../store/authStore';
+import {Fonts} from '../../../styles/fonts';
 
 interface MedicineDetailProps {
   images: string[];
@@ -27,6 +27,8 @@ interface MedicineDetailProps {
   deliveryTime: string;
   onAddToCart?: () => void;
   isAddingToCart?: boolean;
+  prescriptionRequired: string | undefined;
+  StockAvailableInInventory: number | undefined;
 }
 
 const MedicineDetail: React.FC<MedicineDetailProps> = ({
@@ -42,6 +44,8 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   deliveryTime = 'Get by 9pm, Tomorrow',
   onAddToCart,
   isAddingToCart = false,
+  prescriptionRequired,
+  StockAvailableInInventory,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
@@ -52,7 +56,10 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   );
 
   const isInCart = quantity > 0;
-
+  console.log(StockAvailableInInventory);
+  const isOutOfStock =
+    StockAvailableInInventory === 0 || StockAvailableInInventory == null;
+  console.log(isOutOfStock);
   // Safe image handling
   const safeImages = Array.isArray(images) ? images.filter(img => img) : [];
   const hasMultipleImages = safeImages.length > 1;
@@ -164,7 +171,27 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
     <View style={styles.container}>
       {/* Image Section */}
       {renderImageSection()}
-
+      {prescriptionRequired == 'Yes' && (
+        <View
+          style={{
+            backgroundColor: '#EB5757',
+            width: 130,
+            paddingVertical: 10,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            paddingHorizontal: 10,
+          }}>
+          <Text
+            style={{
+              fontSize: 10,
+              fontFamily: Fonts.JakartaRegular,
+              color: '#FFF',
+            }}>
+            {' '}
+            Prescription Required
+          </Text>
+        </View>
+      )}
       {/* Rating and dot indicators */}
       <View style={styles.ratingContainer}>
         {renderStars()}
@@ -184,15 +211,19 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
       </View>
 
       {/* Medicine name and pack info */}
-      <View style={styles.nameContainer}>
-        <Text style={styles.medicineName}>{name}</Text>
-        <Text style={styles.medicinePack}>{packInfo}</Text>
-      </View>
-
+      {name != '' && (
+        <View style={styles.nameContainer}>
+          <Text style={styles.medicineName}>{name}</Text>
+          <Text style={styles.medicinePack}>{packInfo}</Text>
+        </View>
+      )}
       {/* Salt composition */}
-      <Text style={styles.saltLabel}>Salt Composition</Text>
-      <Text style={styles.saltComposition}>{saltComposition}</Text>
-
+      {saltComposition != ' ' && (
+        <>
+          <Text style={styles.saltLabel}>Salt Composition</Text>
+          <Text style={styles.saltComposition}>{saltComposition}</Text>
+        </>
+      )}
       {/* Price information */}
       <View style={styles.priceContainer}>
         <Text style={styles.currentPrice}>{currentPrice}</Text>
@@ -201,17 +232,31 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           {(() => {
             const orig = Number((originalPrice || '').replace(/[^\d.]/g, ''));
             const curr = Number((currentPrice || '').replace(/[^\d.]/g, ''));
-            return orig && curr
-              ? `${Math.round(((orig - curr) / orig) * 100)}% OFF`
-              : discount;
+            console.log(orig, curr);
+            // Check if prices are valid numbers and original price is greater than 0
+            if (
+              !isNaN(orig) &&
+              !isNaN(curr) &&
+              orig > 0 &&
+              curr > 0 &&
+              orig > curr
+            ) {
+              const discountPercent = Math.round(((orig - curr) / orig) * 100);
+              return `${discountPercent}% off`;
+            }
+            return discount; // Return null if discount can't be calculated
           })()}
         </Text>
       </View>
 
       {/* Stock and delivery info */}
       <View style={styles.stockContainer}>
-        <Text style={styles.inStock}>In Stock</Text>
-        <Text style={styles.deliveryText}>{deliveryTime}</Text>
+        <Text style={[styles.inStock, isOutOfStock && styles.outOfStock]}>
+          {isOutOfStock ? 'Out of Stock' : 'In Stock'}
+        </Text>
+        {!isOutOfStock && (
+          <Text style={styles.deliveryText}>{deliveryTime}</Text>
+        )}
       </View>
 
       {/* Buttons */}
@@ -219,10 +264,11 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
         <TouchableOpacity
           style={[
             styles.addCartButton,
-            (isAddingToCart || isInCart) && styles.disabledButton,
+            (isAddingToCart || isInCart || isOutOfStock) &&
+              styles.disabledButton,
           ]}
           onPress={onAddToCart}
-          disabled={isAddingToCart || isInCart}>
+          disabled={isAddingToCart || isInCart || isOutOfStock}>
           {isAddingToCart ? (
             <ActivityIndicator size="small" color="#0088B1" />
           ) : isInCart ? (
@@ -232,7 +278,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.consultButton}>
-          <Stethoscope size={16} color="#0088B1" />
+          <MessageCircleMore size={16} color="#0088B1" />
           <Text style={styles.consultButtonText}>Consult</Text>
         </TouchableOpacity>
       </View>

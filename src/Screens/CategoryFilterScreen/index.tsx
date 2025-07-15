@@ -24,9 +24,6 @@ import useProductStore from '../../store/productsStore';
 import {ProductCardProps} from '../../types';
 import LinearGradient from 'react-native-linear-gradient';
 import Chips from '../../components/ui/ProductTypeChips';
-
-import BrandPromoBanner from '../../components/Banners/BrandPromoCard';
-
 import FaceCleanserSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 import MoisturizerSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 import SunscreenSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
@@ -40,6 +37,20 @@ import {useCartStore} from '../../store/cartStore';
 import {SvgProps} from 'react-native-svg';
 import ConsultDoctorBanner from '../../components/Banners/ConsultDoctorBanner';
 import HeartPlus from './assets/svgs/heart-plus.svg';
+
+import CoughSyrupSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg'; // Example - add your actual SVGs
+import LozengesSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import VaporubSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import NasalSpraySvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import InhalerSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import ImmunityBoosterSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import SteamInhalerSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import AntacidSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import PainRelieverSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import RehydrationSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import BurnCreamSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import NasalDecongestantSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import JointPainRelieverSvg from '../BrandFilterScreen/assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 const CategoryFilterScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute();
@@ -50,16 +61,16 @@ const CategoryFilterScreen = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
-  const {cardProducts} = useProductStore();
+
   const {setUserCart} = useCartStore.getState();
+  const {cardProducts, getOriginalProduct} = useProductStore();
   const [filteredProducts, setFilteredProducts] = useState<
     ProductCardProps['product'][]
   >([]);
   console.log(filteredProducts);
-  const [selectedProductType, setSelectedProductType] =
-    useState<string>('Face Cleanser');
+
   useEffect(() => {
-    const fetchProductsByBrand = async () => {
+    const fetchProductsByCategory = async () => {
       try {
         const filtered = cardProducts.filter(
           product => product.subCategory_name === subCategory_name,
@@ -70,30 +81,65 @@ const CategoryFilterScreen = () => {
       }
     };
 
-    fetchProductsByBrand();
+    fetchProductsByCategory();
   }, []);
-  const productTypes = [
-    {
-      label: 'Face Cleanser',
-      SvgComponent: FaceCleanserSvg,
-    },
-    {
-      label: 'Moisturizer',
-      SvgComponent: MoisturizerSvg,
-    },
-    {
-      label: 'Sunscreen',
-      SvgComponent: SunscreenSvg,
-    },
-    {
-      label: 'Toner',
-      SvgComponent: TonerSvg,
-    },
-    {
-      label: 'Serum',
-      SvgComponent: SerumSvg,
-    },
-  ];
+  const productTypesMap: Record<
+    string,
+    Array<{label: string; SvgComponent: React.FC<SvgProps>}>
+  > = {
+    'Cold & Cough': [
+      {label: 'Cough Syrups', SvgComponent: CoughSyrupSvg},
+      {label: 'Lozenges', SvgComponent: LozengesSvg},
+      {label: 'Vaporubs', SvgComponent: VaporubSvg},
+      {label: 'Nasal Sprays', SvgComponent: NasalSpraySvg},
+      {label: 'Inhalers', SvgComponent: InhalerSvg},
+      {label: 'Immunity Boosters', SvgComponent: ImmunityBoosterSvg},
+      {label: 'Steam Inhalers', SvgComponent: SteamInhalerSvg},
+    ],
+    Acidity: [
+      {label: 'Antacids', SvgComponent: AntacidSvg},
+      {label: 'PPIs', SvgComponent: AntacidSvg},
+      {label: 'H2 Blockers', SvgComponent: AntacidSvg},
+    ],
+    Headache: [
+      {label: 'Pain Relievers', SvgComponent: PainRelieverSvg},
+      {label: 'Migraine Relief', SvgComponent: PainRelieverSvg},
+    ],
+    'Muscle Cramps': [
+      {label: 'Muscle Relaxants', SvgComponent: PainRelieverSvg},
+      {label: 'Pain Relief Creams', SvgComponent: PainRelieverSvg},
+    ],
+    Dehydration: [
+      {label: 'ORS Solutions', SvgComponent: RehydrationSvg},
+      {label: 'Electrolyte Powders', SvgComponent: RehydrationSvg},
+    ],
+    'Burn Care': [
+      {label: 'Burn Creams', SvgComponent: BurnCreamSvg},
+      {label: 'Antiseptic Creams', SvgComponent: BurnCreamSvg},
+    ],
+    'Blocked Nose': [
+      {label: 'Nasal Decongestants', SvgComponent: NasalDecongestantSvg},
+      {label: 'Nasal Sprays', SvgComponent: NasalSpraySvg},
+    ],
+    'Joint Pain': [
+      {label: 'Pain Relief Gels', SvgComponent: JointPainRelieverSvg},
+      {label: 'Oral Pain Relievers', SvgComponent: JointPainRelieverSvg},
+    ],
+
+    default: [
+      {label: 'Face Cleanser', SvgComponent: FaceCleanserSvg},
+      {label: 'Moisturizer', SvgComponent: MoisturizerSvg},
+      {label: 'Sunscreen', SvgComponent: SunscreenSvg},
+      {label: 'Toner', SvgComponent: TonerSvg},
+      {label: 'Serum', SvgComponent: SerumSvg},
+    ],
+  };
+
+  const productTypes =
+    productTypesMap[subCategory_name] || productTypesMap.default;
+  const [selectedProductType, setSelectedProductType] = useState<string>(
+    productTypes[0].label,
+  );
   const handleAddToCart = async (productId: string, quantity: number = 1) => {
     try {
       setAddingToCart(productId);
@@ -123,14 +169,22 @@ const CategoryFilterScreen = () => {
       setAddingToCart(null);
     }
   };
+  const handleProductPress = (cardProduct: ProductCardProps['product']) => {
+    const originalProduct = getOriginalProduct(cardProduct.id);
+    navigation.navigate('UploadScreen', {
+      product: originalProduct,
+    });
+  };
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
-    <View style={{margin: 5}}>
+    <TouchableOpacity
+      style={{margin: 5}}
+      onPress={() => handleProductPress(item)}>
       <ProductCard
         product={item}
         onAddToCart={handleAddToCart}
         addingToCart={addingToCart === item.id}
       />
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -149,7 +203,7 @@ const CategoryFilterScreen = () => {
         <View style={{flexDirection: 'row', gap: 10}}>
           <TouchableOpacity
             onPress={() => navigation.navigate('GlobalSearchScreen')}>
-            <Search size={20} />
+            <Search size={20} color={'#899193'} strokeWidth={1.5} />
           </TouchableOpacity>
           <CartIconWithBadge />
         </View>

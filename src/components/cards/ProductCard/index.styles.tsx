@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     height: 230,
-    // width: 130,
+    //width: 130,
     backgroundColor: '#FFE3C1',
     borderRadius: 12,
     padding: 12,
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     marginHorizontal: 3,
+
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
@@ -43,12 +44,12 @@ const styles = StyleSheet.create({
   productName: {
     marginTop: 4,
     fontSize: 10,
-    color: '#000',
+    color: '#161D1F',
     fontFamily: Fonts.JakartaRegular,
   },
   productDescription: {
     fontSize: 12,
-    color: '#000',
+    color: '#161D1F',
     marginTop: 2,
     fontFamily: Fonts.JakartaRegular,
   },
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   quantityText: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#666',
     fontFamily: Fonts.JakartaRegular,
   },
@@ -89,9 +90,9 @@ const styles = StyleSheet.create({
   },
   currentPrice: {
     fontSize: 12,
-    fontWeight: 'bold',
-    color: '#000',
-    fontFamily: Fonts.JakartaRegular,
+
+    color: '#161D1F',
+    fontFamily: Fonts.JakartaBold,
   },
   addButton: {
     position: 'absolute',

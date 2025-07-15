@@ -10,7 +10,7 @@ import {
   Dimensions,
   PanResponder,
 } from 'react-native';
-import {ChevronRight, Plus, Check} from 'lucide-react-native';
+import {ChevronRight, Bell} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
 import OtherOptionsItem from '../../ui/Drawer/OtherOptions';
 import styles from './index.styles';
@@ -161,7 +161,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 </View>
               </View>
 
-              <View style={styles.familySection}>
+              {/* <View style={styles.familySection}>
                 <View style={styles.familyHeader}>
                   <Text style={styles.familyTitle}>Family members</Text>
                   <TouchableOpacity style={styles.addNew}>
@@ -178,15 +178,18 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                     </View>
                   ))}
                 </View>
-              </View>
+              </View> */}
             </View>
 
             <Text style={styles.sectionHeader}>Our Services</Text>
             <OptiionsItem
               title="Buy Medicines"
               description="Get Medicine at 25% OFF"
+              onPress={() => {
+                navigation.navigate('AllProducts');
+              }}
             />
-            <OptiionsItem
+            {/* <OptiionsItem
               title="Homecare"
               description="Medical Care & Support at Home"
             />
@@ -209,7 +212,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OptiionsItem
               title="Surgeries"
               description="(NABH Accredited) Safe Surgeries by Experts"
-            />
+            /> */}
 
             <Text style={styles.sectionHeader}>Records</Text>
             <OtherOptionsItem
@@ -224,14 +227,26 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 navigation.navigate('PrescriptionScreen');
               }}
             />
-            <OtherOptionsItem title="Health Reports" />
-            <OtherOptionsItem title="Bill & Invoice" />
+            {/* <OtherOptionsItem title="Health Reports" />
+            <OtherOptionsItem title="Bill & Invoice" /> */}
 
             <Text style={styles.sectionHeader}>About us</Text>
-            <OtherOptionsItem title="Help & Support" />
-            <OtherOptionsItem title="About Mediversal App" />
-            <OtherOptionsItem title="Terms & Conditions" />
-            <OtherOptionsItem title="Privacy Policy" />
+            <OtherOptionsItem
+              title="Help & Support"
+              onPress={() => navigation.navigate('HelpSupportScreen')}
+            />
+            <OtherOptionsItem
+              title="About Us"
+              onPress={() => navigation.navigate('AboutUsScreen')}
+            />
+            <OtherOptionsItem
+              title="Terms & Conditions"
+              onPress={() => navigation.navigate('TermsConditionsScreen')}
+            />
+            <OtherOptionsItem
+              title="Privacy Policy"
+              onPress={() => navigation.navigate('PrivacyPolicyScreen')}
+            />
             {/* <TouchableOpacity
               onPress={handleLogout}
               style={styles.logoutButton}
@@ -239,6 +254,13 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
               <Text style={styles.logoutText}>Logout</Text>
             </TouchableOpacity> */}
           </ScrollView>
+          <View style={styles.likeUsBanner}>
+            <View style={styles.likeUsLeft}>
+              <Bell size={20} color="#F8F8F8" />
+              <Text style={styles.likeUsText}>Like Us? Give us 5 stars</Text>
+            </View>
+            <ChevronRight size={20} color="#F8F8F8" />
+          </View>
         </Animated.View>
       </View>
     </TouchableWithoutFeedback>

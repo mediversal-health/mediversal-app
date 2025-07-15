@@ -39,12 +39,12 @@ const DoctorsCard = () => {
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleRow}>
             <View style={styles.scheduleItem}>
-              <Calendar color="#888" size={14} />
+              <Calendar color="#6D7578" size={14} strokeWidth={1} />
               <Text style={styles.scheduleText}>Monday, 3 March</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.scheduleItem}>
-              <Clock color="#888" size={14} />
+              <Clock color="#6D7578" size={14} strokeWidth={1} />
               <Text style={styles.scheduleText}>9:00am - 10:00am</Text>
             </View>
           </View>

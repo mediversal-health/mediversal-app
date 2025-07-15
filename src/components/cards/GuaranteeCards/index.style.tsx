@@ -20,15 +20,15 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   verifiedBadge: {
-    backgroundColor: '#38B87C',
+    backgroundColor: '#50B57F',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 5,
-    paddingVertical: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
     borderRadius: 6,
     alignSelf: 'flex-start',
     marginBottom: 5,
-    height: 20,
+
     width: 'auto',
   },
   verifiedText: {
@@ -36,26 +36,28 @@ export const styles = StyleSheet.create({
     fontWeight: '300',
     marginLeft: 4,
     fontSize: 10,
-    lineHeight: 8,
+
     fontFamily: Fonts.JakartaRegular,
   },
   guaranteeTitle: {
     fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#222222',
+    color: '#161D1F',
     marginBottom: 6,
   },
   guaranteeDescription: {
     fontSize: 8,
     color: '#161D1F',
-    marginBottom: 2,
+    marginBottom: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    lineHeight: 12,
   },
   featureContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 2,
+    gap: 4,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    alignItems: 'center',
   },
   featureItem: {
     flex: 1,
@@ -73,7 +75,8 @@ export const styles = StyleSheet.create({
   },
   divider: {
     width: 1,
-    height: '100%',
+    height: '75%',
+
     backgroundColor: '#d1e7dd',
   },
   personalizedCard: {
@@ -88,12 +91,12 @@ export const styles = StyleSheet.create({
   personalizedTitle: {
     fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#111111',
+    color: '#161D1F',
     marginBottom: 4,
   },
   personalizedSubtitle: {
     fontSize: 8,
-    color: '#555555',
+    color: '#161D1F',
     marginBottom: 8,
     fontFamily: Fonts.JakartaSemiBold,
   },
@@ -112,7 +115,7 @@ export const styles = StyleSheet.create({
   personalizedFeatureText: {
     marginLeft: 6,
     fontSize: 8,
-    color: '#444444',
+    color: '#B0B6B8',
     fontFamily: Fonts.JakartaRegular,
   },
 });

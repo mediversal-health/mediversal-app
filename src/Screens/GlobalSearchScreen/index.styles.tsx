@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#e8f4f7',
     borderRadius: 12,
 
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
     justifyContent: 'space-between',
-    paddingVertical: Platform.OS === 'ios' ? 10 : 0,
+    paddingVertical: Platform.OS === 'ios' ? 10 : 4,
   },
   textWrapper: {
     flexDirection: 'row',

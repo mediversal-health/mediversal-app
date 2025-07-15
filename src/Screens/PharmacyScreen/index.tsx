@@ -50,7 +50,7 @@ import styles from './index.styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigation';
 import MediversalLogo from '../../assests/svgs/Logo.svg';
-import {ProductCardProps} from '../../types';
+import {OrderData, ProductCardProps} from '../../types';
 import {getProducts, getProductsById} from '../../Services/pharmacy';
 import useProductStore from '../../store/productsStore';
 import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
@@ -59,6 +59,7 @@ import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
 import {useCartStore} from '../../store/cartStore';
+import {getOrders} from '../../Services/order';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -67,8 +68,29 @@ const PharmacyScreen = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const {setProducts, cardProducts, getOriginalProduct} = useProductStore();
   const customer_id = useAuthStore(state => state.customer_id);
+  const JoinedData = useAuthStore(state => state.joinedDate);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const {setUserCart} = useCartStore.getState();
+  const [orders, setOrders] = useState<OrderData[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (customer_id) {
+        try {
+          setLoadingOrders(true);
+          const response = await getOrders(customer_id.toString());
+          setOrders(response.data);
+          setLoadingOrders(false);
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+          setLoadingOrders(false);
+        }
+      }
+    };
+
+    fetchOrders();
+  }, [customer_id]);
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -97,6 +119,22 @@ const PharmacyScreen = () => {
     setRefreshing(true);
     fetchProducts();
   };
+
+  useEffect(() => {
+    if (JoinedData) {
+      const joinedDate = new Date(JoinedData);
+      const currentDate = new Date();
+
+      // Calculate the difference in milliseconds
+      const diffInMs = currentDate.getTime() - joinedDate.getTime();
+      // Convert milliseconds to days
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+      console.log(diffInDays);
+      setShowOnboarding(diffInDays <= 2);
+    }
+  }, [JoinedData]);
+
+  console.log(JoinedData);
   console.log(customer_id);
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
@@ -174,7 +212,7 @@ const PharmacyScreen = () => {
 
   return (
     <SafeAreaView
-      style={{flex: 1, flexDirection: 'column', backgroundColor: '#fff'}}>
+      style={{flex: 1, flexDirection: 'column', backgroundColor: '#f8f8f8'}}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         refreshControl={
@@ -186,31 +224,31 @@ const PharmacyScreen = () => {
           />
         }>
         <View style={styles.safeArea}>
-          <OnboardingSteps />
-          <PromoBanner />
+          {showOnboarding && <OnboardingSteps />}
+          {!loadingOrders && orders.length < 1 && <PromoBanner />}
 
           <View style={styles.containerx}>
             <View style={styles.item}>
-              <AuthenticIcon width={34} height={34} />
-              <Text style={styles.text}>100% Authentic</Text>
+              <AuthenticIcon width={40} height={40} />
+              <Text style={styles.text}>100% {'\n'} Authentic</Text>
             </View>
             <View style={styles.item}>
-              <PharmacyIcon width={34} height={34} />
+              <PharmacyIcon width={40} height={40} />
               <Text style={styles.text}>Licensed Pharmacy</Text>
             </View>
             <View style={styles.item}>
-              <VerifiedIcon width={34} height={34} />
-              <Text style={styles.text}>Verified Doctors</Text>
+              <VerifiedIcon width={40} height={40} />
+              <Text style={styles.text}>Verified {'\n'} Doctors</Text>
             </View>
             <View style={styles.item}>
-              <LabIcon width={34} height={34} />
-              <Text style={styles.text}>Certified Lab Tests</Text>
+              <LabIcon width={40} height={40} />
+              <Text style={styles.text}>Certified {'\n'} Lab Tests</Text>
             </View>
           </View>
 
           <View style={styles.priscriptionContainer}>
-            <View style={{flexDirection: 'row', gap: 5}}>
-              <PriscriptionSVG width={25} height={32} strokeWidth={2} />
+            <View style={{flexDirection: 'row', gap: 8}}>
+              <PriscriptionSVG width={40} height={40} strokeWidth={1} />
               <View>
                 <Text style={styles.priscriptionText}>Upload Prescription</Text>
                 <Text style={styles.subtitle}>Quick order with Rx</Text>
@@ -225,7 +263,7 @@ const PharmacyScreen = () => {
         </View>
         <View>
           <LinearGradient
-            colors={['#FFE3C1', '#FFFFFF']}
+            colors={['#FFE3C1', '#F8F8F8']}
             locations={[0, 0.3, 1]}
             start={{x: 0, y: 0}}
             end={{x: 0, y: 1}}
@@ -238,38 +276,45 @@ const PharmacyScreen = () => {
             <Vector6 style={styles.vector6} width={30} height={30} />
             <View style={styles.gradientContent}>
               <Text style={styles.title}>Super Offers</Text>
-              <Text style={styles.highlight}>SUPER SAVINGS</Text>
+              <Text style={styles.highlight}>SUPER SAVINGS!</Text>
               <Text style={styles.subtext}>
                 Limited-time deals on medicines. Grab them before they're gone!
               </Text>
             </View>
-            {loading ? (
-              <FlatList
-                data={skeletonItems}
-                renderItem={renderProductShimmer}
-                keyExtractor={item => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.productList}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
-              />
-            ) : (
-              <FlatList
-                data={cardProducts}
-                renderItem={renderProduct}
-                keyExtractor={item => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.productList}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
-              />
-            )}
-
+            <View style={{marginHorizontal: 7}}>
+              {loading ? (
+                <FlatList
+                  data={skeletonItems}
+                  renderItem={renderProductShimmer}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.productList}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.separator} />
+                  )}
+                />
+              ) : (
+                <FlatList
+                  data={cardProducts}
+                  renderItem={renderProduct}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.productList}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.separator} />
+                  )}
+                />
+              )}
+            </View>
             <Text
               style={{
-                fontFamily: Fonts.JakartaRegular,
-                fontSize: 12,
-                marginLeft: 10,
+                fontFamily: Fonts.JakartaMedium,
+                fontSize: 14,
+                marginTop: 24,
+                color: '#161D1F',
+                marginLeft: Platform.OS === 'ios' ? 10 : 0,
               }}>
               Browse by Category
             </Text>
@@ -279,7 +324,7 @@ const PharmacyScreen = () => {
                 flex: 1,
                 gap: 5,
                 marginTop: 10,
-                marginHorizontal: Platform.OS === 'android' ? 0 : 10,
+                marginHorizontal: Platform.OS === 'android' ? 0 : 16,
                 justifyContent: 'space-between',
               }}>
               <CategoryCard
@@ -384,41 +429,46 @@ const PharmacyScreen = () => {
             </View>
             <View
               style={{
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
-                marginLeft: 10,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 10,
+                marginTop: 24,
               }}>
-              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              <Text style={{fontFamily: Fonts.JakartaMedium, fontSize: 14}}>
                 Trending Medicines
               </Text>
             </View>
-
-            {loading ? (
-              <FlatList
-                data={skeletonItems}
-                renderItem={renderProductShimmer}
-                keyExtractor={item => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.productList}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
-              />
-            ) : (
-              <FlatList
-                data={cardProducts}
-                renderItem={renderProductForTrending}
-                keyExtractor={item => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.productList}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
-              />
-            )}
+            <View style={{marginHorizontal: 10}}>
+              {loading ? (
+                <FlatList
+                  data={skeletonItems}
+                  renderItem={renderProductShimmer}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.productList}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.separator} />
+                  )}
+                />
+              ) : (
+                <FlatList
+                  data={cardProducts}
+                  renderItem={renderProductForTrending}
+                  keyExtractor={item => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.productList}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.separator} />
+                  )}
+                />
+              )}
+            </View>
             <View
               style={{
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
-                marginLeft: 10,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
+                marginTop: 24,
               }}>
-              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+              <Text style={{fontFamily: Fonts.JakartaMedium, fontSize: 14}}>
                 Featured Brands
               </Text>
             </View>
@@ -429,11 +479,11 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginBottom: 10,
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
               }}>
               <CircleCard
                 logo={Cipla}
-                size={110}
+                size={100}
                 onPress={() =>
                   navigation.navigate('BrandFilterScreen', {
                     brand_name: 'Cipla',
@@ -442,7 +492,7 @@ const PharmacyScreen = () => {
               />
               <CircleCard
                 logo={SunPharma}
-                size={110}
+                size={100}
                 onPress={() =>
                   navigation.navigate('BrandFilterScreen', {
                     brand_name: 'Sun Pharma',
@@ -451,7 +501,7 @@ const PharmacyScreen = () => {
               />
               <CircleCard
                 logo={Abbott}
-                size={110}
+                size={100}
                 onPress={() =>
                   navigation.navigate('BrandFilterScreen', {
                     brand_name: 'Abbott',
@@ -466,11 +516,11 @@ const PharmacyScreen = () => {
                 gap: 5,
                 marginTop: 10,
                 marginBottom: 10,
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
               }}>
               <CircleCard
                 logo={Himalaya}
-                size={110}
+                size={100}
                 onPress={() =>
                   navigation.navigate('BrandFilterScreen', {
                     brand_name: 'Himalaya',
@@ -479,7 +529,7 @@ const PharmacyScreen = () => {
               />
               <CircleCard
                 logo={Dabur}
-                size={110}
+                size={100}
                 onPress={() =>
                   navigation.navigate('BrandFilterScreen', {
                     brand_name: 'Dabur',
@@ -488,7 +538,7 @@ const PharmacyScreen = () => {
               />
               <CircleCard
                 logo={Mankind}
-                size={110}
+                size={100}
                 onPress={() =>
                   navigation.navigate('BrandFilterScreen', {
                     brand_name: 'Mankind',
@@ -504,48 +554,50 @@ const PharmacyScreen = () => {
             </TouchableOpacity>
             <View
               style={{
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
-                marginLeft: 10,
+                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
+
+                marginTop: 24,
               }}>
               <Text
                 style={{
-                  fontFamily: Fonts.JakartaRegular,
-                  fontSize: 12,
+                  fontFamily: Fonts.JakartaMedium,
+                  fontSize: 14,
                 }}>
                 Stay Informed, Stay Healthy
               </Text>
             </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                // flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: Platform.OS === 'ios' ? 0 : 10,
+                paddingHorizontal: Platform.OS === 'ios' ? 10 : 16,
+                marginBottom: 5,
+                marginTop: 10,
+              }}>
+              <ImmunityCard
+                title="5 Simple Ways to Boost Your Immunity Naturally"
+                subtitle="Learn how daily habits like staying hydrated, eating colorful veggies, and getting enough sleep can strengthen your immune system."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="The Power of Antioxidants: Foods to Include in Your Diet"
+                subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="Stress Management Techniques for a Healthier Life"
+                subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+            </ScrollView>
           </LinearGradient>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              // flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: Platform.OS === 'ios' ? 0 : 10,
-              paddingHorizontal: Platform.OS === 'ios' ? 10 : 10,
-              marginBottom: 5,
-            }}>
-            <ImmunityCard
-              title="5 Simple Ways to Boost Your Immunity Naturally"
-              subtitle="Learn how daily habits like staying hydrated, eating colorful veggies, and getting enough sleep can strengthen your immune system."
-              buttonText="Read More"
-              onPressReadMore={() => console.log('Read More clicked')}
-            />
-            <ImmunityCard
-              title="The Power of Antioxidants: Foods to Include in Your Diet"
-              subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
-              buttonText="Read More"
-              onPressReadMore={() => console.log('Read More clicked')}
-            />
-            <ImmunityCard
-              title="Stress Management Techniques for a Healthier Life"
-              subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
-              buttonText="Read More"
-              onPressReadMore={() => console.log('Read More clicked')}
-            />
-          </ScrollView>
 
           <View style={styles.imagecontainer}>
             <Text style={{fontSize: 8}}>Powered By</Text>

@@ -22,10 +22,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#ffffff',
+    width: 32,
+    height: 32,
+    borderRadius: 20,
+    backgroundColor: '#F8F8F8',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -35,8 +35,8 @@ export const styles = StyleSheet.create({
     height: '100%', // or specific height
   },
   headerText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#F8F8F8',
+    fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
   },
   content: {

@@ -3,7 +3,6 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './index.styles';
 import {SvgProps} from 'react-native-svg';
-import {Fonts} from '../../../styles/fonts';
 
 interface ConsultDoctorProps {
   Header: string;

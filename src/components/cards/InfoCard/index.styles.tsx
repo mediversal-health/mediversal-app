@@ -34,16 +34,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontSize: 14,
-    color: '#000',
+    fontSize: 12,
+    color: '#161D1F',
     textAlign: 'center',
     fontFamily: Fonts.JakartaBold,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   subHeading: {
-    fontSize: 8,
-    color: '#000',
+    fontSize: 6,
+    color: '#161D1F',
     textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
 });
 export default styles;

@@ -4,7 +4,7 @@ import {Fonts} from '../../../styles/fonts';
 const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 50 : 30,
+    top: Platform.OS === 'ios' ? 50 : 50,
     left: 0,
     height: '100%',
     width: '100%',
@@ -20,6 +20,30 @@ const styles = StyleSheet.create({
     // borderTopRightRadius: 16,
     // borderBottomRightRadius: 16,
     // elevation: 10,
+  },
+  likeUsBanner: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 84,
+    backgroundColor: '#0088B1',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+
+  likeUsLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+
+  likeUsText: {
+    color: '#F8F8F8',
+    fontSize: 14,
+    fontFamily: Fonts.JakartaBold,
   },
   profileCompleteText: {
     fontSize: 14,

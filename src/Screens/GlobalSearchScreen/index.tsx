@@ -188,7 +188,7 @@ const GlobalSearchScreen = () => {
         <View style={styles.wrapper}>
           <View style={styles.container}>
             <View style={styles.textWrapper}>
-              <Search color={'#0088B1'} size={20} />
+              <Search color={'#899193'} size={20} strokeWidth={1.5} />
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search for Medicines"

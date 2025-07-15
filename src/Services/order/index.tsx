@@ -26,3 +26,35 @@ export const createOrder = async (orderData: OrderData) => {
 export const getOrders = async (customerId: string) => {
   return axios.get(`${IP_ADDR}/api/order/CustomerId/${customerId}`);
 };
+
+export const cancelOrder = async (orderId: string, reason: string) => {
+  try {
+    const response = await axios.post(
+      `${IP_ADDR}/api/order/cancel-order`,
+      {
+        orderId: orderId,
+        storeName: 'DEFAULT',
+        reason: reason,
+      },
+
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Order cancellation failed:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        headers: error.response?.headers,
+      });
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    throw error;
+  }
+};

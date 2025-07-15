@@ -1,19 +1,21 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 25,
-    paddingHorizontal: 8,
-    backgroundColor: '#FFF',
+    // marginBottom: 100,
+    paddingHorizontal: Platform.OS === 'ios' ? 8 : 16,
+    backgroundColor: '#F8F8F8',
+    paddingBottom: 80,
   },
   headerContainer: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   sectionLabel: {
     fontSize: 12,
+    color: '#161D1F',
     fontFamily: Fonts.JakartaRegular,
   },
   headerRow: {
@@ -33,22 +35,24 @@ const styles = StyleSheet.create({
   },
   seeAllButton: {
     flexDirection: 'row',
-    gap: 2,
+    gap: 5,
+    alignItems: 'center',
   },
   seeAllText: {
     fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
+    textAlign: 'center',
   },
   arrowIcon: {
     marginTop: 3,
   },
   horizontalScroll: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingHorizontal: 0,
+    marginHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   priscriptionContainer: {
-    width: '95%',
+    width: Platform.OS === 'ios' ? '95%' : '100%',
     alignSelf: 'center',
     backgroundColor: '#E8F4F7',
     borderRadius: 12,
@@ -57,15 +61,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 5,
-    marginVertical: 20,
+    gap: 8,
+    marginBottom: 12,
   },
   priscriptionText: {
     flex: 1,
-    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+    fontFamily: Fonts.JakartaMedium,
   },
   uploadButton: {
-    borderRadius: 12,
+    borderRadius: 8,
     backgroundColor: '#0088B1',
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -74,16 +79,17 @@ const styles = StyleSheet.create({
   },
   uploadButtonText: {
     fontWeight: '600',
-    color: '#fff',
+    color: '#F8F8F8',
     fontSize: 10,
-    fontFamily: Fonts.JakartaRegular,
+    fontFamily: Fonts.JakartaMedium,
   },
   gridWrap: {
     flexDirection: 'row',
     flex: 1,
     gap: 12,
     justifyContent: 'space-between',
-    padding: 10,
+    marginTop: 12,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   separatorContainer: {
     flexDirection: 'row',

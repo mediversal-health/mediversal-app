@@ -38,14 +38,14 @@ const CartIconWithBadge = () => {
     <TouchableOpacity
       onPress={() => navigation.navigate('CartPage', {})}
       style={{position: 'relative'}}>
-      <ShoppingBag size={20} />
+      <ShoppingBag size={20} color={'#161D1F'} strokeWidth={1} />
       {totalItems > 0 && (
         <View
           style={{
             position: 'absolute',
             top: -8,
             right: -8,
-            backgroundColor: '#FF4444',
+            backgroundColor: '#0088B1',
             borderRadius: 10,
             minWidth: 18,
             height: 18,

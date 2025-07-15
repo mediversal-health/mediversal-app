@@ -15,7 +15,7 @@ const GuaranteeCards: React.FC<GuaranteeCardsProps> = () => {
         {/* Authenticity Guarantee Card */}
         <View style={styles.guaranteeCard}>
           <View style={styles.verifiedBadge}>
-            <Shield size={12} color="#fff" />
+            <Shield size={12} color="#F8F8F8" />
             <Text style={styles.verifiedText}>Verified</Text>
           </View>
 
