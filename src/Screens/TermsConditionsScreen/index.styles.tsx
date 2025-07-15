@@ -2,34 +2,43 @@ import {Platform, StatusBar, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 export default StyleSheet.create({
-  safeArea: {
+  safeAreaContainer: {
+    backgroundColor: '#fff',
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // ⬅️ add
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  headerTitle: {
+    fontSize: 16,
+    marginLeft: 10,
+    fontFamily: Fonts.JakartaBold,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingBottom: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E0E0E0',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
-  backBtn: {padding: 4, marginRight: 8},
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#0088B1',
-    fontFamily: Fonts.JakartaSemiBold,
+  backButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#e8f4f7',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-
-  container: {flexGrow: 1, padding: 16},
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
+    marginBottom: 40,
+  },
   body: {
     fontSize: 16,
     lineHeight: 22,
     color: '#333333',
     marginBottom: 20,
     fontFamily: Fonts.JakartaRegular,
+    paddingHorizontal: 10,
   },
   link: {
     fontSize: 16,
@@ -37,5 +46,11 @@ export default StyleSheet.create({
     fontWeight: '500',
     fontFamily: Fonts.JakartaMedium,
     marginLeft: 10,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16, // Add padding as needed
   },
 });

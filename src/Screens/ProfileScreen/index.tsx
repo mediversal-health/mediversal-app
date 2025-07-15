@@ -33,7 +33,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useToastStore} from '../../store/toastStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Platform} from 'react-native';
-import {updateProfile} from '../../Services/auth';
+import {DeleteUser, updateProfile} from '../../Services/auth';
 
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -195,6 +195,17 @@ export default function ProfileScreen() {
       month: 'long',
       year: 'numeric',
     });
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await DeleteUser(customer_id);
+      clearAuthentication();
+      navigation.navigate('Login');
+      showToast('Account deleted successfully', 'success', 1500, true);
+    } catch (error) {
+      showToast('Failed to delete account', 'error', 1500, true);
+    }
   };
 
   const selectImage = () => {
@@ -488,7 +499,7 @@ export default function ProfileScreen() {
 
                 <TouchableOpacity
                   style={styles.logoutItem}
-                  onPress={handleLogout}>
+                  onPress={handleDeleteUser}>
                   <View style={styles.infoItemLeft}>
                     <UserRoundXIcon size={20} color="#000" />
                     <Text style={styles.DeleteUserLabel}>Delete User</Text>
