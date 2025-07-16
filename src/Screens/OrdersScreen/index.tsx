@@ -60,7 +60,6 @@ const OrdersScreen: React.FC = () => {
       const mappedOrders: Order[] = response.data.map((item: any) => {
         const rawStatus = item.deliverystatus?.toUpperCase?.() || 'ON GOING';
 
-        // Map the status to match your filter options
         let mappedStatus;
         if (rawStatus.includes('CANCELLED')) {
           mappedStatus = 'CANCELLED';

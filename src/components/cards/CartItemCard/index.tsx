@@ -27,6 +27,7 @@ type CartItemCardProps = {
   onQuantityChange?: () => void;
   quantityOrg?: number;
   fromOrderDesc: boolean;
+  isPrescriptionRequired: string;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -40,6 +41,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   onQuantityChange,
   fromOrderDesc,
   quantityOrg,
+  isPrescriptionRequired,
 }) => {
   const customer_id = useAuthStore(state => state.customer_id);
 
@@ -94,7 +96,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
       setIsLoading(false);
     }
   };
-
+  console.log('prescription', isPrescriptionRequired);
   const handleRemove = async () => {
     if (isDeleting) {
       return;
@@ -192,6 +194,17 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
               <Text style={styles.outOfStockText}>Out of Stock</Text>
               <Text style={styles.outOfStockSubText}>
                 (This item will not be added to the checkout)
+              </Text>
+            </View>
+          </View>
+        )}
+
+        {isPrescriptionRequired == 'Yes' && (
+          <View style={styles.prescriptionRequiredContainer}>
+            <View style={styles.outOfStockLeft}>
+              <Text style={styles.outOfStockText}>Prescription Required</Text>
+              <Text style={styles.outOfStockSubText}>
+                (This item needs prescription to procced for the checkout)
               </Text>
             </View>
           </View>
