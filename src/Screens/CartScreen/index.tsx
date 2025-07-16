@@ -35,10 +35,14 @@ import Config from 'react-native-config';
 import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
 import PinkDiscount from './assets/svgs/pink discount.svg';
 import EmptyCartComponent from '../../components/ui/EmptyCartComponent';
+import PrescriptionUploadModal from '../../components/modal/UploadPrescriptionModal';
+import EmptyCartScreenSvg from './assets/svgs/Group 7.svg';
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  // const [isPrescriptionItemsPresent, setisPrescriptionItemsPresent] =
+  //   useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
   const RAZORPAY_KEY = Config.RAZORPAY_KEY;
 
@@ -60,6 +64,8 @@ const CartPage = () => {
   const {originalProducts, setProducts} = useProductStore();
   const [hasOutOfStockItems, setHasOutOfStockItems] = useState(false);
   const [isPaymentMethodVisible, setPaymentMethodVisible] = useState(false);
+  const [isPrescriptionModalVisible, setPrescriptionModalVisible] =
+    useState(false);
   const showToast = useToastStore(state => state.showToast);
   const handleCouponRemove = () => {
     setSelectedCoupon(String(customer_id), null);
@@ -306,6 +312,10 @@ const CartPage = () => {
     );
   }
 
+  const isPrescriptionRequiredItemsPresent = apiProductDetails.some(
+    item => item.PrescriptionRequired == 'Yes',
+  );
+
   if (error) {
     return (
       <View style={styles.errorContainer}>
@@ -467,6 +477,7 @@ const CartPage = () => {
                 name={item.ProductName}
                 mrp={item.SellingPrice}
                 price={item.CostPrice}
+                isPrescriptionRequired={item.PrescriptionRequired}
                 onRemove={async () => {
                   // First update the product details
                   await fetchProductDetails();
@@ -478,7 +489,31 @@ const CartPage = () => {
               />
             ))
           ) : (
-            <EmptyCartComponent />
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 100,
+              }}>
+              <EmptyCartScreenSvg />
+
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaBold,
+                  fontSize: 14,
+                  color: '#899193',
+                }}>
+                No Items in Cart
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaBold,
+                  fontSize: 12,
+                  color: '#899193',
+                }}>
+                Go find the products you need
+              </Text>
+            </View>
           )}
 
           {/* MediCash Card */}
@@ -549,18 +584,42 @@ const CartPage = () => {
                 )}
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                style={styles.addressButton}
-                onPress={showLocationModal}>
-                <Text style={styles.addressButtonText}>
-                  Select / Add Address
-                </Text>
-              </TouchableOpacity>
+              <>
+                {isPrescriptionRequiredItemsPresent ? (
+                  <TouchableOpacity
+                    style={styles.addressButton}
+                    onPress={() => setPrescriptionModalVisible(true)}>
+                    <Text style={styles.addressButtonText}>
+                      Upload Prescription
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.addressButton}
+                    onPress={showLocationModal}>
+                    <Text style={styles.addressButtonText}>
+                      Select / Add Address
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </>
             )}
           </View>
         )}
       </SafeAreaView>
+      <PrescriptionUploadModal
+        isVisible={isPrescriptionModalVisible}
+        onClose={() => setPrescriptionModalVisible(false)}
+        onUploadSuccess={() => {
+          const updatedProducts = apiProductDetails.map(item => ({
+            ...item,
+            PrescriptionRequired: 'No',
+          }));
+          setApiProductDetails(updatedProducts);
 
+          showToast('Prescription uploaded successfully!', 'success');
+        }}
+      />
       <LocationModal
         isVisible={isLocationModalVisible}
         onClose={hideLocationModal}

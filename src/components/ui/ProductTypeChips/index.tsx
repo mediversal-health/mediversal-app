@@ -39,7 +39,8 @@ const Chip: React.FC<ChipProps> = ({
           color: isSelected ? '#0088B1' : '#333',
           fontFamily: Fonts.JakartaSemiBold,
           marginTop: 4,
-        }}>
+        }}
+        numberOfLines={1}>
         {label}
       </Text>
     </View>

@@ -83,9 +83,21 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 5,
+    marginHorizontal: -10,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     backgroundColor: '#EB5757',
+  },
+  prescriptionRequiredContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 5,
+    marginHorizontal: -10,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    backgroundColor: '#F2C94C',
+    overflow: 'hidden',
   },
 
   outOfStockLeft: {
@@ -102,7 +114,7 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
   },
   outOfStockSubText: {
-    fontSize: 8,
+    fontSize: 7,
     textAlign: 'center',
     fontFamily: Fonts.JakartaSemiBold,
     color: '#FFF',
