@@ -3,7 +3,6 @@ import {Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   cardContainer: {
-    flex: 1,
     height: 230,
     width: 130,
     backgroundColor: '#FFE3C1',
@@ -35,9 +34,8 @@ const styles = StyleSheet.create({
   },
 
   productImage: {
-    height: 90,
     width: '100%',
-    resizeMode: 'contain',
+    aspectRatio: 1,
   },
   infoContainer: {
     flex: 1,
