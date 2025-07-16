@@ -5,7 +5,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Linking,
 } from 'react-native';
 import {ChevronLeft, Info, Hospital, User} from 'lucide-react-native';
 import {useNavigation} from '@react-navigation/native';
