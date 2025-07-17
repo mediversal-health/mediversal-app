@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
+/* Core React hooks */
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   View,
@@ -30,8 +30,10 @@ import {Fonts} from '../../styles/fonts';
 import AddressCardSkeleton from '../../components/cards/AddressCard/skeletons';
 import {useToastStore} from '../../store/toastStore';
 
+// Restrict address type to these string literals
 type AddressType = 'Home' | 'Office' | 'Family & Friends' | 'Other';
 
+// Typed wrapper around route.params for safer access
 type AddressBookScreenRouteProp = RouteProp<
   {
     params: {
@@ -57,13 +59,15 @@ type AddressBookScreenRouteProp = RouteProp<
   'params'
 >;
 
+// Handles listing, adding, editing, deleting & selecting addresses.
 const AddressBookScreen: React.FC = () => {
+  // Stack navigator for pushing/replacing screens
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<AddressBookScreenRouteProp>();
-  const [isLoading, setIsLoading] = useState(true); // Changed to true for initial load
+  const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [refreshing, setRefreshing] = useState(false); // Added for pull-to-refresh
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false); // Track initial load
+  const [refreshing, setRefreshing] = useState(false);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const locationData = route.params?.location;
   const customer_id = useAuthStore(state => state.customer_id);
   const fromLocationMap = route.params?.fromLocationMap || false;
@@ -589,7 +593,6 @@ const AddressBookScreen: React.FC = () => {
                     fontFamily: Fonts.JakartaLight,
                     marginTop: -10,
                   }}>
-                  {' '}
                   Your saved addresses
                 </Text>
               )}
