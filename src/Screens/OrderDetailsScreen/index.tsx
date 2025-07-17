@@ -228,16 +228,24 @@ const OrdersDetailsScreen: React.FC = () => {
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Medicines Subtotal</Text>
             <Text style={styles.summaryValue}>
-              ₹{Number(order_data.TotalOrderAmount) - 45}
+              ₹{Number(order_data.TotalOrderAmount)}
             </Text>
           </View>
 
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Delivery Fee</Text>
-            <Text style={styles.summaryValue}>₹40.00</Text>
+            {Number(order_data.TotalOrderAmount) > 499 ? (
+              <Text style={styles.summaryValue}>Free</Text>
+            ) : (
+              <Text style={styles.summaryValue}>₹40.00</Text>
+            )}
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Handling & Packaging Fee</Text>
+            <Text style={styles.summaryValue}>₹5.00</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Plaform Fee</Text>
             <Text style={styles.summaryValue}>₹5.00</Text>
           </View>
           {order_data.applied_discount_value && (

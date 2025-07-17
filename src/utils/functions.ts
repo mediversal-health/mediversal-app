@@ -25,7 +25,7 @@ export const filterProducts = (
         const stock = parseInt(product.StockAvailableInInventory, 10) || 0;
         const isRx =
           product.PrescriptionRequired === 'Yes' ||
-          product.Category === 'PRESCRIPTION (Rx)';
+          product.Category === 'Prescription';
 
         switch (filter) {
           case 'inStock':

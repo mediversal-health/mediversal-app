@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,14 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
-import {ChevronRight, Truck, Wallet, ChevronLeft} from 'lucide-react-native';
+import {
+  ChevronRight,
+  Truck,
+  // Wallet,
+  ChevronLeft,
+  InfoIcon,
+  Wallet,
+} from 'lucide-react-native';
 
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import CartItemCard from '../../components/cards/CartItemCard';
@@ -33,9 +40,11 @@ import {getProducts} from '../../Services/pharmacy';
 import {useToastStore} from '../../store/toastStore';
 import Config from 'react-native-config';
 import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
-import PinkDiscount from './assets/svgs/pink discount.svg';
+import PinkDiscount from './assets/svgs/Group 6.svg';
 import PrescriptionUploadModal from '../../components/modal/UploadPrescriptionModal';
 import EmptyCartScreenSvg from './assets/svgs/Group 7.svg';
+import {usePrescriptionStore} from '../../store/prescriptionStore';
+
 const CartPage = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
@@ -44,7 +53,6 @@ const CartPage = () => {
   //   useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'CartPage'>>();
   const RAZORPAY_KEY = Config.RAZORPAY_KEY;
-
   const formData = route.params?.formData;
   const customer_id = useAuthStore(state => state.customer_id);
 
@@ -53,6 +61,9 @@ const CartPage = () => {
   const City = formData?.City;
   const State = formData?.State;
 
+  const {clearPrescriptions, prescriptionFiles} =
+    usePrescriptionStore.getState();
+  console.log(prescriptionFiles, ' prescriptionFiles');
   const formattedAddress = `${pincode} - ${area}, ${City}, ${State}`;
 
   const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
@@ -63,6 +74,8 @@ const CartPage = () => {
   const {originalProducts, setProducts} = useProductStore();
   const [hasOutOfStockItems, setHasOutOfStockItems] = useState(false);
   const [isPaymentMethodVisible, setPaymentMethodVisible] = useState(false);
+  const [selectedRadio, setSelectedRadio] = useState(false);
+  const wasCartEmptyRef = useRef(apiProductDetails.length === 0);
   const [isPrescriptionModalVisible, setPrescriptionModalVisible] =
     useState(false);
   const showToast = useToastStore(state => state.showToast);
@@ -71,6 +84,18 @@ const CartPage = () => {
   };
   const checkOutOfStockItems = (items: any[]) => {
     return items.some((item: any) => item.StockAvailableInInventory === 0);
+  };
+  const getDeliveryDate = (daysToAdd: number) => {
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + daysToAdd);
+
+    // Format as "Day, DD Month" (e.g., "Fri, 14 Jun")
+    return deliveryDate.toLocaleDateString('en-US', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
   };
   const fetchProducts = useCallback(() => {
     getProducts()
@@ -114,12 +139,21 @@ const CartPage = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const isCartEmpty = apiProductDetails.length === 0;
+    if (isCartEmpty && !wasCartEmptyRef.current) {
+      console.log('Cart became empty, clearing prescriptions');
+      clearPrescriptions();
+    }
+    wasCartEmptyRef.current = isCartEmpty;
+  }, [apiProductDetails.length, clearPrescriptions]);
   console.log('hasOutOfStockItems', hasOutOfStockItems);
   useEffect(() => {
     if (customer_id) {
       fetchProductDetails();
     }
   }, []);
+
   const handleCheckoutPress = () => {
     setPaymentMethodVisible(true);
   };
@@ -144,7 +178,9 @@ const CartPage = () => {
         {
           name: 'PaymentSuccessScreen',
           params: {
-            amount: cartTotal - couponDiscount + 5 + 40,
+            amount: Math.round(
+              cartTotal - couponDiscount + 5 + 5 + (cartTotal > 499 ? 0 : 40),
+            ),
             cartItems: cartItems,
             address: formattedAddress,
             pincode: formData?.PinCode ?? 0,
@@ -220,8 +256,6 @@ const CartPage = () => {
       couponDiscount = Math.round((cartTotal * discountValue) / 100);
     }
   }
-
-  const [selectedRadio, setSelectedRadio] = useState(false);
 
   const handleCheckout = async () => {
     if (!RAZORPAY_KEY) {
@@ -365,57 +399,57 @@ const CartPage = () => {
       </SafeAreaView>
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {formattedAddress !==
-            'undefined - undefined, undefined, undefined' && (
-            <View style={styles.container}>
-              <View
-                style={{
-                  backgroundColor: '#E8F4F7',
-                  padding: 20,
-                  flexDirection: 'row',
-                  gap: 15,
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{flexDirection: 'row', gap: 10}}>
-                  <NavigationImg />
-                  <View style={{flexDirection: 'column', width: '70%'}}>
-                    <Text
-                      style={{
-                        color: '#899193',
-                        fontSize: 10,
-                        fontFamily: Fonts.JakartaRegular,
-                      }}>
-                      Deliver to {formData?.Recipient_name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontFamily: Fonts.JakartaRegular,
-                      }}>
-                      {formattedAddress}
-                    </Text>
+          {formattedAddress !== 'undefined - undefined, undefined, undefined' &&
+            apiProductDetails.length > 0 && (
+              <View style={styles.container}>
+                <View
+                  style={{
+                    backgroundColor: '#E8F4F7',
+                    padding: 20,
+                    flexDirection: 'row',
+                    gap: 15,
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{flexDirection: 'row', gap: 10}}>
+                    <NavigationImg />
+                    <View style={{flexDirection: 'column', width: '70%'}}>
+                      <Text
+                        style={{
+                          color: '#899193',
+                          fontSize: 10,
+                          fontFamily: Fonts.JakartaRegular,
+                        }}>
+                        Deliver to {formData?.Recipient_name}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontFamily: Fonts.JakartaRegular,
+                        }}>
+                        {formattedAddress}
+                      </Text>
+                    </View>
                   </View>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.replace('AddressBookScreen', {
+                        fromLocationMap: false,
+                        isFromProfile: false,
+                      })
+                    }>
+                    <Text
+                      style={{
+                        justifyContent: 'flex-end',
+                        fontFamily: Fonts.JakartaSemiBold,
+                        color: '#50B57F',
+                        fontSize: 12,
+                      }}>
+                      Change
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.replace('AddressBookScreen', {
-                      fromLocationMap: false,
-                      isFromProfile: false,
-                    })
-                  }>
-                  <Text
-                    style={{
-                      justifyContent: 'flex-end',
-                      fontFamily: Fonts.JakartaSemiBold,
-                      color: '#50B57F',
-                      fontSize: 12,
-                    }}>
-                    Change
-                  </Text>
-                </TouchableOpacity>
               </View>
-            </View>
-          )}
+            )}
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <TouchableOpacity
@@ -425,9 +459,9 @@ const CartPage = () => {
                   })
                 }>
                 <LinearGradient
-                  colors={['#F8F8F8', '#FE90E2']}
-                  start={{x: 1, y: 0}}
-                  end={{x: 1, y: 1}}
+                  colors={['#F8F8F8', '#0088B1']}
+                  start={{x: 0, y: 1}}
+                  end={{x: 0, y: 0}}
                   style={styles.couponStrip}>
                   <View style={styles.couponLeft}>
                     <PinkDiscount />
@@ -442,8 +476,8 @@ const CartPage = () => {
             (apiProductDetails && selectedCoupon && (
               <LinearGradient
                 colors={['#FFFFFF', '#0088B1']}
-                start={{x: 1, y: 1}}
-                end={{x: 0, y: 1}}
+                start={{x: 1, y: 0}}
+                end={{x: 1, y: 1}}
                 style={styles.appliedCouponContainer}>
                 <View style={styles.appliedCouponLeft}>
                   <View style={{flexDirection: 'row'}}>
@@ -460,11 +494,41 @@ const CartPage = () => {
                 </TouchableOpacity>
               </LinearGradient>
             ))}
+          {isPrescriptionRequiredItemsPresent && (
+            <View
+              style={{
+                backgroundColor: '#FFE0C5',
+                margin: 15,
+                borderRadius: 6,
+                padding: 16,
+              }}>
+              <View style={{flexDirection: 'row', gap: 5}}>
+                <InfoIcon color={'#EB5757'} />
+                <Text
+                  style={{
+                    color: '#EB5757',
+                    fontFamily: Fonts.JakartaSemiBold,
+                    marginBottom: 10,
+                  }}>
+                  Warning
+                </Text>
+              </View>
+              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+                You've added a medication that requires a prescription. If
+                you've uploaded a prescription before, please check and verify
+                it. Our licensed pharmacist will contact you to confirm the
+                details. If you have more prescriptions to upload, feel free to
+                do so.
+              </Text>
+            </View>
+          )}
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <View style={styles.deliveryRow}>
                 <Truck size={18} color="#000" style={styles.icon} />
-                <Text style={styles.deliveryText}>By Sun, 11 May</Text>
+                <Text style={styles.deliveryText}>
+                  {`Delivery by ${getDeliveryDate(3)}`}
+                </Text>
               </View>
             ))}
           {apiProductDetails.length > 0 ? (
@@ -546,13 +610,19 @@ const CartPage = () => {
                 <Text style={styles.billSummaryLabel}>Bill Summary</Text>
                 <BillSummaryCard
                   originalPrice={cartTotal}
-                  finalPrice={cartTotal - couponDiscount + 5 + 40}
+                  finalPrice={
+                    cartTotal -
+                    couponDiscount +
+                    5 +
+                    5 +
+                    (cartTotal > 499 ? 0 : 40)
+                  }
                   details={{
                     cartTotal: cartTotal,
                     couponDiscount: couponDiscount,
                     handlingFee: 5,
-                    platformFee: 0,
-                    deliveryCharges: 40,
+                    platformFee: 5,
+                    deliveryCharges: cartTotal > 499 ? 0 : 40,
                   }}
                 />
 
@@ -567,7 +637,13 @@ const CartPage = () => {
             <View>
               <Text style={styles.amountLabel}>Amount to pay:</Text>
               <Text style={styles.amountText}>
-                {cartTotal - couponDiscount + 5 + 40}
+                {Math.round(
+                  cartTotal -
+                    couponDiscount +
+                    5 +
+                    5 +
+                    (cartTotal > 499 ? 0 : 40),
+                )}
               </Text>
             </View>
             {formattedAddress !==
@@ -615,8 +691,14 @@ const CartPage = () => {
             PrescriptionRequired: 'No',
           }));
           setApiProductDetails(updatedProducts);
-
           showToast('Prescription uploaded successfully!', 'success');
+        }}
+        isPrescriptionRequired={isPrescriptionRequiredItemsPresent}
+        onNavigateToAddressBook={() => {
+          navigation.navigate('AddressBookScreen', {
+            fromLocationMap: false,
+            isFromProfile: false,
+          });
         }}
       />
       <LocationModal

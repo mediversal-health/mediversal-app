@@ -188,7 +188,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                 navigation.navigate('AllProducts');
               }}
             />
-            {/* <OptiionsItem
+            <OptiionsItem
               title="Homecare"
               description="Medical Care & Support at Home"
             />
@@ -211,7 +211,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OptiionsItem
               title="Surgeries"
               description="(NABH Accredited) Safe Surgeries by Experts"
-            /> */}
+            />
 
             <Text style={styles.sectionHeader}>Records</Text>
             <OtherOptionsItem

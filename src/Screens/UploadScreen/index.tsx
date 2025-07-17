@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Text,
+  ActivityIndicator,
 } from 'react-native';
 import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
 import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
-import {Clock, Search, ChevronLeft} from 'lucide-react-native';
+import {Search, ChevronLeft} from 'lucide-react-native';
 import {styles} from './index.style';
 import ProductCard from '../../components/cards/ProductCard';
 
@@ -84,6 +85,19 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
       setAddingToCart(null);
     }
   };
+
+  const quantity = useCartStore(state =>
+    state.getProductQuantity(
+      customer_id?.toString() ?? '',
+      product?.productId ?? 0,
+    ),
+  );
+
+  const isInCart = quantity > 0;
+
+  const isOutOfStock =
+    product?.StockAvailableInInventory === 0 ||
+    product?.StockAvailableInInventory == null;
 
   const handleProductPress = (item: any) => {
     console.log('Product pressed:', item);
@@ -208,9 +222,25 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
 
         {/* Fixed bottom buttons */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.reminderButton}>
+          {/* <TouchableOpacity style={styles.reminderButton}>
             <Clock size={18} color="#0088B1" />
             <Text style={styles.reminderButtonText}>Set Reminder</Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={[
+              styles.addCartButton,
+              (addingToCart || isInCart || isOutOfStock) &&
+                styles.disabledButton,
+            ]}
+            onPress={handleAddToCart}
+            disabled={!!addingToCart || isInCart || isOutOfStock}>
+            {addingToCart ? (
+              <ActivityIndicator size="small" color="#0088B1" />
+            ) : isInCart ? (
+              <Text style={styles.buttonText}>Already in Cart</Text>
+            ) : (
+              <Text style={styles.buttonText}>Add Cart</Text>
+            )}
           </TouchableOpacity>
           {/* <TouchableOpacity style={styles.buyButton}>
             <RNText style={styles.buyButtonText}>Buy Now</RNText>

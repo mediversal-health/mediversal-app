@@ -27,7 +27,7 @@ type CartItemCardProps = {
   onQuantityChange?: () => void;
   quantityOrg?: number;
   fromOrderDesc: boolean;
-  isPrescriptionRequired: string;
+  isPrescriptionRequired?: string;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({

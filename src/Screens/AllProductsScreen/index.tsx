@@ -33,11 +33,22 @@ import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
 import {useCartStore} from '../../store/cartStore';
 import {useFilterStore} from '../../store/filterStore';
 import {filterProducts} from '../../utils/functions';
-
+import AllMedicines from './assets/svgs/Product Image.svg';
+import OTC from './assets/svgs/Product Image (2).svg';
+import Prescription from './assets/svgs/Product Image (3).svg';
+import Suppliments from './assets/svgs/Product Image (4).svg';
+import MedicalDevices from './assets/svgs/Product Image (5).svg';
+import Surgical from './assets/svgs/Product Image (6).svg';
+import Vaccines from './assets/svgs/Product Image (7).svg';
+import PersonalCare from './assets/svgs/Product Image (8).svg';
+import SexualHealth from './assets/svgs/Product Image (9).svg';
+import MotherBabyChild from './assets/svgs/Product Image (12).svg';
+import SeniorLiving from './assets/svgs/Product Image (10).svg';
+import SeasonalNeeds from './assets/svgs/Product Image (11).svg';
 interface Category {
   id: string;
   name: string;
-  icon: string;
+  icon: string | React.ReactElement;
 }
 
 const AllProductsScreen: React.FC = () => {
@@ -102,63 +113,63 @@ const AllProductsScreen: React.FC = () => {
     {
       id: '1',
       name: 'All',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      icon: <AllMedicines width={60} height={60} />,
     },
     {
       id: '2',
       name: 'OTC',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      icon: <OTC width={60} height={60} />,
     },
     {
       id: '3',
-      name: 'PRESCRIPTION (Rx)',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'PRESCRIPTION',
+      icon: <Prescription width={60} height={60} />,
     },
     {
       id: '4',
-      name: 'VITAMINS, MINERALS & DIETARY SUPPLEMENTS',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SUPPLEMENTS',
+      icon: <Suppliments width={60} height={60} />,
     },
     {
       id: '5',
-      name: 'MEDICAL DEVICES',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'DEVICES',
+      icon: <MedicalDevices width={60} height={60} />,
     },
     {
       id: '6',
-      name: 'SURGICAL, HOSPITAL & INFECTION CONTROL',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SURGICAL CARE',
+      icon: <Surgical width={60} height={60} />,
     },
     {
       id: '7',
       name: 'VACCINES ',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      icon: <Vaccines width={60} height={60} />,
     },
     {
       id: '8',
-      name: 'PERSONAL CARE & HYGIENE',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'PERSONAL CARE',
+      icon: <PersonalCare width={60} height={60} />,
     },
     {
       id: '9',
-      name: 'SEXUAL & REPRODUCTIVE HEALTH',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SEXUAL WELLNESS',
+      icon: <SexualHealth width={60} height={60} />,
     },
     {
       id: '10',
-      name: 'MOTHER, BABY & CHILD',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'MOTHER & BABY',
+      icon: <MotherBabyChild width={60} height={60} />,
     },
     {
       id: '11',
-      name: 'SENIOR & ASSISTED LIVING',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SENIOR CARE',
+      icon: <SeniorLiving width={60} height={60} />,
     },
 
     {
       id: '13',
-      name: 'SEASONAL, HOME & EMERGENCY ESSENTIALS',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SEASONAL NEEDS',
+      icon: <SeasonalNeeds width={60} height={60} />,
     },
   ];
   useFocusEffect(
@@ -206,7 +217,13 @@ const AllProductsScreen: React.FC = () => {
         selectedCategory === item.name && styles.selectedCategory,
       ]}
       onPress={() => handleCategorySelect(item.name)}>
-      <Image source={{uri: item.icon}} style={styles.categoryIcon} />
+      <View style={styles.iconContainer}>
+        {typeof item.icon === 'string' ? (
+          <Image source={{uri: item.icon}} style={styles.categoryIcon} />
+        ) : (
+          <View style={styles.svgIconWrapper}>{item.icon}</View>
+        )}
+      </View>
       <Text
         style={[
           styles.categoryText,

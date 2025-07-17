@@ -25,6 +25,8 @@ import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import OrderNowCard from '../../components/cards/OrderCard';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import PriceCard from '../../components/cards/PriceCard';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -130,7 +132,7 @@ const HomeScreen = () => {
           />
         </View>
 
-        {/* <View style={styles.separatorContainer}>
+        <View style={styles.separatorContainer}>
           <LinearGradient
             colors={['#00FF80', 'transparent']}
             start={{x: 1, y: 0}}
@@ -169,7 +171,7 @@ const HomeScreen = () => {
         <View style={styles.footer}>
           <Text style={styles.footerText}>See All</Text>
           <ArrowRight color="#ccc" height={10} />
-        </View> */}
+        </View>
 
         {/* <View style={styles.imagecontainer}>
           <Text style={{fontSize: 8}}>Powered By</Text>

@@ -35,7 +35,7 @@ export interface ProductCardProps {
     quantity: string;
     delivery: string;
     originalPrice: number;
-    discountedPrice: number;
+    sellingPrice: number;
     discountPercentage: number;
     Category: string;
     manufacturer_name: string;
@@ -226,6 +226,7 @@ export type OrderData = {
   applied_discount_value: string | number;
   coupon_id: number;
   items: OrderItem[];
+  prescription_id: number | null;
 };
 
 export interface TrackScan {

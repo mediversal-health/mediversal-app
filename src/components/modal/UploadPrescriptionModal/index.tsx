@@ -1,39 +1,36 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import Modal from 'react-native-modal';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {pick} from '@react-native-documents/picker';
-import {
-  Camera,
-  FileText,
-  Image as ImageIcon,
-  UploadIcon,
-  X,
-} from 'lucide-react-native';
+import {Camera, FileText, UploadIcon, X} from 'lucide-react-native';
 
-import {uploadPrescriptions} from '../../../Services/prescription';
 import {useAuthStore} from '../../../store/authStore';
 import {useToastStore} from '../../../store/toastStore';
 import styles from './index.styles';
-import {UploadPickerHandle} from '../../../types';
+import {usePrescriptionStore} from '../../../store/prescriptionStore';
 
 interface PrescriptionUploadModalProps {
   isVisible: boolean;
   onClose: () => void;
   onUploadSuccess: () => void;
+  isPrescriptionRequired: boolean; // <-- Add this
+  onNavigateToAddressBook?: () => void; // <-- Optional: For navigation
 }
 
 const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
   isVisible,
   onClose,
   onUploadSuccess,
+  isPrescriptionRequired,
+  onNavigateToAddressBook,
 }) => {
   const [fileType, setFileType] = useState<'image' | 'pdf'>('image');
   const [images, setImages] = useState<string[]>([]);
   const [pdfs, setPdfs] = useState<any[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const customer_id = useAuthStore(state => state.customer_id);
+  // const customer_id = useAuthStore(state => state.customer_id);
   const customer_name = useAuthStore(state => state.first_name);
   const showToast = useToastStore(state => state.showToast);
 
@@ -44,18 +41,19 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
         mediaType: 'photo',
         quality: 0.8,
         cameraType: 'back',
-        saveToPhotos: true, // Optional: save to device photos
+        saveToPhotos: true,
       });
 
       if (!result.didCancel && result.assets) {
         const newImages = result.assets.map((asset: any) => asset.uri || '');
-        setImages([...images, ...newImages]);
+        setImages(prev => [...prev, ...newImages]);
       }
     } catch (error) {
       console.log('Camera error:', error);
       showToast('Failed to take photo', 'error', 1000, true);
     }
   };
+
   const selectImage = async () => {
     try {
       setFileType('image');
@@ -66,7 +64,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
       });
       if (!result.didCancel && result.assets) {
         const newImages = result.assets.map(asset => asset.uri || '');
-        setImages([...images, ...newImages]);
+        setImages(prev => [...prev, ...newImages]);
       }
     } catch (error) {
       console.log('Image picker error:', error);
@@ -89,7 +87,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
           type: file.type || 'application/pdf',
           name: file.name || `document_${Date.now()}.pdf`,
         }));
-        setPdfs([...pdfs, ...newPdfs]);
+        setPdfs(prev => [...prev, ...newPdfs]);
       }
     } catch (error) {
       console.log('Document picker error:', error);
@@ -99,22 +97,13 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
 
   const removeFile = (index: number) => {
     if (fileType === 'image') {
-      const newImages = [...images];
-      newImages.splice(index, 1);
-      setImages(newImages);
+      setImages(prev => prev.filter((_, i) => i !== index));
     } else {
-      const newPdfs = [...pdfs];
-      newPdfs.splice(index, 1);
-      setPdfs(newPdfs);
+      setPdfs(prev => prev.filter((_, i) => i !== index));
     }
   };
 
   const handleProceed = async () => {
-    if (!customer_id) {
-      showToast('User ID not found. Please login again.', 'error', 1000, true);
-      return;
-    }
-
     const fileCount = fileType === 'pdf' ? pdfs.length : images.length;
     if (fileCount > 5) {
       showToast(
@@ -130,34 +119,34 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
     try {
       const files =
         fileType === 'pdf'
-          ? pdfs
+          ? pdfs.map(pdf => ({
+              uri: pdf.uri,
+              type: pdf.type || 'application/pdf',
+              name: pdf.name || `document_${Date.now()}.pdf`,
+            }))
           : images.map(uri => ({
               uri,
               type: 'image/jpeg',
               name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
             }));
 
-      await uploadPrescriptions(customer_id.toString(), files);
+      usePrescriptionStore.getState().addFiles(files);
+
+      showToast('Prescriptions saved successfully', 'success', 1000, true);
+
       onUploadSuccess();
       onClose();
+      onNavigateToAddressBook?.();
     } catch (error) {
-      if (error instanceof Error) {
-        console.log('Upload failed:', error.message);
-        showToast('Upload failed: ' + error.message, 'error', 1000, true);
-      } else {
-        console.log('Upload failed:', error);
-        showToast('Upload failed', 'error', 1000, true);
-      }
+      console.log('Save failed:', error);
+      showToast('Failed to save prescriptions', 'error', 1000, true);
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleCancel = () => {
-    if (
-      (fileType === 'image' && images.length > 0) ||
-      (fileType === 'pdf' && pdfs.length > 0)
-    ) {
+    if (images.length > 0 || pdfs.length > 0) {
       setShowModal(true);
     } else {
       onClose();
@@ -269,11 +258,6 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
 
           <View style={styles.actionButtonContainer}>
             <TouchableOpacity
-              style={[styles.actionButton, styles.cancelButton]}
-              onPress={handleCancel}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               style={[
                 styles.actionButton,
                 styles.proceedButton,
@@ -282,14 +266,17 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
               onPress={handleProceed}
               disabled={files.length === 0 || isUploading}>
               <Text style={styles.proceedButtonText}>
-                {isUploading ? 'Uploading...' : 'Proceed'}
+                {isPrescriptionRequired
+                  ? 'Select/Add Address'
+                  : isUploading
+                  ? 'Uploading...'
+                  : 'Save/Add Address'}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
-      {/* Confirmation modal */}
       <Modal isVisible={showModal} onBackdropPress={() => setShowModal(false)}>
         <View style={styles.confirmationModal}>
           <Text style={styles.confirmationTitle}>Discard Changes?</Text>

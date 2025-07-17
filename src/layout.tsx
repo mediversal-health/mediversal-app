@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
+  Switch,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -26,7 +27,7 @@ import {useToastStore} from './store/toastStore';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  // const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
   const {customerAddressMap} = useAddressBookStore();
@@ -180,7 +181,7 @@ const Layout = () => {
             </View>
           </View>
           {/* Notification Switch*/}
-          {/* <View
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -217,7 +218,7 @@ const Layout = () => {
               trackColor={{false: '#ccc', true: '#ccc'}}
               thumbColor={isEnabled ? '#0088B1' : '#ccc'}
             />
-          </View> */}
+          </View>
           <TouchableOpacity style={{paddingHorizontal: 16, paddingBottom: 16}}>
             <SearchBar />
           </TouchableOpacity>

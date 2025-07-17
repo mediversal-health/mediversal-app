@@ -5,13 +5,13 @@ import {
   Image,
   FlatList,
   Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
+  // TouchableOpacity,
+  // ActivityIndicator,
 } from 'react-native';
-import {MessageCircleMore} from 'lucide-react-native';
+// import {MessageCircleMore} from 'lucide-react-native';
 import {styles} from './index.styles';
-import {useCartStore} from '../../../store/cartStore';
-import {useAuthStore} from '../../../store/authStore';
+// import {useCartStore} from '../../../store/cartStore';
+// import {useAuthStore} from '../../../store/authStore';
 import {Fonts} from '../../../styles/fonts';
 
 interface MedicineDetailProps {
@@ -33,7 +33,7 @@ interface MedicineDetailProps {
 
 const MedicineDetail: React.FC<MedicineDetailProps> = ({
   images = [],
-  productId,
+  // productId,
   rating = 4.5,
   name = 'Dolo 650mg Tablet',
   packInfo = 'Strip of 10 Tablets',
@@ -41,21 +41,21 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   currentPrice = '₹ 165',
   originalPrice = '₹ 195',
   discount = '15% OFF',
-  deliveryTime = 'Get by 9pm, Tomorrow',
-  onAddToCart,
-  isAddingToCart = false,
+  // deliveryTime = 'Get by 9pm, Tomorrow',
+  // onAddToCart,
+  // isAddingToCart = false,
   prescriptionRequired,
   StockAvailableInInventory,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const screenWidth = Dimensions.get('window').width;
-  const customer_id = useAuthStore(state => state.customer_id);
-  const quantity = useCartStore(state =>
-    state.getProductQuantity(customer_id?.toString() ?? '', productId ?? 0),
-  );
+  // const customer_id = useAuthStore(state => state.customer_id);
+  // const quantity = useCartStore(state =>
+  //   state.getProductQuantity(customer_id?.toString() ?? '', productId ?? 0),
+  // );
 
-  const isInCart = quantity > 0;
+  // const isInCart = quantity > 0;
   console.log(StockAvailableInInventory);
   const isOutOfStock =
     StockAvailableInInventory === 0 || StockAvailableInInventory == null;
@@ -63,7 +63,18 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   // Safe image handling
   const safeImages = Array.isArray(images) ? images.filter(img => img) : [];
   const hasMultipleImages = safeImages.length > 1;
+  const getDeliveryDate = (daysToAdd: number) => {
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + daysToAdd);
 
+    // Format as "Day, DD Month" (e.g., "Fri, 14 Jun")
+    return deliveryDate.toLocaleDateString('en-US', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
+  };
   useEffect(() => {
     if (!hasMultipleImages) {
       return;
@@ -255,13 +266,15 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           {isOutOfStock ? 'Out of Stock' : 'In Stock'}
         </Text>
         {!isOutOfStock && (
-          <Text style={styles.deliveryText}>{deliveryTime}</Text>
+          <Text style={styles.deliveryText}>{`Delivery by ${getDeliveryDate(
+            3,
+          )}`}</Text>
         )}
       </View>
 
       {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
+      {/* <View style={styles.buttonContainer}> */}
+      {/* <TouchableOpacity
           style={[
             styles.addCartButton,
             (isAddingToCart || isInCart || isOutOfStock) &&
@@ -276,12 +289,12 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           ) : (
             <Text style={styles.buttonText}>Add Cart</Text>
           )}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.consultButton}>
+        </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.consultButton}>
           <MessageCircleMore size={16} color="#0088B1" />
           <Text style={styles.consultButtonText}>Consult</Text>
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+      {/* </View> */}
     </View>
   );
 };
