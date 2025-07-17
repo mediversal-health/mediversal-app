@@ -191,5 +191,24 @@ const styles = StyleSheet.create({
     color: '#9E9E9E',
     fontFamily: Fonts.JakartaSemiBold,
   },
+  radio: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  radioSelected: {
+    borderColor: '#007AFF', // Or your primary color
+  },
+  radioInner: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#007AFF', // Should match radioSelected borderColor
+  },
 });
 export default styles;
