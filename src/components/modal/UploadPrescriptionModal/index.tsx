@@ -1,14 +1,22 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import Modal from 'react-native-modal';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {pick} from '@react-native-documents/picker';
-import {FileText, Image as ImageIcon, X} from 'lucide-react-native';
+import {
+  Camera,
+  FileText,
+  Image as ImageIcon,
+  UploadIcon,
+  X,
+} from 'lucide-react-native';
 
 import {uploadPrescriptions} from '../../../Services/prescription';
 import {useAuthStore} from '../../../store/authStore';
 import {useToastStore} from '../../../store/toastStore';
 import styles from './index.styles';
+import {UploadPickerHandle} from '../../../types';
+
 interface PrescriptionUploadModalProps {
   isVisible: boolean;
   onClose: () => void;
@@ -26,7 +34,28 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const customer_id = useAuthStore(state => state.customer_id);
+  const customer_name = useAuthStore(state => state.first_name);
   const showToast = useToastStore(state => state.showToast);
+
+  const handleTakePhoto = async () => {
+    try {
+      setFileType('image');
+      const result = await launchCamera({
+        mediaType: 'photo',
+        quality: 0.8,
+        cameraType: 'back',
+        saveToPhotos: true, // Optional: save to device photos
+      });
+
+      if (!result.didCancel && result.assets) {
+        const newImages = result.assets.map((asset: any) => asset.uri || '');
+        setImages([...images, ...newImages]);
+      }
+    } catch (error) {
+      console.log('Camera error:', error);
+      showToast('Failed to take photo', 'error', 1000, true);
+    }
+  };
   const selectImage = async () => {
     try {
       setFileType('image');
@@ -156,75 +185,87 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
         animationOutTiming={250}
         onBackdropPress={handleCancel}>
         <View style={styles.modalContainer}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.title}>Upload Prescription</Text>
-            <Text style={styles.subtitle}>
-              Please upload a clear image or PDF of your prescription to proceed
-              with your order.
-            </Text>
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                styles.uploadOption,
-                fileType === 'image' && {backgroundColor: '#0088B1'},
-              ]}
-              onPress={selectImage}>
-              <ImageIcon color={fileType === 'image' ? '#FFF' : '#0088B1'} />
-              <Text
-                style={[
-                  styles.uploadOptionText,
-                  fileType === 'image' && {color: '#FFF'},
-                ]}>
-                Upload Image
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            style={styles.scrollView}>
+            <View style={styles.headerContainer}>
+              <Text style={styles.title}>Upload Prescription</Text>
+              <Text style={styles.subtitle}>
+                Please upload a clear prescription image or PDF of your
+                prescription to proceed with your order.
               </Text>
-            </TouchableOpacity>
-
-            <View style={styles.dividerContainer}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>OR</Text>
-              <View style={styles.dividerLine} />
             </View>
 
-            <TouchableOpacity
-              style={[
-                styles.uploadOption,
-                fileType === 'pdf' && {backgroundColor: '#0088B1'},
-              ]}
-              onPress={selectPDF}>
-              <FileText color={fileType === 'pdf' ? '#FFF' : '#0088B1'} />
-              <Text
-                style={[
-                  styles.uploadOptionText,
-                  fileType === 'pdf' && {color: '#FFF'},
-                ]}>
-                Upload PDF
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {files.length > 0 && (
-            <View style={styles.previewContainer}>
-              {files.map((file, index) => (
-                <View key={index} style={styles.filePreview}>
-                  {fileType === 'image' ? (
-                    <Image source={{uri: file}} style={styles.imagePreview} />
-                  ) : (
-                    <FileText size={24} color="#0088B1" />
-                  )}
-                  <Text style={styles.fileName} numberOfLines={1}>
-                    {fileType === 'pdf' ? file.name : `Image ${index + 1}`}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.removeButton}
-                    onPress={() => removeFile(index)}>
-                    <X size={16} color="#EF4444" />
-                  </TouchableOpacity>
+            <Text style={styles.sectionTitle}>Choose upload method</Text>
+            <View style={styles.uploadMethodsRow}>
+              <View style={styles.uploadCard}>
+                <TouchableOpacity onPress={handleTakePhoto}>
+                  <View style={styles.iconWrapper}>
+                    <Camera color="#161D1F" size={24} />
+                  </View>
+                  <Text style={styles.methodLabel}>Take Photo</Text>
+                </TouchableOpacity>
+                <View style={styles.successStrip}>
+                  <Text style={styles.successText}>90% success rate</Text>
                 </View>
-              ))}
+              </View>
+
+              <View style={styles.uploadCard}>
+                <TouchableOpacity onPress={selectImage}>
+                  <View style={styles.iconWrapper}>
+                    <UploadIcon color="#161D1F" size={24} />
+                  </View>
+                  <Text style={styles.methodLabel}>Upload Image</Text>
+                </TouchableOpacity>
+                <View style={styles.successStrip}>
+                  <Text style={styles.successText}>90% success rate</Text>
+                </View>
+              </View>
+
+              <View style={styles.uploadCard}>
+                <TouchableOpacity onPress={selectPDF}>
+                  <View style={styles.iconWrapper}>
+                    <FileText color="#161D1F" size={24} />
+                  </View>
+                  <Text style={styles.methodLabel}>Upload PDF</Text>
+                </TouchableOpacity>
+                <View style={styles.successStrip}>
+                  <Text style={styles.successText}>90% success rate</Text>
+                </View>
+              </View>
             </View>
-          )}
+
+            {files.length > 0 && (
+              <>
+                <Text style={styles.sectionTitle}>Uploaded Prescriptions</Text>
+                <View style={styles.previewContainer}>
+                  {files.map((file, index) => (
+                    <View key={index} style={styles.filePreview}>
+                      {fileType === 'image' ? (
+                        <Image
+                          source={{uri: file}}
+                          style={styles.imagePreview}
+                        />
+                      ) : (
+                        <FileText size={24} color="#0088B1" />
+                      )}
+                      <Text style={styles.fileName} numberOfLines={1}>
+                        {fileType === 'pdf'
+                          ? file.name
+                          : `${customer_name}'s Prescription`}
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.removeButton}
+                        onPress={() => removeFile(index)}>
+                        <X size={16} color="#EF4444" />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+              </>
+            )}
+          </ScrollView>
 
           <View style={styles.actionButtonContainer}>
             <TouchableOpacity
