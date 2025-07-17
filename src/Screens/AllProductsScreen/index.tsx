@@ -16,7 +16,7 @@ import {
   Lock,
   ArrowUpDown,
 } from 'lucide-react-native';
-
+import {useFocusEffect} from '@react-navigation/native';
 import ProductCard from '../../components/cards/ProductCard';
 import SearchBar from '../../components/common/SearchBar';
 import {ProductCardProps} from '../../types';
@@ -32,6 +32,7 @@ import {useToastStore} from '../../store/toastStore';
 import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
 import {useCartStore} from '../../store/cartStore';
 import {useFilterStore} from '../../store/filterStore';
+import {filterProducts} from '../../utils/functions';
 
 interface Category {
   id: string;
@@ -43,8 +44,6 @@ const AllProductsScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState({});
-  const [searchText, setSearchText] = useState('');
-  const [priceRange, setPriceRange] = useState({min: '', max: ''});
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   // const [filteredProducts, setFilteredProducts] = useState<
@@ -53,7 +52,8 @@ const AllProductsScreen: React.FC = () => {
   const [sortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
   const {setUserCart} = useCartStore.getState();
-  const {cardProducts, getOriginalProduct} = useProductStore();
+  const {cardProducts, getOriginalProduct, originalProducts} =
+    useProductStore();
   const {filteredProducts, setFilteredProducts} = useFilterStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
@@ -161,7 +161,15 @@ const AllProductsScreen: React.FC = () => {
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
     },
   ];
+  useFocusEffect(
+    React.useCallback(() => {
+      setSelectedCategory('All');
+      setFilteredProducts(null);
+      setSelectedFilters({});
 
+      setSelectedSortOption('Sort');
+    }, []),
+  );
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
     <TouchableOpacity
       onPress={() => handleProductPress(item)}
@@ -176,20 +184,18 @@ const AllProductsScreen: React.FC = () => {
       />
     </TouchableOpacity>
   );
+  console.log(originalProducts, 'originalProducts in AllProductsScreen');
   const handleCategorySelect = (categoryName: string) => {
     setSelectedCategory(categoryName);
-    setSelectedFilters({});
-    setSearchText('');
-    setPriceRange({min: '', max: ''});
 
-    if (categoryName === 'All') {
-      setFilteredProducts(null);
-    } else {
-      const filtered = cardProducts.filter(
-        product => product.Category === categoryName,
-      );
-      setFilteredProducts(filtered);
-    }
+    setSelectedSortOption('Sort');
+
+    const updatedFiltered = filterProducts(
+      cardProducts,
+      categoryName,
+      selectedFilters,
+    );
+    setFilteredProducts(updatedFiltered);
   };
   console.log(filteredProducts, 'filteredProducts all');
 
@@ -337,10 +343,7 @@ const AllProductsScreen: React.FC = () => {
           onApply={filtered => setFilteredProducts(filtered)}
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
-          searchText={searchText}
-          setSearchText={setSearchText}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
+          selectedCategory={selectedCategory}
         />
       </SafeAreaView>
     </>

@@ -34,7 +34,6 @@ import {useToastStore} from '../../store/toastStore';
 import Config from 'react-native-config';
 import PaymentMethodModal from '../../components/modal/PaymentMethodModal';
 import PinkDiscount from './assets/svgs/pink discount.svg';
-import EmptyCartComponent from '../../components/ui/EmptyCartComponent';
 import PrescriptionUploadModal from '../../components/modal/UploadPrescriptionModal';
 import EmptyCartScreenSvg from './assets/svgs/Group 7.svg';
 const CartPage = () => {

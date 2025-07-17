@@ -1,16 +1,26 @@
 import {StyleSheet} from 'react-native';
 import {Fonts} from '../../../styles/fonts';
+
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    alignItems: 'center',
-    padding: 32,
     backgroundColor: '#fff',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
+    height: '5%',
+    minHeight: '55%',
+    paddingHorizontal: 32,
+    paddingTop: 32,
+    paddingBottom: 20,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 20,
   },
   headerContainer: {
     alignItems: 'flex-start',
@@ -24,7 +34,7 @@ const styles = StyleSheet.create({
     color: '#0088B1',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
     fontFamily: Fonts.JakartaRegular,
   },
@@ -69,8 +79,9 @@ const styles = StyleSheet.create({
   },
   previewContainer: {
     width: '100%',
+    marginTop: 20,
     marginBottom: 20,
-    maxHeight: 200,
+    // Removed maxHeight to allow expansion
   },
   filePreview: {
     flexDirection: 'row',
@@ -101,6 +112,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     gap: 10,
+    paddingTop: 10,
+    backgroundColor: '#fff',
   },
   actionButton: {
     flex: 1,
@@ -168,5 +181,63 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: Fonts.JakartaSemiBold,
   },
+  uploadMethodsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 12,
+    gap: 8,
+  },
+  recentListContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    height: 175,
+    padding: 10,
+    marginTop: 8,
+  },
+  uploadCard: {
+    flex: 1,
+    height: 110,
+    backgroundColor: '#E8F4F7',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  iconWrapper: {
+    backgroundColor: '#0088B129',
+    padding: 12,
+    borderRadius: 50,
+    marginBottom: 8,
+  },
+  methodLabel: {
+    fontSize: 8,
+    color: '#161D1F',
+    marginBottom: 16,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  successStrip: {
+    position: 'absolute',
+    bottom: 0,
+    height: 12,
+    width: '100%',
+    backgroundColor: '#50B57F',
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  successText: {
+    fontSize: 8,
+    color: '#FFFFFF',
+    fontFamily: Fonts.JakartaRegular,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#161D1F',
+    marginTop: 8,
+    textAlign: 'left',
+  },
 });
+
 export default styles;

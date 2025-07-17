@@ -22,11 +22,14 @@ const useProductStore = create<ProductStore>((set, get) => ({
       originalPrice: parseFloat(product.SellingPrice),
       discountedPrice: parseFloat(product.CostPrice),
       discountPercentage: parseFloat(product.DiscountedPercentage),
-      Category: product.Type?.toString() ?? '',
+      Category: product.Category?.toString() ?? '',
       SubCategory: product.subCategory?.toString() ?? '',
       image: product.images?.[0] || '',
       manufacturer_name: product.ManufacturerName,
       subCategory_name: product.subCategory,
+      PrescriptionRequired: product.PrescriptionRequired,
+      Composition: product.Composition,
+      StockAvailableInInventory: product.StockAvailableInInventory,
       // Store reference to original product
       _originalProduct: product,
     }));

@@ -40,6 +40,7 @@ export interface ProductCardProps {
     Category: string;
     manufacturer_name: string;
     subCategory_name: string;
+    PrescriptionRequired: string;
     image: string;
   };
   onAddToCart?: (id: string, quantity: number) => void;

@@ -126,7 +126,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <View style={[styles.cardContainer, dynamicStyles.cardContainer, style]}>
       <View style={styles.imageContainer}>
-        <Image source={{uri: product.image}} style={styles.productImage} />
+        <Image
+          source={{uri: product.image}}
+          style={styles.productImage}
+          resizeMode="contain"
+        />
       </View>
 
       <View style={styles.infoContainer}>
