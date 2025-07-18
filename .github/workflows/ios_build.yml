@@ -21,7 +21,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Match version in your Gemfile.lock
+          ruby-version: '3.1'
 
       - name: Install Bundler and dependencies
         run: |
