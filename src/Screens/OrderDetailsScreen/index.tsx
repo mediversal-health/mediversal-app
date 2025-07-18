@@ -95,10 +95,16 @@ const OrdersDetailsScreen: React.FC = () => {
       if (!order_data.rapidshypAwb) {
         throw new Error('AWB is missing');
       }
+      console.log(
+        'Fetching tracking details for AWB:',
+        order_data.rapidshypAwb,
+      );
       const data = await trackOrders(
         order_data.orderId,
         order_data.rapidshypAwb,
       );
+
+      console.log(data, 'data from rapidshyp');
 
       if (
         data.records &&
@@ -199,7 +205,19 @@ const OrdersDetailsScreen: React.FC = () => {
           </View>
         </View>
 
-        {trackingData && <OrderTrackingProgress trackingData={trackingData} />}
+        {trackingData && trackingData.length > 0 ? (
+          <OrderTrackingProgress trackingData={trackingData} />
+        ) : (
+          <View
+            style={{
+              padding: 20,
+              alignItems: 'center',
+            }}>
+            <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 16}}>
+              No tracking data available
+            </Text>
+          </View>
+        )}
 
         <View style={{flexDirection: 'row', marginLeft: 20, gap: 5}}>
           <View

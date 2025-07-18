@@ -8,14 +8,37 @@ type OptionsItemProps = {
   title: string;
   description: string;
   onPress?: () => void;
+  icon?: React.ReactElement<{color?: string; size?: number}>;
+  iconColor?: string;
+  iconSize?: number;
 };
 
-const OptiionsItem = ({title, description, onPress}: OptionsItemProps) => {
+const OptionsItem = ({
+  title,
+  description,
+  onPress,
+  icon,
+  iconColor = '#0088B1',
+  iconSize = 24,
+}: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.leftSection}>
-        <View style={{marginTop: 5}}>
-          <Bell size={24} color="#B0B6B8" />
+        <View
+          style={{
+            marginTop: 5,
+            backgroundColor: '#E8F4F7',
+            padding: 4,
+            borderRadius: 10,
+          }}>
+          {icon ? (
+            React.cloneElement(icon, {
+              color: iconColor,
+              size: iconSize,
+            })
+          ) : (
+            <DefaultIcon color={iconColor} size={iconSize} />
+          )}
         </View>
 
         <View style={styles.textContainer}>
@@ -27,6 +50,11 @@ const OptiionsItem = ({title, description, onPress}: OptionsItemProps) => {
     </TouchableOpacity>
   );
 };
+
+// Default icon component if none is provided
+const DefaultIcon = ({color, size}: {color: string; size: number}) => (
+  <Bell color={color} size={size} />
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -59,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OptiionsItem;
+export default OptionsItem;

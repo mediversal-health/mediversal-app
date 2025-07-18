@@ -9,21 +9,59 @@ interface PrescriptionFile {
   name: string;
 }
 
+interface CustomerPrescriptions {
+  [customerId: string]: PrescriptionFile[];
+}
+
 interface PrescriptionState {
-  prescriptionFiles: PrescriptionFile[];
-  addFiles: (files: PrescriptionFile[]) => void;
-  clearPrescriptions: () => void;
+  customerPrescriptions: CustomerPrescriptions;
+  addFiles: (customerId: string, files: PrescriptionFile[]) => void;
+  removeFile: (customerId: string, index?: number) => void;
+  clearPrescriptions: (customerId: string) => void;
+  getFiles: (customerId: string) => PrescriptionFile[];
 }
 
 export const usePrescriptionStore = create<PrescriptionState>()(
   persist(
-    set => ({
-      prescriptionFiles: [],
-      addFiles: files =>
+    (set, get) => ({
+      customerPrescriptions: {},
+
+      addFiles: (customerId, files) =>
         set(state => ({
-          prescriptionFiles: [...state.prescriptionFiles, ...files],
+          customerPrescriptions: {
+            ...state.customerPrescriptions,
+            [customerId]: [
+              ...(state.customerPrescriptions[customerId] || []),
+              ...files,
+            ],
+          },
         })),
-      clearPrescriptions: () => set({prescriptionFiles: []}),
+
+      removeFile: (customerId, index) => {
+        if (typeof index === 'number') {
+          set(state => ({
+            customerPrescriptions: {
+              ...state.customerPrescriptions,
+              [customerId]:
+                state.customerPrescriptions[customerId]?.filter(
+                  (_, i) => i !== index,
+                ) || [],
+            },
+          }));
+        } else {
+          const {[customerId]: _, ...rest} = get().customerPrescriptions;
+          set({customerPrescriptions: rest});
+        }
+      },
+
+      clearPrescriptions: customerId => {
+        const {[customerId]: _, ...rest} = get().customerPrescriptions;
+        set({customerPrescriptions: rest});
+      },
+
+      getFiles: customerId => {
+        return get().customerPrescriptions[customerId] || [];
+      },
     }),
     {
       name: 'prescription-storage',

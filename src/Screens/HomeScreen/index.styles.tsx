@@ -1,4 +1,4 @@
-import {Platform, StyleSheet} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 import {Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -126,6 +126,17 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 10,
     color: '#ccc',
+    fontFamily: Fonts.JakartaRegular,
+  },
+  noOrdersContainer: {
+    width: Dimensions.get('window').width - 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  noOrdersText: {
+    fontSize: 14,
+    color: '#666',
     fontFamily: Fonts.JakartaRegular,
   },
 });

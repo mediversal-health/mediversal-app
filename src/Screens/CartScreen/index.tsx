@@ -61,9 +61,13 @@ const CartPage = () => {
   const City = formData?.City;
   const State = formData?.State;
 
-  const {clearPrescriptions, prescriptionFiles} =
-    usePrescriptionStore.getState();
-  console.log(prescriptionFiles, ' prescriptionFiles');
+  const {clearPrescriptions, getFiles} = usePrescriptionStore();
+  const currentCustomerPrescriptions = customer_id
+    ? getFiles(customer_id.toString())
+    : [];
+  console.log(currentCustomerPrescriptions, 'currentCustomerPrescriptions');
+  const hasPrescriptionFiles = currentCustomerPrescriptions.length > 0;
+
   const formattedAddress = `${pincode} - ${area}, ${City}, ${State}`;
 
   const [apiProductDetails, setApiProductDetails] = useState<any[]>([]);
@@ -143,7 +147,7 @@ const CartPage = () => {
     const isCartEmpty = apiProductDetails.length === 0;
     if (isCartEmpty && !wasCartEmptyRef.current) {
       console.log('Cart became empty, clearing prescriptions');
-      clearPrescriptions();
+      clearPrescriptions(customer_id?.toString() ?? '');
     }
     wasCartEmptyRef.current = isCartEmpty;
   }, [apiProductDetails.length, clearPrescriptions]);
@@ -494,34 +498,35 @@ const CartPage = () => {
                 </TouchableOpacity>
               </LinearGradient>
             ))}
-          {isPrescriptionRequiredItemsPresent && (
-            <View
-              style={{
-                backgroundColor: '#FFE0C5',
-                margin: 15,
-                borderRadius: 6,
-                padding: 16,
-              }}>
-              <View style={{flexDirection: 'row', gap: 5}}>
-                <InfoIcon color={'#EB5757'} />
-                <Text
-                  style={{
-                    color: '#EB5757',
-                    fontFamily: Fonts.JakartaSemiBold,
-                    marginBottom: 10,
-                  }}>
-                  Warning
+          {hasPrescriptionFiles &&
+            isPrescriptionRequiredItemsPresent &&
+            formattedAddress ===
+              'undefined - undefined, undefined, undefined' && (
+              <View
+                style={{
+                  backgroundColor: '#FFE0C5',
+                  margin: 15,
+                  borderRadius: 6,
+                  padding: 16,
+                }}>
+                <View style={{flexDirection: 'row', gap: 5}}>
+                  <InfoIcon color={'#EB5757'} />
+                  <Text
+                    style={{
+                      color: '#EB5757',
+                      fontFamily: Fonts.JakartaSemiBold,
+                      marginBottom: 10,
+                    }}>
+                    Warning
+                  </Text>
+                </View>
+                <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
+                  Looks like you've uploaded prescriptions earlier. If you have
+                  more to upload, feel free to do so. Otherwise, you may
+                  proceed.
                 </Text>
               </View>
-              <Text style={{fontFamily: Fonts.JakartaRegular, fontSize: 12}}>
-                You've added a medication that requires a prescription. If
-                you've uploaded a prescription before, please check and verify
-                it. Our licensed pharmacist will contact you to confirm the
-                details. If you have more prescriptions to upload, feel free to
-                do so.
-              </Text>
-            </View>
-          )}
+            )}
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <View style={styles.deliveryRow}>
@@ -661,14 +666,36 @@ const CartPage = () => {
             ) : (
               <>
                 {isPrescriptionRequiredItemsPresent ? (
-                  <TouchableOpacity
-                    style={styles.addressButton}
-                    onPress={() => setPrescriptionModalVisible(true)}>
-                    <Text style={styles.addressButtonText}>
-                      Upload Prescription
-                    </Text>
-                  </TouchableOpacity>
+                  hasPrescriptionFiles ? (
+                    // When prescription is required AND files exist - show both buttons
+                    <>
+                      <TouchableOpacity
+                        style={styles.addressButton}
+                        onPress={() => setPrescriptionModalVisible(true)}>
+                        <Text style={styles.addressButtonText}>
+                          Upload Prescription
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.addressButton}
+                        onPress={showLocationModal}>
+                        <Text style={styles.addressButtonText}>
+                          Select / Add Address
+                        </Text>
+                      </TouchableOpacity>
+                    </>
+                  ) : (
+                    // When prescription is required but no files exist - show upload button only
+                    <TouchableOpacity
+                      style={styles.addressButton}
+                      onPress={() => setPrescriptionModalVisible(true)}>
+                      <Text style={styles.addressButtonText}>
+                        Upload Prescription
+                      </Text>
+                    </TouchableOpacity>
+                  )
                 ) : (
+                  // When no prescription required - show address button only
                   <TouchableOpacity
                     style={styles.addressButton}
                     onPress={showLocationModal}>

@@ -239,10 +239,10 @@ const AllProductsScreen: React.FC = () => {
 
     switch (option) {
       case 'Price: Low to High':
-        sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
+        sorted.sort((a, b) => a.sellingPrice - b.sellingPrice);
         break;
       case 'Price: High to Low':
-        sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
+        sorted.sort((a, b) => b.sellingPrice - a.sellingPrice);
         break;
       case 'Relevance':
       default:

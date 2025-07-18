@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaSemiBold,
   },
   confirmButton: {
-    backgroundColor: '#EF4444',
+    backgroundColor: '#0088b1',
   },
   confirmButtonText: {
     color: 'white',

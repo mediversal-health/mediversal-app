@@ -83,7 +83,7 @@ const PharmacyScreen = () => {
           setOrders(response.data);
           setLoadingOrders(false);
         } catch (error) {
-          console.error('Error fetching orders:', error);
+          console.log('Error fetching orders:', error);
           setLoadingOrders(false);
         }
       }

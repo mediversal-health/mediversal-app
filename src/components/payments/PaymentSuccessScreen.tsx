@@ -34,7 +34,9 @@ const PaymentSuccessScreen = ({route}: any) => {
   const [orderCreated, setOrderCreated] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
+  const {clearPrescriptions, getFiles} = usePrescriptionStore.getState();
   let prescriptionId: number = 0;
+
   useEffect(() => {
     const handleCreateOrder = async () => {
       if (orderCreated || isCreatingOrder) {
@@ -44,14 +46,15 @@ const PaymentSuccessScreen = ({route}: any) => {
       setIsCreatingOrder(true);
 
       try {
-        const {prescriptionFiles, clearPrescriptions} =
-          usePrescriptionStore.getState();
+        const currentCustomerPrescriptions = customer_id
+          ? getFiles(customer_id.toString())
+          : [];
 
-        if (prescriptionFiles.length > 0 && customer_id) {
+        if (currentCustomerPrescriptions.length > 0 && customer_id) {
           try {
             const uploadResponse = await uploadPrescriptions(
               customer_id.toString(),
-              prescriptionFiles,
+              currentCustomerPrescriptions,
             );
 
             if (uploadResponse && uploadResponse.data.prescription_id) {
@@ -61,7 +64,7 @@ const PaymentSuccessScreen = ({route}: any) => {
             console.error('Prescription upload failed:', uploadError);
           }
         }
-        console.log(prescriptionId, 'prescriptionId');
+
         const orderData = {
           customer: {
             customerId: parseInt(String(customer_id ?? ''), 10),
@@ -91,14 +94,13 @@ const PaymentSuccessScreen = ({route}: any) => {
             })) || [],
           totalOrderAmount: amount,
           deliveryStatus: 'ON GOING',
-          prescription_id: prescriptionId,
+          prescriptionId: prescriptionId.toString(),
         };
 
         const response = await createOrder(orderData);
-        console.log('Order created:', response);
 
-        if (prescriptionFiles.length > 0) {
-          clearPrescriptions();
+        if (customer_id && currentCustomerPrescriptions.length > 0) {
+          clearPrescriptions(customer_id.toString());
         }
 
         const productIds = cartItems.map(
@@ -124,6 +126,7 @@ const PaymentSuccessScreen = ({route}: any) => {
 
     handleCreateOrder();
   }, []);
+
   const handleNavigate = () => {
     navigation.reset({
       index: 0,

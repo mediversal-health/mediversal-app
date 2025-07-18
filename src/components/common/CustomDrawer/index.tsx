@@ -9,7 +9,23 @@ import {
   Dimensions,
   PanResponder,
 } from 'react-native';
-import {ChevronRight, Bell} from 'lucide-react-native';
+import {
+  ChevronRight,
+  Bell,
+  PillBottle,
+  HeartHandshake,
+  Stethoscope,
+  TestTubeDiagonal,
+  HeartPulse,
+  LifeBuoy,
+  Slice,
+  ShoppingBag,
+  ClipboardList,
+  BadgeHelp,
+  BadgeInfo,
+  FileText,
+  ShieldAlert,
+} from 'lucide-react-native';
 import OptiionsItem from '../../ui/Drawer/ServiceOptions';
 import OtherOptionsItem from '../../ui/Drawer/OtherOptions';
 import styles from './index.styles';
@@ -103,7 +119,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
           {...panResponder.panHandlers}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{marginBottom: 60}}>
+            style={{marginBottom: 80}}>
             <View style={styles.header}>
               <View style={styles.profileRow}>
                 <TouchableOpacity
@@ -187,30 +203,37 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
               onPress={() => {
                 navigation.navigate('AllProducts');
               }}
+              icon={<PillBottle />}
             />
             <OptiionsItem
               title="Homecare"
               description="Medical Care & Support at Home"
+              icon={<HeartHandshake />}
             />
             <OptiionsItem
               title="Online Consultation"
               description="Talk to Doctor in 10 minute"
+              icon={<Stethoscope />}
             />
             <OptiionsItem
               title="Lab & Diagnostic Tests"
               description="(NABL Certified) Reliable & Quick Reports"
+              icon={<TestTubeDiagonal />}
             />
             <OptiionsItem
               title="Health Checkups"
               description="Full Health Checks for your Family"
+              icon={<HeartPulse />}
             />
             <OptiionsItem
               title="Elder Care Program"
               description="Personalized Senior Care at Home"
+              icon={<LifeBuoy />}
             />
             <OptiionsItem
               title="Surgeries"
               description="(NABH Accredited) Safe Surgeries by Experts"
+              icon={<Slice />}
             />
 
             <Text style={styles.sectionHeader}>Records</Text>
@@ -219,12 +242,14 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
               onPress={() => {
                 navigation.navigate('OrdersScreen');
               }}
+              icon={<ShoppingBag />}
             />
             <OtherOptionsItem
               title="My Prescriptions"
               onPress={() => {
                 navigation.navigate('PrescriptionScreen');
               }}
+              icon={<ClipboardList />}
             />
             {/* <OtherOptionsItem title="Health Reports" />
             <OtherOptionsItem title="Bill & Invoice" /> */}
@@ -233,18 +258,22 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
             <OtherOptionsItem
               title="Help & Support"
               onPress={() => navigation.navigate('HelpSupportScreen')}
+              icon={<BadgeHelp />}
             />
             <OtherOptionsItem
               title="About Us"
               onPress={() => navigation.navigate('AboutUsScreen')}
+              icon={<BadgeInfo />}
             />
             <OtherOptionsItem
               title="Terms & Conditions"
               onPress={() => navigation.navigate('TermsConditionsScreen')}
+              icon={<FileText />}
             />
             <OtherOptionsItem
               title="Privacy Policy"
               onPress={() => navigation.navigate('PrivacyPolicyScreen')}
+              icon={<ShieldAlert />}
             />
             {/* <TouchableOpacity
               onPress={handleLogout}

@@ -32,6 +32,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
   const [showModal, setShowModal] = useState(false);
   // const customer_id = useAuthStore(state => state.customer_id);
   const customer_name = useAuthStore(state => state.first_name);
+  const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
 
   const handleTakePhoto = async () => {
@@ -130,7 +131,9 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
               name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
             }));
 
-      usePrescriptionStore.getState().addFiles(files);
+      usePrescriptionStore
+        .getState()
+        .addFiles(customer_id?.toString() ?? '', files);
 
       showToast('Prescriptions saved successfully', 'success', 1000, true);
 
@@ -242,7 +245,9 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
                       <Text style={styles.fileName} numberOfLines={1}>
                         {fileType === 'pdf'
                           ? file.name
-                          : `${customer_name}'s Prescription`}
+                          : customer_id
+                          ? `${customer_name}'s Prescription ${index + 1}`
+                          : `Prescription ${index + 1}`}
                       </Text>
                       <TouchableOpacity
                         style={styles.removeButton}

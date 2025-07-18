@@ -18,7 +18,8 @@ import {Order, OrderData} from '../../types';
 import styles from './index.styles';
 import {useAuthStore} from '../../store/authStore';
 import {getOrders} from '../../Services/order';
-
+import EmptyOrderScreen from './assets/svgs/Layer_1.svg';
+import {Fonts} from '../../styles/fonts';
 const OrdersScreen: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
@@ -89,7 +90,7 @@ const OrdersScreen: React.FC = () => {
 
       setAllOrders(mappedOrders);
     } catch (error) {
-      console.error('Failed to get orders:', error);
+      console.log('Failed to get orders:', error);
     } finally {
       setLoading(false);
     }
@@ -129,7 +130,7 @@ const OrdersScreen: React.FC = () => {
             <Search color={'#0088B1'} size={20} />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search for orders, items or services"
+              placeholder="Search for orders"
               placeholderTextColor="#999"
               value={searchQuery}
               onChangeText={text => setSearchQuery(text)}
@@ -179,7 +180,19 @@ const OrdersScreen: React.FC = () => {
               </TouchableOpacity>
             ))
           ) : (
-            <Text>No orders found.</Text>
+            <View
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <EmptyOrderScreen />
+              <Text
+                style={{
+                  marginTop: 20,
+                  fontSize: 16,
+                  color: '#666',
+                  fontFamily: Fonts.JakartaSemiBold,
+                }}>
+                No orders found
+              </Text>
+            </View>
           )}
         </View>
       </ScrollView>
