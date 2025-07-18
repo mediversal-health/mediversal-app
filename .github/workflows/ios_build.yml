@@ -14,7 +14,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Node.js dependencies
+        run: npm install --legacy-peer-deps
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -22,15 +31,18 @@ jobs:
           ruby-version: '3.1'
           bundler-cache: true
 
-      - name: Install dependencies via Bundler
+      - name: Install iOS dependencies
         working-directory: ios
         run: |
           gem install bundler
           bundle config set path 'vendor/bundle'
           bundle install
 
-      - name: Add bundler path to system PATH
-        run: echo "$(pwd)/ios/vendor/bundle/ruby/3.1.0/bin" >> $GITHUB_PATH
+      - name: Install CocoaPods dependencies
+        working-directory: ios
+        run: |
+          gem install cocoapods
+          pod install --repo-update
 
       - name: Run Fastlane beta lane
         working-directory: ios
