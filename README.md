@@ -10,13 +10,13 @@ Mediversal-App is a comprehensive healthcare platform designed to bring a wide r
 
 ## 🌟 Core Services
 
-* **Pharmacy**: Seamlessly order medications, health supplements, and wellness products with home delivery options.
-* **Homecare**: Access professional healthcare services in the comfort of your home, including nursing, physiotherapy, and elder care assistance.
-* **Eldercare**: Dedicated support and specialized services tailored to the unique needs of senior citizens, promoting their well-being and independence.
-* **Online Consultation**: Connect instantly with certified doctors and specialists via secure video or chat for expert medical advice and prescriptions.
-* **Lab Tests**: Conveniently book a wide array of diagnostic lab tests with home sample collection, and receive timely, accurate results.
-* **Health Checkups**: Comprehensive health assessment packages designed for preventive care, early detection, and personalized health insights.
-* **And Many More**: We are continuously expanding our offerings to include specialized therapies, medical equipment rentals, and integrated health solutions.
+- **Pharmacy**: Seamlessly order medications, health supplements, and wellness products with home delivery options.
+- **Homecare**: Access professional healthcare services in the comfort of your home, including nursing, physiotherapy, and elder care assistance.
+- **Eldercare**: Dedicated support and specialized services tailored to the unique needs of senior citizens, promoting their well-being and independence.
+- **Online Consultation**: Connect instantly with certified doctors and specialists via secure video or chat for expert medical advice and prescriptions.
+- **Lab Tests**: Conveniently book a wide array of diagnostic lab tests with home sample collection, and receive timely, accurate results.
+- **Health Checkups**: Comprehensive health assessment packages designed for preventive care, early detection, and personalized health insights.
+- **And Many More**: We are continuously expanding our offerings to include specialized therapies, medical equipment rentals, and integrated health solutions.
 
 ---
 
@@ -28,21 +28,22 @@ Follow these instructions to set up and run the Mediversal-App on your local dev
 
 Ensure your system meets the following requirements:
 
-* **Node.js**: `v18` or higher
+- **Node.js**: `v18` or higher
   [Download Node.js](https://nodejs.org/en/download/current/)
-* **npm**: Comes bundled with Node.js
-* **React Native CLI**: Install globally
+- **npm**: Comes bundled with Node.js
+- **React Native CLI**: Install globally
 
   ```bash
   npm install -g react-native-cli
   ```
-* **JDK (Java Development Kit)**: Recommended version: JDK 17
+
+- **JDK (Java Development Kit)**: Recommended version: JDK 17
   [Download via Android Studio](https://developer.android.com/studio)
-* **Android Studio**: Required for Android development
+- **Android Studio**: Required for Android development
   [Download Android Studio](https://developer.android.com/studio)
-* **Xcode** (macOS only): Required for iOS development
+- **Xcode** (macOS only): Required for iOS development
   [Download from Mac App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-* **CocoaPods** (macOS only):
+- **CocoaPods** (macOS only):
 
   ```bash
   sudo gem install cocoapods
@@ -59,7 +60,7 @@ git clone https://github.com/Mediversal/Mediversal-app.git
 cd Mediversal-app
 ```
 
-> 💡 **Note**: If you cloned the repository *before* it was transferred to the `Mediversal` organization:
+> 💡 **Note**: If you cloned the repository _before_ it was transferred to the `Mediversal` organization:
 
 ```bash
 git remote set-url origin https://github.com/Mediversal/Mediversal-app.git
@@ -127,27 +128,27 @@ npm start
 
 We enforce consistency and quality using the following tools:
 
-* **ESLint**: Enforces JavaScript/TypeScript best practices
-* **Prettier**: Code formatting for consistency
+- **ESLint**: Enforces JavaScript/TypeScript best practices
+- **Prettier**: Code formatting for consistency
 
 ---
 
 ## 📦 Key Dependencies & Technologies
 
-* **React Native**: Core framework for building native mobile apps
-* **React Navigation**: Handles app navigation
-* **Axios**: HTTP client for API integration
-* **Zustand**: Lightweight state management
-* **@notifee/react-native**: Local/remote notifications
-* **react-native-onesignal**: Push notifications via OneSignal
-* **react-native-razorpay**: Payment gateway integration
-* **Lottie React Native**: Rich animations
-* **Google Sign-In**: Authentication with Google
-* **React Native Maps**: Map view and geolocation
-* **React Native FS**: File system access
-* **Image Picker & Crop Picker**: For prescription and report uploads
-* **Socket.IO Client**: Real-time communication (e.g., consultations)
-* **React Native Config / dotenv**: Secure environment variable management
+- **React Native**: Core framework for building native mobile apps
+- **React Navigation**: Handles app navigation
+- **Axios**: HTTP client for API integration
+- **Zustand**: Lightweight state management
+- **@notifee/react-native**: Local/remote notifications
+- **react-native-onesignal**: Push notifications via OneSignal
+- **react-native-razorpay**: Payment gateway integration
+- **Lottie React Native**: Rich animations
+- **Google Sign-In**: Authentication with Google
+- **React Native Maps**: Map view and geolocation
+- **React Native FS**: File system access
+- **Image Picker & Crop Picker**: For prescription and report uploads
+- **Socket.IO Client**: Real-time communication (e.g., consultations)
+- **React Native Config / dotenv**: Secure environment variable management
 
 ---
 
@@ -155,10 +156,9 @@ We enforce consistency and quality using the following tools:
 
 We take healthcare data seriously. Our app complies with:
 
-* **Encrypted API Communication**: HTTPS, TLS for all endpoints
-* **Data Minimization**: Collecting only essential data
-* **Secure Authentication**
-* **Automated Dependency Scanning**
+- **Encrypted API Communication**: HTTPS, TLS for all endpoints
+- **Data Minimization**: Collecting only essential data
+- **Secure Authentication**
 
 ---
 
