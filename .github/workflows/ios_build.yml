@@ -1,0 +1,38 @@
+name: iOS Build and TestFlight Upload
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    env:
+      APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+      APP_STORE_ISSUER_ID: ${{ secrets.APP_STORE_ISSUER_ID }}
+      APP_STORE_API_KEY_CONTENT: ${{ secrets.APP_STORE_API_KEY_BASE64 }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' # Match version in your Gemfile.lock
+
+      - name: Install Bundler and dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Decode .p8 key
+        run: |
+          mkdir -p ios/fastlane/private_keys
+          echo "$APP_STORE_API_KEY_CONTENT" | base64 -d > ios/fastlane/private_keys/AuthKey.p8
+
+      - name: Run Fastlane
+        working-directory: ios
+        run: bundle exec fastlane beta
