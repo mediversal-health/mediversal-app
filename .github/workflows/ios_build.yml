@@ -21,18 +21,24 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Match version in your Gemfile.lock
+          ruby-version: '3.1'
+          bundler-cache: true # Optional but helpful
 
-      - name: Install Bundler and dependencies
+      - name: Install dependencies via Bundler
+        working-directory: ios
         run: |
           gem install bundler
+          bundle config set path 'vendor/bundle'
           bundle install
+
+      - name: Add bundler path to system PATH
+        run: echo "$(pwd)/ios/vendor/bundle/ruby/3.1.0/bin" >> $GITHUB_PATH
 
       - name: Decode .p8 key
         run: |
           mkdir -p ios/fastlane/private_keys
           echo "$APP_STORE_API_KEY_CONTENT" | base64 -d > ios/fastlane/private_keys/AuthKey.p8
 
-      - name: Run Fastlane
+      - name: Run Fastlane beta lane
         working-directory: ios
         run: bundle exec fastlane beta
