@@ -81,9 +81,14 @@ export const styles = StyleSheet.create({
     color: '#333',
   },
   rightText: {
+    color: '#333',
+    fontFamily: Fonts.JakartaRegular,
+  },
+  rightTextlinethrough: {
     fontSize: 13,
     color: '#333',
     fontFamily: Fonts.JakartaRegular,
+    textDecorationLine: 'line-through',
   },
   totalToPay: {
     fontSize: 14,

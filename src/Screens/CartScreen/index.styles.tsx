@@ -127,7 +127,7 @@ export const styles = StyleSheet.create({
   addressButton: {
     backgroundColor: '#0088B1',
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     borderRadius: 6,
   },
   addressButtonText: {

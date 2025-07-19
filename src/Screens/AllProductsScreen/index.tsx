@@ -13,8 +13,10 @@ import {
   ChevronLeft,
   Filter,
   ChevronDown,
-  Lock,
   ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+  Percent,
 } from 'lucide-react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import ProductCard from '../../components/cards/ProductCard';
@@ -33,31 +35,55 @@ import CartIconWithBadge from '../../components/ui/CartIconWithBadge';
 import {useCartStore} from '../../store/cartStore';
 import {useFilterStore} from '../../store/filterStore';
 import {filterProducts} from '../../utils/functions';
+import AllMedicines from './assets/svgs/Product Image.svg';
+import OTC from './assets/svgs/Product Image (2).svg';
+import Prescription from './assets/svgs/Product Image (3).svg';
+import Suppliments from './assets/svgs/Product Image (4).svg';
+import MedicalDevices from './assets/svgs/Product Image (5).svg';
+import Surgical from './assets/svgs/Product Image (6).svg';
+import Vaccines from './assets/svgs/Product Image (7).svg';
+import PersonalCare from './assets/svgs/Product Image (8).svg';
+import SexualHealth from './assets/svgs/Product Image (9).svg';
+import MotherBabyChild from './assets/svgs/Product Image (12).svg';
+import SeniorLiving from './assets/svgs/Product Image (10).svg';
+import SeasonalNeeds from './assets/svgs/Product Image (11).svg';
 
 interface Category {
   id: string;
   name: string;
-  icon: string;
+  icon: string | React.ReactElement;
 }
 
 const AllProductsScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState({});
-
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  // const [filteredProducts, setFilteredProducts] = useState<
-  //   ProductCardProps['product'][] | null
-  // >(null);
   const [sortDropdownVisible, setSortDropdownVisible] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState('Sort');
+  const [sortedProducts, setSortedProducts] = useState<
+    ProductCardProps['product'][] | null
+  >(null);
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {setUserCart} = useCartStore.getState();
+
   const {cardProducts, getOriginalProduct, originalProducts} =
     useProductStore();
+  const [priceRange, setPriceRange] = useState({
+    min: Math.min(...cardProducts.map(p => p.sellingPrice)),
+    max: Math.max(...cardProducts.map(p => p.sellingPrice)),
+  });
   const {filteredProducts, setFilteredProducts} = useFilterStore();
+
+  const handleCategoryReset = () => {
+    setSelectedCategory('All');
+  };
+
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
+
   console.log('card', cardProducts);
+
   const handleProductPress = (cardProduct: ProductCardProps['product']) => {
     const originalProduct = getOriginalProduct(cardProduct.id);
     navigation.navigate('UploadScreen', {
@@ -98,78 +124,80 @@ const AllProductsScreen: React.FC = () => {
 
   console.log(cardProducts);
   const [showFilters, setShowFilters] = useState<boolean>(false);
+
   const categories: Category[] = [
     {
       id: '1',
       name: 'All',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      icon: <AllMedicines width={60} height={60} />,
     },
     {
       id: '2',
       name: 'OTC',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      icon: <OTC width={60} height={60} />,
     },
     {
       id: '3',
-      name: 'PRESCRIPTION (Rx)',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'PRESCRIPTION',
+      icon: <Prescription width={60} height={60} />,
     },
     {
       id: '4',
-      name: 'VITAMINS, MINERALS & DIETARY SUPPLEMENTS',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SUPPLEMENTS',
+      icon: <Suppliments width={60} height={60} />,
     },
     {
       id: '5',
-      name: 'MEDICAL DEVICES',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'DEVICES',
+      icon: <MedicalDevices width={60} height={60} />,
     },
     {
       id: '6',
-      name: 'SURGICAL, HOSPITAL & INFECTION CONTROL',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SURGICAL CARE',
+      icon: <Surgical width={60} height={60} />,
     },
     {
       id: '7',
       name: 'VACCINES ',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      icon: <Vaccines width={60} height={60} />,
     },
     {
       id: '8',
-      name: 'PERSONAL CARE & HYGIENE',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'PERSONAL CARE',
+      icon: <PersonalCare width={60} height={60} />,
     },
     {
       id: '9',
-      name: 'SEXUAL & REPRODUCTIVE HEALTH',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SEXUAL WELLNESS',
+      icon: <SexualHealth width={60} height={60} />,
     },
     {
       id: '10',
-      name: 'MOTHER, BABY & CHILD',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'MOTHER & BABY',
+      icon: <MotherBabyChild width={60} height={60} />,
     },
     {
       id: '11',
-      name: 'SENIOR & ASSISTED LIVING',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SENIOR CARE',
+      icon: <SeniorLiving width={60} height={60} />,
     },
-
     {
       id: '13',
-      name: 'SEASONAL, HOME & EMERGENCY ESSENTIALS',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Mf297qdWmz6djYDpCVQbQpZkuCdAUvMiSHLpD-KLBGn-RxjpxKgAXfehvvvoO_V_aJQ&usqp=CAU',
+      name: 'SEASONAL NEEDS',
+      icon: <SeasonalNeeds width={60} height={60} />,
     },
   ];
+
   useFocusEffect(
     React.useCallback(() => {
       setSelectedCategory('All');
       setFilteredProducts(null);
+      setSortedProducts(null);
       setSelectedFilters({});
-
       setSelectedSortOption('Sort');
     }, []),
   );
+
   const renderProduct = ({item}: {item: ProductCardProps['product']}) => (
     <TouchableOpacity
       onPress={() => handleProductPress(item)}
@@ -184,11 +212,11 @@ const AllProductsScreen: React.FC = () => {
       />
     </TouchableOpacity>
   );
+
   console.log(originalProducts, 'originalProducts in AllProductsScreen');
+
   const handleCategorySelect = (categoryName: string) => {
     setSelectedCategory(categoryName);
-
-    setSelectedSortOption('Sort');
 
     const updatedFiltered = filterProducts(
       cardProducts,
@@ -196,7 +224,36 @@ const AllProductsScreen: React.FC = () => {
       selectedFilters,
     );
     setFilteredProducts(updatedFiltered);
+
+    if (selectedSortOption !== 'Sort') {
+      const productsToSort = updatedFiltered ?? cardProducts;
+      const sorted = [...productsToSort];
+
+      switch (selectedSortOption) {
+        case 'Price: Low to High':
+          sorted.sort((a, b) => a.sellingPrice - b.sellingPrice);
+          break;
+        case 'Price: High to Low':
+          sorted.sort((a, b) => b.sellingPrice - a.sellingPrice);
+          break;
+
+        case 'Discount: High to Low':
+          sorted.sort((a, b) => {
+            const discountA =
+              ((a.originalPrice - a.sellingPrice) / a.originalPrice) * 100;
+            const discountB =
+              ((b.originalPrice - b.sellingPrice) / b.originalPrice) * 100;
+            return discountB - discountA;
+          });
+          break;
+        default:
+          sorted.sort((a, b) => a.id.localeCompare(b.id));
+          break;
+      }
+      setSortedProducts(sorted);
+    }
   };
+
   console.log(filteredProducts, 'filteredProducts all');
 
   const renderCategory = ({item}: {item: Category}) => (
@@ -206,7 +263,13 @@ const AllProductsScreen: React.FC = () => {
         selectedCategory === item.name && styles.selectedCategory,
       ]}
       onPress={() => handleCategorySelect(item.name)}>
-      <Image source={{uri: item.icon}} style={styles.categoryIcon} />
+      <View style={styles.iconContainer}>
+        {typeof item.icon === 'string' ? (
+          <Image source={{uri: item.icon}} style={styles.categoryIcon} />
+        ) : (
+          <View style={styles.svgIconWrapper}>{item.icon}</View>
+        )}
+      </View>
       <Text
         style={[
           styles.categoryText,
@@ -218,22 +281,105 @@ const AllProductsScreen: React.FC = () => {
   );
 
   const sortProducts = (option: string) => {
-    const sorted = [...cardProducts];
+    const productsToSort = filteredProducts ?? cardProducts;
+    const sorted = [...productsToSort];
 
     switch (option) {
       case 'Price: Low to High':
-        sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
+        sorted.sort((a, b) => a.sellingPrice - b.sellingPrice);
         break;
       case 'Price: High to Low':
-        sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
+        sorted.sort((a, b) => b.sellingPrice - a.sellingPrice);
         break;
-      case 'Relevance':
+      case 'Discount: High to Low':
+        // Calculate discount percentage if not available
+        sorted.sort((a, b) => {
+          const discountA =
+            a.discountPercentage ||
+            ((a.originalPrice - a.sellingPrice) / a.originalPrice) * 100;
+          const discountB =
+            b.discountPercentage ||
+            ((b.originalPrice - b.sellingPrice) / b.originalPrice) * 100;
+          return discountB - discountA;
+        });
+        break;
       default:
         sorted.sort((a, b) => a.id.localeCompare(b.id));
         break;
     }
 
-    useProductStore.setState({cardProducts: sorted});
+    setSortedProducts(sorted);
+  };
+
+  // Get the products to display based on current state
+  const getProductsToDisplay = () => {
+    if (sortedProducts) return sortedProducts;
+    if (filteredProducts) return filteredProducts;
+    return cardProducts;
+  };
+
+  const handleSortOptionSelect = (option: string) => {
+    setSelectedSortOption(option);
+    setSortDropdownVisible(false);
+    if (option !== 'Sort') {
+      sortProducts(option);
+    } else {
+      setSortedProducts(null);
+    }
+  };
+
+  const handleFilterApply = (filtered: ProductCardProps['product'][]) => {
+    setFilteredProducts(filtered);
+
+    // Re-apply current sorting to the filtered products
+    if (selectedSortOption !== 'Sort') {
+      const sorted = [...filtered];
+
+      switch (selectedSortOption) {
+        case 'Price: Low to High':
+          sorted.sort((a, b) => a.sellingPrice - b.sellingPrice);
+          break;
+        case 'Price: High to Low':
+          sorted.sort((a, b) => b.sellingPrice - a.sellingPrice);
+          break;
+        case 'Discount: High to Low':
+          sorted.sort((a, b) => {
+            const discountA =
+              ((a.originalPrice - a.sellingPrice) / a.originalPrice) * 100;
+            const discountB =
+              ((b.originalPrice - b.sellingPrice) / b.originalPrice) * 100;
+            return discountB - discountA;
+          });
+          break;
+        default:
+          sorted.sort((a, b) => a.id.localeCompare(b.id));
+          break;
+      }
+      setSortedProducts(sorted);
+    } else {
+      setSortedProducts(null);
+    }
+  };
+
+  const getSortIcon = (option: string) => {
+    switch (option) {
+      case 'Price: Low to High':
+        return <ArrowUp size={14} color="#000" />;
+      case 'Price: High to Low':
+        return <ArrowDown size={14} color="#000" />;
+      case 'Discount: High to Low':
+        return <Percent size={14} color="#000" />;
+      default:
+        return <ArrowUpDown size={14} color="#000" />;
+    }
+  };
+
+  // Function to get display text - show icon only when sorting is selected
+  const getSortDisplayText = (option: string) => {
+    if (option === 'Sort') {
+      return option;
+    }
+    return ''; // Show only icon when sorting is selected
   };
 
   return (
@@ -276,58 +422,45 @@ const AllProductsScreen: React.FC = () => {
                   <Text style={styles.iconLabel}>Filter</Text>
                   <ChevronDown size={14} color="#000" />
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={styles.iconButton}
                   onPress={() => setSortDropdownVisible(prev => !prev)}>
-                  {/* Conditionally render the icon based on selected option */}
-                  {selectedSortOption === 'Sort' ||
-                  selectedSortOption === 'Relevance' ? (
-                    <ArrowUpDown size={14} color="#000" />
-                  ) : (
-                    <Lock size={14} color="#000" />
-                  )}
-                  <Text style={styles.iconLabel}>{selectedSortOption}</Text>
+                  {getSortIcon(selectedSortOption)}
+                  <Text style={styles.iconLabel}>
+                    {getSortDisplayText(selectedSortOption)}
+                  </Text>
                   <ChevronDown size={14} color="#000" />
                 </TouchableOpacity>
 
                 {sortDropdownVisible && (
                   <View style={styles.dropdown}>
                     {[
-                      'Relevance',
                       'Price: Low to High',
                       'Price: High to Low',
-                      'Discount',
+                      'Discount: High to Low',
                     ].map(option => (
                       <TouchableOpacity
                         key={option}
                         style={styles.dropdownOption}
-                        onPress={() => {
-                          setSelectedSortOption(option);
-                          setSortDropdownVisible(false);
-                          sortProducts(option);
-                        }}>
-                        {option === 'Price: Low to High' ||
-                        option === 'Price: High to Low' ||
-                        option === 'Discount' ? (
-                          <Lock size={16} color="#000" />
-                        ) : (
-                          <ArrowUpDown size={16} color="#0088B1" />
-                        )}
-                        {option === 'Relevance' ? (
-                          <Text style={{marginLeft: 6, color: '#0088B12'}}>
-                            {option}
-                          </Text>
-                        ) : (
-                          <Text style={{marginLeft: 6}}>{option}</Text>
-                        )}
+                        onPress={() => handleSortOptionSelect(option)}>
+                        {getSortIcon(option)}
+                        <Text
+                          style={{
+                            marginLeft: 6,
+                            color: '#000',
+                          }}>
+                          {option}
+                        </Text>
                       </TouchableOpacity>
                     ))}
                   </View>
                 )}
               </View>
             </View>
+
             <FlatList
-              data={filteredProducts ?? cardProducts}
+              data={getProductsToDisplay()}
               renderItem={renderProduct}
               keyExtractor={item => item.id}
               numColumns={2}
@@ -337,13 +470,15 @@ const AllProductsScreen: React.FC = () => {
             />
           </View>
         </View>
+
         <FilterBottomSheet
           visible={showFilters}
           onClose={() => setShowFilters(false)}
-          onApply={filtered => setFilteredProducts(filtered)}
+          onApply={handleFilterApply}
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
           selectedCategory={selectedCategory}
+          onCategoryReset={handleCategoryReset}
         />
       </SafeAreaView>
     </>

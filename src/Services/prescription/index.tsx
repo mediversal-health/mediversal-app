@@ -8,9 +8,8 @@ interface FileObject {
 }
 
 interface UploadResponse {
-  success: boolean;
   message: string;
-  data?: any;
+  prescription_id: number;
 }
 
 export const uploadPrescriptions = async (

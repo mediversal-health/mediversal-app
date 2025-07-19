@@ -51,22 +51,39 @@ const styles = StyleSheet.create({
     width: 80,
     height: 120,
   },
-  selectedCategory: {
-    backgroundColor: '#0088B1',
+  iconContainer: {
+    width: 56,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  svgIconWrapper: {
+    width: 56,
+    height: 56,
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   categoryIcon: {
     width: 56,
     height: 56,
     borderRadius: 8,
   },
+  selectedCategory: {
+    backgroundColor: '#E5E8E9',
+    borderRadius: 8,
+  },
+
   categoryText: {
     fontSize: 8,
-    color: '#333',
+    color: '#000',
     textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,
   },
   selectedCategoryText: {
-    color: '#fff',
+    color: '#000',
     fontFamily: Fonts.JakartaBold,
   },
   productContainer: {

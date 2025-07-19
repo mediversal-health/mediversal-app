@@ -3,10 +3,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   StatusBar,
+  Switch,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  StyleSheet,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BottomTabNavigator from './navigation/BottomTabBarNavigation';
@@ -23,10 +25,11 @@ import CartIconWithBadge from './components/ui/CartIconWithBadge';
 import {useAuthStore} from './store/authStore';
 import {requestLocationPermission} from './utils/permissions';
 import {useToastStore} from './store/toastStore';
+import HeaderSkeleton from './components/common/layoutSkeleton';
 
 const Layout = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  // const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const currentScreen = useScreenStore(state => state.currentScreen);
   const {customerAddressMap} = useAddressBookStore();
@@ -37,15 +40,17 @@ const Layout = () => {
   const showToast = useToastStore(state => state.showToast);
   const {profileImage, email, isAuthenticated, setIsAuthenticated} =
     useAuthStore();
-
+  const [loading, setLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
   const {setProducts} = useProductStore();
+
   useEffect(() => {
     if (isAuthenticated) {
       showToast('Welcome to Mediversal!', 'success', 3000, true);
+      setIsAuthenticated(false);
     }
-    setIsAuthenticated(false);
-  }, []);
+  }, [isAuthenticated, setIsAuthenticated, showToast]);
+
   useEffect(() => {
     const initLocationServices = async () => {
       try {
@@ -57,196 +62,135 @@ const Layout = () => {
 
     initLocationServices();
   }, []);
-  const fetchProducts = useCallback(() => {
-    getProducts()
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching products:', error);
-      });
-  }, [setProducts]);
+
+  const fetchProducts = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await getProducts();
+      setProducts(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      showToast('Failed to load products', 'error', 3000);
+      setLoading(false);
+    }
+  }, [setProducts, showToast]);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
+
+  const renderHomeHeader = () => {
+    if (loading) {
+      return <HeaderSkeleton />;
+    }
+
+    return (
+      <>
+        <View style={styles.headerContainer}>
+          <View style={styles.profileContainer}>
+            <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
+              {profileImage && !imageError ? (
+                <Image
+                  source={{
+                    uri:
+                      typeof profileImage === 'string'
+                        ? profileImage
+                        : profileImage?.uri,
+                  }}
+                  style={styles.profileImage}
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <View style={styles.profilePlaceholder}>
+                  <Text style={styles.profileInitial}>
+                    {email ? email.charAt(0).toUpperCase() : 'GU'}
+                  </Text>
+                </View>
+              )}
+            </TouchableWithoutFeedback>
+
+            <View style={styles.addressContainer}>
+              <Text style={styles.deliveringText}>Delivering to</Text>
+              <View style={styles.locationContainer}>
+                <View style={styles.locationTextContainer}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SearchScreen')}>
+                    <Text style={styles.locationText}>
+                      {currentCustomerAddress
+                        ? `${
+                            currentCustomerAddress.Area_details
+                              ? currentCustomerAddress.Area_details + ', '
+                              : ''
+                          }${currentCustomerAddress.City} - ${
+                            currentCustomerAddress.State
+                          }`
+                        : 'Select Location'}
+                    </Text>
+                  </TouchableOpacity>
+                  <ChevronDown size={20} color={'#161D1F'} strokeWidth={2} />
+                </View>
+                <View style={styles.iconsContainer}>
+                  <CartIconWithBadge />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.notificationContainer}>
+          <View style={styles.notificationTextContainer}>
+            <Text style={styles.notificationText}>
+              Get Medicine reminders and other updates
+            </Text>
+            <View style={styles.notificationLinkContainer}>
+              <Text style={styles.notificationSubText}>via notification</Text>
+              <TouchableOpacity>
+                <Text style={styles.viewMoreText}>View More</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Switch
+            value={isEnabled}
+            onValueChange={setIsEnabled}
+            trackColor={{false: '#ccc', true: '#ccc'}}
+            thumbColor={isEnabled ? '#0088B1' : '#ccc'}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.searchBarContainer}>
+          <SearchBar />
+        </TouchableOpacity>
+      </>
+    );
+  };
+
+  const renderPharmacyHeader = () => (
+    <>
+      <View style={styles.pharmacyHeader}>
+        <View style={styles.pharmacyTitleContainer}>
+          <Text style={styles.pharmacyTitle}>Pharmacy</Text>
+        </View>
+        <CartIconWithBadge />
+      </View>
+      <View style={styles.pharmacySearchContainer}>
+        <SearchBar />
+      </View>
+    </>
+  );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar
         backgroundColor="#0088B1"
         barStyle="light-content"
         translucent={true}
         showHideTransition={'fade'}
       />
-      {currentScreen === 'Home' ? (
-        <>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 20,
-              paddingBottom: 0,
-              marginTop: 10,
-              marginBottom: 10,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableWithoutFeedback onPress={() => setDrawerVisible(true)}>
-                {profileImage && !imageError ? (
-                  <Image
-                    source={{
-                      uri:
-                        typeof profileImage === 'string'
-                          ? profileImage
-                          : profileImage?.uri,
-                    }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 25,
-                      marginRight: 10,
-                      borderWidth: 2,
-                      borderColor: '#ccc',
-                    }}
-                    onError={() => setImageError(true)}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 25,
-                      marginRight: 10,
-                      borderWidth: 2,
-                      borderColor: '#ccc',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: '#ccc',
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.JakartaRegular,
-                        fontSize: 18,
-                        color: '#F8F8F8',
-                      }}>
-                      {email ? email.charAt(0).toUpperCase() : 'GU'}
-                    </Text>
-                  </View>
-                )}
-              </TouchableWithoutFeedback>
 
-              <View style={{flexDirection: 'column'}}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: Fonts.JakartaBold,
-                    color: '#161D1F',
-                  }}>
-                  Delivering to
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '90%',
-                  }}>
-                  <View style={{flexDirection: 'row', gap: 3}}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('SearchScreen')}>
-                      <Text
-                        style={{
-                          fontFamily: Fonts.JakartaRegular,
-                          fontSize: 12,
-                        }}>
-                        {currentCustomerAddress
-                          ? `${
-                              currentCustomerAddress.Area_details
-                                ? currentCustomerAddress.Area_details + ', '
-                                : ''
-                            }${currentCustomerAddress.City} - ${
-                              currentCustomerAddress.State
-                            }`
-                          : 'Select Location'}
-                      </Text>
-                    </TouchableOpacity>
-                    <ChevronDown size={20} color={'#161D1F'} strokeWidth={2} />
-                  </View>
-                  <View style={{gap: 12, flexDirection: 'row'}}>
-                    {/* <Bell size={20} color={'#161D1F'} strokeWidth={1} /> */}
-                    <CartIconWithBadge />
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-          {/* Notification Switch*/}
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 20,
-            }}>
-            <View style={{flexDirection: 'column'}}>
-              <Text style={{fontSize: 12, fontFamily: Fonts.JakartaRegular}}>
-                Get Medicine reminderds and other updates{' '}
-              </Text>
-              <View style={{flexDirection: 'row', gap: 3}}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginLeft: 5,
-                    fontFamily: Fonts.JakartaRegular,
-                  }}>
-                  via notification
-                </Text>
-                <TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      textDecorationLine: 'underline',
-                      fontFamily: Fonts.JakartaBold,
-                    }}>
-                    View More
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <Switch
-              value={isEnabled}
-              onValueChange={setIsEnabled}
-              trackColor={{false: '#ccc', true: '#ccc'}}
-              thumbColor={isEnabled ? '#0088B1' : '#ccc'}
-            />
-          </View> */}
-          <TouchableOpacity style={{paddingHorizontal: 16, paddingBottom: 16}}>
-            <SearchBar />
-          </TouchableOpacity>
-        </>
-      ) : currentScreen === 'Pharmacy' ? (
-        <>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 20,
-              paddingBottom: 10,
-              marginTop: 10,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <Text style={{fontSize: 16, fontFamily: Fonts.JakartaSemiBold}}>
-                Pharmacy
-              </Text>
-            </View>
-            <CartIconWithBadge />
-          </View>
-          <View style={{paddingHorizontal: 20, marginBottom: 5}}>
-            <SearchBar />
-          </View>
-        </>
-      ) : currentScreen === 'Profile' ? (
-        <View />
-      ) : null}
+      {currentScreen === 'Home' && renderHomeHeader()}
+      {currentScreen === 'Pharmacy' && renderPharmacyHeader()}
+
       <BottomTabNavigator />
       {drawerVisible && (
         <CustomDrawer onClose={() => setDrawerVisible(false)} />
@@ -254,5 +198,124 @@ const Layout = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingBottom: 0,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+    marginRight: 10,
+    borderWidth: 2,
+    borderColor: '#ccc',
+  },
+  profilePlaceholder: {
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+    marginRight: 10,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ccc',
+  },
+  profileInitial: {
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 18,
+    color: '#F8F8F8',
+  },
+  addressContainer: {
+    flexDirection: 'column',
+  },
+  deliveringText: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaBold,
+    color: '#161D1F',
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+  },
+  locationTextContainer: {
+    flexDirection: 'row',
+    gap: 3,
+  },
+  locationText: {
+    fontFamily: Fonts.JakartaRegular,
+    fontSize: 12,
+  },
+  iconsContainer: {
+    gap: 12,
+    flexDirection: 'row',
+  },
+  notificationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  notificationTextContainer: {
+    flexDirection: 'column',
+  },
+  notificationText: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  notificationLinkContainer: {
+    flexDirection: 'row',
+    gap: 3,
+  },
+  notificationSubText: {
+    fontSize: 12,
+    marginLeft: 5,
+    fontFamily: Fonts.JakartaRegular,
+  },
+  viewMoreText: {
+    fontSize: 12,
+    textDecorationLine: 'underline',
+    fontFamily: Fonts.JakartaBold,
+  },
+  searchBarContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  pharmacyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    marginTop: 10,
+  },
+  pharmacyTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  pharmacyTitle: {
+    fontSize: 16,
+    fontFamily: Fonts.JakartaSemiBold,
+  },
+  pharmacySearchContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 5,
+  },
+});
 
 export default Layout;

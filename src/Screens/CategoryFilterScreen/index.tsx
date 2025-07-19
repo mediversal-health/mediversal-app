@@ -73,7 +73,7 @@ const CategoryFilterScreen = () => {
     const fetchProductsByCategory = async () => {
       try {
         const filtered = cardProducts.filter(
-          product => product.subCategory_name === subCategory_name,
+          product => product.SubCategory === subCategory_name,
         );
         setFilteredProducts(filtered);
       } catch (error) {
@@ -224,7 +224,7 @@ const CategoryFilterScreen = () => {
         </Text>
 
         <FlatList
-          data={cardProducts}
+          data={filteredProducts}
           renderItem={renderProduct}
           keyExtractor={item => `horizontal-${item.id}`}
           horizontal
@@ -296,7 +296,9 @@ const CategoryFilterScreen = () => {
           />
 
           <FlatList
-            data={cardProducts}
+            data={filteredProducts.filter(
+              product => product.type === selectedProductType,
+            )}
             renderItem={renderProduct}
             keyExtractor={item => `horizontal-${item.id}`}
             horizontal

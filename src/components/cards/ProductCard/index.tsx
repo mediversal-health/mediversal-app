@@ -14,6 +14,7 @@ import {useCartStore} from '../../../store/cartStore';
 import {DeleteFromCart} from '../../../Services/cart';
 import {useAuthStore} from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
+import {usePrescriptionStore} from '../../../store/prescriptionStore';
 
 const SOCKET_URL = 'http://3.110.218.39:3001';
 
@@ -97,6 +98,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           productId,
         ]);
         removeFromCart(customer_id?.toString() ?? '', productId);
+        if (product.PrescriptionRequired == 'Yes') {
+          usePrescriptionStore
+            .getState()
+            .clearPrescriptions(customer_id?.toString() ?? '');
+        }
         console.log('deleted', res);
       }
       setProductQuantity(customer_id?.toString() ?? '', productId, newQuantity);
@@ -153,7 +159,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Text style={styles.originalPrice}>₹{product.originalPrice}</Text>
           <Text style={styles.discountPercentage}>
             {Math.round(
-              ((product.originalPrice - product.discountedPrice) /
+              ((product.originalPrice - product.sellingPrice) /
                 product.originalPrice) *
                 100,
             )}
@@ -161,7 +167,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </Text>
         </View>
 
-        <Text style={styles.currentPrice}>₹{product.discountedPrice}</Text>
+        <Text style={styles.currentPrice}>₹{product.sellingPrice}</Text>
       </View>
 
       {quantity > 0 ? (

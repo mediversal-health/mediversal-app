@@ -18,6 +18,9 @@ import {useCartStore} from '../../store/cartStore';
 import {useToastStore} from '../../store/toastStore';
 import LottieView from 'lottie-react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import {uploadPrescriptions} from '../../Services/prescription';
+import {usePrescriptionStore} from '../../store/prescriptionStore';
+import {useCouponStore} from '../../store/couponStore';
 
 Dimensions.get('window');
 
@@ -25,14 +28,19 @@ const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {customer_id, email, phoneNumber, first_name, last_name} =
     useAuthStore();
-  const {paymentId, amount, cartItems, address} = route.params;
-  const isCOD = !paymentId; // If paymentId is not present, it's COD
+  const {paymentId, amount, cartItems, address, coupon_id, couponDiscount} =
+    route.params;
+  const isCOD = !paymentId;
   const {removeFromCart} = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderCreated, setOrderCreated] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
-
+  const {clearPrescriptions, getFiles} = usePrescriptionStore.getState();
+  const setSelectedCoupon = useCouponStore(state => state.setSelectedCoupon);
+  let prescriptionId: number = 0;
+  console.log(couponDiscount, 'couponDiscount');
+  console.log(coupon_id, 'coupon_id');
   useEffect(() => {
     const handleCreateOrder = async () => {
       if (orderCreated || isCreatingOrder) {
@@ -42,6 +50,25 @@ const PaymentSuccessScreen = ({route}: any) => {
       setIsCreatingOrder(true);
 
       try {
+        const currentCustomerPrescriptions = customer_id
+          ? getFiles(customer_id.toString())
+          : [];
+
+        if (currentCustomerPrescriptions.length > 0 && customer_id) {
+          try {
+            const uploadResponse = await uploadPrescriptions(
+              customer_id.toString(),
+              currentCustomerPrescriptions,
+            );
+
+            if (uploadResponse && uploadResponse.data.prescription_id) {
+              prescriptionId = uploadResponse.data.prescription_id;
+            }
+          } catch (uploadError) {
+            console.error('Prescription upload failed:', uploadError);
+          }
+        }
+
         const orderData = {
           customer: {
             customerId: parseInt(String(customer_id ?? ''), 10),
@@ -49,6 +76,10 @@ const PaymentSuccessScreen = ({route}: any) => {
             address: address || '',
             phone: phoneNumber || '',
             email: email || '',
+          },
+          coupon: {
+            applied_discount_value: couponDiscount,
+            coupon_id: coupon_id || null,
           },
           payment: {
             status: isCOD ? 'Pending' : 'Paid',
@@ -71,16 +102,20 @@ const PaymentSuccessScreen = ({route}: any) => {
             })) || [],
           totalOrderAmount: amount,
           deliveryStatus: 'ON GOING',
+          prescriptionId: prescriptionId.toString(),
         };
 
         const response = await createOrder(orderData);
-        console.log(response);
 
+        if (customer_id && currentCustomerPrescriptions.length > 0) {
+          clearPrescriptions(customer_id.toString());
+        }
+        setSelectedCoupon(customer_id?.toString() ?? '', null);
         const productIds = cartItems.map(
           (item: any) => item.productId || item.id,
         );
         await DeleteFromCart(customer_id, productIds);
-        productIds.map((productId: number) => {
+        productIds.forEach((productId: number) => {
           removeFromCart(customer_id?.toString() ?? '', productId);
         });
 
@@ -90,7 +125,7 @@ const PaymentSuccessScreen = ({route}: any) => {
 
         setOrderCreated(true);
       } catch (error) {
-        console.error('Failed to create order or remove from cart:', error);
+        console.error('Order creation failed:', error);
         showToast('Failed to complete order process', 'error');
       } finally {
         setIsCreatingOrder(false);
@@ -99,6 +134,7 @@ const PaymentSuccessScreen = ({route}: any) => {
 
     handleCreateOrder();
   }, []);
+
   const handleNavigate = () => {
     navigation.reset({
       index: 0,

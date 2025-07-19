@@ -27,7 +27,7 @@ type CartItemCardProps = {
   onQuantityChange?: () => void;
   quantityOrg?: number;
   fromOrderDesc: boolean;
-  isPrescriptionRequired: string;
+  isPrescriptionRequired?: string;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -133,7 +133,10 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         <Image source={{uri: imageUrl}} style={styles.image} />
         {/* Middle Details */}
         <View style={styles.middleContent}>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>
+            {' '}
+            {name.length > 20 ? name.slice(0, 25) + '...' : name}
+          </Text>
           <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
           {!fromOrderDesc ? (
             <View style={styles.priceRow}>

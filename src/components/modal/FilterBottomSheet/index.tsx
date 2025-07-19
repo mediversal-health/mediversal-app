@@ -24,8 +24,12 @@ interface FilterBottomSheetProps {
   setSelectedFilters: React.Dispatch<
     React.SetStateAction<{[key: string]: boolean}>
   >;
-
+  // priceRange: {min: number; max: number};
+  // setPriceRange: React.Dispatch<
+  //   React.SetStateAction<{min: number; max: number}>
+  // >;
   selectedCategory: string;
+  onCategoryReset: () => void;
 }
 
 interface CategoryOption {
@@ -48,8 +52,10 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   onApply,
   selectedFilters,
   setSelectedFilters,
-
+  // priceRange,
+  // setPriceRange,
   selectedCategory,
+  onCategoryReset,
 }) => {
   const [currentSelectedCategory, setCurrentSelectedCategory] =
     useState<SidebarItem>('Salt Name');
@@ -68,8 +74,12 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
     'Salt Name',
     'Manufacturer',
     'Availability',
+
     'Prescription Required',
   ];
+
+  // const minPrice = Math.min(...cardProducts.map(p => p.sellingPrice));
+  // const maxPrice = Math.max(...cardProducts.map(p => p.sellingPrice));
 
   const optionsData = {
     'Salt Name': [
@@ -113,20 +123,20 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   };
 
   const toggleFilter = (key: string): void => {
-    // For prescription required, ensure only one option is selected at a time
-    if (currentSelectedCategory === 'Prescription Required') {
+    if (
+      currentSelectedCategory === 'Availability' ||
+      currentSelectedCategory === 'Prescription Required'
+    ) {
       const newFilters: {[key: string]: boolean} = {};
-      Object.keys(selectedFilters).forEach(filterKey => {
-        if (
-          filterKey.startsWith('prescription') ||
-          filterKey.startsWith('noPrescription')
-        ) {
-          newFilters[filterKey] = false;
-        }
+
+      optionsData[currentSelectedCategory].forEach(option => {
+        newFilters[option.key] = false;
       });
+
+      newFilters[key] = !selectedFilters[key];
       setSelectedFilters({
+        ...selectedFilters,
         ...newFilters,
-        [key]: !selectedFilters[key],
       });
     } else {
       setSelectedFilters(prev => ({
@@ -138,6 +148,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
 
   const hasActiveFilters = (): boolean => {
     return Object.values(selectedFilters).some(filter => filter);
+    // priceRange.min !== minPrice ||
+    // priceRange.max !== maxPrice
   };
 
   const applyFilters = () => {
@@ -151,21 +163,50 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
 
   const clearFilters = (): void => {
     setSelectedFilters({});
+
     resetFilters();
 
-    let categoryFiltered = cardProducts;
+    // Call the category reset callback
+    onCategoryReset();
 
-    if (selectedCategory !== 'All') {
-      categoryFiltered = cardProducts.filter(
-        product => product.Category === selectedCategory,
-      );
-    }
-
-    const cardFiltered = categoryFiltered;
-    onApply(cardFiltered); // pass category-only filtered products
-
+    // Apply the reset (show all products)
+    onApply(cardProducts);
     onClose();
   };
+
+  // const renderPriceRange = () => (
+  //   <View style={styles.contentContainer}>
+  //     <View style={styles.priceRangeContainer}>
+  //       <Text style={styles.priceRangeText}>
+  //         Price Range: ₹{priceRange.min.toFixed(2)} - ₹
+  //         {priceRange.max.toFixed(2)}
+  //       </Text>
+  //       <Slider
+  //         style={styles.slider}
+  //         minimumValue={minPrice}
+  //         maximumValue={maxPrice}
+  //         step={1}
+  //         minimumTrackTintColor="#2D9CDB"
+  //         maximumTrackTintColor="#d3d3d3"
+  //         thumbTintColor="#2D9CDB"
+  //         value={priceRange.max}
+  //         onValueChange={(value: any) =>
+  //           setPriceRange(prev => ({...prev, max: value}))
+  //         }
+  //       />
+  //       <View style={styles.priceInputsContainer}>
+  //         <View style={styles.priceInput}>
+  //           <Text style={styles.priceLabel}>Min:</Text>
+  //           <Text style={styles.priceValue}>₹{priceRange.min.toFixed(2)}</Text>
+  //         </View>
+  //         <View style={styles.priceInput}>
+  //           <Text style={styles.priceLabel}>Max:</Text>
+  //           <Text style={styles.priceValue}>₹{priceRange.max.toFixed(2)}</Text>
+  //         </View>
+  //       </View>
+  //     </View>
+  //   </View>
+  // );
 
   const renderSearchableContent = (options: CategoryOption[]) => (
     <View style={styles.contentContainer}>
@@ -178,7 +219,8 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
             style={styles.optionRow}
             onPress={() => toggleFilter(option.key)}>
             <Text style={styles.optionText}>{option.label}</Text>
-            {currentSelectedCategory === 'Prescription Required' ? (
+            {currentSelectedCategory === 'Prescription Required' ||
+            currentSelectedCategory === 'Availability' ? (
               <View
                 style={[
                   styles.radio,
@@ -206,6 +248,10 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   );
 
   const renderContent = () => {
+    // if (currentSelectedCategory === 'Price Range') {
+    //   return renderPriceRange();
+    // }
+
     const currentOptions =
       optionsData[currentSelectedCategory as keyof typeof optionsData];
 

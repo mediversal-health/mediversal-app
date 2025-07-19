@@ -7,12 +7,17 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  // TouchableOpacity,
+  // ActivityIndicator,
 } from 'react-native';
-import {MessageCircleMore} from 'lucide-react-native';
+// import {MessageCircleMore} from 'lucide-react-native';
 import {styles} from './index.styles';
-import {useCartStore} from '../../../store/cartStore';
-import {useAuthStore} from '../../../store/authStore';
+// import {useCartStore} from '../../../store/cartStore';
+// import {useAuthStore} from '../../../store/authStore';
 import {Fonts} from '../../../styles/fonts';
+import {MessageCircleMore} from 'lucide-react-native';
+import {useAuthStore} from '../../../store/authStore';
+import {useCartStore} from '../../../store/cartStore';
 
 interface MedicineDetailProps {
   images: string[];
@@ -63,7 +68,18 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   // Safe image handling
   const safeImages = Array.isArray(images) ? images.filter(img => img) : [];
   const hasMultipleImages = safeImages.length > 1;
+  const getDeliveryDate = (daysToAdd: number) => {
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + daysToAdd);
 
+    // Format as "Day, DD Month" (e.g., "Fri, 14 Jun")
+    return deliveryDate.toLocaleDateString('en-US', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
+  };
   useEffect(() => {
     if (!hasMultipleImages) {
       return;
@@ -255,7 +271,9 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           {isOutOfStock ? 'Out of Stock' : 'In Stock'}
         </Text>
         {!isOutOfStock && (
-          <Text style={styles.deliveryText}>{deliveryTime}</Text>
+          <Text style={styles.deliveryText}>{`Delivery by ${getDeliveryDate(
+            3,
+          )}`}</Text>
         )}
       </View>
 
@@ -281,6 +299,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           <MessageCircleMore size={16} color="#0088B1" />
           <Text style={styles.consultButtonText}>Consult</Text>
         </TouchableOpacity>
+        {/* </View> */}
       </View>
     </View>
   );

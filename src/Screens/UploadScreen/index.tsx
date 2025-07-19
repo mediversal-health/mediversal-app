@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Text,
+  // ActivityIndicator,
 } from 'react-native';
 import MedicineDetail from '../../components/cards/MedicineDetails';
 import GuaranteeCards from '../../components/cards/GuaranteeCards';
 import ProductInfo from '../../components/cards/ProductInformation/ProductInfo';
 import CheaperAlternative from '../../components/cards/CheaperAlternative';
-import {Clock, Search, ChevronLeft} from 'lucide-react-native';
+import {Search, ChevronLeft, Clock} from 'lucide-react-native';
 import {styles} from './index.style';
 import ProductCard from '../../components/cards/ProductCard';
 
@@ -85,6 +86,19 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
     }
   };
 
+  // const quantity = useCartStore(state =>
+  //   state.getProductQuantity(
+  //     customer_id?.toString() ?? '',
+  //     product?.productId ?? 0,
+  //   ),
+  // );
+
+  // const isInCart = quantity > 0;
+
+  // const isOutOfStock =
+  //   product?.StockAvailableInInventory === 0 ||
+  //   product?.StockAvailableInInventory == null;
+
   const handleProductPress = (item: any) => {
     console.log('Product pressed:', item);
   };
@@ -93,9 +107,17 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
 
   // const renderRelatedProductShimmer = () => <ProductCardShimmer />;
 
-  const cheaperAlternativeItems = cardProducts;
-
-  const relatedProductItems = cardProducts;
+  const cheaperAlternativeItems = cardProducts.filter(
+    item =>
+      item.Composition === product?.Composition &&
+      Number(item.id) !== product?.productId &&
+      Number(item.sellingPrice) <= Number(product?.SellingPrice ?? 0) * 0.95,
+  );
+  const relatedProductItems = cardProducts.filter(
+    item =>
+      item.Composition === product?.Composition &&
+      Number(item.id) !== product?.productId,
+  );
 
   const renderCheaperAlternativeProduct = ({item}: {item: any}) => {
     return (
@@ -167,20 +189,23 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               prescriptionRequired={product?.PrescriptionRequired}
               StockAvailableInInventory={product?.StockAvailableInInventory}
             />
-
-            <View style={styles.cheaperAlternativeContainer}>
-              <CheaperAlternative discountPercentage={5}>
-                <View>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {cheaperAlternativeItems.map(item => (
-                      <View key={item.id} style={styles.productCard}>
-                        {renderCheaperAlternativeProduct({item})}
-                      </View>
-                    ))}
-                  </ScrollView>
-                </View>
-              </CheaperAlternative>
-            </View>
+            {cheaperAlternativeItems.length > 0 && (
+              <View style={styles.cheaperAlternativeContainer}>
+                <CheaperAlternative discountPercentage={5}>
+                  <View>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}>
+                      {cheaperAlternativeItems.map(item => (
+                        <View key={item.id} style={styles.productCard}>
+                          {renderCheaperAlternativeProduct({item})}
+                        </View>
+                      ))}
+                    </ScrollView>
+                  </View>
+                </CheaperAlternative>
+              </View>
+            )}
 
             {/* Guarantee cards positioned immediately below medicine details */}
             <View style={styles.guaranteeSection}>
@@ -188,21 +213,28 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
             </View>
 
             <ProductInfo product={product} />
+            <View style={{marginVertical: 10}} />
 
             {/* Related Products Section */}
-            <Text style={styles.relatedProductsHeading}>Related Products</Text>
-            <View>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.productCardsContainer}>
-                {relatedProductItems.map(item => (
-                  <View key={item.id} style={styles.productCard}>
-                    {renderRelatedProduct({item})}
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
+            {relatedProductItems.length > 0 && (
+              <>
+                <Text style={styles.relatedProductsHeading}>
+                  Related Products
+                </Text>
+                <View>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.productCardsContainer}>
+                    {relatedProductItems.map(item => (
+                      <View key={item.id} style={styles.productCard}>
+                        {renderRelatedProduct({item})}
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+              </>
+            )}
           </View>
         </ScrollView>
 
@@ -212,6 +244,22 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
             <Clock size={18} color="#0088B1" />
             <Text style={styles.reminderButtonText}>Set Reminder</Text>
           </TouchableOpacity>
+          {/* <TouchableOpacity
+            style={[
+              styles.addCartButton,
+              (addingToCart || isInCart || isOutOfStock) &&
+                styles.disabledButton,
+            ]}
+            onPress={handleAddToCart}
+            disabled={!!addingToCart || isInCart || isOutOfStock}>
+            {addingToCart ? (
+              <ActivityIndicator size="small" color="#0088B1" />
+            ) : isInCart ? (
+              <Text style={styles.buttonText}>Already in Cart</Text>
+            ) : (
+              <Text style={styles.buttonText}>Add Cart</Text>
+            )}
+          </TouchableOpacity> */}
           {/* <TouchableOpacity style={styles.buyButton}>
             <RNText style={styles.buyButtonText}>Buy Now</RNText>
           </TouchableOpacity> */}

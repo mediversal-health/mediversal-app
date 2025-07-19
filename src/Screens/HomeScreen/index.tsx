@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -8,9 +8,10 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
-import DoctorsCard from '../../components/cards/DoctorsCard';
+
 import styles from './index.styles';
 import PriscriptionSVG from './assets/svgs/priscription-icon.svg';
 import InfoBox from '../../components/cards/InfoCard';
@@ -25,42 +26,120 @@ import SVG6 from './assets/svgs/surgeries-1 1.svg';
 import OrderNowCard from '../../components/cards/OrderCard';
 import {RootStackParamList} from '../../navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import PriceCard from '../../components/cards/PriceCard';
+import DoctorsCardSkeleton from '../../components/cards/DoctorsCard/skeletons';
+import OrderNowCardSkeleton from '../../components/cards/OrderCard/skeleton';
+import PrescriptionSkeleton from './skeletons/uploadPrescription';
+import InfoBoxSkeleton from '../../components/cards/InfoCard/skeletons';
+import PriceCardSkeleton from '../../components/cards/PriceCard/skeletons';
+import UpcomingOrdersCard from '../../components/cards/UpcomingOrderCard';
+import {getOrders} from '../../Services/order';
+
+import {useAuthStore} from '../../store/authStore';
+import {useOrdersStore} from '../../store/ordersStore';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {orders, setOrders} = useOrdersStore();
+  const customer_id = useAuthStore(state => state.customer_id);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [refreshing, setRefreshing] = useState(false); // Add this state
+  const fetchOrders = async () => {
+    if (customer_id) {
+      try {
+        setLoadingOrders(true);
+        const response = await getOrders(customer_id.toString());
+        setOrders(response.data);
+      } catch (error) {
+        console.log('Error fetching orders:', error);
+      } finally {
+        setLoadingOrders(false);
+        setRefreshing(false);
+      }
+    }
+  };
 
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  // Add this function for pull-to-refresh
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchOrders();
+  };
+
+  const filteredOrders = orders.filter(
+    order =>
+      order.deliverystatus !== 'Delivered' &&
+      order.deliverystatus !== 'Order cancelled successfully.',
+  );
+  // const [isLoading, setIsLoading] = useState(true);
+  // setTimeout(() => {
+  //   setIsLoading(false);
+  // }, 300);
   return (
     <SafeAreaView style={styles.container}>
-      {/* Render the ToastComponent at the top of your screen */}
-
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#0088B1']}
+            tintColor={'#0088B1'}
+          />
+        }>
         <StatusBar backgroundColor="#F8F8F8" barStyle="dark-content" />
-
-        <View style={styles.headerContainer}>
-          <Text style={styles.sectionLabel}>Upcoming</Text>
-          <View style={styles.headerRow}>
-            <View style={styles.orderInfo}>
-              <Text style={styles.boldText}>Orders & Schedules</Text>
-              <Text style={styles.countText}>(4)</Text>
+        {filteredOrders.length > 0 && (
+          <View style={styles.headerContainer}>
+            <Text style={styles.sectionLabel}>Upcoming</Text>
+            <View style={styles.headerRow}>
+              <View style={styles.orderInfo}>
+                <Text style={styles.boldText}>Orders & Schedules</Text>
+                <Text style={styles.countText}>({filteredOrders.length})</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.seeAllButton}
+                onPress={() => navigation.navigate('OrdersScreen')}>
+                <Text style={styles.seeAllText}>See All</Text>
+                <ArrowRight
+                  size={12}
+                  style={styles.arrowIcon}
+                  color={'#161d1f'}
+                />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.seeAllButton}>
-              <Text style={styles.seeAllText}>See All</Text>
-              <ArrowRight
-                size={12}
-                style={styles.arrowIcon}
-                color={'#161d1f'}
-              />
-            </TouchableOpacity>
           </View>
-        </View>
-
+        )}
         <ScrollView
           horizontal
           style={styles.horizontalScroll}
           showsHorizontalScrollIndicator={false}>
-          <DoctorsCard />
-          <DoctorsCard />
-          <DoctorsCard />
+          {loadingOrders ? (
+            <>
+              <DoctorsCardSkeleton />
+              <DoctorsCardSkeleton />
+              <DoctorsCardSkeleton />
+            </>
+          ) : filteredOrders.length > 0 ? (
+            filteredOrders.reverse().map(order => (
+              <UpcomingOrdersCard
+                key={order.orderId}
+                order={order}
+                onPress={() =>
+                  navigation.navigate('OrdersDetailsScreen', {
+                    order_data: order,
+                  })
+                }
+              />
+            ))
+          ) : (
+            <View style={styles.noOrdersContainer}>
+              <Text style={styles.noOrdersText}>No upcoming orders</Text>
+            </View>
+          )}
         </ScrollView>
         <View
           style={{
@@ -68,109 +147,141 @@ const HomeScreen = () => {
             marginVertical: 24,
             paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
           }}>
-          <OrderNowCard />
+          {loadingOrders ? (
+            <>
+              <OrderNowCardSkeleton />
+            </>
+          ) : (
+            <>
+              <OrderNowCard />
+            </>
+          )}
         </View>
-
-        <View style={styles.priscriptionContainer}>
-          <PriscriptionSVG width={25} height={32} strokeWidth={2} />
-          <Text style={styles.priscriptionText}>
-            Have a Doctor's Prescription?
-          </Text>
-          <TouchableOpacity
-            style={styles.uploadButton}
-            onPress={() => navigation.navigate('UploadPrescription')}>
-            <Text style={styles.uploadButtonText}>Upload Now</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.gridWrap}>
-          <InfoBox
-            heading="Homecare"
-            subHeading="Medical care at home"
-            colors="#61C8E3"
-            SvgComponent={SVG1}
-            flag="Homecare"
-          />
-          <InfoBox
-            heading="Online Consultation"
-            subHeading="Doctor's at your fingertip"
-            colors="#C686FF"
-            SvgComponent={SVG2}
-            flag="Online"
-          />
-          <InfoBox
-            heading="Lab Tests"
-            subHeading="100% Accurate Reports"
-            colors="#FCFF9B"
-            SvgComponent={SVG3}
-            flag="Tests"
-          />
-        </View>
-
-        <View style={styles.gridWrap}>
-          <InfoBox
-            heading="Health Checkup"
-            subHeading="(NABH) Trusted and Reliable Tests"
-            colors="#FF9966"
-            SvgComponent={SVG4}
-            flag="Checkup"
-          />
-          <InfoBox
-            heading="Elder Care Program"
-            subHeading="Personalized Support for Aging Loved Ones"
-            colors="#FFC4BD"
-            SvgComponent={SVG5}
-          />
-          <InfoBox
-            heading="Surgeries"
-            subHeading="Expert Surgical Care with Trusted Experts"
-            colors="#61C8E3"
-            SvgComponent={SVG6}
-            flag="Surgeries"
-          />
-        </View>
-
-        {/* <View style={styles.separatorContainer}>
-          <LinearGradient
-            colors={['#00FF80', 'transparent']}
-            start={{x: 1, y: 0}}
-            end={{x: 0, y: 0}}
-            style={styles.line}
-          />
-          <View style={styles.separatorTextContainer}>
-            <Text style={styles.smallHeading}>Frequently Booked</Text>
-            <Text style={styles.greenHeading}>Homecare Services</Text>
+        {loadingOrders ? (
+          <PrescriptionSkeleton />
+        ) : (
+          <View style={styles.priscriptionContainer}>
+            <PriscriptionSVG width={25} height={32} strokeWidth={2} />
+            <Text style={styles.priscriptionText}>
+              Have a Doctor's Prescription?
+            </Text>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={() => navigation.navigate('UploadPrescription')}>
+              <Text style={styles.uploadButtonText}>Upload Now</Text>
+            </TouchableOpacity>
           </View>
-          <LinearGradient
-            colors={['transparent', '#00FF80']}
-            start={{x: 1, y: 0}}
-            end={{x: 0, y: 0}}
-            style={styles.line}
-          />
-        </View>
-
-        <View style={styles.gridWrap}>
-          <PriceCard
-            heading="Care Takers"
-            subHeading="Trained personnel for daily assistance"
-            offer="FLAT 25% OFF"
-            price="₹5999"
-            onPress={() => console.log('Buy Now Pressed')}
-          />
-          <PriceCard
-            heading="Nursing Care"
-            subHeading="Expert nurses at home"
-            offer="FLAT 30% OFF"
-            price="₹9999"
-            onPress={() => console.log('Buy Now Pressed')}
-          />
-        </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>See All</Text>
-          <ArrowRight color="#ccc" height={10} />
-        </View> */}
-
+        )}
+        {loadingOrders ? (
+          <View style={styles.gridWrap}>
+            <InfoBoxSkeleton />
+            <InfoBoxSkeleton />
+            <InfoBoxSkeleton />
+          </View>
+        ) : (
+          <View style={styles.gridWrap}>
+            <InfoBox
+              heading="Homecare"
+              subHeading="Medical care at home"
+              colors="#61C8E3"
+              SvgComponent={SVG1}
+              flag="Homecare"
+            />
+            <InfoBox
+              heading="Online Consultation"
+              subHeading="Doctor's at your fingertip"
+              colors="#C686FF"
+              SvgComponent={SVG2}
+              flag="Online"
+            />
+            <InfoBox
+              heading="Lab Tests"
+              subHeading="100% Accurate Reports"
+              colors="#FCFF9B"
+              SvgComponent={SVG3}
+              flag="Tests"
+            />
+          </View>
+        )}
+        {loadingOrders ? (
+          <View style={styles.gridWrap}>
+            <InfoBoxSkeleton />
+            <InfoBoxSkeleton />
+            <InfoBoxSkeleton />
+          </View>
+        ) : (
+          <View style={styles.gridWrap}>
+            <InfoBox
+              heading="Health Checkup"
+              subHeading="(NABH) Trusted and Reliable Tests"
+              colors="#FF9966"
+              SvgComponent={SVG4}
+              flag="Checkup"
+            />
+            <InfoBox
+              heading="Elder Care Program"
+              subHeading="Personalized Support for Aging Loved Ones"
+              colors="#FFC4BD"
+              SvgComponent={SVG5}
+            />
+            <InfoBox
+              heading="Surgeries"
+              subHeading="Expert Surgical Care with Trusted Experts"
+              colors="#61C8E3"
+              SvgComponent={SVG6}
+              flag="Surgeries"
+            />
+          </View>
+        )}
+        {!loadingOrders && (
+          <View style={styles.separatorContainer}>
+            <LinearGradient
+              colors={['#00FF80', 'transparent']}
+              start={{x: 1, y: 0}}
+              end={{x: 0, y: 0}}
+              style={styles.line}
+            />
+            <View style={styles.separatorTextContainer}>
+              <Text style={styles.smallHeading}>Frequently Booked</Text>
+              <Text style={styles.greenHeading}>Homecare Services</Text>
+            </View>
+            <LinearGradient
+              colors={['transparent', '#00FF80']}
+              start={{x: 1, y: 0}}
+              end={{x: 0, y: 0}}
+              style={styles.line}
+            />
+          </View>
+        )}
+        {loadingOrders ? (
+          <View style={styles.gridWrap}>
+            <PriceCardSkeleton />
+            <PriceCardSkeleton />
+          </View>
+        ) : (
+          <>
+            <View style={styles.gridWrap}>
+              <PriceCard
+                heading="Care Takers"
+                subHeading="Trained personnel for daily assistance"
+                offer="FLAT 25% OFF"
+                price="₹5999"
+                onPress={() => console.log('Buy Now Pressed')}
+              />
+              <PriceCard
+                heading="Nursing Care"
+                subHeading="Expert nurses at home"
+                offer="FLAT 30% OFF"
+                price="₹9999"
+                onPress={() => console.log('Buy Now Pressed')}
+              />
+            </View>
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>See All</Text>
+              <ArrowRight color="#ccc" height={10} />
+            </View>
+          </>
+        )}
         {/* <View style={styles.imagecontainer}>
           <Text style={{fontSize: 8}}>Powered By</Text>
           <MediversalLogo style={styles.logo} />

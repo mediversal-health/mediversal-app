@@ -131,4 +131,28 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
+  addCartButton: {
+    backgroundColor: '#0088B1',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    flex: 1,
+    marginRight: 8,
+  },
+
+  disabledButton: {
+    backgroundColor: '#787a79',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    flex: 1,
+    marginRight: 8,
+  },
+
+  buttonText: {
+    color: '#f8f8f8',
+    fontSize: 12,
+    textAlign: 'center',
+    fontFamily: Fonts.JakartaSemiBold,
+  },
 });

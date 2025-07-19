@@ -24,8 +24,8 @@ const BillSummaryCard: React.FC<Props> = ({
   details,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const savings = originalPrice - finalPrice;
-
+  // const savings = originalPrice - finalPrice;
+  const couponDiscount = details.couponDiscount || 0;
   const toggleExpand = () => setExpanded(!expanded);
 
   return (
@@ -42,7 +42,7 @@ const BillSummaryCard: React.FC<Props> = ({
           </View>
 
           <View style={styles.priceWrapper}>
-            <Text style={styles.finalPrice}>₹{finalPrice}</Text>
+            <Text style={styles.finalPrice}>₹{Math.round(finalPrice)}</Text>
             <Text style={styles.cutPrice}>₹{originalPrice}</Text>
             {expanded ? (
               <ChevronUp size={18} color="#000" />
@@ -54,13 +54,14 @@ const BillSummaryCard: React.FC<Props> = ({
       </TouchableOpacity>
 
       {/* Savings Info (always visible) */}
-      <View style={styles.savingsRow}>
-        <Percent size={16} color="#FE90E2" />
-        <Text style={styles.savingsText}>
-          You will save ₹{savings} on this order
-        </Text>
-      </View>
-
+      {couponDiscount > 0 && (
+        <View style={styles.savingsRow}>
+          <Percent size={16} color="#FE90E2" />
+          <Text style={styles.savingsText}>
+            You will save ₹{couponDiscount} on this order
+          </Text>
+        </View>
+      )}
       {/* Expanded Bill Details */}
       {expanded && (
         <View style={styles.detailsSection}>
@@ -68,7 +69,9 @@ const BillSummaryCard: React.FC<Props> = ({
           <View style={styles.row}>
             <Text style={styles.leftText}>Cart Total</Text>
 
-            <Text style={styles.rightText}>₹{details.cartTotal}</Text>
+            <Text style={styles.rightText}>
+              ₹{Math.round(details.cartTotal)}
+            </Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.leftText}>Coupon Discount</Text>
@@ -82,13 +85,19 @@ const BillSummaryCard: React.FC<Props> = ({
             <Text style={styles.leftText}>Platform Fee</Text>
             <Text style={styles.rightText}>₹{details.platformFee}</Text>
           </View>
+
           <View style={styles.row}>
             <Text style={styles.leftText}>Delivery Charges</Text>
-            <Text style={styles.rightText}>₹{details.deliveryCharges}</Text>
+
+            {finalPrice > 499 ? (
+              <Text style={styles.rightTextlinethrough}>₹40</Text>
+            ) : (
+              <Text style={styles.rightText}>₹{details.deliveryCharges}</Text>
+            )}
           </View>
           <View style={styles.row}>
             <Text style={styles.totalToPay}>To Pay</Text>
-            <Text style={styles.totalToPay}>₹{finalPrice}</Text>
+            <Text style={styles.totalToPay}>₹{Math.round(finalPrice)}</Text>
           </View>
         </View>
       )}
