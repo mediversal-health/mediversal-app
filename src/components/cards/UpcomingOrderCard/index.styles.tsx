@@ -53,10 +53,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 25,
-    marginRight: 10,
+    width: 24,
+    height: 24,
   },
   doctorName: {
     color: '#F8F8F8',
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
   scheduleText: {
     marginLeft: 6,
     color: '#6D7578',
-    fontSize: 8,
+    fontSize: 10,
     fontFamily: Fonts.JakartaRegular,
   },
   viewOrderText: {

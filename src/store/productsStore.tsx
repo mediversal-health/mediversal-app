@@ -23,10 +23,11 @@ const useProductStore = create<ProductStore>((set, get) => ({
       sellingPrice: parseFloat(product.SellingPrice),
       discountPercentage: parseFloat(product.DiscountedPercentage),
       Category: product.Category?.toString() ?? '',
-      SubCategory: product.subCategory?.toString() ?? '',
+      SubCategory: product.Subcategory?.toString() ?? '',
+
       image: product.images?.[0] || '',
       manufacturer_name: product.ManufacturerName,
-      subCategory_name: product.subCategory,
+      type: product.Type,
       PrescriptionRequired: product.PrescriptionRequired,
       Composition: product.Composition,
       StockAvailableInInventory: product.StockAvailableInInventory,

@@ -49,7 +49,7 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
       case 'cancelled':
         return '#F44336';
       default:
-        return '#9E9E9E';
+        return '#DDFFE5';
     }
   };
 
@@ -78,10 +78,18 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
           </Text>
         </View>
         <View style={styles.doctorInfoRow}>
-          <Image
-            source={require('./assets/pngs/Box.png')}
-            style={styles.avatar}
-          />
+          <View
+            style={{
+              backgroundColor: '#E8F4F7',
+              padding: 4,
+              borderRadius: 6,
+              marginRight: 10,
+            }}>
+            <Image
+              source={require('./assets/pngs/Box.png')}
+              style={styles.avatar}
+            />
+          </View>
           <View>
             <Text style={styles.doctorSpecialty}>
               Order ID: ORD-{order.orderId}

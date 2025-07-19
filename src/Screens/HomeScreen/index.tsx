@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 
@@ -34,48 +35,74 @@ import InfoBoxSkeleton from '../../components/cards/InfoCard/skeletons';
 import PriceCardSkeleton from '../../components/cards/PriceCard/skeletons';
 import UpcomingOrdersCard from '../../components/cards/UpcomingOrderCard';
 import {getOrders} from '../../Services/order';
-import {OrderData} from '../../types';
+
 import {useAuthStore} from '../../store/authStore';
+import {useOrdersStore} from '../../store/ordersStore';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [orders, setOrders] = useState<OrderData[]>([]);
+  const {orders, setOrders} = useOrdersStore();
   const customer_id = useAuthStore(state => state.customer_id);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (customer_id) {
-        try {
-          setLoadingOrders(true);
-          const response = await getOrders(customer_id.toString());
-          setOrders(response.data);
-          setLoadingOrders(false);
-        } catch (error) {
-          console.log('Error fetching orders:', error);
-          setLoadingOrders(false);
-        }
+  const [refreshing, setRefreshing] = useState(false); // Add this state
+  const fetchOrders = async () => {
+    if (customer_id) {
+      try {
+        setLoadingOrders(true);
+        const response = await getOrders(customer_id.toString());
+        setOrders(response.data);
+      } catch (error) {
+        console.log('Error fetching orders:', error);
+      } finally {
+        setLoadingOrders(false);
+        setRefreshing(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchOrders();
-  }, [customer_id]);
-  const [isLoading, setIsLoading] = useState(true);
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 300);
+  }, []);
+
+  // Add this function for pull-to-refresh
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchOrders();
+  };
+
+  const filteredOrders = orders.filter(
+    order =>
+      order.deliverystatus !== 'Delivered' &&
+      order.deliverystatus !== 'Order cancelled successfully.',
+  );
+  // const [isLoading, setIsLoading] = useState(true);
+  // setTimeout(() => {
+  //   setIsLoading(false);
+  // }, 300);
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#0088B1']}
+            tintColor={'#0088B1'}
+          />
+        }>
         <StatusBar backgroundColor="#F8F8F8" barStyle="dark-content" />
-        {!loadingOrders && (
+        {filteredOrders.length > 0 && (
           <View style={styles.headerContainer}>
             <Text style={styles.sectionLabel}>Upcoming</Text>
             <View style={styles.headerRow}>
               <View style={styles.orderInfo}>
                 <Text style={styles.boldText}>Orders & Schedules</Text>
-                <Text style={styles.countText}>(4)</Text>
+                <Text style={styles.countText}>({filteredOrders.length})</Text>
               </View>
-              <TouchableOpacity style={styles.seeAllButton}>
+              <TouchableOpacity
+                style={styles.seeAllButton}
+                onPress={() => navigation.navigate('OrdersScreen')}>
                 <Text style={styles.seeAllText}>See All</Text>
                 <ArrowRight
                   size={12}
@@ -96,35 +123,31 @@ const HomeScreen = () => {
               <DoctorsCardSkeleton />
               <DoctorsCardSkeleton />
             </>
-          ) : orders.length > 0 ? (
-            orders
-              .filter(order => order.deliverystatus === 'ON GOING')
-              .reverse()
-              .map(order => (
-                <UpcomingOrdersCard
-                  key={order.orderId}
-                  order={order}
-                  onPress={() =>
-                    navigation.navigate('OrdersDetailsScreen', {
-                      order_data: order,
-                    })
-                  }
-                />
-              ))
+          ) : filteredOrders.length > 0 ? (
+            filteredOrders.reverse().map(order => (
+              <UpcomingOrdersCard
+                key={order.orderId}
+                order={order}
+                onPress={() =>
+                  navigation.navigate('OrdersDetailsScreen', {
+                    order_data: order,
+                  })
+                }
+              />
+            ))
           ) : (
             <View style={styles.noOrdersContainer}>
               <Text style={styles.noOrdersText}>No upcoming orders</Text>
             </View>
           )}
         </ScrollView>
-
         <View
           style={{
             flexDirection: 'row',
             marginVertical: 24,
             paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
           }}>
-          {isLoading ? (
+          {loadingOrders ? (
             <>
               <OrderNowCardSkeleton />
             </>
@@ -134,7 +157,7 @@ const HomeScreen = () => {
             </>
           )}
         </View>
-        {isLoading ? (
+        {loadingOrders ? (
           <PrescriptionSkeleton />
         ) : (
           <View style={styles.priscriptionContainer}>
@@ -149,7 +172,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
         )}
-        {isLoading ? (
+        {loadingOrders ? (
           <View style={styles.gridWrap}>
             <InfoBoxSkeleton />
             <InfoBoxSkeleton />
@@ -180,7 +203,7 @@ const HomeScreen = () => {
             />
           </View>
         )}
-        {isLoading ? (
+        {loadingOrders ? (
           <View style={styles.gridWrap}>
             <InfoBoxSkeleton />
             <InfoBoxSkeleton />
@@ -210,7 +233,7 @@ const HomeScreen = () => {
             />
           </View>
         )}
-        {!isLoading && (
+        {!loadingOrders && (
           <View style={styles.separatorContainer}>
             <LinearGradient
               colors={['#00FF80', 'transparent']}
@@ -230,7 +253,7 @@ const HomeScreen = () => {
             />
           </View>
         )}
-        {isLoading ? (
+        {loadingOrders ? (
           <View style={styles.gridWrap}>
             <PriceCardSkeleton />
             <PriceCardSkeleton />

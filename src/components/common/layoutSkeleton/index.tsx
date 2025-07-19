@@ -1,6 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
 
 const HeaderSkeleton = () => {
   return (
@@ -16,8 +17,10 @@ const HeaderSkeleton = () => {
           marginBottom: 10,
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {/* Profile Image Skeleton */}
+          {/* Profile Image Skeleton with Linear Gradient */}
           <ShimmerPlaceholder
+            LinearGradient={LinearGradient}
+            shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
             style={{
               width: 40,
               height: 40,
@@ -29,6 +32,8 @@ const HeaderSkeleton = () => {
           {/* Delivery Info Skeleton */}
           <View style={{flexDirection: 'column'}}>
             <ShimmerPlaceholder
+              LinearGradient={LinearGradient}
+              shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
               style={{
                 width: 80,
                 height: 14,
@@ -43,6 +48,8 @@ const HeaderSkeleton = () => {
                 width: '90%',
               }}>
               <ShimmerPlaceholder
+                LinearGradient={LinearGradient}
+                shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
                 style={{
                   width: 150,
                   height: 14,
@@ -51,6 +58,8 @@ const HeaderSkeleton = () => {
               />
               <View style={{flex: 1}} />
               <ShimmerPlaceholder
+                LinearGradient={LinearGradient}
+                shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
                 style={{
                   width: 24,
                   height: 24,
@@ -72,6 +81,8 @@ const HeaderSkeleton = () => {
         }}>
         <View>
           <ShimmerPlaceholder
+            LinearGradient={LinearGradient}
+            shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
             style={{
               width: 200,
               height: 12,
@@ -81,6 +92,8 @@ const HeaderSkeleton = () => {
           />
           <View style={{flexDirection: 'row'}}>
             <ShimmerPlaceholder
+              LinearGradient={LinearGradient}
+              shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
               style={{
                 width: 100,
                 height: 12,
@@ -89,6 +102,8 @@ const HeaderSkeleton = () => {
             />
             <View style={{width: 10}} />
             <ShimmerPlaceholder
+              LinearGradient={LinearGradient}
+              shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
               style={{
                 width: 60,
                 height: 12,
@@ -98,6 +113,8 @@ const HeaderSkeleton = () => {
           </View>
         </View>
         <ShimmerPlaceholder
+          LinearGradient={LinearGradient}
+          shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
           style={{
             width: 50,
             height: 30,
@@ -109,6 +126,8 @@ const HeaderSkeleton = () => {
       {/* Search Bar Section */}
       <View style={{paddingHorizontal: 16, paddingBottom: 16}}>
         <ShimmerPlaceholder
+          LinearGradient={LinearGradient}
+          shimmerColors={['#ebebeb', '#c5c5c5', '#ebebeb']}
           style={{
             height: 40,
             borderRadius: 8,

@@ -5,6 +5,8 @@ import {
   Image,
   FlatList,
   Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
   // TouchableOpacity,
   // ActivityIndicator,
 } from 'react-native';
@@ -13,6 +15,9 @@ import {styles} from './index.styles';
 // import {useCartStore} from '../../../store/cartStore';
 // import {useAuthStore} from '../../../store/authStore';
 import {Fonts} from '../../../styles/fonts';
+import {MessageCircleMore} from 'lucide-react-native';
+import {useAuthStore} from '../../../store/authStore';
+import {useCartStore} from '../../../store/cartStore';
 
 interface MedicineDetailProps {
   images: string[];
@@ -33,7 +38,7 @@ interface MedicineDetailProps {
 
 const MedicineDetail: React.FC<MedicineDetailProps> = ({
   images = [],
-  // productId,
+  productId,
   rating = 4.5,
   name = 'Dolo 650mg Tablet',
   packInfo = 'Strip of 10 Tablets',
@@ -41,21 +46,21 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   currentPrice = '₹ 165',
   originalPrice = '₹ 195',
   discount = '15% OFF',
-  // deliveryTime = 'Get by 9pm, Tomorrow',
-  // onAddToCart,
-  // isAddingToCart = false,
+  deliveryTime = 'Get by 9pm, Tomorrow',
+  onAddToCart,
+  isAddingToCart = false,
   prescriptionRequired,
   StockAvailableInInventory,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const screenWidth = Dimensions.get('window').width;
-  // const customer_id = useAuthStore(state => state.customer_id);
-  // const quantity = useCartStore(state =>
-  //   state.getProductQuantity(customer_id?.toString() ?? '', productId ?? 0),
-  // );
+  const customer_id = useAuthStore(state => state.customer_id);
+  const quantity = useCartStore(state =>
+    state.getProductQuantity(customer_id?.toString() ?? '', productId ?? 0),
+  );
 
-  // const isInCart = quantity > 0;
+  const isInCart = quantity > 0;
   console.log(StockAvailableInInventory);
   const isOutOfStock =
     StockAvailableInInventory === 0 || StockAvailableInInventory == null;
@@ -273,8 +278,8 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
       </View>
 
       {/* Buttons */}
-      {/* <View style={styles.buttonContainer}> */}
-      {/* <TouchableOpacity
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
           style={[
             styles.addCartButton,
             (isAddingToCart || isInCart || isOutOfStock) &&
@@ -289,12 +294,13 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
           ) : (
             <Text style={styles.buttonText}>Add Cart</Text>
           )}
-        </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.consultButton}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.consultButton}>
           <MessageCircleMore size={16} color="#0088B1" />
           <Text style={styles.consultButtonText}>Consult</Text>
-        </TouchableOpacity> */}
-      {/* </View> */}
+        </TouchableOpacity>
+        {/* </View> */}
+      </View>
     </View>
   );
 };

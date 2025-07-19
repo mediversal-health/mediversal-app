@@ -59,7 +59,7 @@ import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
 import {useCartStore} from '../../store/cartStore';
-import {getOrders} from '../../Services/order';
+import {useOrdersStore} from '../../store/ordersStore';
 
 const PharmacyScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -72,25 +72,8 @@ const PharmacyScreen = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const showToast = useToastStore(state => state.showToast);
   const {setUserCart} = useCartStore.getState();
-  const [orders, setOrders] = useState<OrderData[]>([]);
-  const [loadingOrders, setLoadingOrders] = useState(true);
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (customer_id) {
-        try {
-          setLoadingOrders(true);
-          const response = await getOrders(customer_id.toString());
-          setOrders(response.data);
-          setLoadingOrders(false);
-        } catch (error) {
-          console.log('Error fetching orders:', error);
-          setLoadingOrders(false);
-        }
-      }
-    };
+  const {orders} = useOrdersStore();
 
-    fetchOrders();
-  }, [customer_id]);
   const fetchProducts = useCallback(() => {
     setLoading(true);
     getProducts()
@@ -225,7 +208,7 @@ const PharmacyScreen = () => {
         }>
         <View style={styles.safeArea}>
           {showOnboarding && <OnboardingSteps />}
-          {!loadingOrders && orders.length < 1 && <PromoBanner />}
+          {orders.length < 1 && <PromoBanner />}
 
           <View style={styles.containerx}>
             <View style={styles.item}>

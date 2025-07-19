@@ -20,6 +20,7 @@ import LottieView from 'lottie-react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {uploadPrescriptions} from '../../Services/prescription';
 import {usePrescriptionStore} from '../../store/prescriptionStore';
+import {useCouponStore} from '../../store/couponStore';
 
 Dimensions.get('window');
 
@@ -27,7 +28,8 @@ const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {customer_id, email, phoneNumber, first_name, last_name} =
     useAuthStore();
-  const {paymentId, amount, cartItems, address} = route.params;
+  const {paymentId, amount, cartItems, address, coupon_id, couponDiscount} =
+    route.params;
   const isCOD = !paymentId;
   const {removeFromCart} = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
@@ -35,8 +37,10 @@ const PaymentSuccessScreen = ({route}: any) => {
   const showToast = useToastStore(state => state.showToast);
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
   const {clearPrescriptions, getFiles} = usePrescriptionStore.getState();
+  const setSelectedCoupon = useCouponStore(state => state.setSelectedCoupon);
   let prescriptionId: number = 0;
-
+  console.log(couponDiscount, 'couponDiscount');
+  console.log(coupon_id, 'coupon_id');
   useEffect(() => {
     const handleCreateOrder = async () => {
       if (orderCreated || isCreatingOrder) {
@@ -73,6 +77,10 @@ const PaymentSuccessScreen = ({route}: any) => {
             phone: phoneNumber || '',
             email: email || '',
           },
+          coupon: {
+            applied_discount_value: couponDiscount,
+            coupon_id: coupon_id || null,
+          },
           payment: {
             status: isCOD ? 'Pending' : 'Paid',
             method: isCOD ? 'COD' : 'Prepaid',
@@ -102,7 +110,7 @@ const PaymentSuccessScreen = ({route}: any) => {
         if (customer_id && currentCustomerPrescriptions.length > 0) {
           clearPrescriptions(customer_id.toString());
         }
-
+        setSelectedCoupon(customer_id?.toString() ?? '', null);
         const productIds = cartItems.map(
           (item: any) => item.productId || item.id,
         );

@@ -193,6 +193,8 @@ const CartPage = () => {
             city: formData?.City,
             State: formData?.State ?? '',
             PhoneNumber: Number(formData?.PhoneNumber) || 0,
+            coupon_id: selectedCoupon?.id || null,
+            couponDiscount: couponDiscount,
           },
         },
       ],

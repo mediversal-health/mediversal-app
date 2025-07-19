@@ -62,16 +62,17 @@ const Layout = () => {
 
     initLocationServices();
   }, []);
-  setTimeout(() => {
-    setLoading(false);
-  }, 300);
+
   const fetchProducts = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await getProducts();
       setProducts(response.data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
       showToast('Failed to load products', 'error', 3000);
+      setLoading(false);
     }
   }, [setProducts, showToast]);
 

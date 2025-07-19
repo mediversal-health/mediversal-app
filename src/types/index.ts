@@ -38,8 +38,10 @@ export interface ProductCardProps {
     sellingPrice: number;
     discountPercentage: number;
     Category: string;
+    Composition: string;
+    SubCategory: string;
     manufacturer_name: string;
-    subCategory_name: string;
+    type: string;
     PrescriptionRequired: string;
     image: string;
   };
@@ -94,7 +96,7 @@ export interface Product {
   updated_by: number;
   archivedProduct: number;
   Category: string;
-  subCategory: string;
+  Subcategory: string;
   images: string[];
   quantity?: number;
   ProductStrength: string;

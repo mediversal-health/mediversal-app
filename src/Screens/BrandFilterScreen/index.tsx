@@ -168,7 +168,9 @@ const BrandFilterScreen = () => {
         </Text>
 
         <FlatList
-          data={cardProducts}
+          data={cardProducts.filter(product =>
+            product.manufacturer_name.includes(brand_name),
+          )}
           renderItem={renderProduct}
           keyExtractor={item => `horizontal-${item.id}`}
           horizontal
@@ -198,7 +200,11 @@ const BrandFilterScreen = () => {
           />
 
           <FlatList
-            data={cardProducts}
+            data={cardProducts.filter(
+              product =>
+                product.manufacturer_name === brand_name &&
+                product.type === selectedProductType,
+            )}
             renderItem={renderProduct}
             keyExtractor={item => `horizontal-${item.id}`}
             horizontal
