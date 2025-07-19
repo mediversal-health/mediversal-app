@@ -140,3 +140,9 @@ temp/
 *.sublime-workspace
 *.sublime-project
 *.code-workspace
+
+
+ios/fastlane/AuthKey_*.p8
+ios/vendor/
+ios/Gemfile.lock
+
