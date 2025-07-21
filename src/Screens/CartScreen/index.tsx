@@ -681,34 +681,14 @@ const CartPage = () => {
             ) : (
               <>
                 {isPrescriptionRequiredItemsPresent ? (
-                  hasPrescriptionFiles ? (
-                    // When prescription is required AND files exist - show both buttons
-                    <>
-                      <TouchableOpacity
-                        style={styles.addressButton}
-                        onPress={() => setPrescriptionModalVisible(true)}>
-                        <Text style={styles.addressButtonText}>
-                          Upload Prescription
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.addressButton}
-                        onPress={showLocationModal}>
-                        <Text style={styles.addressButtonText}>
-                          Select / Add Addressx
-                        </Text>
-                      </TouchableOpacity>
-                    </>
-                  ) : (
-                    // When prescription is required but no files exist - show upload button only
-                    <TouchableOpacity
-                      style={styles.addressButton}
-                      onPress={() => setPrescriptionModalVisible(true)}>
-                      <Text style={styles.addressButtonText}>
-                        Upload Prescription
-                      </Text>
-                    </TouchableOpacity>
-                  )
+                  // When prescription is required but no files exist - show upload button only
+                  <TouchableOpacity
+                    style={styles.addressButton}
+                    onPress={() => setPrescriptionModalVisible(true)}>
+                    <Text style={styles.addressButtonText}>
+                      Upload/View Prescription
+                    </Text>
+                  </TouchableOpacity>
                 ) : (
                   // When no prescription required - show address button only
                   <TouchableOpacity
@@ -733,7 +713,7 @@ const CartPage = () => {
             PrescriptionRequired: 'No',
           }));
           setApiProductDetails(updatedProducts);
-          showToast('Prescription uploaded successfully!', 'success');
+          // showToast('Prescription uploaded successfully!', 'success');
         }}
         isPrescriptionRequired={isPrescriptionRequiredItemsPresent}
         onNavigateToAddressBook={() => {

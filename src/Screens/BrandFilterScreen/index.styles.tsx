@@ -13,11 +13,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
     gap: 10,
-    justifyContent: 'space-between',
   },
+
   backButton: {
     width: 32,
     height: 32,
@@ -28,8 +26,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 16,
-    fontFamily: Fonts.JakartaBold,
-    color: '#212121',
+    fontFamily: Fonts.JakartaSemiBold,
+    color: '#111827',
   },
   productList: {
     paddingVertical: 10,
