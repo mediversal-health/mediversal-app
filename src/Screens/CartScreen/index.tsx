@@ -510,17 +510,24 @@ const CartPage = () => {
               <View
                 style={{
                   backgroundColor: '#FFE0C5',
-                  margin: 15,
+                  marginHorizontal: 24,
                   borderRadius: 6,
                   padding: 16,
+                  marginTop: 24,
                 }}>
-                <View style={{flexDirection: 'row', gap: 5}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 5,
+                    alignItems: 'center',
+                    marginBottom: 8,
+                  }}>
                   <InfoIcon color={'#EB5757'} />
                   <Text
                     style={{
                       color: '#EB5757',
                       fontFamily: Fonts.JakartaSemiBold,
-                      marginBottom: 10,
+                      fontSize: 14,
                     }}>
                     Warning
                   </Text>

@@ -135,11 +135,7 @@ const HomeScreen = () => {
                 }
               />
             ))
-          ) : (
-            <View style={styles.noOrdersContainer}>
-              <Text style={styles.noOrdersText}>No upcoming orders</Text>
-            </View>
-          )}
+          ) : null}
         </ScrollView>
         <View
           style={{
