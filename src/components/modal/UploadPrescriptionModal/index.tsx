@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import Modal from 'react-native-modal';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {pick} from '@react-native-documents/picker';
-import {Camera, FileText, UploadIcon, X} from 'lucide-react-native';
+import {
+  Camera,
+  CheckCircle,
+  FileText,
+  Trash2,
+  Upload as UploadIcon,
+  X,
+} from 'lucide-react-native';
 
 import {useAuthStore} from '../../../store/authStore';
 import {useToastStore} from '../../../store/toastStore';
@@ -14,8 +21,8 @@ interface PrescriptionUploadModalProps {
   isVisible: boolean;
   onClose: () => void;
   onUploadSuccess: () => void;
-  isPrescriptionRequired: boolean; // <-- Add this
-  onNavigateToAddressBook?: () => void; // <-- Optional: For navigation
+  isPrescriptionRequired: boolean;
+  onNavigateToAddressBook?: () => void;
 }
 
 const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
@@ -30,12 +37,41 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
   const [pdfs, setPdfs] = useState<any[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  // const customer_id = useAuthStore(state => state.customer_id);
+
   const customer_name = useAuthStore(state => state.first_name);
   const customer_id = useAuthStore(state => state.customer_id);
   const showToast = useToastStore(state => state.showToast);
+  const [prescriptions, setPrescriptions] = useState<any[]>([]);
+  const [modalHeight, setModalHeight] = useState<string | number>('70%');
+  const files = fileType === 'image' ? images : pdfs;
+
+  useEffect(() => {
+    const hasFiles = files.length > 0;
+    const hasPrescriptions = prescriptions.length > 0;
+
+    if (hasFiles && hasPrescriptions) {
+      setModalHeight('90%');
+    } else if (hasFiles || hasPrescriptions) {
+      setModalHeight('80%');
+    } else {
+      setModalHeight('50%');
+    }
+  }, [files, prescriptions]);
+  useEffect(() => {
+    if (customer_id) {
+      const fetchedFiles =
+        usePrescriptionStore.getState().getFiles(customer_id.toString()) || [];
+      setPrescriptions(fetchedFiles);
+    }
+  }, [customer_id, isVisible]);
+  const {removeFile: removePrescription} = usePrescriptionStore();
 
   const handleTakePhoto = async () => {
+    const remainingSlots = 5 - (prescriptions.length + images.length);
+    if (remainingSlots <= 0) {
+      showToast('Maximum 5 prescriptions allowed', 'error', 1000, true);
+      return;
+    }
     try {
       setFileType('image');
       const result = await launchCamera({
@@ -57,11 +93,17 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
 
   const selectImage = async () => {
     try {
+      const remainingSlots = 5 - (prescriptions.length + images.length);
+      if (remainingSlots <= 0) {
+        showToast('Maximum 5 prescriptions allowed', 'error', 1000, true);
+        return;
+      }
+
       setFileType('image');
       const result = await launchImageLibrary({
         mediaType: 'photo',
         quality: 0.8,
-        selectionLimit: 5 - images.length,
+        selectionLimit: remainingSlots,
       });
       if (!result.didCancel && result.assets) {
         const newImages = result.assets.map(asset => asset.uri || '');
@@ -75,12 +117,17 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
 
   const selectPDF = async () => {
     setFileType('pdf');
+    const remainingSlots = 5 - (prescriptions.length + pdfs.length);
+    if (remainingSlots <= 0) {
+      showToast('Maximum 5 prescriptions allowed', 'error', 1000, true);
+      return;
+    }
     try {
       const result = await pick({
         mode: 'open',
         type: ['application/pdf'],
         multiple: true,
-        maxFiles: 5 - pdfs.length,
+        maxFiles: remainingSlots,
       });
       if (result) {
         const newPdfs = result.map((file: any) => ({
@@ -105,10 +152,12 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
   };
 
   const handleProceed = async () => {
-    const fileCount = fileType === 'pdf' ? pdfs.length : images.length;
-    if (fileCount > 5) {
+    const newFilesCount = fileType === 'pdf' ? pdfs.length : images.length;
+    const totalFilesCount = prescriptions.length + newFilesCount;
+
+    if (totalFilesCount > 5) {
       showToast(
-        'You can only upload up to 5 files at a time',
+        'You can only have up to 5 prescriptions total',
         'error',
         1000,
         true,
@@ -118,34 +167,85 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
 
     setIsUploading(true);
     try {
-      const files =
-        fileType === 'pdf'
-          ? pdfs.map(pdf => ({
-              uri: pdf.uri,
-              type: pdf.type || 'application/pdf',
-              name: pdf.name || `document_${Date.now()}.pdf`,
-            }))
-          : images.map(uri => ({
-              uri,
-              type: 'image/jpeg',
-              name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
-            }));
+      if (newFilesCount > 0) {
+        const files =
+          fileType === 'pdf'
+            ? pdfs.map(pdf => ({
+                uri: pdf.uri,
+                type: pdf.type || 'application/pdf',
+                name: pdf.name || `document_${Date.now()}.pdf`,
+              }))
+            : images.map(uri => ({
+                uri,
+                type: 'image/jpeg',
+                name: uri.split('/').pop() || `image_${Date.now()}.jpg`,
+              }));
 
-      usePrescriptionStore
-        .getState()
-        .addFiles(customer_id?.toString() ?? '', files);
-
-      showToast('Prescriptions saved successfully', 'success', 1000, true);
-
+        usePrescriptionStore
+          .getState()
+          .addFiles(customer_id?.toString() ?? '', files);
+      }
       onUploadSuccess();
+      if (files.length > 0) {
+        showToast('Prescriptions saved successfully!', 'success', 1000, true);
+      }
       onClose();
-      onNavigateToAddressBook?.();
+      if (onNavigateToAddressBook) {
+        onNavigateToAddressBook();
+      }
     } catch (error) {
       console.log('Save failed:', error);
       showToast('Failed to save prescriptions', 'error', 1000, true);
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleRemovePrescription = (index: number) => {
+    removePrescription(customer_id?.toString() ?? '', index);
+
+    setPrescriptions(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const renderUploadedPrescriptions = () => {
+    if (prescriptions.length === 0) return null;
+
+    return (
+      <>
+        <Text style={styles.sectionTitleForUploaded}>
+          Previously Saved Prescriptions
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalScrollContainer}>
+          {prescriptions.map((file, index) => (
+            <View key={`uploaded-${index}`} style={styles.uploadedFileCard}>
+              <View style={styles.uploadedFileIcon}>
+                {file.type?.includes('image') ? (
+                  <Image
+                    source={{uri: file.uri}}
+                    style={styles.uploadedFileImage}
+                  />
+                ) : (
+                  <FileText size={24} color="#0088B1" />
+                )}
+              </View>
+
+              <TouchableOpacity
+                style={styles.uploadedFileRemove}
+                onPress={() => handleRemovePrescription(index)}>
+                <Trash2 size={16} color="#EF4444" />
+              </TouchableOpacity>
+
+              <View style={styles.uploadedFileStatus}>
+                <CheckCircle size={16} color="#10B981" />
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </>
+    );
   };
 
   const handleCancel = () => {
@@ -163,8 +263,6 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
     onClose();
   };
 
-  const files = fileType === 'image' ? images : pdfs;
-
   return (
     <>
       <Modal
@@ -176,7 +274,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
         animationOut="slideOutDown"
         animationOutTiming={250}
         onBackdropPress={handleCancel}>
-        <View style={styles.modalContainer}>
+        <View style={[styles.modalContainer, {height: modalHeight}]}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
@@ -230,7 +328,13 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
 
             {files.length > 0 && (
               <>
-                <Text style={styles.sectionTitle}>Uploaded Prescriptions</Text>
+                <Text style={styles.sectionTitleForUploaded}>
+                  Review Before Proceeding
+                </Text>
+                <Text style={styles.sectionSubtitle}>
+                  Please verify all prescription details are clearly visible
+                  before submitting
+                </Text>
                 <View style={styles.previewContainer}>
                   {files.map((file, index) => (
                     <View key={index} style={styles.filePreview}>
@@ -259,6 +363,8 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
                 </View>
               </>
             )}
+
+            {renderUploadedPrescriptions()}
           </ScrollView>
 
           <View style={styles.actionButtonContainer}>
@@ -266,10 +372,14 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
               style={[
                 styles.actionButton,
                 styles.proceedButton,
-                (files.length === 0 || isUploading) && {opacity: 0.5},
+                files.length === 0 &&
+                  prescriptions.length === 0 && {opacity: 0.5},
               ]}
               onPress={handleProceed}
-              disabled={files.length === 0 || isUploading}>
+              disabled={
+                (files.length === 0 && prescriptions.length === 0) ||
+                isUploading
+              }>
               <Text style={styles.proceedButtonText}>
                 {isPrescriptionRequired
                   ? 'Select/Add Address'

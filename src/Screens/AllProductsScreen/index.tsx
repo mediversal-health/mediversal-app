@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   StatusBar,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import React, {useState} from 'react';
 import {
@@ -190,8 +191,8 @@ const AllProductsScreen: React.FC = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedCategory('All');
-      setFilteredProducts(null);
+      //setSelectedCategory('All');
+      // setFilteredProducts(null);
       setSortedProducts(null);
       setSelectedFilters({});
       setSelectedSortOption('Sort');
@@ -374,112 +375,119 @@ const AllProductsScreen: React.FC = () => {
     }
   };
 
-  // Function to get display text - show icon only when sorting is selected
   const getSortDisplayText = (option: string) => {
     if (option === 'Sort') {
       return option;
     }
-    return ''; // Show only icon when sorting is selected
+    return '';
+  };
+  const handleOutsideClick = () => {
+    if (sortDropdownVisible) {
+      setSortDropdownVisible(false);
+    }
   };
 
   return (
     <>
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" />
-
-        <View style={styles.header}>
-          <View style={{flexDirection: 'row', gap: 5}}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-              testID="back-button">
-              <ChevronLeft size={20} color="#0088B1" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>All Products</Text>
-          </View>
-          <CartIconWithBadge />
-        </View>
-
-        <View style={styles.mainContent}>
-          <View style={styles.sidebar}>
-            <FlatList
-              data={categories}
-              renderItem={renderCategory}
-              keyExtractor={item => item.id}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-
-          <View style={styles.productContainer}>
-            <View style={styles.searchBarContainer}>
-              <SearchBar />
-
-              <View style={styles.iconWrapper}>
+        <TouchableWithoutFeedback onPress={handleOutsideClick}>
+          <View style={{flex: 1}}>
+            <View style={styles.header}>
+              <View style={{flexDirection: 'row', gap: 5}}>
                 <TouchableOpacity
-                  style={styles.iconButton}
-                  onPress={() => setShowFilters(true)}>
-                  <Filter size={14} color="#000" />
-                  <Text style={styles.iconLabel}>Filter</Text>
-                  <ChevronDown size={14} color="#000" />
+                  style={styles.backButton}
+                  onPress={() => navigation.goBack()}
+                  testID="back-button">
+                  <ChevronLeft size={20} color="#0088B1" />
                 </TouchableOpacity>
+                <Text style={styles.headerTitle}>All Products</Text>
+              </View>
+              <CartIconWithBadge />
+            </View>
 
-                <TouchableOpacity
-                  style={styles.iconButton}
-                  onPress={() => setSortDropdownVisible(prev => !prev)}>
-                  {getSortIcon(selectedSortOption)}
-                  <Text style={styles.iconLabel}>
-                    {getSortDisplayText(selectedSortOption)}
-                  </Text>
-                  <ChevronDown size={14} color="#000" />
-                </TouchableOpacity>
+            <View style={styles.mainContent}>
+              <View style={styles.sidebar}>
+                <FlatList
+                  data={categories}
+                  renderItem={renderCategory}
+                  keyExtractor={item => item.id}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
 
-                {sortDropdownVisible && (
-                  <View style={styles.dropdown}>
-                    {[
-                      'Price: Low to High',
-                      'Price: High to Low',
-                      'Discount: High to Low',
-                    ].map(option => (
-                      <TouchableOpacity
-                        key={option}
-                        style={styles.dropdownOption}
-                        onPress={() => handleSortOptionSelect(option)}>
-                        {getSortIcon(option)}
-                        <Text
-                          style={{
-                            marginLeft: 6,
-                            color: '#000',
-                          }}>
-                          {option}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
+              <View style={styles.productContainer}>
+                <View style={styles.searchBarContainer}>
+                  <SearchBar />
+
+                  <View style={styles.iconWrapper}>
+                    <TouchableOpacity
+                      style={styles.iconButton}
+                      onPress={() => setShowFilters(true)}>
+                      <Filter size={14} color="#000" />
+                      <Text style={styles.iconLabel}>Filter</Text>
+                      <ChevronDown size={14} color="#000" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.iconButton}
+                      onPress={() => setSortDropdownVisible(prev => !prev)}>
+                      {getSortIcon(selectedSortOption)}
+                      <Text style={styles.iconLabel}>
+                        {getSortDisplayText(selectedSortOption)}
+                      </Text>
+                      <ChevronDown size={14} color="#000" />
+                    </TouchableOpacity>
+
+                    {sortDropdownVisible && (
+                      <View style={styles.dropdown}>
+                        {[
+                          'Price: Low to High',
+                          'Price: High to Low',
+                          'Discount: High to Low',
+                        ].map(option => (
+                          <TouchableOpacity
+                            key={option}
+                            style={styles.dropdownOption}
+                            onPress={() => handleSortOptionSelect(option)}>
+                            {getSortIcon(option)}
+                            <Text
+                              style={{
+                                marginLeft: 6,
+                                color: '#000',
+                              }}>
+                              {option}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
                   </View>
-                )}
+                </View>
+
+                <FlatList
+                  data={getProductsToDisplay()}
+                  renderItem={renderProduct}
+                  keyExtractor={item => item.id}
+                  numColumns={2}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.productList}
+                  columnWrapperStyle={styles.columnWrapper}
+                />
               </View>
             </View>
 
-            <FlatList
-              data={getProductsToDisplay()}
-              renderItem={renderProduct}
-              keyExtractor={item => item.id}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.productList}
-              columnWrapperStyle={styles.columnWrapper}
+            <FilterBottomSheet
+              visible={showFilters}
+              onClose={() => setShowFilters(false)}
+              onApply={handleFilterApply}
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
+              selectedCategory={selectedCategory}
+              onCategoryReset={handleCategoryReset}
             />
           </View>
-        </View>
-
-        <FilterBottomSheet
-          visible={showFilters}
-          onClose={() => setShowFilters(false)}
-          onApply={handleFilterApply}
-          selectedFilters={selectedFilters}
-          setSelectedFilters={setSelectedFilters}
-          selectedCategory={selectedCategory}
-          onCategoryReset={handleCategoryReset}
-        />
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </>
   );
