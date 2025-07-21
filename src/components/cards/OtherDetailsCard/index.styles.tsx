@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
@@ -7,29 +7,29 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#E5E8E9',
-    marginHorizontal: 12,
-    paddingHorizontal: 12,
+    marginHorizontal: 24,
+    paddingHorizontal: 14,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
-    marginTop: 12,
+    marginTop: 24,
   },
   title: {
-    fontSize: 14,
-    color: '#161D1F',
-    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 12,
+    color: FontColors.textBlack,
+    fontFamily: Fonts.JakartaMedium,
   },
   expandedContent: {
-    marginHorizontal: 12,
+    marginHorizontal: 24,
     backgroundColor: '#fff',
-    padding: 10,
-    marginVertical: 4,
+    padding: 16,
+    marginTop: 4,
     borderRadius: 8,
   },
   expandedText: {
-    fontSize: 13,
-    color: '#333',
+    fontSize: 10,
+    color: FontColors.textBlack,
     lineHeight: 18,
     fontFamily: Fonts.JakartaRegular,
   },

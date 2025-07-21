@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -466,14 +467,16 @@ const CartPage = () => {
                 }>
                 <LinearGradient
                   colors={['#F8F8F8', '#0088B1']}
-                  start={{x: 0, y: 1}}
-                  end={{x: 0, y: 0}}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 0}}
                   style={styles.couponStrip}>
                   <View style={styles.couponLeft}>
                     <PinkDiscount />
                     <Text style={styles.couponText}>Apply Coupon</Text>
                   </View>
-                  <ChevronRight size={16} color="#000" />
+                  <View style={styles.iconIOS}>
+                    <ChevronRight size={16} color="#F8F8F8" />
+                  </View>
                 </LinearGradient>
               </TouchableOpacity>
             ))}
@@ -532,7 +535,9 @@ const CartPage = () => {
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <View style={styles.deliveryRow}>
-                <Truck size={18} color="#000" style={styles.icon} />
+                <View style={styles.deliveryLeft}>
+                  <Truck size={16} />
+                </View>
                 <Text style={styles.deliveryText}>
                   {`Delivery by ${getDeliveryDate(3)}`}
                 </Text>
@@ -644,6 +649,7 @@ const CartPage = () => {
             <View>
               <Text style={styles.amountLabel}>Amount to pay:</Text>
               <Text style={styles.amountText}>
+                ₹
                 {Math.round(
                   cartTotal -
                     couponDiscount +
@@ -682,7 +688,7 @@ const CartPage = () => {
                         style={styles.addressButton}
                         onPress={showLocationModal}>
                         <Text style={styles.addressButtonText}>
-                          Select / Add Address
+                          Select / Add Addressx
                         </Text>
                       </TouchableOpacity>
                     </>

@@ -173,6 +173,7 @@ const ApplyCouponScreen = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
           <ChevronLeft size={20} color="#0088B1" />
+          <Text style={{}}>Back</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Apply Coupons</Text>
       </View>

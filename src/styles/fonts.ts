@@ -45,3 +45,10 @@ export const FontLetterSpacings = {
   xl: 2.5,
   xxl: 3,
 };
+
+export const FontColors = {
+  primary: '#0088B1',
+  secondary: '#E8F4F7',
+  tertiary: '#F8F8F8',
+  textBlack: '#161D1F',
+};

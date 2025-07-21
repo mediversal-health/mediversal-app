@@ -41,6 +41,7 @@ import {useAuthStore} from '../../../store/authStore';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../navigation';
+import {FontColors} from '../../../styles/fonts';
 
 const {width} = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3;
@@ -145,7 +146,8 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                   )}
                 </TouchableOpacity>
 
-                <View style={{flexDirection: 'column'}}>
+                <View
+                  style={{flexDirection: 'column', flex: 1, marginRight: 16}}>
                   <Text style={styles.greeting}>
                     {(() => {
                       if (first_name && first_name !== 'Guest') {
@@ -161,16 +163,14 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
                   <TouchableOpacity
                     style={styles.profileProgress}
                     onPress={() => navigation.navigate('ProfileScreen')}>
-                    <Text style={styles.completeText}>
-                      Naviagte to your account
-                    </Text>
-                    <ChevronRight size={20} color={'#0088B1'} />
+                    <Text style={styles.completeText}>Manage your account</Text>
+                    <ChevronRight size={16} color={'#0088B1'} />
                   </TouchableOpacity>
                   {email != null ? (
                     <Text style={styles.percentComplete}>Email:{email}</Text>
                   ) : (
                     <Text style={styles.percentComplete}>
-                      Phone number: {phoneNumber}
+                      Mobile: {phoneNumber}
                     </Text>
                   )}
                 </View>
@@ -284,7 +284,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
           </ScrollView>
           <View style={styles.likeUsBanner}>
             <View style={styles.likeUsLeft}>
-              <Bell size={20} color="#F8F8F8" />
+              <Bell size={20} color="#F8F8F8" strokeWidth={1.25} />
               <Text style={styles.likeUsText}>Like Us? Give us 5 stars</Text>
             </View>
             <ChevronRight size={20} color="#F8F8F8" />

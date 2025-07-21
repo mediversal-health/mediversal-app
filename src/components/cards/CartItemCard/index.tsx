@@ -59,9 +59,6 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   const isOutOfStock = availableInventory === 0;
   const canIncreaseQuantity = quantity < availableInventory;
   const {removeFromCart} = useCartStore.getState();
-  // console.log('Available Inventory:', availableInventory);
-  // console.log('Current Quantity:', quantity);
-  // console.log('Can Increase:', canIncreaseQuantity);
 
   const increaseQty = async () => {
     if (isLoading || !canIncreaseQuantity) {
@@ -134,8 +131,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         {/* Middle Details */}
         <View style={styles.middleContent}>
           <Text style={styles.name}>
-            {' '}
-            {name.length > 20 ? name.slice(0, 25) + '...' : name}
+            {name.length > 20 ? name.slice(0, 20) + '...' : name}
           </Text>
           <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
           {!fromOrderDesc ? (
@@ -162,7 +158,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
               {isDeleting ? (
                 <ActivityIndicator size="small" color="#EB5757" />
               ) : (
-                <Trash2 size={20} color="#EB5757" />
+                <Trash2 size={16} color="#EB5757" />
               )}
             </TouchableOpacity>
 
@@ -173,6 +169,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
                 <SquareMinus
                   size={20}
                   color={showLoading || quantity <= 1 ? '#cccccc' : '#0088B1'}
+                  strokeWidth={1.25}
                 />
               </TouchableOpacity>
               <Text style={styles.counterText}>{quantity}</Text>
@@ -184,13 +181,14 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
                   color={
                     showLoading || !canIncreaseQuantity ? '#cccccc' : '#0088B1'
                   }
+                  strokeWidth={1.25}
                 />
               </TouchableOpacity>
             </View>
           </View>
         )}
       </View>
-      <View style={{paddingHorizontal: 30}}>
+      <View style={{paddingHorizontal: 50}}>
         {isOutOfStock && (
           <View style={styles.outOfStockContainer}>
             <View style={styles.outOfStockLeft}>

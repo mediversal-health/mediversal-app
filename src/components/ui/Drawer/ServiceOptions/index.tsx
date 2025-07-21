@@ -2,13 +2,17 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Bell, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../../../styles/fonts';
+import {FontColors, Fonts} from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
   description: string;
   onPress?: () => void;
-  icon?: React.ReactElement<{color?: string; size?: number}>;
+  icon?: React.ReactElement<{
+    color?: string;
+    size?: number;
+    strokeWidth?: number;
+  }>;
   iconColor?: string;
   iconSize?: number;
 };
@@ -18,8 +22,8 @@ const OptionsItem = ({
   description,
   onPress,
   icon,
-  iconColor = '#0088B1',
-  iconSize = 24,
+  iconColor = FontColors.primary,
+  iconSize = 20,
 }: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -27,14 +31,15 @@ const OptionsItem = ({
         <View
           style={{
             marginTop: 5,
-            backgroundColor: '#E8F4F7',
-            padding: 4,
-            borderRadius: 10,
+            backgroundColor: FontColors.secondary,
+            padding: 8,
+            borderRadius: 6,
           }}>
           {icon ? (
             React.cloneElement(icon, {
               color: iconColor,
               size: iconSize,
+              strokeWidth: 1.25,
             })
           ) : (
             <DefaultIcon color={iconColor} size={iconSize} />
@@ -66,18 +71,18 @@ const styles = StyleSheet.create({
   },
   leftSection: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 12,
     flex: 1,
   },
   textContainer: {
     flexShrink: 1,
-    color: '#0088B1',
+    color: FontColors.textBlack,
   },
   title: {
     fontSize: 14,
     fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
+    color: FontColors.primary,
   },
   description: {
     fontSize: 10,

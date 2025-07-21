@@ -1,12 +1,16 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Bell, ChevronRight} from 'lucide-react-native';
-import {Fonts} from '../../../../styles/fonts';
+import {FontColors, Fonts} from '../../../../styles/fonts';
 
 type OptionsItemProps = {
   title: string;
   onPress?: () => void;
-  icon?: React.ReactElement<{color?: string; size?: number}>;
+  icon?: React.ReactElement<{
+    color?: string;
+    size?: number;
+    strokeWidth?: number;
+  }>;
   iconColor?: string;
   iconSize?: number;
 };
@@ -15,8 +19,8 @@ const OtherOptionsItem = ({
   title,
   onPress,
   icon,
-  iconColor = '#0088B1',
-  iconSize = 24,
+  iconColor = FontColors.primary,
+  iconSize = 20,
 }: OptionsItemProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -24,14 +28,15 @@ const OtherOptionsItem = ({
         <View
           style={{
             marginTop: 5,
-            backgroundColor: '#E8F4F7',
-            padding: 4,
-            borderRadius: 10,
+            backgroundColor: FontColors.secondary,
+            padding: 8,
+            borderRadius: 6,
           }}>
           {icon ? (
             React.cloneElement(icon, {
               color: iconColor,
               size: iconSize,
+              strokeWidth: 1.25,
             })
           ) : (
             <DefaultIcon color={iconColor} size={iconSize} />
@@ -62,7 +67,7 @@ const styles = StyleSheet.create({
   },
   leftSection: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 12,
     flex: 1,
   },
@@ -73,9 +78,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 12,
     textAlign: 'center',
-    color: '#161D1F',
+    color: FontColors.textBlack,
     marginTop: 6,
-    fontFamily: Fonts.JakartaRegular,
+    fontFamily: Fonts.JakartaMedium,
   },
 });
 
