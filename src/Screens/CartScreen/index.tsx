@@ -720,11 +720,11 @@ const CartPage = () => {
         }}
         isPrescriptionRequired={isPrescriptionRequiredItemsPresent}
         onNavigateToAddressBook={() => {
-          // navigation.navigate('AddressBookScreen', {
-          //   fromLocationMap: false,
-          //   isFromProfile: false,
-          // });
-          setLocationModalVisible(true);
+          navigation.navigate('AddressBookScreen', {
+            fromLocationMap: false,
+            isFromProfile: false,
+          });
+          // setLocationModalVisible(true);
         }}
       />
       <LocationModal

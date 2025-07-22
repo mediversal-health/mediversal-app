@@ -6,6 +6,7 @@ import styles from './index.styles';
 import LocationPin from './assets/svgs/Location pin.svg';
 import House from './assets/svgs/3d house.svg';
 import Building from './assets/svgs/Building.svg';
+import {FontColors} from '../../../styles/fonts';
 
 interface AddressCardProps {
   title?: string;
@@ -44,7 +45,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
     <TouchableOpacity
       style={[
         styles.container,
-        {borderColor: selected ? '#0088B1' : '#E0E0E0'},
+        {borderColor: selected ? FontColors.primary : '#E0E0E0'},
       ]}
       onPress={onPress}
       activeOpacity={0.7}>

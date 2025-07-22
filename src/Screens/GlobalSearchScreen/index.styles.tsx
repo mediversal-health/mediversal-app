@@ -1,5 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   headerWrapper: {
@@ -96,9 +96,10 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#111827',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
     paddingHorizontal: 10,
+    fontSize: 12,
   },
   searchResultsContainer: {
     paddingTop: 10,

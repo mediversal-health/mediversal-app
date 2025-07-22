@@ -1,5 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,35 +10,35 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-    gap: 10,
+    gap: 12,
   },
   backButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#e8f4f7',
+    backgroundColor: FontColors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
     fontSize: 16,
-    color: '#212121',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaBold,
   },
   scrollView: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#F8F8F8',
+    padding: 24,
+    backgroundColor: FontColors.tertiary,
   },
   sectionTitle: {
     fontSize: 16,
     fontFamily: Fonts.JakartaBold,
-    color: '#212121',
+    color: FontColors.textBlack,
     marginBottom: 12,
   },
   contactTitle: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   dropdownButtonText: {
     fontSize: 16,
-    color: '#212121',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
     flex: 1,
   },
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   dropdownItemText: {
     fontSize: 16,
-    color: '#212121',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
     marginLeft: 12,
   },
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   savedAddressType: {
     fontSize: 16,
     fontFamily: Fonts.JakartaBold,
-    color: '#212121',
+    color: FontColors.textBlack,
   },
   defaultBadge: {
     backgroundColor: '#0088B1',
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   savedAddressName: {
     fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#212121',
+    color: FontColors.textBlack,
     marginBottom: 4,
   },
   savedAddressText: {
@@ -299,10 +299,10 @@ const styles = StyleSheet.create({
     color: '#606060',
   },
   dropdownHeader: {
-    padding: 12,
+    padding: 16,
     backgroundColor: '#fff',
-    borderRadius: 8,
-    marginBottom: 30,
+    borderRadius: 12,
+    marginBottom: 24,
   },
   inputError: {
     borderColor: '#FF4444',
@@ -320,9 +320,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   dropdownHeaderText: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#000',
+    color: FontColors.textBlack,
   },
   addressTypeDropdownOptions: {
     backgroundColor: '#fff',

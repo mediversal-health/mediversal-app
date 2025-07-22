@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,64 +35,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 3,
-    borderColor: '#0088B1',
+    width: 112,
+    height: 112,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: FontColors.primary,
   },
   profileInfo: {
     alignItems: 'center',
-    marginBottom: 10,
-    paddingBottom: 20,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#E5E7EB',
   },
   profileName: {
     fontSize: 20,
-    fontFamily: Fonts.JakartaSemiBold,
-    fontWeight: '600',
-    color: '#1F2937',
-    marginBottom: 4,
+    fontFamily: Fonts.JakartaBold,
+    color: FontColors.textBlack,
   },
   joinedDate: {
-    fontSize: 14,
-
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#6B7280',
+    fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#899193',
   },
   infoSection: {
     backgroundColor: '#FFFFFF',
-    padding: 20,
-    borderRadius: 16,
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 24,
   },
   sectionTitle: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
-    fontWeight: '600',
-    color: '#1F2937',
+    fontSize: 14,
+    fontFamily: Fonts.JakartaBold,
+    color: FontColors.textBlack,
   },
   EditTitle: {
     fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    fontWeight: '600',
-    color: '#0088B1',
+    color: FontColors.primary,
   },
 
   CancelTitle: {
     fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    fontWeight: '600',
     color: '#EB5757',
   },
 
   editButton: {
     flexDirection: 'row',
-    gap: 5,
+    gap: 6,
   },
   infoHeader: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+    marginBottom: 12,
   },
   infoItem: {
     flexDirection: 'row',
@@ -102,11 +94,11 @@ const styles = StyleSheet.create({
   },
   AddressinfoItem: {
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: '#D3D7D8',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    marginTop: 10,
+    paddingVertical: 24,
+    marginTop: 12,
   },
   infoItemLeft: {
     flexDirection: 'row',
@@ -114,15 +106,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoLabel: {
-    fontSize: 10,
-    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 12,
+    fontFamily: Fonts.JakartaMedium,
     color: '#899193',
     marginLeft: 12,
   },
+  addressLable: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaMedium,
+    color: FontColors.textBlack,
+    marginLeft: 12,
+  },
+  AddressItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
   infoValue: {
-    fontSize: 10,
+    fontSize: 13,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#6B7280',
+    color: FontColors.textBlack,
     textAlign: 'right',
     flex: 1,
     marginLeft: 20,
@@ -130,23 +133,20 @@ const styles = StyleSheet.create({
   logoutItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    marginTop: 10,
+    paddingBottom: 24,
   },
 
   logoutLabel: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
     color: '#FF4444',
     marginLeft: 12,
-    fontWeight: '500',
   },
   DeleteUserLabel: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#000',
+    color: FontColors.textBlack,
     marginLeft: 12,
-    fontWeight: '500',
   },
   editPhotoOverlay: {
     backgroundColor: 'rgba(0, 136, 177, 0.7)',

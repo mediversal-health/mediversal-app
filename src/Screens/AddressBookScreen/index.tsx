@@ -572,14 +572,14 @@ const AddressBookScreen: React.FC = () => {
                     gap: 10,
                     alignItems: 'center',
                   }}>
-                  {isFromProfile && <Plus size={20} color="#000" />}
+                  {isFromProfile && <Plus size={18} color="#161D1F" />}
                   <Text style={styles.dropdownHeaderText}>Add New Address</Text>
                 </View>
                 <View
                   style={{
                     transform: [{rotate: isFormVisible ? '180deg' : '0deg'}],
                   }}>
-                  <ChevronDown size={20} color="#000" />
+                  <ChevronDown size={18} color="#161D1F" />
                 </View>
               </View>
             </TouchableOpacity>
@@ -591,7 +591,7 @@ const AddressBookScreen: React.FC = () => {
                   style={{
                     color: '#899193',
                     fontFamily: Fonts.JakartaLight,
-                    marginTop: -10,
+                    fontSize: 12,
                   }}>
                   Your saved addresses
                 </Text>
@@ -600,7 +600,7 @@ const AddressBookScreen: React.FC = () => {
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginBottom: 20,
+                  marginTop: 12,
                 }}>
                 {refreshing ? (
                   <AddressCardSkeleton count={3} />

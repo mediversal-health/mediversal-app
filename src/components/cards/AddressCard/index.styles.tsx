@@ -4,12 +4,10 @@ import {Fonts} from '../../../styles/fonts';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFF',
-    borderRadius: 16,
+    borderRadius: 12,
     width: 350,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    margin: 8,
-    borderWidth: 2,
+    padding: 16,
+    borderWidth: 1,
     position: 'relative',
   },
   radioButtonContainer: {

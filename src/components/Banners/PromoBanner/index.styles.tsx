@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,24 +7,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E8E9',
     marginTop: 10,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
     justifyContent: 'space-between',
     flexDirection: 'row',
     overflow: 'hidden',
   },
   title: {
-    color: '#0088B1',
+    color: FontColors.primary,
     fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
   },
   subtitle: {
-    color: '#0088B1',
-    fontSize: 8,
+    color: FontColors.primary,
+    fontSize: 10,
     fontFamily: Fonts.JakartaRegular,
   },
   button: {
-    backgroundColor: '#E8F4F7',
+    backgroundColor: FontColors.secondary,
     borderRadius: 8,
     paddingHorizontal: 20,
     display: 'flex',
