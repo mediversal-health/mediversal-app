@@ -78,7 +78,12 @@ const PharmacyScreen = () => {
     setLoading(true);
     getProducts()
       .then(response => {
-        setProducts(response.data);
+        console.log(response.data.products, 'response data');
+        if (response.data && response.data.products) {
+          setProducts(response.data.products);
+        } else {
+          console.error('Unexpected API response structure:', response);
+        }
         setLoading(false);
         setRefreshing(false);
         console.log('Products:', response.data);
@@ -140,7 +145,10 @@ const PharmacyScreen = () => {
       };
 
       const cartResponse = await addToCart(customer_id, productData);
-      console.log('Product added to cart successfully:', cartResponse);
+      console.log(
+        ` ${productData.name} added to cart successfully:`,
+        cartResponse,
+      );
       if (cartResponse.success && cartResponse.cart) {
         setUserCart(customer_id?.toString() ?? '', cartResponse.cart);
       }

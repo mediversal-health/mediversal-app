@@ -24,7 +24,8 @@ const useProductStore = create<ProductStore>((set, get) => ({
       discountPercentage: parseFloat(product.DiscountedPercentage),
       Category: product.Category?.toString() ?? '',
       SubCategory: product.Subcategory?.toString() ?? '',
-
+      ProductStrength: product.ProductStrength,
+      PackageSize: product.PackageSize,
       image: product.images?.[0] || '',
       manufacturer_name: product.ManufacturerName,
       type: product.Type,

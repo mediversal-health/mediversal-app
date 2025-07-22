@@ -3,12 +3,12 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   toast: {
     position: 'absolute',
-    top: 60,
+    bottom: 100,
     left: 16,
     right: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 32,
     zIndex: 1000,
     elevation: 8,
     shadowColor: '#000',

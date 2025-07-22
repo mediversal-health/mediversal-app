@@ -105,7 +105,7 @@ const CartPage = () => {
   const fetchProducts = useCallback(() => {
     getProducts()
       .then(response => {
-        setProducts(response.data);
+        setProducts(response.data.products);
       })
       .catch(error => {
         console.error('Error fetching products:', error);
@@ -160,11 +160,21 @@ const CartPage = () => {
   }, []);
 
   const handleCheckoutPress = () => {
+    if (hasOutOfStockItems) {
+      showToast(
+        'Remove out-of-stock items from your cart before proceeding.',
+        'warning',
+        1000,
+        true,
+      );
+      return;
+    }
     setPaymentMethodVisible(true);
   };
 
   const handleSelectCOD = () => {
     setPaymentMethodVisible(false);
+
     const cartItems = apiProductDetails.map(item => ({
       productId: item.productId,
       name: item.ProductName,
@@ -267,16 +277,6 @@ const CartPage = () => {
   const handleCheckout = async () => {
     if (!RAZORPAY_KEY) {
       showToast('Razorpay key is missing.', 'error', 1000, true);
-      return;
-    }
-
-    if (hasOutOfStockItems) {
-      showToast(
-        'Remove out-of-stock items from your cart before proceeding.',
-        'warning',
-        1000,
-        true,
-      );
       return;
     }
 
@@ -552,23 +552,26 @@ const CartPage = () => {
             ))}
           {apiProductDetails.length > 0 ? (
             apiProductDetails.map(item => (
-              <CartItemCard
-                key={item.productId}
-                productId={item.productId}
-                imageUrl={item.imageUrl}
-                name={item.ProductName}
-                mrp={item.SellingPrice}
-                price={item.CostPrice}
-                isPrescriptionRequired={item.PrescriptionRequired}
-                onRemove={async () => {
-                  // First update the product details
-                  await fetchProductDetails();
-                  // The fetchProductDetails function should automatically update hasOutOfStockItems
-                  // But let's make sure by calling it explicitly after the state update
-                }}
-                onQuantityChange={handleQuantityChange}
-                fromOrderDesc={false}
-              />
+              <View style={{marginVertical: 4}}>
+                <CartItemCard
+                  key={item.productId}
+                  productId={item.productId}
+                  imageUrl={item.imageUrl}
+                  name={item.ProductName}
+                  mrp={item.SellingPrice}
+                  price={item.CostPrice}
+                  isPrescriptionRequired={item.PrescriptionRequired}
+                  packSize={item.PackageSize}
+                  onRemove={async () => {
+                    // First update the product details
+                    await fetchProductDetails();
+                    // The fetchProductDetails function should automatically update hasOutOfStockItems
+                    // But let's make sure by calling it explicitly after the state update
+                  }}
+                  onQuantityChange={handleQuantityChange}
+                  fromOrderDesc={false}
+                />
+              </View>
             ))
           ) : (
             <View
@@ -717,10 +720,11 @@ const CartPage = () => {
         }}
         isPrescriptionRequired={isPrescriptionRequiredItemsPresent}
         onNavigateToAddressBook={() => {
-          navigation.navigate('AddressBookScreen', {
-            fromLocationMap: false,
-            isFromProfile: false,
-          });
+          // navigation.navigate('AddressBookScreen', {
+          //   fromLocationMap: false,
+          //   isFromProfile: false,
+          // });
+          setLocationModalVisible(true);
         }}
       />
       <LocationModal

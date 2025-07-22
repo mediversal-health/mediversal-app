@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   name: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
     color: FontColors.primary,
   },
@@ -125,13 +125,13 @@ export const styles = StyleSheet.create({
   lowStockContainer: {
     padding: 5,
     marginTop: 8,
-    backgroundColor: '#F8F8F83CD', // Light yellow background
+    backgroundColor: '#F8F8F83CD',
     borderRadius: 8,
   },
 
   lowStockText: {
     fontSize: 10,
-    fontFamily: 'YourFontFamily-Regular', // Replace with your font
+    fontFamily: Fonts.JakartaRegular,
     color: '#856404',
     textAlign: 'center',
   },

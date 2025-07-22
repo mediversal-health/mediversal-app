@@ -44,6 +44,9 @@ export interface ProductCardProps {
     type: string;
     PrescriptionRequired: string;
     image: string;
+    ProductStrength: string;
+    PackageSize: string;
+    StockAvailableInInventory: number;
   };
   onAddToCart?: (id: string, quantity: number) => void;
   onUpdateCart?: (id: string, quantity: number) => void;
@@ -101,6 +104,8 @@ export interface Product {
   quantity?: number;
   ProductStrength: string;
   PackageSize: string;
+  similarProducts?: Product[] | null;
+  substitutes?: Product[] | null;
 }
 
 export type UploadType = 'image' | 'pdf' | 'camera';

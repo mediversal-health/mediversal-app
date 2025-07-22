@@ -28,6 +28,7 @@ type CartItemCardProps = {
   quantityOrg?: number;
   fromOrderDesc: boolean;
   isPrescriptionRequired?: string;
+  packSize?: string;
 };
 
 const CartItemCard: React.FC<CartItemCardProps> = ({
@@ -42,7 +43,9 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   fromOrderDesc,
   quantityOrg,
   isPrescriptionRequired,
+  packSize,
 }) => {
+  console.log(packSize, 'packSize');
   const customer_id = useAuthStore(state => state.customer_id);
 
   const quantity = useCartStore(state =>
@@ -102,7 +105,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
     try {
       setIsDeleting(true);
 
-      await DeleteFromCart(customer_id, [productId]);
+      await DeleteFromCart(customer_id?.toString() ?? '', [productId]);
       setProductQuantity(customer_id?.toString() ?? '', productId, 0);
       setSelectedCoupon(String(customer_id), null);
       removeFromCart(customer_id?.toString() ?? '', productId);
@@ -133,7 +136,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           <Text style={styles.name}>
             {name.length > 20 ? name.slice(0, 20) + '...' : name}
           </Text>
-          <Text style={styles.quantity}>Strip of Tablets: {quantity}</Text>
+          <Text style={styles.quantity}>Strip of {packSize}</Text>
           {!fromOrderDesc ? (
             <View style={styles.priceRow}>
               <Text style={styles.actualPrice}>₹{mrp}</Text>
@@ -200,7 +203,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
           </View>
         )}
 
-        {isPrescriptionRequired == 'Yes' && (
+        {isPrescriptionRequired == 'Yes' && !isOutOfStock && (
           <View style={styles.prescriptionRequiredContainer}>
             <View style={styles.outOfStockLeft}>
               <Text style={styles.outOfStockText}>Prescription Required</Text>

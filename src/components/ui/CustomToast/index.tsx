@@ -22,7 +22,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
   duration = 3000,
   showIcon = true,
 }) => {
-  const [slideAnim] = useState(new Animated.Value(-100));
+  const [slideAnim] = useState(new Animated.Value(100)); // Start from bottom
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
@@ -30,7 +30,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     if (!showIcon) return null;
 
     const iconProps = {
-      size: 18,
+      size: 20,
       color: 'white',
       style: styles.icon,
     };
@@ -76,7 +76,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     }
 
     if (visible) {
-      // Slide down animation sequence
+      // Slide up animation sequence
       animationRef.current = Animated.sequence([
         Animated.timing(slideAnim, {
           toValue: 0,
@@ -85,7 +85,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
         }),
         Animated.delay(duration),
         Animated.timing(slideAnim, {
-          toValue: -100,
+          toValue: 100,
           duration: 300,
           useNativeDriver: true,
         }),
@@ -99,7 +99,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
         }
       });
     } else {
-      slideAnim.setValue(-100);
+      slideAnim.setValue(100);
     }
 
     return () => {
@@ -127,7 +127,9 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
       ]}>
       <View style={styles.content}>
         {getIcon()}
-        <Text style={styles.message}>{message}</Text>
+        <Text style={styles.message} numberOfLines={2}>
+          {message}
+        </Text>
       </View>
     </Animated.View>
   );

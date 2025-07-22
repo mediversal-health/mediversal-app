@@ -92,7 +92,7 @@ const HomeScreen = () => {
           />
         }>
         <StatusBar backgroundColor="#F8F8F8" barStyle="dark-content" />
-        {filteredOrders.length > 0 && (
+        {filteredOrders.length > 0 && !loadingOrders && (
           <View style={styles.headerContainer}>
             <Text style={styles.sectionLabel}>Upcoming</Text>
             <View style={styles.headerRow}>

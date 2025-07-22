@@ -350,7 +350,9 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
                         {fileType === 'pdf'
                           ? file.name
                           : customer_id
-                          ? `${customer_name}'s Prescription ${index + 1}`
+                          ? `${
+                              customer_name == null ? 'Guest' : customer_name
+                            }'s Prescription ${index + 1}`
                           : `Prescription ${index + 1}`}
                       </Text>
                       <TouchableOpacity

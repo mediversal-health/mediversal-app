@@ -63,19 +63,26 @@ const Layout = () => {
     initLocationServices();
   }, []);
 
-  const fetchProducts = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await getProducts();
-      setProducts(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      showToast('Failed to load products', 'error', 3000);
-      setLoading(false);
-    }
-  }, [setProducts, showToast]);
+  const fetchProducts = useCallback(() => {
+    setLoading(true);
+    getProducts()
+      .then(response => {
+        console.log(response.data.products, 'response data');
+        if (response.data && response.data.products) {
+          setProducts(response.data.products);
+        } else {
+          console.error('Unexpected API response structure:', response);
+        }
+        setLoading(false);
 
+        console.log('Products:', response.data);
+      })
+      .catch(error => {
+        setLoading(false);
+
+        console.error('Error fetching products:', error);
+      });
+  }, [setProducts]);
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);

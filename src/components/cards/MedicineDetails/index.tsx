@@ -285,7 +285,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
             (isAddingToCart || isInCart || isOutOfStock) &&
               styles.disabledButton,
           ]}
-          onPress={onAddToCart}
+          onPress={onAddToCart} // This will now properly call the passed function
           disabled={isAddingToCart || isInCart || isOutOfStock}>
           {isAddingToCart ? (
             <ActivityIndicator size="small" color="#0088B1" />
