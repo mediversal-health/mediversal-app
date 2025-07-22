@@ -154,7 +154,7 @@ const PharmacyScreen = () => {
       }
 
       showToast(
-        `${productData.name || 'Product'} added to cart!`,
+        `${productResponse.data.ProductName} added to cart!`,
         'success',
         1000,
         true,

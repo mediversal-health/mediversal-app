@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import styles from './index.styles';
 import {cancelOrder} from '../../../Services/order';
@@ -200,7 +201,11 @@ const OrderCancelBottomSheet: React.FC<OrderCancelBottomSheetProps> = ({
                         (selectedReason === 'Other reason' && !otherReason)) &&
                         styles.cancelOrderTextDisabled,
                     ]}>
-                    {isSubmitting ? 'Cancelling...' : 'Cancel Order'}
+                    {isSubmitting ? (
+                      <ActivityIndicator color={'#F8F8F8'} />
+                    ) : (
+                      'Cancel Order'
+                    )}
                   </Text>
                 </TouchableOpacity>
               </View>

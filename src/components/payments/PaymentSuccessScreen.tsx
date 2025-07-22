@@ -26,10 +26,16 @@ Dimensions.get('window');
 
 const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {customer_id, email, phoneNumber, first_name, last_name} =
-    useAuthStore();
-  const {paymentId, amount, cartItems, address, coupon_id, couponDiscount} =
-    route.params;
+  const {customer_id, email, phoneNumber} = useAuthStore();
+  const {
+    name,
+    paymentId,
+    amount,
+    cartItems,
+    address,
+    coupon_id,
+    couponDiscount,
+  } = route.params;
   const isCOD = !paymentId;
   const {removeFromCart} = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
@@ -72,7 +78,7 @@ const PaymentSuccessScreen = ({route}: any) => {
         const orderData = {
           customer: {
             customerId: parseInt(String(customer_id ?? ''), 10),
-            name: (first_name ?? '') + ' ' + (last_name ?? ''),
+            name: name,
             address: address || '',
             phone: phoneNumber || '',
             email: email || '',

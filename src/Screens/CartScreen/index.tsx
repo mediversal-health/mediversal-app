@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Alert,
   Image,
-  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {styles} from './index.styles';
@@ -61,6 +60,7 @@ const CartPage = () => {
   const area = formData?.Area_details;
   const City = formData?.City;
   const State = formData?.State;
+  const name = formData?.Recipient_name;
 
   const {clearPrescriptions, getFiles} = usePrescriptionStore();
   const currentCustomerPrescriptions = customer_id
@@ -95,7 +95,6 @@ const CartPage = () => {
     const deliveryDate = new Date(today);
     deliveryDate.setDate(today.getDate() + daysToAdd);
 
-    // Format as "Day, DD Month" (e.g., "Fri, 14 Jun")
     return deliveryDate.toLocaleDateString('en-US', {
       weekday: 'short',
       day: 'numeric',
@@ -199,7 +198,7 @@ const CartPage = () => {
             cartItems: cartItems,
             address: formattedAddress,
             pincode: formData?.PinCode ?? 0,
-
+            name: formData?.Recipient_name,
             area: formData?.Area_details ?? '',
             city: formData?.City,
             State: formData?.State ?? '',
@@ -260,7 +259,7 @@ const CartPage = () => {
       customer_id?.toString() ?? '',
       item.productId,
     );
-    // console.log('ABCD', qty);
+
     return total + item.SellingPrice * qty;
   }, 0);
 
@@ -315,7 +314,14 @@ const CartPage = () => {
               name: 'PaymentSuccessScreen',
               params: {
                 paymentId: data.razorpay_payment_id,
-                amount: cartTotal - couponDiscount + 5 + 40,
+                name: formData?.Recipient_name,
+                amount: Math.round(
+                  cartTotal -
+                    couponDiscount +
+                    5 +
+                    5 +
+                    (cartTotal > 499 ? 0 : 40),
+                ),
                 cartItems: cartItems,
                 address: formattedAddress,
                 pincode: formData?.PinCode ?? 0,
@@ -563,10 +569,7 @@ const CartPage = () => {
                   isPrescriptionRequired={item.PrescriptionRequired}
                   packSize={item.PackageSize}
                   onRemove={async () => {
-                    // First update the product details
                     await fetchProductDetails();
-                    // The fetchProductDetails function should automatically update hasOutOfStockItems
-                    // But let's make sure by calling it explicitly after the state update
                   }}
                   onQuantityChange={handleQuantityChange}
                   fromOrderDesc={false}
