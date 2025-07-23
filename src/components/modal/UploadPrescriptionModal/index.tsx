@@ -52,7 +52,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
     if (hasFiles && hasPrescriptions) {
       setModalHeight('90%');
     } else if (hasFiles || hasPrescriptions) {
-      setModalHeight('80%');
+      setModalHeight('64%');
     } else {
       setModalHeight('50%');
     }
@@ -215,35 +215,36 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
         <Text style={styles.sectionTitleForUploaded}>
           Previously Saved Prescriptions
         </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalScrollContainer}>
+        <View style={styles.previewContainer}>
           {prescriptions.map((file, index) => (
-            <View key={`uploaded-${index}`} style={styles.uploadedFileCard}>
-              <View style={styles.uploadedFileIcon}>
+            <View key={`uploaded-${index}`} style={styles.filePreview}>
+              <View style={styles.uploadedImageContainer}>
                 {file.type?.includes('image') ? (
-                  <Image
-                    source={{uri: file.uri}}
-                    style={styles.uploadedFileImage}
-                  />
+                  <Image source={{uri: file.uri}} style={styles.imagePreview} />
                 ) : (
-                  <FileText size={24} color="#0088B1" />
+                  <View style={styles.pdfIconContainer}>
+                    <FileText size={24} color="#0088B1" />
+                  </View>
                 )}
+                <View style={styles.transparentCheckIcon}>
+                  <CheckCircle size={16} color="#10B981" />
+                </View>
               </View>
-
+              <Text style={styles.fileName} numberOfLines={1}>
+                {customer_id
+                  ? `${
+                      customer_name == null ? 'Guest' : customer_name
+                    }'s Prescription ${index + 1}`
+                  : `Prescription ${index + 1}`}
+              </Text>
               <TouchableOpacity
-                style={styles.uploadedFileRemove}
+                style={styles.removeButton}
                 onPress={() => handleRemovePrescription(index)}>
-                <Trash2 size={16} color="#EF4444" />
+                <X size={16} color="#EF4444" />
               </TouchableOpacity>
-
-              <View style={styles.uploadedFileStatus}>
-                <CheckCircle size={16} color="#10B981" />
-              </View>
             </View>
           ))}
-        </ScrollView>
+        </View>
       </>
     );
   };
@@ -292,7 +293,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
               <View style={styles.uploadCard}>
                 <TouchableOpacity onPress={handleTakePhoto}>
                   <View style={styles.iconWrapper}>
-                    <Camera color="#161D1F" size={24} />
+                    <Camera color="#161D1F" size={24} strokeWidth={1.25} />
                   </View>
                   <Text style={styles.methodLabel}>Take Photo</Text>
                 </TouchableOpacity>
@@ -304,7 +305,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
               <View style={styles.uploadCard}>
                 <TouchableOpacity onPress={selectImage}>
                   <View style={styles.iconWrapper}>
-                    <UploadIcon color="#161D1F" size={24} />
+                    <UploadIcon color="#161D1F" size={24} strokeWidth={1.25} />
                   </View>
                   <Text style={styles.methodLabel}>Upload Image</Text>
                 </TouchableOpacity>
@@ -316,7 +317,7 @@ const PrescriptionUploadModal: React.FC<PrescriptionUploadModalProps> = ({
               <View style={styles.uploadCard}>
                 <TouchableOpacity onPress={selectPDF}>
                   <View style={styles.iconWrapper}>
-                    <FileText color="#161D1F" size={24} />
+                    <FileText color="#161D1F" size={24} strokeWidth={1.25} />
                   </View>
                   <Text style={styles.methodLabel}>Upload PDF</Text>
                 </TouchableOpacity>

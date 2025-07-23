@@ -1,10 +1,11 @@
 import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   safeArea: {
-    padding: 16,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: FontColors.tertiary,
+    marginTop: 16,
+    paddingHorizontal: 24,
   },
   scrollContent: {
     paddingBottom: 32,
@@ -27,46 +28,42 @@ const styles = StyleSheet.create({
   priscriptionContainer: {
     width: '99%',
     alignSelf: 'center',
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 5,
-    marginVertical: 20,
+    marginBottom: 16,
   },
   priscriptionText: {
     flex: 1,
-    color: '#F8F8F8',
+    color: FontColors.tertiary,
     fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 14,
   },
   subtitle: {
-    color: '#F8F8F8',
+    color: FontColors.tertiary,
     fontSize: 10,
     fontFamily: Fonts.JakartaRegular,
   },
   uploadButton: {
     borderRadius: 8,
-    backgroundColor: '#E8F4F7',
+    backgroundColor: FontColors.secondary,
     paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
   uploadButtonText: {
-    fontWeight: '600',
-    color: '#0088B1',
+    color: FontColors.primary,
     fontSize: 10,
-    fontFamily: Fonts.JakartaMedium,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   gradientBox: {
     width: '100%',
     borderRadius: 12,
-    paddingVertical: 0,
-    paddingHorizontal: Platform.OS === 'ios' ? 0 : 10,
-
     marginBottom: 20,
   },
   vector1: {
@@ -122,33 +119,33 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#000',
     textAlign: 'center',
-    fontFamily: Fonts.JakartaRegular,
+    fontFamily: Fonts.JakartaSemiBoldItalic,
   },
   productList: {
-    paddingVertical: 10,
+    paddingLeft: 24,
   },
   separator: {
     width: 12,
   },
   buttonContainer: {
-    backgroundColor: '#E8F4F7',
-    marginTop: 10,
+    backgroundColor: FontColors.secondary,
+    marginTop: 24,
     borderRadius: 8,
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 12,
     alignItems: 'center',
-    marginBottom: 10,
-    marginHorizontal: Platform.OS === 'android' ? 16 : 16,
+    marginHorizontal: 24,
   },
   buttonText: {
-    color: '#0088B1',
-    fontFamily: Fonts.JakartaRegular,
+    color: FontColors.primary,
+    fontFamily: Fonts.JakartaMedium,
+    fontSize: 12,
   },
   imagecontainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F8F8',
+    backgroundColor: FontColors.tertiary,
     marginBottom: Platform.OS === 'android' ? 45 : 30,
     padding: 25,
   },

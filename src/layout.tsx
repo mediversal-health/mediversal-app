@@ -306,9 +306,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    marginTop: 10,
+    paddingHorizontal: 24,
+    marginVertical: 20,
   },
   pharmacyTitleContainer: {
     flexDirection: 'row',
