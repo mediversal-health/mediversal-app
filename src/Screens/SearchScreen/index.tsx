@@ -386,6 +386,7 @@ export default function SearchScreen() {
               <Text style={styles.errorText}>{serviceabilityError}</Text>
             )}
           </View>
+
           {addresses.length > 0 && (
             <View style={styles.addressCardContainer}>
               <Text style={styles.sectionTitle}>Saved Addresses</Text>

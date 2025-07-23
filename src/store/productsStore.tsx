@@ -32,6 +32,8 @@ const useProductStore = create<ProductStore>((set, get) => ({
       PrescriptionRequired: product.PrescriptionRequired,
       Composition: product.Composition,
       StockAvailableInInventory: product.StockAvailableInInventory,
+      featuredProduct: product.featuredProduct,
+      active: product.active,
       // Store reference to original product
       _originalProduct: product,
     }));

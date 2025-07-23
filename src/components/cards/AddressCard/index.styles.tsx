@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderWidth: 1,
     position: 'relative',
+    marginVertical: 4,
   },
   radioButtonContainer: {
     zIndex: 1,

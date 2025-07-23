@@ -288,7 +288,10 @@ const CartPage = () => {
           .uri,
         currency: 'INR',
         key: RAZORPAY_KEY as string,
-        amount: (cartTotal - couponDiscount + 5 + 40) * 100,
+        amount:
+          Math.round(
+            cartTotal - couponDiscount + 5 + 5 + (cartTotal > 499 ? 0 : 40),
+          ) * 100,
         name: 'Mediversal APP',
         theme: {color: '#0088B1'},
       };
@@ -329,6 +332,8 @@ const CartPage = () => {
                 city: formData?.City,
                 State: formData?.State ?? '',
                 PhoneNumber: Number(formData?.PhoneNumber) || 0,
+                coupon_id: selectedCoupon?.id || null,
+                couponDiscount: couponDiscount,
               },
             },
           ],

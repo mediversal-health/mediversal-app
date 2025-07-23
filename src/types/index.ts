@@ -47,6 +47,8 @@ export interface ProductCardProps {
     ProductStrength: string;
     PackageSize: string;
     StockAvailableInInventory: number;
+    featuredProduct: boolean;
+    active: boolean;
   };
   onAddToCart?: (id: string, quantity: number) => void;
   onUpdateCart?: (id: string, quantity: number) => void;
@@ -104,6 +106,8 @@ export interface Product {
   quantity?: number;
   ProductStrength: string;
   PackageSize: string;
+  featuredProduct: boolean;
+  active: boolean;
   similarProducts?: Product[] | null;
   substitutes?: Product[] | null;
 }

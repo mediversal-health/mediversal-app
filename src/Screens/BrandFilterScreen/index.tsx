@@ -27,16 +27,40 @@ import Chips from '../../components/ui/ProductTypeChips';
 import CetaphilSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 import BrandPromoBanner from '../../components/Banners/BrandPromoCard';
 
-import FaceCleanserSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
-import MoisturizerSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
-import SunscreenSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
-import TonerSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
-import SerumSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import AntibioticSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import PainRelieverSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import InhalerSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+
+import HeartPlus from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import DiabetesSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import BrainSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+
+import NutritionSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import BabySvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import LabTestSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+
+import HerbalSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import WellnessSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import PersonalCareSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+
+import ImmunityBoosterSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import HoneySvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import JuiceSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+
+import MensHealthSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import WomensHealthSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import SexualHealthSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+
+import AllProductsSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import BestSellerSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
+import NewArrivalSvg from './assets/svgs/cetaphil-skin-cleanser-1 1.svg';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
 import {getProductsById} from '../../Services/pharmacy';
 import {addToCart} from '../../Services/cart';
 import {useCartStore} from '../../store/cartStore';
+import {SvgProps} from 'react-native-svg';
+
 const BrandFilterScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute();
@@ -50,8 +74,7 @@ const BrandFilterScreen = () => {
     ProductCardProps['product'][]
   >([]);
   console.log(filteredProducts);
-  const [selectedProductType, setSelectedProductType] =
-    useState<string>('Face Cleanser');
+
   useEffect(() => {
     const fetchProductsByBrand = async () => {
       try {
@@ -66,28 +89,53 @@ const BrandFilterScreen = () => {
 
     fetchProductsByBrand();
   }, []);
-  const productTypes = [
-    {
-      label: 'Face Cleanser',
-      SvgComponent: FaceCleanserSvg,
-    },
-    {
-      label: 'Moisturizer',
-      SvgComponent: MoisturizerSvg,
-    },
-    {
-      label: 'Sunscreen',
-      SvgComponent: SunscreenSvg,
-    },
-    {
-      label: 'Toner',
-      SvgComponent: TonerSvg,
-    },
-    {
-      label: 'Serum',
-      SvgComponent: SerumSvg,
-    },
-  ];
+
+  const brandProductTypesMap: Record<
+    string,
+    Array<{label: string; SvgComponent: React.FC<SvgProps>}>
+  > = {
+    Cipla: [
+      {label: 'Antibiotics', SvgComponent: AntibioticSvg},
+      {label: 'Pain Relief', SvgComponent: PainRelieverSvg},
+      {label: 'Respiratory', SvgComponent: InhalerSvg},
+    ],
+    'Sun Pharma': [
+      {label: 'Cardiac Care', SvgComponent: HeartPlus},
+      {label: 'Diabetes', SvgComponent: DiabetesSvg},
+      {label: 'Neuro Care', SvgComponent: BrainSvg},
+    ],
+    Abbott: [
+      {label: 'Nutrition', SvgComponent: NutritionSvg},
+      {label: 'Pediatrics', SvgComponent: BabySvg},
+      {label: 'Diagnostics', SvgComponent: LabTestSvg},
+    ],
+    Himalaya: [
+      {label: 'Ayurvedic', SvgComponent: HerbalSvg},
+      {label: 'Wellness', SvgComponent: WellnessSvg},
+      {label: 'Personal Care', SvgComponent: PersonalCareSvg},
+    ],
+    Dabur: [
+      {label: 'Chyawanprash', SvgComponent: ImmunityBoosterSvg},
+      {label: 'Honey', SvgComponent: HoneySvg},
+      {label: 'Juices', SvgComponent: JuiceSvg},
+    ],
+    Mankind: [
+      {label: "Men's Health", SvgComponent: MensHealthSvg},
+      {label: "Women's Health", SvgComponent: WomensHealthSvg},
+      {label: 'Sexual Wellness', SvgComponent: SexualHealthSvg},
+    ],
+    default: [
+      {label: 'All Products', SvgComponent: AllProductsSvg},
+      {label: 'Best Sellers', SvgComponent: BestSellerSvg},
+      {label: 'New Arrivals', SvgComponent: NewArrivalSvg},
+    ],
+  };
+
+  const productTypes =
+    brandProductTypesMap[brand_name] || brandProductTypesMap.default;
+  const [selectedProductType, setSelectedProductType] = useState<string>(
+    productTypes[0].label,
+  );
   const handleAddToCart = async (productId: string, quantity: number = 1) => {
     try {
       setAddingToCart(productId);

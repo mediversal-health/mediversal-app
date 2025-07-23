@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#FFFFFF',
     gap: 10,
+    justifyContent: 'space-between',
   },
 
   backButton: {

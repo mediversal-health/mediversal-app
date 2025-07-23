@@ -15,6 +15,7 @@ import {DeleteFromCart} from '../../../Services/cart';
 import {useAuthStore} from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
 import {usePrescriptionStore} from '../../../store/prescriptionStore';
+import {Fonts} from '../../../styles/fonts';
 
 const SOCKET_URL = 'http://3.110.218.39:3001';
 
@@ -131,6 +132,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <View style={[styles.cardContainer, dynamicStyles.cardContainer, style]}>
+      {product.PrescriptionRequired == 'Yes' && (
+        <View
+          style={{
+            position: 'absolute',
+            zIndex: 999,
+            top: 0,
+            left: 0,
+            backgroundColor: buttonColor,
+            padding: 4,
+            borderBottomRightRadius: 4,
+          }}>
+          <Text style={{fontSize: 6, fontFamily: Fonts.JakartaRegular}}>
+            Prescription Required
+          </Text>
+        </View>
+      )}
       <View style={styles.imageContainer}>
         <Image
           source={{uri: product.image}}

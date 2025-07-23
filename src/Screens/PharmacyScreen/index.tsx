@@ -426,7 +426,7 @@ const PharmacyScreen = () => {
                   fontSize: 14,
                   color: FontColors.textBlack,
                 }}>
-                Trending Medicines
+                Featured Medicines
               </Text>
             </View>
             <View style={{marginTop: 12}}>
@@ -444,7 +444,7 @@ const PharmacyScreen = () => {
                 />
               ) : (
                 <FlatList
-                  data={cardProducts}
+                  data={cardProducts.filter(item => item.featuredProduct)}
                   renderItem={renderProductForTrending}
                   keyExtractor={item => item.id}
                   horizontal

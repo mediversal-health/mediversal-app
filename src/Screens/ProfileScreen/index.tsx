@@ -34,6 +34,7 @@ import {useToastStore} from '../../store/toastStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Platform} from 'react-native';
 import {DeleteUser, updateProfile} from '../../Services/auth';
+import {useOrdersStore} from '../../store/ordersStore';
 
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -62,6 +63,7 @@ export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
+  const clearOrders = useOrdersStore(state => state.clearOrders);
   const isBirthdayLocked = !!birthday;
 
   const displayImage =
@@ -198,6 +200,7 @@ export default function ProfileScreen() {
   };
 
   const handleDeleteUser = async () => {
+    clearOrders();
     try {
       await DeleteUser(customer_id);
       clearAuthentication();

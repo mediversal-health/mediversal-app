@@ -92,6 +92,7 @@ const AddressBookScreen: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const showToast = useToastStore(state => state.showToast);
+  const [backPressCount, setBackPressCount] = useState(0);
   const [formData, setFormData] = useState<AddressBookTypes>({
     Address: '',
     Home_Floor_FlatNumber: '',
@@ -438,7 +439,26 @@ const AddressBookScreen: React.FC = () => {
   const handleModalClose = () => {
     setModalVisible(false);
   };
+  const handleBackNavigation = useCallback(() => {
+    if (isFromProfile && isFormVisible) {
+      // First back press when form is visible - hide the form
+      setIsFormVisible(false);
+      setBackPressCount(1);
+    } else if (isFromProfile && backPressCount === 1) {
+      // Second back press - actually go back
+      navigation.goBack();
+    } else {
+      // Default behavior for non-profile or other cases
+      navigation.goBack();
+    }
+  }, [isFromProfile, isFormVisible, backPressCount, navigation]);
 
+  // Also add this useEffect to reset the counter when form visibility changes
+  useEffect(() => {
+    if (!isFormVisible) {
+      setBackPressCount(0);
+    }
+  }, [isFormVisible]);
   if (isLoading && !initialLoadComplete) {
     return (
       <SafeAreaView style={styles.container}>
@@ -446,13 +466,13 @@ const AddressBookScreen: React.FC = () => {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.goBack()}>
+            onPress={handleBackNavigation}>
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Address Book</Text>
         </View>
         <ScrollView style={styles.scrollView}>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View>
             <AddressCardSkeleton count={3} />
           </View>
         </ScrollView>
@@ -467,7 +487,7 @@ const AddressBookScreen: React.FC = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}>
+          onPress={handleBackNavigation}>
           <ChevronLeft size={20} color="#0088B1" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Address Book</Text>
@@ -521,8 +541,9 @@ const AddressBookScreen: React.FC = () => {
               </View>
             </TouchableOpacity>
           )}
+
           {!isFromProfile && isAddressCardVisible && (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View>
               {refreshing ? (
                 <AddressCardSkeleton count={3} />
               ) : (
@@ -598,8 +619,6 @@ const AddressBookScreen: React.FC = () => {
               )}
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
                   marginTop: 12,
                 }}>
                 {refreshing ? (

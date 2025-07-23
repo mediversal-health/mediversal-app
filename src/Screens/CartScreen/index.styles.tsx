@@ -208,7 +208,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: Platform.OS === 'android' ? 5 : 0,
-    marginHorizontal: 20,
+    marginHorizontal: 30,
     backgroundColor: '#E8F4F7',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,

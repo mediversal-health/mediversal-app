@@ -44,6 +44,7 @@ const PaymentSuccessScreen = ({route}: any) => {
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
   const {clearPrescriptions, getFiles} = usePrescriptionStore.getState();
   const setSelectedCoupon = useCouponStore(state => state.setSelectedCoupon);
+
   let prescriptionId: number = 0;
   console.log(couponDiscount, 'couponDiscount');
   console.log(coupon_id, 'coupon_id');
@@ -84,8 +85,8 @@ const PaymentSuccessScreen = ({route}: any) => {
             email: email || '',
           },
           coupon: {
-            applied_discount_value: couponDiscount,
-            coupon_id: coupon_id || null,
+            applied_discount_value: Number(couponDiscount),
+            coupon_id: Number(coupon_id) || null,
           },
           payment: {
             status: isCOD ? 'Pending' : 'Paid',
