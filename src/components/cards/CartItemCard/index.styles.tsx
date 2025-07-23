@@ -1,29 +1,30 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: FontColors.tertiary,
     borderWidth: 1,
     borderColor: '#E5E8E9',
-    borderRadius: 10,
+    borderRadius: 12,
     height: 81,
-    marginHorizontal: 12,
-    marginTop: 2,
-    padding: 10,
+    marginHorizontal: 24,
+    padding: 12,
     position: 'relative',
     alignItems: 'center',
+    gap: 16,
   },
   image: {
-    width: 57,
-    height: 57,
+    width: 56,
+    height: 56,
     borderRadius: 8,
-    marginRight: 10,
+    borderColor: FontColors.secondary,
+    borderWidth: 1,
   },
   deleteIcon: {
     top: 0,
-    left: 20,
+    left: 0,
   },
 
   middleContent: {
@@ -31,9 +32,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   name: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#0088B1',
+    color: FontColors.primary,
   },
   quantity: {
     fontSize: 10,
@@ -42,29 +43,30 @@ export const styles = StyleSheet.create({
   },
   priceRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     gap: 8,
+    marginTop: 4,
   },
   mrp: {
-    fontSize: 8,
+    fontSize: 10,
     color: '#6D7578',
     textDecorationLine: 'line-through',
     fontFamily: Fonts.JakartaSemiBold,
   },
   mrpBig: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#6D7578',
 
     fontFamily: Fonts.JakartaSemiBold,
   },
   actualPrice: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#0088B1',
+    color: FontColors.primary,
   },
   rightControls: {
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     height: '100%',
   },
   counterContainer: {
@@ -103,33 +105,33 @@ export const styles = StyleSheet.create({
   outOfStockLeft: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
   },
-
   outOfStockText: {
-    fontSize: 10,
+    fontSize: 8,
     textAlign: 'center',
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#FFF',
+    color: FontColors.tertiary,
     marginLeft: 4,
   },
   outOfStockSubText: {
-    fontSize: 7,
+    fontSize: 6,
     textAlign: 'center',
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#FFF',
+    fontFamily: Fonts.JakartaMedium,
+    color: FontColors.tertiary,
     marginLeft: 4,
   },
   lowStockContainer: {
     padding: 5,
     marginTop: 8,
-    backgroundColor: '#FFF3CD', // Light yellow background
+    backgroundColor: '#F8F8F83CD',
     borderRadius: 8,
   },
 
   lowStockText: {
     fontSize: 10,
-    fontFamily: 'YourFontFamily-Regular', // Replace with your font
+    fontFamily: Fonts.JakartaRegular,
     color: '#856404',
     textAlign: 'center',
   },

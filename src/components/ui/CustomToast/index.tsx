@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Text, Animated, View} from 'react-native';
 import {CheckCircle, XCircle, AlertCircle, Info} from 'lucide-react-native';
-import {styles} from './GlobalCustomToast.styles';
+import styles from './GlobalCustomToast.styles';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -22,17 +22,53 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
   duration = 3000,
   showIcon = true,
 }) => {
-  const [slideAnim] = useState(new Animated.Value(-100));
+  const [slideAnim] = useState(new Animated.Value(100)); // Start from bottom
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+
+  const getTypeStyles = () => {
+    switch (type) {
+      case 'success':
+        return {
+          iconColor: '#34C759',
+          textColor: '#34C759',
+          contentBg: '#E6F4EA',
+        };
+      case 'error':
+        return {
+          iconColor: '#EF4444',
+          textColor: '#EF4444',
+          contentBg: '#FFD0D0',
+        };
+      case 'warning':
+        return {
+          iconColor: '#F59E0B',
+          textColor: '#F59E0B',
+          contentBg: '#FEF3C7',
+        };
+      case 'info':
+        return {
+          iconColor: '#3B82F6',
+          textColor: '#3B82F6',
+          contentBg: '#DBEAFE',
+        };
+      default:
+        return {
+          iconColor: '#34C759',
+          textColor: '#34C759',
+          contentBg: '#E6F4EA',
+        };
+    }
+  };
+
+  const {iconColor, textColor, contentBg} = getTypeStyles();
 
   const getIcon = () => {
     if (!showIcon) return null;
 
     const iconProps = {
-      size: 18,
+      size: 20,
       color: 'white',
-      style: styles.icon,
     };
 
     switch (type) {
@@ -49,21 +85,6 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     }
   };
 
-  const getTypeStyle = () => {
-    switch (type) {
-      case 'success':
-        return styles.success;
-      case 'error':
-        return styles.error;
-      case 'warning':
-        return styles.warning;
-      case 'info':
-        return styles.info;
-      default:
-        return styles.success;
-    }
-  };
-
   useEffect(() => {
     // Cleanup existing animations and timeouts
     if (timeoutRef.current) {
@@ -76,7 +97,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
     }
 
     if (visible) {
-      // Slide down animation sequence
+      // Slide up animation sequence
       animationRef.current = Animated.sequence([
         Animated.timing(slideAnim, {
           toValue: 0,
@@ -85,13 +106,13 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
         }),
         Animated.delay(duration),
         Animated.timing(slideAnim, {
-          toValue: -100,
+          toValue: 100,
           duration: 300,
           useNativeDriver: true,
         }),
       ]);
 
-      animationRef.current.start(finished => {
+      animationRef.current.start(({finished}) => {
         if (finished) {
           timeoutRef.current = setTimeout(() => {
             onHide();
@@ -99,7 +120,7 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
         }
       });
     } else {
-      slideAnim.setValue(-100);
+      slideAnim.setValue(100);
     }
 
     return () => {
@@ -120,14 +141,14 @@ const GlobalCustomToast: React.FC<GlobalCustomToastProps> = ({
 
   return (
     <Animated.View
-      style={[
-        styles.toast,
-        getTypeStyle(),
-        {transform: [{translateY: slideAnim}]},
-      ]}>
-      <View style={styles.content}>
-        {getIcon()}
-        <Text style={styles.message}>{message}</Text>
+      style={[styles.toast, {transform: [{translateY: slideAnim}]}]}>
+      {showIcon && (
+        <View style={[styles.iconContainer, {backgroundColor: iconColor}]}>
+          {getIcon()}
+        </View>
+      )}
+      <View style={[styles.content, {backgroundColor: contentBg}]}>
+        <Text style={[styles.message, {color: textColor}]}>{message}</Text>
       </View>
     </Animated.View>
   );

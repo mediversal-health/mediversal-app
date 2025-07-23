@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: '#FFFFFF',
-
     gap: 10,
   },
+
   backButton: {
     width: 32,
     height: 32,

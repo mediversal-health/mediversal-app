@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   StatusBar,
+  RefreshControl,
 } from 'react-native';
 import OrderCard from '../../components/cards/AllOrdersCard';
 import {ChevronLeft, Search} from 'lucide-react-native';
@@ -25,7 +26,7 @@ const OrdersScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [refreshing, setRefreshing] = useState(false);
   const statusOptions = [
     'ALL',
     'ON GOING',
@@ -99,7 +100,16 @@ const OrdersScreen: React.FC = () => {
   useEffect(() => {
     getOrder();
   }, []);
-
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await getOrder(); // Call your existing getOrder function
+    } catch (error) {
+      console.error('Error refreshing orders:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
   const filteredOrders = allOrders
     .filter(order => {
       const matchesStatus =
@@ -139,7 +149,17 @@ const OrdersScreen: React.FC = () => {
         </View>
       </View>
 
-      <ScrollView style={{backgroundColor: '#FFf'}}>
+      <ScrollView
+        style={{backgroundColor: '#FFf'}}
+        refreshControl={
+          // Add RefreshControl here
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#0088B1']} // Customize the loading indicator color
+            tintColor="#0088B1" // Customize the loading indicator color (iOS)
+          />
+        }>
         <View style={styles.filterChipsWrapper}>
           {statusOptions.map(status => (
             <TouchableOpacity

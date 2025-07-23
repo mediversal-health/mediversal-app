@@ -60,6 +60,7 @@ const CartPage = () => {
   const area = formData?.Area_details;
   const City = formData?.City;
   const State = formData?.State;
+  const name = formData?.Recipient_name;
 
   const {clearPrescriptions, getFiles} = usePrescriptionStore();
   const currentCustomerPrescriptions = customer_id
@@ -94,7 +95,6 @@ const CartPage = () => {
     const deliveryDate = new Date(today);
     deliveryDate.setDate(today.getDate() + daysToAdd);
 
-    // Format as "Day, DD Month" (e.g., "Fri, 14 Jun")
     return deliveryDate.toLocaleDateString('en-US', {
       weekday: 'short',
       day: 'numeric',
@@ -104,7 +104,7 @@ const CartPage = () => {
   const fetchProducts = useCallback(() => {
     getProducts()
       .then(response => {
-        setProducts(response.data);
+        setProducts(response.data.products);
       })
       .catch(error => {
         console.error('Error fetching products:', error);
@@ -159,11 +159,21 @@ const CartPage = () => {
   }, []);
 
   const handleCheckoutPress = () => {
+    if (hasOutOfStockItems) {
+      showToast(
+        'Remove out-of-stock items from your cart before proceeding.',
+        'warning',
+        1000,
+        true,
+      );
+      return;
+    }
     setPaymentMethodVisible(true);
   };
 
   const handleSelectCOD = () => {
     setPaymentMethodVisible(false);
+
     const cartItems = apiProductDetails.map(item => ({
       productId: item.productId,
       name: item.ProductName,
@@ -188,7 +198,7 @@ const CartPage = () => {
             cartItems: cartItems,
             address: formattedAddress,
             pincode: formData?.PinCode ?? 0,
-
+            name: formData?.Recipient_name,
             area: formData?.Area_details ?? '',
             city: formData?.City,
             State: formData?.State ?? '',
@@ -249,7 +259,7 @@ const CartPage = () => {
       customer_id?.toString() ?? '',
       item.productId,
     );
-    // console.log('ABCD', qty);
+
     return total + item.SellingPrice * qty;
   }, 0);
 
@@ -269,16 +279,6 @@ const CartPage = () => {
       return;
     }
 
-    if (hasOutOfStockItems) {
-      showToast(
-        'Remove out-of-stock items from your cart before proceeding.',
-        'warning',
-        1000,
-        true,
-      );
-      return;
-    }
-
     setIsProcessingPayment(true);
 
     try {
@@ -288,7 +288,10 @@ const CartPage = () => {
           .uri,
         currency: 'INR',
         key: RAZORPAY_KEY as string,
-        amount: (cartTotal - couponDiscount + 5 + 40) * 100,
+        amount:
+          Math.round(
+            cartTotal - couponDiscount + 5 + 5 + (cartTotal > 499 ? 0 : 40),
+          ) * 100,
         name: 'Mediversal APP',
         theme: {color: '#0088B1'},
       };
@@ -314,7 +317,14 @@ const CartPage = () => {
               name: 'PaymentSuccessScreen',
               params: {
                 paymentId: data.razorpay_payment_id,
-                amount: cartTotal - couponDiscount + 5 + 40,
+                name: formData?.Recipient_name,
+                amount: Math.round(
+                  cartTotal -
+                    couponDiscount +
+                    5 +
+                    5 +
+                    (cartTotal > 499 ? 0 : 40),
+                ),
                 cartItems: cartItems,
                 address: formattedAddress,
                 pincode: formData?.PinCode ?? 0,
@@ -322,6 +332,8 @@ const CartPage = () => {
                 city: formData?.City,
                 State: formData?.State ?? '',
                 PhoneNumber: Number(formData?.PhoneNumber) || 0,
+                coupon_id: selectedCoupon?.id || null,
+                couponDiscount: couponDiscount,
               },
             },
           ],
@@ -466,14 +478,16 @@ const CartPage = () => {
                 }>
                 <LinearGradient
                   colors={['#F8F8F8', '#0088B1']}
-                  start={{x: 0, y: 1}}
-                  end={{x: 0, y: 0}}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 0}}
                   style={styles.couponStrip}>
                   <View style={styles.couponLeft}>
                     <PinkDiscount />
                     <Text style={styles.couponText}>Apply Coupon</Text>
                   </View>
-                  <ChevronRight size={16} color="#000" />
+                  <View style={styles.iconIOS}>
+                    <ChevronRight size={16} color="#F8F8F8" />
+                  </View>
                 </LinearGradient>
               </TouchableOpacity>
             ))}
@@ -507,17 +521,24 @@ const CartPage = () => {
               <View
                 style={{
                   backgroundColor: '#FFE0C5',
-                  margin: 15,
+                  marginHorizontal: 24,
                   borderRadius: 6,
                   padding: 16,
+                  marginTop: 24,
                 }}>
-                <View style={{flexDirection: 'row', gap: 5}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 5,
+                    alignItems: 'center',
+                    marginBottom: 8,
+                  }}>
                   <InfoIcon color={'#EB5757'} />
                   <Text
                     style={{
                       color: '#EB5757',
                       fontFamily: Fonts.JakartaSemiBold,
-                      marginBottom: 10,
+                      fontSize: 14,
                     }}>
                     Warning
                   </Text>
@@ -532,7 +553,9 @@ const CartPage = () => {
           {apiProductDetails.length === 0 ||
             (apiProductDetails && (
               <View style={styles.deliveryRow}>
-                <Truck size={18} color="#000" style={styles.icon} />
+                <View style={styles.deliveryLeft}>
+                  <Truck size={16} />
+                </View>
                 <Text style={styles.deliveryText}>
                   {`Delivery by ${getDeliveryDate(3)}`}
                 </Text>
@@ -540,23 +563,23 @@ const CartPage = () => {
             ))}
           {apiProductDetails.length > 0 ? (
             apiProductDetails.map(item => (
-              <CartItemCard
-                key={item.productId}
-                productId={item.productId}
-                imageUrl={item.imageUrl}
-                name={item.ProductName}
-                mrp={item.SellingPrice}
-                price={item.CostPrice}
-                isPrescriptionRequired={item.PrescriptionRequired}
-                onRemove={async () => {
-                  // First update the product details
-                  await fetchProductDetails();
-                  // The fetchProductDetails function should automatically update hasOutOfStockItems
-                  // But let's make sure by calling it explicitly after the state update
-                }}
-                onQuantityChange={handleQuantityChange}
-                fromOrderDesc={false}
-              />
+              <View style={{marginVertical: 4}}>
+                <CartItemCard
+                  key={item.productId}
+                  productId={item.productId}
+                  imageUrl={item.imageUrl}
+                  name={item.ProductName}
+                  mrp={item.SellingPrice}
+                  price={item.CostPrice}
+                  isPrescriptionRequired={item.PrescriptionRequired}
+                  packSize={item.PackageSize}
+                  onRemove={async () => {
+                    await fetchProductDetails();
+                  }}
+                  onQuantityChange={handleQuantityChange}
+                  fromOrderDesc={false}
+                />
+              </View>
             ))
           ) : (
             <View
@@ -644,6 +667,7 @@ const CartPage = () => {
             <View>
               <Text style={styles.amountLabel}>Amount to pay:</Text>
               <Text style={styles.amountText}>
+                ₹
                 {Math.round(
                   cartTotal -
                     couponDiscount +
@@ -668,34 +692,14 @@ const CartPage = () => {
             ) : (
               <>
                 {isPrescriptionRequiredItemsPresent ? (
-                  hasPrescriptionFiles ? (
-                    // When prescription is required AND files exist - show both buttons
-                    <>
-                      <TouchableOpacity
-                        style={styles.addressButton}
-                        onPress={() => setPrescriptionModalVisible(true)}>
-                        <Text style={styles.addressButtonText}>
-                          Upload Prescription
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.addressButton}
-                        onPress={showLocationModal}>
-                        <Text style={styles.addressButtonText}>
-                          Select / Add Address
-                        </Text>
-                      </TouchableOpacity>
-                    </>
-                  ) : (
-                    // When prescription is required but no files exist - show upload button only
-                    <TouchableOpacity
-                      style={styles.addressButton}
-                      onPress={() => setPrescriptionModalVisible(true)}>
-                      <Text style={styles.addressButtonText}>
-                        Upload Prescription
-                      </Text>
-                    </TouchableOpacity>
-                  )
+                  // When prescription is required but no files exist - show upload button only
+                  <TouchableOpacity
+                    style={styles.addressButton}
+                    onPress={() => setPrescriptionModalVisible(true)}>
+                    <Text style={styles.addressButtonText}>
+                      Upload/View Prescription
+                    </Text>
+                  </TouchableOpacity>
                 ) : (
                   // When no prescription required - show address button only
                   <TouchableOpacity
@@ -720,7 +724,7 @@ const CartPage = () => {
             PrescriptionRequired: 'No',
           }));
           setApiProductDetails(updatedProducts);
-          showToast('Prescription uploaded successfully!', 'success');
+          // showToast('Prescription uploaded successfully!', 'success');
         }}
         isPrescriptionRequired={isPrescriptionRequiredItemsPresent}
         onNavigateToAddressBook={() => {
@@ -728,6 +732,7 @@ const CartPage = () => {
             fromLocationMap: false,
             isFromProfile: false,
           });
+          // setLocationModalVisible(true);
         }}
       />
       <LocationModal

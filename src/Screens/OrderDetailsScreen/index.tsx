@@ -39,7 +39,6 @@ const OrdersDetailsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<OrdersDetailsScreenRouteProp>();
   const {order_data} = route.params;
-  console.log('abcgd', order_data);
 
   const [trackingData, setTrackingData] = useState<TrackScan[] | []>([]);
   const [edd, setEdd] = useState<string | null>(' ');
@@ -79,7 +78,7 @@ const OrdersDetailsScreen: React.FC = () => {
   };
   console.log(trackingData);
   const isOrderCancelled = () => {
-    return trackingData.some(scan => scan.scan === 'CANCELED');
+    return order_data.deliverystatus == 'Order cancelled successfully.';
   };
   const isOutForDelivery = () => {
     return trackingData.some(scan => scan.scan === 'Out for delivery');
@@ -205,7 +204,25 @@ const OrdersDetailsScreen: React.FC = () => {
           </View>
         </View>
 
-        {trackingData && trackingData.length > 0 ? (
+        {order_data.deliverystatus === 'Order cancelled successfully.' ? (
+          <View
+            style={{
+              padding: 20,
+              alignItems: 'center',
+              backgroundColor: '#FFD0D0',
+              margin: 25,
+              borderRadius: 16,
+            }}>
+            <Text
+              style={{
+                fontFamily: Fonts.JakartaRegular,
+                fontSize: 16,
+                color: '#EB5757',
+              }}>
+              Order Cancelled
+            </Text>
+          </View>
+        ) : trackingData && trackingData.length > 0 ? (
           <OrderTrackingProgress trackingData={trackingData} />
         ) : (
           <View

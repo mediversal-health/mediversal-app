@@ -1,5 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   overlay: {
@@ -27,28 +27,28 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: 84,
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     marginTop: 10,
   },
 
   likeUsLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 16,
   },
 
   likeUsText: {
-    color: '#F8F8F8',
+    color: FontColors.tertiary,
     fontSize: 14,
-    fontFamily: Fonts.JakartaBold,
+    fontFamily: Fonts.JakartaMedium,
   },
   profileCompleteText: {
     fontSize: 14,
-    color: '#0088B1',
+    color: FontColors.primary,
     fontFamily: Fonts.JakartaMedium,
     marginTop: 4,
   },
@@ -71,22 +71,22 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
   },
   greeting: {
-    fontSize: 14,
+    fontSize: 20,
     fontFamily: Fonts.JakartaBold,
   },
   profileProgress: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    justifyContent: 'space-between',
   },
   completeText: {
     fontSize: 14,
-    color: '#0088B1',
+    color: FontColors.primary,
     fontFamily: Fonts.JakartaRegular,
   },
   percentComplete: {
     fontSize: 12,
-    fontFamily: Fonts.JakartaBold,
+    fontFamily: Fonts.JakartaMedium,
   },
   familySection: {
     paddingVertical: 10,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   familyTitle: {
     fontSize: 15,
     fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
+    color: FontColors.primary,
   },
   addNew: {
     flexDirection: 'row',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   familyTag: {
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
     borderRadius: 4,
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 14,
-    color: '#0088B1',
+    color: FontColors.primary,
     paddingHorizontal: 10,
     paddingTop: 10,
-    fontFamily: Fonts.JakartaBold,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   logoutContainer: {
     position: 'absolute',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     paddingTop: 10,
-    backgroundColor: 'white', // match drawer background
+    backgroundColor: 'white',
   },
   logoutButton: {
     marginTop: 10,

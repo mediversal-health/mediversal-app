@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   modal: {
@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    height: '5%',
-    minHeight: '55%',
-    paddingHorizontal: 32,
-    paddingTop: 32,
+    maxHeight: '75%',
+    minHeight: '5%',
+    paddingHorizontal: 24,
+    paddingTop: 24,
     paddingBottom: 20,
   },
   scrollView: {
@@ -25,17 +25,17 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'flex-start',
     width: '100%',
-    marginBottom: 24,
+    marginBottom: 32,
   },
   title: {
-    marginBottom: 6,
+    marginBottom: 12,
     fontSize: 24,
     fontFamily: Fonts.JakartaBold,
-    color: '#0088B1',
+    color: FontColors.primary,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 12,
+    color: '#8E8E93',
     fontFamily: Fonts.JakartaRegular,
   },
   buttonContainer: {
@@ -50,13 +50,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#0088B1',
+    borderColor: FontColors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
   },
   uploadOptionText: {
-    color: '#0088B1',
+    color: FontColors.primary,
     fontSize: 16,
     fontFamily: Fonts.JakartaRegular,
   },
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
   },
   previewContainer: {
     width: '100%',
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 12,
+    // marginBottom: 20,
     // Removed maxHeight to allow expansion
   },
   filePreview: {
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingTop: 10,
     backgroundColor: '#fff',
+    marginBottom: 20,
   },
   actionButton: {
     flex: 1,
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaSemiBold,
   },
   proceedButton: {
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
   },
   proceedButtonText: {
     color: 'white',
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaSemiBold,
   },
   confirmButton: {
-    backgroundColor: '#0088b1',
+    backgroundColor: FontColors.primary,
   },
   confirmButtonText: {
     color: 'white',
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   uploadMethodsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 12,
+    marginTop: 16,
     gap: 8,
   },
   recentListContainer: {
@@ -197,28 +198,28 @@ const styles = StyleSheet.create({
   uploadCard: {
     flex: 1,
     height: 110,
-    backgroundColor: '#E8F4F7',
+    backgroundColor: FontColors.secondary,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
   },
   iconWrapper: {
-    backgroundColor: '#0088B129',
+    backgroundColor: '#C3E3EC',
     padding: 12,
     borderRadius: 50,
     marginBottom: 8,
   },
   methodLabel: {
     fontSize: 8,
-    color: '#161D1F',
-    marginBottom: 16,
+    color: FontColors.textBlack,
+    marginBottom: 12,
     fontFamily: Fonts.JakartaRegular,
   },
   successStrip: {
     position: 'absolute',
     bottom: 0,
-    height: 12,
+    paddingVertical: 2,
     width: '100%',
     backgroundColor: '#50B57F',
     borderBottomLeftRadius: 8,
@@ -233,10 +234,88 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#161D1F',
-    marginTop: 8,
+    fontFamily: Fonts.JakartaMedium,
+    color: FontColors.textBlack,
     textAlign: 'left',
+  },
+  sectionTitleForUploaded: {
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: FontColors.textBlack,
+    marginTop: 32,
+    textAlign: 'left',
+  },
+  sectionSubtitle: {
+    fontSize: 12,
+    fontFamily: Fonts.JakartaRegular,
+    color: '#6B7280',
+    marginTop: 4,
+  },
+  horizontalScrollContainer: {
+    paddingVertical: 10,
+    paddingRight: 20,
+  },
+  uploadedFileCard: {
+    width: 80,
+    height: 100,
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    marginRight: 12,
+    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  uploadedFileIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 4,
+    backgroundColor: '#EFF6FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  uploadedFileImage: {
+    width: '100%',
+    height: '100%',
+  },
+  uploadedFileRemove: {
+    position: 'absolute',
+    top: 8,
+    right: 4,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 2,
+  },
+  uploadedFileStatus: {
+    position: 'absolute',
+    bottom: 8,
+    left: 4,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 2,
+  },
+  uploadedImageContainer: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+    marginRight: 10,
+  },
+  pdfIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 4,
+    backgroundColor: '#EFF6FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  transparentCheckIcon: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 2,
   },
 });
 

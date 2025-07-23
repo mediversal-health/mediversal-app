@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   SafeAreaView,
@@ -54,7 +52,7 @@ import {OrderData, ProductCardProps} from '../../types';
 import {getProducts, getProductsById} from '../../Services/pharmacy';
 import useProductStore from '../../store/productsStore';
 import ProductCardShimmer from '../../components/cards/ProductCard/skeleton';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 import {addToCart} from '../../Services/cart';
 import {useAuthStore} from '../../store/authStore';
 import {useToastStore} from '../../store/toastStore';
@@ -78,7 +76,12 @@ const PharmacyScreen = () => {
     setLoading(true);
     getProducts()
       .then(response => {
-        setProducts(response.data);
+        console.log(response.data.products, 'response data');
+        if (response.data && response.data.products) {
+          setProducts(response.data.products);
+        } else {
+          console.error('Unexpected API response structure:', response);
+        }
         setLoading(false);
         setRefreshing(false);
         console.log('Products:', response.data);
@@ -140,13 +143,16 @@ const PharmacyScreen = () => {
       };
 
       const cartResponse = await addToCart(customer_id, productData);
-      console.log('Product added to cart successfully:', cartResponse);
+      console.log(
+        ` ${productData.name} added to cart successfully:`,
+        cartResponse,
+      );
       if (cartResponse.success && cartResponse.cart) {
         setUserCart(customer_id?.toString() ?? '', cartResponse.cart);
       }
 
       showToast(
-        `${productData.name || 'Product'} added to cart!`,
+        `${productResponse.data.ProductName} added to cart!`,
         'success',
         1000,
         true,
@@ -230,7 +236,7 @@ const PharmacyScreen = () => {
           </View>
 
           <View style={styles.priscriptionContainer}>
-            <View style={{flexDirection: 'row', gap: 8}}>
+            <View style={{flexDirection: 'row', gap: 12}}>
               <PriscriptionSVG width={40} height={40} strokeWidth={1} />
               <View>
                 <Text style={styles.priscriptionText}>Upload Prescription</Text>
@@ -264,7 +270,7 @@ const PharmacyScreen = () => {
                 Limited-time deals on medicines. Grab them before they're gone!
               </Text>
             </View>
-            <View style={{marginHorizontal: 7}}>
+            <View>
               {loading ? (
                 <FlatList
                   data={skeletonItems}
@@ -296,8 +302,8 @@ const PharmacyScreen = () => {
                 fontFamily: Fonts.JakartaMedium,
                 fontSize: 14,
                 marginTop: 24,
-                color: '#161D1F',
-                marginLeft: Platform.OS === 'ios' ? 10 : 0,
+                color: FontColors.textBlack,
+                marginHorizontal: 24,
               }}>
               Browse by Category
             </Text>
@@ -306,8 +312,8 @@ const PharmacyScreen = () => {
                 flexDirection: 'row',
                 flex: 1,
                 gap: 5,
-                marginTop: 10,
-                marginHorizontal: Platform.OS === 'android' ? 0 : 16,
+                marginTop: 12,
+                marginHorizontal: 24,
                 justifyContent: 'space-between',
               }}>
               <CategoryCard
@@ -360,9 +366,8 @@ const PharmacyScreen = () => {
                 flexDirection: 'row',
                 flex: 1,
                 gap: 5,
-                marginTop: 10,
-                marginBottom: 10,
-                marginHorizontal: Platform.OS === 'android' ? 0 : 10,
+                marginTop: 16,
+                marginHorizontal: 24,
                 justifyContent: 'space-between',
               }}>
               <CategoryCard
@@ -412,14 +417,19 @@ const PharmacyScreen = () => {
             </View>
             <View
               style={{
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 10,
-                marginTop: 24,
+                marginHorizontal: 24,
+                marginTop: 32,
               }}>
-              <Text style={{fontFamily: Fonts.JakartaMedium, fontSize: 14}}>
-                Trending Medicines
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaMedium,
+                  fontSize: 14,
+                  color: FontColors.textBlack,
+                }}>
+                Featured Medicines
               </Text>
             </View>
-            <View style={{marginHorizontal: 10}}>
+            <View style={{marginTop: 12}}>
               {loading ? (
                 <FlatList
                   data={skeletonItems}
@@ -434,7 +444,7 @@ const PharmacyScreen = () => {
                 />
               ) : (
                 <FlatList
-                  data={cardProducts}
+                  data={cardProducts.filter(item => item.featuredProduct)}
                   renderItem={renderProductForTrending}
                   keyExtractor={item => item.id}
                   horizontal
@@ -448,10 +458,15 @@ const PharmacyScreen = () => {
             </View>
             <View
               style={{
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
-                marginTop: 24,
+                marginHorizontal: 24,
+                marginTop: 32,
               }}>
-              <Text style={{fontFamily: Fonts.JakartaMedium, fontSize: 14}}>
+              <Text
+                style={{
+                  fontFamily: Fonts.JakartaMedium,
+                  fontSize: 14,
+                  color: FontColors.textBlack,
+                }}>
                 Featured Brands
               </Text>
             </View>
@@ -459,10 +474,9 @@ const PharmacyScreen = () => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                gap: 5,
-                marginTop: 10,
-                marginBottom: 10,
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
+                marginTop: 16,
+                marginBottom: 8,
+                marginHorizontal: 24,
               }}>
               <CircleCard
                 logo={Cipla}
@@ -496,10 +510,8 @@ const PharmacyScreen = () => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                gap: 5,
-                marginTop: 10,
-                marginBottom: 10,
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
+                marginTop: 12,
+                marginHorizontal: 24,
               }}>
               <CircleCard
                 logo={Himalaya}
@@ -537,14 +549,14 @@ const PharmacyScreen = () => {
             </TouchableOpacity>
             <View
               style={{
-                marginHorizontal: Platform.OS === 'ios' ? 10 : 16,
-
-                marginTop: 24,
+                marginHorizontal: 24,
+                marginTop: 32,
               }}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaMedium,
                   fontSize: 14,
+                  color: FontColors.textBlack,
                 }}>
                 Stay Informed, Stay Healthy
               </Text>
@@ -556,10 +568,9 @@ const PharmacyScreen = () => {
                 // flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                gap: Platform.OS === 'ios' ? 0 : 10,
-                paddingHorizontal: Platform.OS === 'ios' ? 10 : 16,
-                marginBottom: 5,
-                marginTop: 10,
+                gap: Platform.OS === 'ios' ? 0 : 16,
+                paddingHorizontal: Platform.OS === 'ios' ? 16 : 24,
+                marginTop: 12,
               }}>
               <ImmunityCard
                 title="5 Simple Ways to Boost Your Immunity Naturally"
@@ -570,6 +581,24 @@ const PharmacyScreen = () => {
               <ImmunityCard
                 title="The Power of Antioxidants: Foods to Include in Your Diet"
                 subtitle="Discover how fruits and vegetables rich in antioxidants can protect your body from free radicals and enhance your overall health."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="Stress Management Techniques for a Healthier Life"
+                subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="Stress Management Techniques for a Healthier Life"
+                subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
+                buttonText="Read More"
+                onPressReadMore={() => console.log('Read More clicked')}
+              />
+              <ImmunityCard
+                title="Stress Management Techniques for a Healthier Life"
+                subtitle="Uncover effective strategies such as meditation and yoga that can help reduce stress and improve your immune function."
                 buttonText="Read More"
                 onPressReadMore={() => console.log('Read More clicked')}
               />

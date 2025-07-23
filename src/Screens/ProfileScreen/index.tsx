@@ -24,7 +24,7 @@ import {
   X,
 } from 'lucide-react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 import {useAuthStore} from '../../store/authStore';
 import {RootStackParamList} from '../../navigation';
 import styles from './index.styles';
@@ -34,6 +34,7 @@ import {useToastStore} from '../../store/toastStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Platform} from 'react-native';
 import {DeleteUser, updateProfile} from '../../Services/auth';
+import {useOrdersStore} from '../../store/ordersStore';
 
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -62,6 +63,7 @@ export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [tempImage, setTempImage] = useState<{uri: string} | null>(null);
+  const clearOrders = useOrdersStore(state => state.clearOrders);
   const isBirthdayLocked = !!birthday;
 
   const displayImage =
@@ -198,6 +200,7 @@ export default function ProfileScreen() {
   };
 
   const handleDeleteUser = async () => {
+    clearOrders();
     try {
       await DeleteUser(customer_id);
       clearAuthentication();
@@ -251,7 +254,7 @@ export default function ProfileScreen() {
               style={{
                 fontSize: 16,
                 fontFamily: Fonts.JakartaSemiBold,
-                color: '#111827',
+                color: FontColors.textBlack,
               }}>
               Profile Page
             </Text>
@@ -304,13 +307,13 @@ export default function ProfileScreen() {
                   ) : (
                     <>
                       <View style={{flexDirection: 'row', gap: 5}}>
-                        <UserCheck size={20} color="#0088B1" />
+                        <UserCheck size={16} color="#0088B1" />
                         <Text style={styles.EditTitle}>Update Profile</Text>
                       </View>
                       <TouchableOpacity
                         style={{flexDirection: 'row', gap: 2}}
                         onPress={() => setIsEditMode(false)}>
-                        <X size={20} color="#EB5757" />
+                        <X size={16} color="#EB5757" />
                         <Text style={styles.CancelTitle}> Cancel </Text>
                       </TouchableOpacity>
                     </>
@@ -320,7 +323,7 @@ export default function ProfileScreen() {
                 <TouchableOpacity
                   style={styles.editButton}
                   onPress={toggleEditMode}>
-                  <UserPen size={20} color="#0088B1" />
+                  <UserPen size={18} color="#0088B1" />
                   <Text style={styles.EditTitle}>Edit Info</Text>
                 </TouchableOpacity>
               )}
@@ -348,7 +351,7 @@ export default function ProfileScreen() {
 
             <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
-                <Mail size={20} color="#666" />
+                <Mail size={18} color="#666" />
                 <Text style={styles.infoLabel}>First Name</Text>
               </View>
               {isEditMode ? (
@@ -368,7 +371,7 @@ export default function ProfileScreen() {
 
             <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
-                <Mail size={20} color="#666" />
+                <Mail size={18} color="#666" />
                 <Text style={styles.infoLabel}>Last Name</Text>
               </View>
               {isEditMode ? (
@@ -387,7 +390,7 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
-                <Phone size={20} color="#666" />
+                <Phone size={18} color="#666" />
                 <Text style={styles.infoLabel}>Phone</Text>
               </View>
               {isEditMode ? (
@@ -407,7 +410,7 @@ export default function ProfileScreen() {
 
             <View style={styles.infoItem}>
               <View style={styles.infoItemLeft}>
-                <Calendar size={20} color="#666" />
+                <Calendar size={18} color="#666" />
                 <Text style={styles.infoLabel}>Date of Birth</Text>
               </View>
               {isEditMode ? (
@@ -481,27 +484,27 @@ export default function ProfileScreen() {
                       isFromProfile: true,
                     })
                   }>
-                  <View style={styles.infoItemLeft}>
-                    <MapPinned size={20} color="#666" />
-                    <Text style={styles.infoLabel}>Address Book</Text>
+                  <View style={styles.AddressItemLeft}>
+                    <MapPinned size={18} color="#666" />
+                    <Text style={styles.addressLable}>Address Book</Text>
                   </View>
-                  <ChevronRight size={20} color="#666" />
+                  <ChevronRight size={18} color="#666" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={styles.logoutItem}
                   onPress={handleLogout}>
                   <View style={styles.infoItemLeft}>
-                    <LogOut size={20} color="#FF4444" />
+                    <LogOut size={18} color="#FF4444" />
                     <Text style={styles.logoutLabel}>Logout</Text>
                   </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={styles.logoutItem}
+                  style={{paddingBottom: 12}}
                   onPress={handleDeleteUser}>
                   <View style={styles.infoItemLeft}>
-                    <UserRoundXIcon size={20} color="#000" />
+                    <UserRoundXIcon size={18} color="#000" />
                     <Text style={styles.DeleteUserLabel}>Delete User</Text>
                   </View>
                 </TouchableOpacity>

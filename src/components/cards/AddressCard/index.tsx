@@ -6,6 +6,7 @@ import styles from './index.styles';
 import LocationPin from './assets/svgs/Location pin.svg';
 import House from './assets/svgs/3d house.svg';
 import Building from './assets/svgs/Building.svg';
+import {FontColors} from '../../../styles/fonts';
 
 interface AddressCardProps {
   title?: string;
@@ -44,20 +45,14 @@ const AddressCard: React.FC<AddressCardProps> = ({
     <TouchableOpacity
       style={[
         styles.container,
-        {borderColor: selected ? '#0088B1' : '#E0E0E0'},
+        {borderColor: selected ? FontColors.primary : '#E0E0E0'},
       ]}
       onPress={onPress}
       activeOpacity={0.7}>
-      <View style={styles.radioButtonContainer}>
-        <View style={styles.radioOuter}>
-          {selected && <View style={styles.radioInner} />}
-        </View>
-      </View>
-
       <View style={styles.header}>
         <View style={styles.leftSection}>
           <View style={styles.iconContainer}>{getIcon()}</View>
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, gap: 4}}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.addressText}>{address}</Text>
             <View style={styles.phoneSection}>
@@ -72,14 +67,19 @@ const AddressCard: React.FC<AddressCardProps> = ({
                 }}
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 24,
+                  height: 24,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <MoreHorizontal size={30} color="#0088B1" />
+                <MoreHorizontal size={24} color="#0088B1" />
               </TouchableOpacity>
             )}
+          </View>
+        </View>
+        <View style={styles.radioButtonContainer}>
+          <View style={styles.radioOuter}>
+            {selected && <View style={styles.radioInner} />}
           </View>
         </View>
       </View>

@@ -1,18 +1,18 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: FontColors.tertiary,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: '#FFFFFF',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    backgroundColor: FontColors.tertiary,
     justifyContent: 'space-between',
     gap: 10,
   },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#111827',
+    color: FontColors.textBlack,
   },
   mainContent: {
     flex: 1,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     width: 100,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: FontColors.tertiary,
     paddingVertical: 10,
   },
   categoryItem: {
@@ -44,12 +44,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
     marginVertical: 5,
+    borderRadius: 12,
     marginHorizontal: 10,
-    borderRadius: 8,
     gap: 5,
     backgroundColor: '#f2f2f2',
-    width: 80,
-    height: 120,
   },
   iconContainer: {
     width: 56,
@@ -60,8 +58,8 @@ const styles = StyleSheet.create({
   svgIconWrapper: {
     width: 56,
     height: 56,
-    borderRadius: 12,
-    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    backgroundColor: FontColors.tertiary,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -72,44 +70,46 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   selectedCategory: {
-    backgroundColor: '#E5E8E9',
+    backgroundColor: '#d9dbdcff',
     borderRadius: 8,
   },
 
   categoryText: {
     fontSize: 8,
-    color: '#000',
+    color: FontColors.textBlack,
     textAlign: 'center',
     fontFamily: Fonts.JakartaRegular,
   },
   selectedCategoryText: {
-    color: '#000',
-    fontFamily: Fonts.JakartaBold,
+    color: FontColors.textBlack,
+    fontFamily: Fonts.JakartaMedium,
   },
   productContainer: {
     flex: 1,
-    padding: 10,
+    paddingLeft: 16,
+    paddingRight: Platform.OS === 'android' ? 24 : 16,
+    paddingVertical: 10,
   },
   productList: {
     paddingBottom: 20,
+    marginTop: 12,
   },
   columnWrapper: {
     justifyContent: 'space-between',
+    gap: Platform.OS === 'android' ? 8 : 0,
   },
   productCardContainer: {
     width: '50%',
-    marginBottom: 10,
+    marginBottom: Platform.OS === 'android' ? 16 : 5,
     gap: 5,
   },
   searchBarContainer: {
-    paddingHorizontal: 16,
-    marginTop: 10,
-    gap: 8, // space between SearchBar and icons
+    gap: 14,
   },
 
   iconWrapper: {
     flexDirection: 'row',
-    justifyContent: 'flex-end', // push to right
+    justifyContent: 'flex-end',
     gap: 12,
     marginBottom: 10,
   },

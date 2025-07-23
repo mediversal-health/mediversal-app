@@ -26,10 +26,16 @@ Dimensions.get('window');
 
 const PaymentSuccessScreen = ({route}: any) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {customer_id, email, phoneNumber, first_name, last_name} =
-    useAuthStore();
-  const {paymentId, amount, cartItems, address, coupon_id, couponDiscount} =
-    route.params;
+  const {customer_id, email, phoneNumber} = useAuthStore();
+  const {
+    name,
+    paymentId,
+    amount,
+    cartItems,
+    address,
+    coupon_id,
+    couponDiscount,
+  } = route.params;
   const isCOD = !paymentId;
   const {removeFromCart} = useCartStore.getState();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
@@ -38,6 +44,7 @@ const PaymentSuccessScreen = ({route}: any) => {
   const setProductQuantity = useCartStore(state => state.setProductQuantity);
   const {clearPrescriptions, getFiles} = usePrescriptionStore.getState();
   const setSelectedCoupon = useCouponStore(state => state.setSelectedCoupon);
+
   let prescriptionId: number = 0;
   console.log(couponDiscount, 'couponDiscount');
   console.log(coupon_id, 'coupon_id');
@@ -72,14 +79,14 @@ const PaymentSuccessScreen = ({route}: any) => {
         const orderData = {
           customer: {
             customerId: parseInt(String(customer_id ?? ''), 10),
-            name: (first_name ?? '') + ' ' + (last_name ?? ''),
+            name: name,
             address: address || '',
             phone: phoneNumber || '',
             email: email || '',
           },
           coupon: {
-            applied_discount_value: couponDiscount,
-            coupon_id: coupon_id || null,
+            applied_discount_value: Number(couponDiscount),
+            coupon_id: Number(coupon_id) || null,
           },
           payment: {
             status: isCOD ? 'Pending' : 'Paid',

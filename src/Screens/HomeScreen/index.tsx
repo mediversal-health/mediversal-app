@@ -92,7 +92,7 @@ const HomeScreen = () => {
           />
         }>
         <StatusBar backgroundColor="#F8F8F8" barStyle="dark-content" />
-        {filteredOrders.length > 0 && (
+        {filteredOrders.length > 0 && !loadingOrders && (
           <View style={styles.headerContainer}>
             <Text style={styles.sectionLabel}>Upcoming</Text>
             <View style={styles.headerRow}>
@@ -135,11 +135,7 @@ const HomeScreen = () => {
                 }
               />
             ))
-          ) : (
-            <View style={styles.noOrdersContainer}>
-              <Text style={styles.noOrdersText}>No upcoming orders</Text>
-            </View>
-          )}
+          ) : null}
         </ScrollView>
         <View
           style={{

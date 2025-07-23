@@ -1,14 +1,14 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 export const styles = StyleSheet.create({
   card: {
     borderWidth: 1,
     borderColor: '#B0B6B8',
     borderRadius: 10,
-    marginHorizontal: 12,
+    marginHorizontal: 24,
     justifyContent: 'center',
-    paddingHorizontal: 5,
+    paddingHorizontal: 14,
     marginTop: 12,
     backgroundColor: '#fff',
   },
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   billTitle: {
-    color: '#161D1F',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaSemiBold,
     fontSize: 12,
   },
@@ -33,10 +33,11 @@ export const styles = StyleSheet.create({
     color: '#B0B6B8',
     textDecorationLine: 'line-through',
     fontSize: 12,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   finalPrice: {
     fontSize: 12,
-    color: '#161D1F',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaSemiBold,
   },
   savingsRow: {
@@ -53,40 +54,46 @@ export const styles = StyleSheet.create({
   },
   detailsSection: {
     backgroundColor: '#ffffff',
-    paddingHorizontal: 10,
-    marginHorizontal: 12,
-    marginBottom: 12,
-    borderRadius: 8,
+    padding: 16,
+    marginHorizontal: 24,
+    borderRadius: 10,
+    marginTop: 12,
   },
   inclCharges: {
-    color: '#6C7375',
+    color: '#6D7578',
     fontSize: 10,
-    fontFamily: Fonts.JakartaSemiBold,
+    fontFamily: Fonts.JakartaMedium,
   },
 
   detailsHeading: {
     fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
     marginVertical: 6,
-    color: '#161D1F',
+    color: FontColors.textBlack,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 4,
+    marginVertical: 2,
+  },
+  rowBorder: {
+    borderBottomWidth: 1,
+    borderColor: '#D3D7D8',
+    marginVertical: 8,
   },
   leftText: {
-    fontSize: 13,
+    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
-    color: '#333',
+    color: FontColors.textBlack,
   },
   rightText: {
-    color: '#333',
-    fontFamily: Fonts.JakartaRegular,
+    color: FontColors.textBlack,
+    fontFamily: Fonts.JakartaSemiBold,
+    fontSize: 12,
   },
   rightTextlinethrough: {
     fontSize: 13,
-    color: '#333',
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
     textDecorationLine: 'line-through',
   },
@@ -94,6 +101,18 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Fonts.JakartaRegular,
     color: '#161D1F',
-    marginBottom: 2,
+  },
+  totalAmount: {
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: FontColors.primary,
+  },
+  rowTotal: {
+    borderColor: '#D3D7D8',
+    borderTopWidth: 1,
+    paddingTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
   },
 });

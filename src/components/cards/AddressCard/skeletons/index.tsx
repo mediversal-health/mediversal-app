@@ -16,14 +16,6 @@ const AddressCardSkeleton: React.FC<AddressCardSkeletonProps> = ({
 }) => {
   const renderSkeleton = () => (
     <View style={[styles.container, {borderColor: '#E0E0E0'}]}>
-      <View style={styles.radioButtonContainer}>
-        <ShimmerPlaceHolder
-          style={[styles.radioOuter, {borderWidth: 0}]}
-          shimmerColors={['#E0E0E0', '#F5F5F5', '#E0E0E0']}
-          duration={1000}
-        />
-      </View>
-
       <View style={styles.header}>
         <View style={styles.leftSection}>
           {/* Icon Container Skeleton */}
