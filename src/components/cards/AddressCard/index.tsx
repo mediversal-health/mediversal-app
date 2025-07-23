@@ -49,16 +49,10 @@ const AddressCard: React.FC<AddressCardProps> = ({
       ]}
       onPress={onPress}
       activeOpacity={0.7}>
-      <View style={styles.radioButtonContainer}>
-        <View style={styles.radioOuter}>
-          {selected && <View style={styles.radioInner} />}
-        </View>
-      </View>
-
       <View style={styles.header}>
         <View style={styles.leftSection}>
           <View style={styles.iconContainer}>{getIcon()}</View>
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, gap: 4}}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.addressText}>{address}</Text>
             <View style={styles.phoneSection}>
@@ -73,14 +67,19 @@ const AddressCard: React.FC<AddressCardProps> = ({
                 }}
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 24,
+                  height: 24,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <MoreHorizontal size={30} color="#0088B1" />
+                <MoreHorizontal size={24} color="#0088B1" />
               </TouchableOpacity>
             )}
+          </View>
+        </View>
+        <View style={styles.radioButtonContainer}>
+          <View style={styles.radioOuter}>
+            {selected && <View style={styles.radioInner} />}
           </View>
         </View>
       </View>

@@ -394,7 +394,8 @@ const AllProductsScreen: React.FC = () => {
         <TouchableWithoutFeedback onPress={handleOutsideClick}>
           <View style={{flex: 1}}>
             <View style={styles.header}>
-              <View style={{flexDirection: 'row', gap: 5}}>
+              <View
+                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
                 <TouchableOpacity
                   style={styles.backButton}
                   onPress={() => navigation.goBack()}

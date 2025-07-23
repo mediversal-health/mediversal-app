@@ -1,19 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFF',
     borderRadius: 12,
-    width: 350,
+    width: '100%',
     padding: 16,
     borderWidth: 1,
     position: 'relative',
   },
   radioButtonContainer: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
     zIndex: 1,
   },
   radioOuter: {
@@ -34,34 +31,31 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
+    alignItems: 'flex-start',
+    gap: 12,
   },
   leftSection: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flex: 1,
+    gap: 12,
   },
   iconContainer: {
-    width: 28,
-    height: 28,
-    backgroundColor: '#E3F2FD',
-    borderRadius: 8,
+    width: 32,
+    height: 32,
+    backgroundColor: '#F2F4F5',
+    borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
-    marginTop: 2,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1A1A1A',
+    fontSize: 14,
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaBold,
   },
   addressText: {
-    fontSize: 10,
-    color: '#666666',
-    lineHeight: 20,
+    fontSize: 12,
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
   },
   phoneSection: {
@@ -69,14 +63,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   phoneLabel: {
-    fontSize: 10,
-    color: '#666666',
+    fontSize: 12,
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaSemiBold,
   },
   phoneNumber: {
-    fontSize: 10,
-    color: '#1A1A1A',
-    fontWeight: '500',
+    fontSize: 12,
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
   },
 });

@@ -767,7 +767,10 @@ const AddressBookScreen: React.FC = () => {
 
               <View style={styles.formGroup}>
                 <Text style={styles.inputLabel}>Address Type</Text>
-                <View style={styles.addressTypeContainer}>
+                <ScrollView
+                  style={styles.addressTypeContainer}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
                   {(
                     [
                       'Home',
@@ -794,7 +797,7 @@ const AddressBookScreen: React.FC = () => {
                       </Text>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </ScrollView>
               </View>
 
               <View style={styles.formGroup}>
@@ -843,8 +846,7 @@ const AddressBookScreen: React.FC = () => {
               </View>
 
               <Text style={styles.infoText}>
-                Billing will be done using the recipient name on the
-                prescription.
+                Note: Billing will be done using the recipient name.
               </Text>
             </>
           )}
