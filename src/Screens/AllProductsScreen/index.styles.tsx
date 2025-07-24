@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     flex: 1,
-    paddingLeft: 16,
-    paddingRight: Platform.OS === 'android' ? 24 : 16,
+    paddingLeft: Platform.OS === 'ios' ? 16 : 4,
+    paddingRight: Platform.OS === 'android' ? 16 : 16,
     paddingVertical: 10,
   },
   productList: {
