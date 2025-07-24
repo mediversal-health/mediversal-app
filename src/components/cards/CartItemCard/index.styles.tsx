@@ -4,7 +4,7 @@ import {FontColors, Fonts} from '../../../styles/fonts';
 export const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: FontColors.tertiary,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E5E8E9',
     borderRadius: 12,

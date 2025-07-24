@@ -2,9 +2,10 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Calendar} from 'lucide-react-native';
+import {Calendar, CalendarDays} from 'lucide-react-native';
 import BackgroundSVG from '../../../assests/svgs/Looper-1.svg';
 import styles from './index.styles';
+import {FontColors} from '../../../styles/fonts';
 
 interface OrderItem {
   productId: number;
@@ -41,15 +42,29 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'delivered':
-        return '#4CAF50';
-      case 'out for delivery':
-        return '#FF9800';
-      case 'processing':
-        return '#2196F3';
-      case 'cancelled':
-        return '#F44336';
-      default:
         return '#DDFFE5';
+      case 'out for delivery':
+        return '#FFFCE5';
+      case 'processing':
+        return '#DDFFE5';
+      case 'cancelled':
+        return '#FFDFDF';
+      default:
+        return '#E8F4F7';
+    }
+  };
+  const getDotColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'delivered':
+        return '#34C759';
+      case 'out for delivery':
+        return '#F2C94C';
+      case 'processing':
+        return '#34C759';
+      case 'cancelled':
+        return '#EB5757';
+      default:
+        return '#0088B1';
     }
   };
 
@@ -59,7 +74,7 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
       start={{x: 0, y: 0}}
       end={{x: 1, y: 1}}
       style={styles.cardContainer}>
-      <View style={{padding: 12, flex: 1}}>
+      <View style={{padding: 12, flex: 1, justifyContent: 'space-between'}}>
         <View style={styles.svgBottomLeft}>
           <BackgroundSVG width={162} height={157} strokeWidth={3} />
         </View>
@@ -71,7 +86,12 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
             styles.statusBadge,
             {backgroundColor: getStatusColor(order.deliverystatus)},
           ]}>
-          <View style={styles.statusDot} />
+          <View
+            style={[
+              styles.statusDot,
+              {backgroundColor: getDotColor(order.deliverystatus)},
+            ]}
+          />
           <Text style={styles.statusText}>
             {order.deliverystatus.charAt(0).toUpperCase() +
               order.deliverystatus.slice(1)}
@@ -80,7 +100,7 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
         <View style={styles.doctorInfoRow}>
           <View
             style={{
-              backgroundColor: '#E8F4F7',
+              backgroundColor: FontColors.secondary,
               padding: 4,
               borderRadius: 6,
               marginRight: 10,
@@ -104,7 +124,7 @@ const UpcomingOrdersCard: React.FC<UpcomingOrdersCardProps> = ({
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleRow}>
             <View style={styles.scheduleItem}>
-              <Calendar color="#6D7578" size={14} strokeWidth={1} />
+              <CalendarDays color="#6D7578" size={14} strokeWidth={1} />
               <Text style={styles.scheduleText}>
                 {formatDate(order.createdAt)}
               </Text>

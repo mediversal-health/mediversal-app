@@ -20,7 +20,7 @@ import styles from './index.styles';
 import {useAuthStore} from '../../store/authStore';
 import {getOrders} from '../../Services/order';
 import EmptyOrderScreen from './assets/svgs/Layer_1.svg';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 const OrdersScreen: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,12 +37,12 @@ const OrdersScreen: React.FC = () => {
   ];
 
   const statusColors: Record<string, string> = {
-    ALL: '#ccc',
-    'ON GOING': '#33b5e5',
-    COMPLETED: '#00C851',
-    'CLARIFICATION NEEDED': '#ffbb33',
-    SHIPPED: '#2BBBAD',
-    CANCELLED: '#ff4444',
+    ALL: '#0088B1',
+    'ON GOING': '#0088B1',
+    COMPLETED: '#50B57F',
+    'CLARIFICATION NEEDED': '#F2994A',
+    SHIPPED: '#F2C94C',
+    CANCELLED: '#EB5757',
   };
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -137,7 +137,7 @@ const OrdersScreen: React.FC = () => {
       <View style={styles.searchWrapper}>
         <View style={styles.searchContainer}>
           <View style={styles.searchTextWrapper}>
-            <Search color={'#0088B1'} size={20} />
+            <Search color={'#0088B1'} size={16} strokeWidth={1.5} />
             <TextInput
               style={styles.searchInput}
               placeholder="Search for orders"
@@ -150,17 +150,18 @@ const OrdersScreen: React.FC = () => {
       </View>
 
       <ScrollView
-        style={{backgroundColor: '#FFf'}}
         refreshControl={
-          // Add RefreshControl here
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#0088B1']} // Customize the loading indicator color
-            tintColor="#0088B1" // Customize the loading indicator color (iOS)
+            colors={['#0088B1']}
+            tintColor="#0088B1"
           />
         }>
-        <View style={styles.filterChipsWrapper}>
+        <ScrollView
+          style={styles.filterChipsWrapper}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}>
           {statusOptions.map(status => (
             <TouchableOpacity
               key={status}
@@ -181,7 +182,7 @@ const OrdersScreen: React.FC = () => {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
         <View style={styles.divider} />
 
         <View style={styles.orderList}>

@@ -405,14 +405,7 @@ const CartPage = () => {
             onPress={() => navigation.goBack()}>
             <ChevronLeft size={20} color="#0088B1" />
           </TouchableOpacity>
-          {/* <View style={styles.headerRightIcons}>
-            <TouchableOpacity style={styles.iconSpacing}>
-              <Search size={20} color="#161D1F" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <ShoppingBag size={20} color="#161D1F" />
-            </TouchableOpacity>
-          </View> */}
+          <Text style={styles.headerTitle}>Cart</Text>
         </View>
       </SafeAreaView>
       <SafeAreaView style={styles.container}>

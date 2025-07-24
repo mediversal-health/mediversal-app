@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#e8f4f7',
+    backgroundColor: FontColors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -150,19 +150,21 @@ export const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 8,
-    backgroundColor: '#fff',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    gap: 10,
   },
 
   headerRightIcons: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
+  headerTitle: {
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: FontColors.textBlack,
+  },
   iconSpacing: {
     marginRight: 16,
   },

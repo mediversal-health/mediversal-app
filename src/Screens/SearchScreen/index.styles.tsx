@@ -1,5 +1,5 @@
 import {Platform, StatusBar, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#e8f4f7',
+    backgroundColor: FontColors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   successText: {
-    color: '#4BB543',
+    color: '#34C759',
     fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
+    fontFamily: Fonts.JakartaMedium,
   },
   safeAreaContainer: {
     backgroundColor: '#fff',
@@ -42,47 +42,47 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 10,
-    fontFamily: Fonts.JakartaBold,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   sectionTitle: {
     fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
+    fontFamily: Fonts.JakartaMedium,
     marginBottom: 8,
-    color: '#333',
+    color: FontColors.textBlack,
   },
   pincodeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
+    gap: 12,
   },
   pincodeInput: {
     flex: 1,
     borderWidth: 1,
     borderColor: '#B0B6B8',
     borderRadius: 8,
-    paddingHorizontal: 12,
-    height: 44,
-    fontSize: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
   },
   inputError: {
     borderColor: '#FF3B30',
   },
   searchButton: {
-    marginLeft: 8,
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
     borderRadius: 8,
     paddingHorizontal: 16,
-    height: 44,
+    paddingVertical: 14,
     justifyContent: 'center',
     alignItems: 'center',
     minWidth: 80,
   },
   searchButtonText: {
-    color: '#fff',
-    fontSize: 14,
+    color: FontColors.tertiary,
+    fontSize: 12,
     fontFamily: Fonts.JakartaSemiBold,
   },
   errorText: {
@@ -97,19 +97,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     borderWidth: 1,
-    borderColor: '#0088B1',
-    padding: 15,
-    backgroundColor: '#E8F4F7',
+    borderColor: FontColors.primary,
+    padding: 14,
+    backgroundColor: FontColors.secondary,
     borderRadius: 12,
-    marginHorizontal: 20,
+    marginHorizontal: 16,
   },
   currentLocationText: {
-    color: '#0088B1',
+    color: FontColors.primary,
     fontSize: 14,
     fontFamily: Fonts.JakartaRegular,
   },
   locatingText: {
-    color: '#0088B1',
+    color: FontColors.primary,
     fontSize: 14,
     fontFamily: Fonts.JakartaRegular,
   },

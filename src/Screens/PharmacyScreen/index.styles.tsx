@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.JakartaSemiBoldItalic,
   },
   productList: {
-    paddingLeft: 24,
+    paddingHorizontal: 24,
   },
   separator: {
     width: 12,

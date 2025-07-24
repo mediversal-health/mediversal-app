@@ -15,7 +15,7 @@ import {DeleteFromCart} from '../../../Services/cart';
 import {useAuthStore} from '../../../store/authStore';
 import useProductStore from '../../../store/productsStore';
 import {usePrescriptionStore} from '../../../store/prescriptionStore';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const SOCKET_URL = 'http://3.110.218.39:3001';
 
@@ -138,12 +138,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
             position: 'absolute',
             zIndex: 999,
             top: 0,
-            left: 0,
+            left: '21%',
             backgroundColor: buttonColor,
-            padding: 4,
-            borderBottomRightRadius: 4,
+            paddingVertical: 3,
+            paddingHorizontal: 12,
+            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: 10,
           }}>
-          <Text style={{fontSize: 6, fontFamily: Fonts.JakartaRegular}}>
+          <Text
+            style={{
+              fontSize: 6,
+              fontFamily: Fonts.JakartaRegular,
+              color: FontColors.tertiary,
+            }}>
             Prescription Required
           </Text>
         </View>

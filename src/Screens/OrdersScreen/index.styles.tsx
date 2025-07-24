@@ -1,10 +1,10 @@
 import {StatusBar, StyleSheet, Platform} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: FontColors.tertiary,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   header: {
@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    backgroundColor: '#FFFFFF',
     gap: 10,
   },
 
@@ -20,69 +19,69 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#e8f4f7',
+    backgroundColor: FontColors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: Fonts.JakartaSemiBold,
-    color: '#111827',
+    color: FontColors.textBlack,
   },
   searchWrapper: {
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    marginBottom: 10,
+    marginTop: 16,
   },
   searchContainer: {
-    backgroundColor: '#e8f4f7',
+    backgroundColor: FontColors.secondary,
     borderRadius: 12,
-    paddingVertical: 5,
-    paddingHorizontal: 20,
+    paddingVertical: Platform.OS === 'android' ? 3 : 12,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
-    justifyContent: 'space-between',
   },
   searchTextWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
     flex: 1,
+    gap: Platform.OS === 'android' ? 0 : 5,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
-    color: '#111827',
-    padding: 5,
+    color: FontColors.textBlack,
   },
   filterChipsWrapper: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingTop: 10,
-    gap: 8,
-    justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   chip: {
-    paddingVertical: 4,
-
-    paddingHorizontal: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
     borderRadius: 8,
-    backgroundColor: '#e5e7eb',
+    borderWidth: 0.3,
+    marginRight: 10,
   },
   activeChip: {
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
   },
   chipText: {
-    fontSize: 11,
-    color: '#374151',
+    fontSize: 10,
+    color: FontColors.textBlack,
     fontFamily: Fonts.JakartaRegular,
+    textAlign: 'center',
   },
   activeChipText: {
-    color: '#ffffff',
-    fontWeight: '500',
+    color: FontColors.tertiary,
+    fontFamily: Fonts.JakartaMedium,
+    textAlign: 'center',
+    fontSize: 10,
   },
   divider: {
     height: 1,

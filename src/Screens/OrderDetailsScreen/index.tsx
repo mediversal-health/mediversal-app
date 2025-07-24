@@ -22,7 +22,7 @@ import {
   IndianRupee,
   FileText,
 } from 'lucide-react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 import OrderTrackingProgress from '../../components/ui/OrderTrackingProgress';
 import CartItemCard from '../../components/cards/CartItemCard';
 import OrderCancelBottomSheet from '../../components/modal/CancelOrderBottomSheet'; // Import the bottom sheet
@@ -164,7 +164,7 @@ const OrdersDetailsScreen: React.FC = () => {
       </View>
 
       <ScrollView
-        style={{backgroundColor: '#FFF'}}
+        style={{backgroundColor: FontColors.tertiary}}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -173,37 +173,6 @@ const OrdersDetailsScreen: React.FC = () => {
             tintColor="#0088B1"
           />
         }>
-        <View style={{paddingHorizontal: 10}}>
-          <View style={styles.orderInfoContainer}>
-            <View style={styles.orderInfoBorder}>
-              <Text style={{marginBottom: 5, fontFamily: Fonts.JakartaBold}}>
-                Order ID:ORD-{order_data.orderId}
-              </Text>
-            </View>
-            <View
-              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-              <Text style={styles.orderInfoText}>
-                <Text style={styles.orderInfoLabel}>Order date:</Text>{' '}
-                {formatOrderDate(order_data.createdAt)}
-              </Text>
-              {isOrderCancelled() ? (
-                <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
-                  <Text style={styles.OrderCancelled}>Order Cancelled</Text>
-                </View>
-              ) : (
-                <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
-                  <Truck size={18} color={'#12B76A'} />
-
-                  <Text style={styles.deliveryEstimate}>
-                    Estimated delivery:{' '}
-                    {edd && edd == null ? edd : 'Updating Soon'}
-                  </Text>
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
-
         {order_data.deliverystatus === 'Order cancelled successfully.' ? (
           <View
             style={{
@@ -235,11 +204,57 @@ const OrdersDetailsScreen: React.FC = () => {
             </Text>
           </View>
         )}
+        <View
+          style={{
+            paddingHorizontal: 24,
+            marginBottom: 24,
+          }}>
+          <View style={styles.orderInfoContainer}>
+            <View style={styles.orderInfoBorder}>
+              <Text
+                style={{
+                  marginBottom: 5,
+                  fontFamily: Fonts.JakartaSemiBold,
+                  fontSize: 14,
+                }}>
+                Order ID:ORD-{order_data.orderId}
+              </Text>
+            </View>
+            <View
+              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              <Text style={styles.orderInfoText}>
+                <Text style={styles.orderInfoLabel}>Order date:</Text>{' '}
+                {formatOrderDate(order_data.createdAt)}
+              </Text>
+              {isOrderCancelled() ? (
+                <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
+                  <Text style={styles.OrderCancelled}>Order Cancelled</Text>
+                </View>
+              ) : (
+                <View style={{flexDirection: 'row', gap: 5, marginTop: 5}}>
+                  <Truck size={16} color={'#12B76A'} strokeWidth={1.25} />
 
-        <View style={{flexDirection: 'row', marginLeft: 20, gap: 5}}>
+                  <Text style={styles.deliveryEstimate}>
+                    Estimated delivery:
+                    {edd && edd == null ? edd : 'Updating Soon'}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            marginHorizontal: 24,
+            marginBottom: 12,
+          }}>
           <View
-            style={{backgroundColor: '#E8F4F7', padding: 2, borderRadius: 5}}>
-            <Box />
+            style={{backgroundColor: '#E8F4F7', padding: 4, borderRadius: 5}}>
+            <Box strokeWidth={1.25} size={20} color={'#0088B1'} />
           </View>
           <Text style={styles.orderItemsHeader}>Order Items</Text>
         </View>
@@ -303,8 +318,9 @@ const OrdersDetailsScreen: React.FC = () => {
               flexDirection: 'row',
               alignItems: 'center',
               marginBottom: 16,
+              gap: 8,
             }}>
-            <MapPin size={20} color="#667085" />
+            <MapPin size={18} color="#667085" strokeWidth={1.25} />
             <Text style={styles.addressTitle}>Delivery Address</Text>
           </View>
 
@@ -312,9 +328,7 @@ const OrdersDetailsScreen: React.FC = () => {
           <Text style={styles.customerAddress}>
             {order_data.customerAddress}
           </Text>
-          <Text style={styles.summaryLabel}>
-            +91 - {order_data.customerPhone}
-          </Text>
+          <Text style={styles.phoneText}>+91 - {order_data.customerPhone}</Text>
         </View>
 
         <View style={styles.paymentCard}>
@@ -324,33 +338,33 @@ const OrdersDetailsScreen: React.FC = () => {
               alignItems: 'center',
               marginBottom: 16,
             }}>
-            <IndianRupee size={16} color="#667085" />
+            <IndianRupee size={18} color="#667085" strokeWidth={1.25} />
             <Text style={styles.paymentTitle}>Payment Details</Text>
           </View>
 
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Payment Method</Text>
-            <Text style={styles.summaryValue}>{order_data.paymentMethod}</Text>
+            <Text style={styles.customerAddress}>Payment Method</Text>
+            <Text style={styles.customerName}>{order_data.paymentMethod}</Text>
           </View>
           {order_data.paymentMethod !== 'COD' && (
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Transaction ID</Text>
-              <Text style={styles.summaryValue}>
+              <Text style={styles.customerAddress}>Transaction ID</Text>
+              <Text style={styles.customerName}>
                 {order_data.transactionId}
               </Text>
             </View>
           )}
           {order_data.paymentMethod !== 'COD' && (
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Transaction Time</Text>
-              <Text style={styles.summaryValue}>
+              <Text style={styles.customerAddress}>Transaction Time</Text>
+              <Text style={styles.customerName}>
                 {formatTransactionTime(order_data.paymentTime)}
               </Text>
             </View>
           )}
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Payment Status</Text>
-            <Text style={[styles.summaryValue, {color: '#10B981'}]}>
+            <Text style={styles.customerAddress}>Payment Status</Text>
+            <Text style={[styles.customerName, {color: '#10B981'}]}>
               {order_data.paymentMethod !== 'COD' ? 'Completed' : 'Pending '}
             </Text>
           </View>
@@ -374,7 +388,7 @@ const OrdersDetailsScreen: React.FC = () => {
               <Text style={styles.contactButtonText}>Contact us</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.checkoutButton}>
-              <FileText color={'#fff'} size={16} />
+              <FileText color={'#fff'} size={18} strokeWidth={1.25} />
               <Text style={styles.checkoutButtonText}>Download Invoice</Text>
             </TouchableOpacity>
           </View>

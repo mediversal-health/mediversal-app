@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {Platform, StyleSheet} from 'react-native';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 166,
     overflow: 'hidden',
-    backgroundColor: '#0088B1',
+    backgroundColor: FontColors.primary,
   },
   backgroundSVG: {
     position: 'absolute',
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   discountText: {
-    color: '#161D1F',
+    color: FontColors.textBlack,
     fontSize: 9,
     fontFamily: Fonts.JakartaRegular,
   },
@@ -35,30 +35,30 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: 30,
     margin: 16,
-    gap: 22,
+    gap: Platform.OS === 'ios' ? 40 : 24,
   },
   heading: {
     fontSize: 16,
-    color: '#F8F8F8',
+    color: FontColors.tertiary,
     fontFamily: Fonts.JakartaBold,
   },
   subText: {
     fontSize: 12,
-    color: '#F8F8F8',
+    color: FontColors.tertiary,
     fontFamily: Fonts.JakartaRegular,
   },
   button: {
     borderRadius: 6,
-    backgroundColor: '#E8F4F7',
-    padding: 5,
+    backgroundColor: FontColors.secondary,
+    padding: 6,
     width: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 12,
-    fontFamily: Fonts.JakartaSemiBold,
-    color: '#161D1F',
+    fontSize: 10,
+    fontFamily: Fonts.JakartaMedium,
+    color: FontColors.textBlack,
   },
   cartSVG: {
     position: 'absolute',
