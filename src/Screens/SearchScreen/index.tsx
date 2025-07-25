@@ -376,7 +376,7 @@ export default function SearchScreen() {
             {serviceabilityData && (
               <View style={styles.serviceabilityContainer}>
                 <View style={styles.successContainer}>
-                  <CheckCircle color="#4BB543" size={20} />
+                  <CheckCircle color="#34C759" size={20} strokeWidth={1.25} />
                   <Text style={styles.successText}>Delivery available</Text>
                 </View>
               </View>
@@ -427,7 +427,7 @@ export default function SearchScreen() {
             </>
           ) : (
             <>
-              <MapPinned color={'#0088B1'} size={20} />
+              <MapPinned color={'#0088B1'} size={20} strokeWidth={1.25} />
               <TouchableOpacity
                 onPress={handleUseCurrentLocation}
                 disabled={isLocating}>

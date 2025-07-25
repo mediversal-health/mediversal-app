@@ -1,16 +1,16 @@
 import {Dimensions, Platform, StyleSheet} from 'react-native';
-import {Fonts} from '../../styles/fonts';
+import {FontColors, Fonts} from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     // marginBottom: 100,
-    paddingHorizontal: Platform.OS === 'ios' ? 8 : 16,
-    backgroundColor: '#F8F8F8',
+    paddingHorizontal: 16,
+    backgroundColor: FontColors.tertiary,
     paddingBottom: 80,
   },
   headerContainer: {
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
   },
   sectionLabel: {
@@ -26,12 +26,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   boldText: {
-    fontSize: 15,
-    fontFamily: Fonts.JakartaBold,
+    fontSize: 14,
+    fontFamily: Fonts.JakartaSemiBold,
+    color: FontColors.textBlack,
   },
   countText: {
     fontSize: 10,
-    marginTop: 6,
+    marginTop: 5,
+    marginLeft: 3,
+    color: FontColors.textBlack,
   },
   seeAllButton: {
     flexDirection: 'row',
@@ -42,6 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: Fonts.JakartaRegular,
     textAlign: 'center',
+    color: FontColors.textBlack,
   },
   arrowIcon: {
     marginTop: 3,

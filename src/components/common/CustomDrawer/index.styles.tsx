@@ -26,13 +26,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 84,
     backgroundColor: FontColors.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 24,
+    paddingVertical: 32,
     marginTop: 10,
+    paddingBottom: 40,
   },
 
   likeUsLeft: {

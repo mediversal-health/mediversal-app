@@ -5,7 +5,7 @@ export const openRazorpayCheckout = () => {
     description: 'Test Payment',
     image: 'https://your-logo-url.com/logo.png',
     currency: 'INR',
-    key: 'rzp_test_OV61ulB5B7xMPp', // TEST KEY ID
+    key: 'rzp_test_OV61ulB5B7xMPp',
     amount: '5000', // amount in paise (i.e., ₹50)
     name: 'Mediversal',
     prefill: {

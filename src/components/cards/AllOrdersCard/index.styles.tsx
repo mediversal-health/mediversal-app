@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Fonts} from '../../../styles/fonts';
+import {FontColors, Fonts} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   card: {
@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   orderId: {
-    fontSize: 10,
-    color: '#6b7280',
-    marginBottom: 4,
-    fontFamily: Fonts.JakartaRegular,
+    fontSize: 14,
+    color: FontColors.textBlack,
+    fontFamily: Fonts.JakartaMedium,
   },
   name: {
     fontSize: 10,
@@ -36,11 +35,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   amount: {
-    fontWeight: 'bold',
     fontSize: 12,
-    color: '#111827',
-    marginRight: 6,
-    textAlign: 'center',
+    color: FontColors.textBlack,
+    fontFamily: Fonts.JakartaMedium,
   },
   statusBox: {
     paddingVertical: 2,

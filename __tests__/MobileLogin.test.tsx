@@ -19,6 +19,11 @@ import React from 'react';
 import {render, screen, waitFor} from '@testing-library/react-native';
 import MobileLogin from '../src/components/auth/MobileLogIn';
 
+jest.mock('react-native-country-picker-modal', () => ({
+  __esModule: true,
+  default: () => null, // mock CountryPicker to prevent errors in test
+}));
+
 jest.mock('../src/Services/auth/index.tsx', () => ({
   sendOTP: jest.fn(),
 }));

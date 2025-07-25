@@ -151,7 +151,7 @@ const Layout = () => {
               Get Medicine reminders and other updates
             </Text>
             <View style={styles.notificationLinkContainer}>
-              <Text style={styles.notificationSubText}>via notification</Text>
+              <Text style={styles.notificationSubText}>via notification.</Text>
               <TouchableOpacity>
                 <Text style={styles.viewMoreText}>View More</Text>
               </TouchableOpacity>
@@ -214,8 +214,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingBottom: 0,
+    paddingHorizontal: 16,
     marginTop: 10,
     marginBottom: 10,
   },
@@ -269,13 +268,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   iconsContainer: {
-    gap: 12,
     flexDirection: 'row',
   },
   notificationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+    marginBottom: 8,
   },
   notificationTextContainer: {
     flexDirection: 'column',
@@ -290,13 +289,12 @@ const styles = StyleSheet.create({
   },
   notificationSubText: {
     fontSize: 12,
-    marginLeft: 5,
     fontFamily: Fonts.JakartaRegular,
   },
   viewMoreText: {
     fontSize: 12,
     textDecorationLine: 'underline',
-    fontFamily: Fonts.JakartaBold,
+    fontFamily: Fonts.JakartaSemiBold,
   },
   searchBarContainer: {
     paddingHorizontal: 16,
@@ -320,7 +318,6 @@ const styles = StyleSheet.create({
   },
   pharmacySearchContainer: {
     paddingHorizontal: 20,
-    marginBottom: 5,
   },
 });
 

@@ -30,28 +30,28 @@ interface StatusConfig {
 
 const STATUS_CONFIG: Record<OrderStatus, StatusConfig> = {
   COMPLETED: {
-    icon: <Check size={20} color="#10b981" />,
-    bgColor: '#D1FAE5',
-    statusColor: '#10b981',
+    icon: <Check size={20} color="#34C759" />,
+    bgColor: '#DDFFE5',
+    statusColor: '#34C759',
   },
   'ON GOING': {
-    icon: <Clock size={20} color="#000" />,
-    bgColor: '#D3D7D8',
-    statusColor: '#000',
+    icon: <Clock size={20} color="#0088B1" />,
+    bgColor: '#E8F4F7',
+    statusColor: '#0088B1',
   },
   'CLARIFICATION NEEDED': {
     icon: <AlertCircle size={20} color="#F2994A" />,
-    bgColor: '#FFD2AB',
+    bgColor: '#FFFCE5',
     statusColor: '#F2994A',
   },
   SHIPPED: {
-    icon: <Truck size={20} color="#3b82f6" />,
+    icon: <Truck size={20} color="#F2C94C" />,
     bgColor: '#DBEAFE',
-    statusColor: '#3b82f6',
+    statusColor: '#F2C94C',
   },
   CANCELLED: {
     icon: <X size={20} color="#EB5757" />,
-    bgColor: '#FFD3D3',
+    bgColor: '#FFDFDF',
     statusColor: '#EB5757',
   },
 };
@@ -75,10 +75,10 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
           justifyContent: 'space-between',
         }}>
         <View>
-          <View style={{flexDirection: 'row', gap: 5}}>
+          <View style={{flexDirection: 'row', gap: 8}}>
             <View
               style={[styles.iconWrapper, {backgroundColor: config.bgColor}]}>
-              <Truck />
+              <Truck strokeWidth={1.25} />
             </View>
             <View style={{flexDirection: 'column'}}>
               <Text style={styles.name}>{order.status}</Text>
@@ -87,19 +87,19 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
           </View>
         </View>
 
-        <ChevronRight />
+        <ChevronRight strokeWidth={1.25} />
       </View>
       <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
         <View style={styles.rightContent}>
-          <View style={{flexDirection: 'row', gap: 5}}>
+          <View style={{flexDirection: 'row', gap: 8}}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Package size={20} />
+              <Package size={24} strokeWidth={1.25} />
             </View>
-            <View style={{flexDirection: 'column', gap: 2}}>
+            <View style={{flexDirection: 'column', gap: 1}}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
-                  fontSize: 8,
+                  fontSize: 10,
                   color: '#899193',
                 }}>
                 Order Date
@@ -109,15 +109,15 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
           </View>
         </View>
         <View style={styles.rightContent}>
-          <View style={{flexDirection: 'row', gap: 5}}>
+          <View style={{flexDirection: 'row', gap: 8}}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Boxes size={20} />
+              <Boxes size={24} strokeWidth={1.25} />
             </View>
-            <View style={{flexDirection: 'column', gap: 2}}>
+            <View style={{flexDirection: 'column', gap: 1}}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
-                  fontSize: 8,
+                  fontSize: 10,
                   color: '#899193',
                 }}>
                 Order Items
@@ -127,15 +127,15 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
           </View>
         </View>
         <View style={styles.rightContent}>
-          <View style={{flexDirection: 'row', gap: 5}}>
+          <View style={{flexDirection: 'row', gap: 8}}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <BadgeIndianRupee size={20} />
+              <BadgeIndianRupee size={24} strokeWidth={1.25} />
             </View>
-            <View style={{flexDirection: 'column', gap: 2}}>
+            <View style={{flexDirection: 'column', gap: 1}}>
               <Text
                 style={{
                   fontFamily: Fonts.JakartaRegular,
-                  fontSize: 8,
+                  fontSize: 10,
                   color: '#899193',
                 }}>
                 Order Value

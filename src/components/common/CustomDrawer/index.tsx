@@ -120,7 +120,7 @@ const CustomDrawer = ({onClose}: {onClose: () => void}) => {
           {...panResponder.panHandlers}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{marginBottom: 80}}>
+            style={{marginBottom: 96}}>
             <View style={styles.header}>
               <View style={styles.profileRow}>
                 <TouchableOpacity
