@@ -132,13 +132,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <View style={[styles.cardContainer, dynamicStyles.cardContainer, style]}>
-      {product.PrescriptionRequired == 'Yes' && (
+      {(product.PrescriptionRequired == 'Yes' || isOutOfStock) && (
         <View
           style={{
             position: 'absolute',
             zIndex: 999,
             top: 0,
-            left: '21%',
+            left: isOutOfStock ? '35%' : '21%',
             backgroundColor: buttonColor,
             paddingVertical: 3,
             paddingHorizontal: 12,
@@ -151,7 +151,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               fontFamily: Fonts.JakartaRegular,
               color: FontColors.tertiary,
             }}>
-            Prescription Required
+            {isOutOfStock ? 'Out of Stock' : 'Prescription Required'}
           </Text>
         </View>
       )}
@@ -218,13 +218,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </View>
       ) : (
         <TouchableOpacity
-          style={[styles.addButtonForOutofStock, dynamicStyles.addButton]}
+          style={[
+            styles.addButtonForOutofStock,
+            dynamicStyles.addButton,
+            isOutOfStock && styles.dashedBorder,
+          ]}
           onPress={handleAddItem}
           disabled={showLoading || isOutOfStock}>
           {showLoading ? (
             <ActivityIndicator size="small" color="#FFF" />
-          ) : isOutOfStock ? (
-            <Text style={styles.outOfStockButtonText}>Out of Stock</Text>
           ) : (
             <Plus size={16} color="#FFF" />
           )}

@@ -192,7 +192,7 @@ const AllProductsScreen: React.FC = () => {
   useFocusEffect(
     React.useCallback(() => {
       //setSelectedCategory('All');
-      // setFilteredProducts(null);
+      setFilteredProducts(null);
       setSortedProducts(null);
       setSelectedFilters({});
       setSelectedSortOption('Sort');
@@ -314,9 +314,9 @@ const AllProductsScreen: React.FC = () => {
 
   // Get the products to display based on current state
   const getProductsToDisplay = () => {
-    if (sortedProducts) return sortedProducts;
-    if (filteredProducts) return filteredProducts;
-    return cardProducts;
+    if (sortedProducts) return sortedProducts.filter(item => item.active);
+    if (filteredProducts) return filteredProducts.filter(item => item.active);
+    return cardProducts.filter(item => item.active);
   };
 
   const handleSortOptionSelect = (option: string) => {
