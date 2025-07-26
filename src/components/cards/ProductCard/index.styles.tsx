@@ -102,6 +102,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  dashedBorder: {
+    backgroundColor: '#D3D7D8',
+  },
   addButtonForOutofStock: {
     position: 'absolute',
     bottom: 0,

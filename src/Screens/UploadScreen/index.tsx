@@ -82,12 +82,18 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
     navigation.push('UploadScreen', {product: item});
   };
 
-  const cheaperAlternativeItems = cardProducts.filter(
-    item =>
-      item.Composition === product?.Composition &&
-      Number(item.id) !== product?.productId &&
-      Number(item.sellingPrice) <= Number(product?.SellingPrice ?? 0) * 0.95,
-  );
+  const cheaperAlternativeItems = product?.substitutes?.length
+    ? product.substitutes.map(substitute => {
+        const fullProduct = cardProducts.find(
+          p => p.id === substitute.productId.toString(),
+        );
+        return fullProduct ? fullProduct._originalProduct : substitute;
+      })
+    : cardProducts.filter(
+        item =>
+          item.Composition === product?.Composition &&
+          Number(item.id) !== product?.productId,
+      );
 
   const relatedProductItems = product?.similarProducts?.length
     ? product.similarProducts.map(similarProd => {
@@ -187,9 +193,11 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
               <View style={styles.cheaperAlternativeContainer}>
                 <CheaperAlternative discountPercentage={5}>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {cheaperAlternativeItems.map(item => (
-                      <View key={item.id}>{renderProductCard({item})}</View>
-                    ))}
+                    {cheaperAlternativeItems
+                      .filter(item => item.active)
+                      ?.map(item => (
+                        <View key={item.id}>{renderProductCard({item})}</View>
+                      ))}
                   </ScrollView>
                 </CheaperAlternative>
               </View>
@@ -213,11 +221,13 @@ const UploadScreen = ({route}: {route: UploadScreenRouteProp}) => {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   style={styles.productCardsContainer}>
-                  {relatedProductItems?.map(item => (
-                    <View key={item.id || item.productId}>
-                      {renderProductCard({item})}
-                    </View>
-                  ))}
+                  {relatedProductItems
+                    ?.filter(item => item.active)
+                    .map(item => (
+                      <View key={item.id || item.productId}>
+                        {renderProductCard({item})}
+                      </View>
+                    ))}
                 </ScrollView>
               </>
             )}

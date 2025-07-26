@@ -94,7 +94,7 @@ const BillSummaryCard: React.FC<Props> = ({
           <View style={styles.row}>
             <Text style={styles.leftText}>Delivery Charges</Text>
 
-            {finalPrice > 499 ? (
+            {originalPrice > 499 ? (
               <Text style={styles.rightTextlinethrough}>₹40</Text>
             ) : (
               <Text style={styles.rightText}>₹{details.deliveryCharges}</Text>

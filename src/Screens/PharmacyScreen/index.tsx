@@ -285,7 +285,18 @@ const PharmacyScreen = () => {
                 />
               ) : (
                 <FlatList
-                  data={cardProducts}
+                  data={cardProducts
+                    .filter(item => item.active)
+                    .map(item => ({
+                      ...item,
+                      discountPercentage: Math.round(
+                        ((item.originalPrice - item.sellingPrice) /
+                          item.originalPrice) *
+                          100,
+                      ),
+                    }))
+                    .sort((a, b) => b.discountPercentage - a.discountPercentage)
+                    .slice(0, 10)}
                   renderItem={renderProduct}
                   keyExtractor={item => item.id}
                   horizontal
@@ -444,7 +455,9 @@ const PharmacyScreen = () => {
                 />
               ) : (
                 <FlatList
-                  data={cardProducts.filter(item => item.featuredProduct)}
+                  data={cardProducts.filter(
+                    item => item.featuredProduct && item.active,
+                  )}
                   renderItem={renderProductForTrending}
                   keyExtractor={item => item.id}
                   horizontal

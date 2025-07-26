@@ -224,7 +224,7 @@ const CategoryFilterScreen = () => {
         </Text>
 
         <FlatList
-          data={filteredProducts}
+          data={filteredProducts.filter(item => item.active)}
           renderItem={renderProduct}
           keyExtractor={item => `horizontal-${item.id}`}
           horizontal
@@ -297,7 +297,10 @@ const CategoryFilterScreen = () => {
 
           <FlatList
             data={filteredProducts.filter(
-              product => product.type === selectedProductType,
+              product =>
+                product.type === selectedProductType &&
+                product.SubCategory === subCategory_name &&
+                product.active,
             )}
             renderItem={renderProduct}
             keyExtractor={item => `horizontal-${item.id}`}
