@@ -169,9 +169,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </Text>
 
         <View style={styles.quantityContainer}>
-          <Text style={styles.quantityText}>
-            Available:{availableInventory}
-          </Text>
+          <Text style={styles.quantityText}>{product.Composition}</Text>
         </View>
 
         <View style={styles.deliveryContainer}>
