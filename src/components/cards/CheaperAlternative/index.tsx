@@ -55,10 +55,7 @@ const CheaperAlternative: React.FC<CheaperAlternativeProps> = ({
           <View style={styles.iconContainer}>
             <DollarSign size={24} color="#0088B1" />
           </View>
-          <Text style={styles.headerText}>
-            {discountPercentage}% Cheaper alternative{' '}
-            <Text style={{fontFamily: Fonts.JakartaRegular}}>available</Text>
-          </Text>
+          <Text style={styles.headerText}>Substitute Available</Text>
         </View>
         <Animated.View style={animatedStyles}>
           <ChevronDown size={24} color="white" />
