@@ -37,6 +37,10 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
   },
+  countryCodeText: {
+    fontSize: 16,
+    color: '#000',
+  },
   focusedInput: {
     borderColor: '#0088b1',
   },

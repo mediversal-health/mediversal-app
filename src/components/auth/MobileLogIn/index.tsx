@@ -10,8 +10,8 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import CountryPickerComponent from '../../ui/CountryPicker';
-import {Country} from 'react-native-country-picker-modal';
+// import CountryPickerComponent from '../../ui/CountryPicker';  // Commented out
+// import {Country} from 'react-native-country-picker-modal';  // Commented out
 import styles from './index.styles';
 import OtpMobileModal from '../Modals/OtpMobile';
 import {sendOTP} from '../../../Services/auth';
@@ -34,6 +34,7 @@ const MobileLogin = () => {
   const [isMobileFocused, setIsMobileFocused] = useState<boolean>(false);
   const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [countryCode, setCountryCode] = useState<string>('+91');
 
   const inputRef = useRef<TextInput>(null);
 
@@ -46,9 +47,10 @@ const MobileLogin = () => {
     }
   };
 
-  const handleCountrySelect = (country: Country) => {
-    console.log('Selected country:', country);
-  };
+  // Commented out country picker handler
+  // const handleCountrySelect = (country: Country) => {
+  //   console.log('Selected country:', country);
+  // };
 
   const validateMobileNumber = (): boolean => {
     if (!mobileNumber.trim()) {
@@ -111,8 +113,9 @@ const MobileLogin = () => {
         contentContainerStyle={[styles.container]}
         showsVerticalScrollIndicator={false}>
         <View style={styles.inputRow}>
+          {/* Replaced CountryPicker with simple country code text */}
           <View style={styles.countryCodeBox}>
-            <CountryPickerComponent onSelectCountry={handleCountrySelect} />
+            <Text style={styles.countryCodeText}>{countryCode}</Text>
           </View>
 
           <View
